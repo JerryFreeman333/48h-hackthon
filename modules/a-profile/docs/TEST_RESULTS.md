@@ -1,5 +1,7 @@
 # 本次实际验证（2026-10-02）
 
+本页为v0.2的9项测试历史记录；当前V2实测见 [V2_TEST_RESULTS.md](V2_TEST_RESULTS.md)。以下测试数量及尚未解析简历的说明描述当时版本。
+
 运行环境：Windows、Node.js 24.20.0、SurveyJS Form Library 3.1.2、Playwright 1.58.2 + 本机 Chrome。
 
 `npm test`：9项通过，0失败，0跳过。

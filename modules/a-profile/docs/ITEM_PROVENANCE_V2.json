@@ -1,0 +1,2842 @@
+[
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 1,
+    "originalItemId": "1",
+    "localItemId": "mini-01",
+    "originalText": "Build kitchen cabinets",
+    "dimension": "realistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 1",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 2,
+    "originalItemId": "2",
+    "localItemId": "mini-02",
+    "originalText": "Develop a new medicine",
+    "dimension": "investigative",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 2",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 3,
+    "originalItemId": "3",
+    "localItemId": "mini-03",
+    "originalText": "Write books or plays",
+    "dimension": "artistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 3",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 4,
+    "originalItemId": "4",
+    "localItemId": "mini-04",
+    "originalText": "Help people with personal or emotional problems",
+    "dimension": "social",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 4",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 5,
+    "originalItemId": "5",
+    "localItemId": "mini-05",
+    "originalText": "Manage a department within a large company",
+    "dimension": "enterprising",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 5",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 6,
+    "originalItemId": "6",
+    "localItemId": "mini-06",
+    "originalText": "Install software across computers on a large network",
+    "dimension": "conventional",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 6",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 7,
+    "originalItemId": "7",
+    "localItemId": "mini-07",
+    "originalText": "Repair household appliances",
+    "dimension": "realistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 7",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 8,
+    "originalItemId": "8",
+    "localItemId": "mini-08",
+    "originalText": "Study ways to reduce water pollution",
+    "dimension": "investigative",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 8",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 9,
+    "originalItemId": "9",
+    "localItemId": "mini-09",
+    "originalText": "Compose or arrange music",
+    "dimension": "artistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 9",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 10,
+    "originalItemId": "10",
+    "localItemId": "mini-10",
+    "originalText": "Give career guidance to people",
+    "dimension": "social",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 10",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 11,
+    "originalItemId": "11",
+    "localItemId": "mini-11",
+    "originalText": "Start your own business",
+    "dimension": "enterprising",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 11",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 12,
+    "originalItemId": "12",
+    "localItemId": "mini-12",
+    "originalText": "Operate a calculator",
+    "dimension": "conventional",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 12",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 13,
+    "originalItemId": "13",
+    "localItemId": "mini-13",
+    "originalText": "Assemble electronic parts",
+    "dimension": "realistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 13",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 14,
+    "originalItemId": "14",
+    "localItemId": "mini-14",
+    "originalText": "Conduct chemical experiments",
+    "dimension": "investigative",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 14",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 15,
+    "originalItemId": "15",
+    "localItemId": "mini-15",
+    "originalText": "Create special effects for movies",
+    "dimension": "artistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 15",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 16,
+    "originalItemId": "16",
+    "localItemId": "mini-16",
+    "originalText": "Perform rehabilitation therapy",
+    "dimension": "social",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 16",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 17,
+    "originalItemId": "17",
+    "localItemId": "mini-17",
+    "originalText": "Negotiate business contracts",
+    "dimension": "enterprising",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 17",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 18,
+    "originalItemId": "18",
+    "localItemId": "mini-18",
+    "originalText": "Keep shipping and receiving records",
+    "dimension": "conventional",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 18",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 19,
+    "originalItemId": "19",
+    "localItemId": "mini-19",
+    "originalText": "Drive a truck to deliver packages to offices and homes",
+    "dimension": "realistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 19",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 20,
+    "originalItemId": "20",
+    "localItemId": "mini-20",
+    "originalText": "Examine blood samples using a microscope",
+    "dimension": "investigative",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 20",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 21,
+    "originalItemId": "21",
+    "localItemId": "mini-21",
+    "originalText": "Paint sets for plays",
+    "dimension": "artistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 21",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 22,
+    "originalItemId": "22",
+    "localItemId": "mini-22",
+    "originalText": "Do volunteer work at a non-profit organization",
+    "dimension": "social",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 22",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 23,
+    "originalItemId": "23",
+    "localItemId": "mini-23",
+    "originalText": "Market a new line of clothing",
+    "dimension": "enterprising",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 23",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 24,
+    "originalItemId": "24",
+    "localItemId": "mini-24",
+    "originalText": "Inventory supplies using a hand-held computer",
+    "dimension": "conventional",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 24",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 25,
+    "originalItemId": "25",
+    "localItemId": "mini-25",
+    "originalText": "Test the quality of parts before shipment",
+    "dimension": "realistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 25",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 26,
+    "originalItemId": "26",
+    "localItemId": "mini-26",
+    "originalText": "Develop a way to better predict the weather",
+    "dimension": "investigative",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 26",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 27,
+    "originalItemId": "27",
+    "localItemId": "mini-27",
+    "originalText": "Write scripts for movies or television shows",
+    "dimension": "artistic",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "sourceLocator": "official item 27",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 28,
+    "originalItemId": "28",
+    "localItemId": "mini-28",
+    "originalText": "Teach a high-school class",
+    "dimension": "social",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 28",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 29,
+    "originalItemId": "29",
+    "localItemId": "mini-29",
+    "originalText": "Sell merchandise at a department store",
+    "dimension": "enterprising",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 29",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "scoringVersion": "mini-sum-0-4-1",
+    "itemNumber": 30,
+    "originalItemId": "30",
+    "localItemId": "mini-30",
+    "originalText": "Stamp, sort, and distribute mail for an organization",
+    "dimension": "conventional",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "sourceLocator": "official item 30",
+    "sourceHash": "b70455adbc1fb3c5f98018e199f2b24e8f4da239c263731902841578282bb7bd",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "5 items per dimension; sum 0–20",
+    "normalizedRule": "(sum - 0) / 20; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://www.onetcenter.org/reports/IP_Manual.html",
+    "donorItemId": null
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Extraversion:1",
+    "localItemId": "mipip-01",
+    "originalText": "Am the life of the party.",
+    "dimension": "extraversion",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor extraversion; key row 1",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_E_1"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Extraversion:2",
+    "localItemId": "mipip-02",
+    "originalText": "Talk to a lot of different people at parties.",
+    "dimension": "extraversion",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor extraversion; key row 2",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_E_2"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Extraversion:3",
+    "localItemId": "mipip-03",
+    "originalText": "Don't talk a lot.",
+    "dimension": "extraversion",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor extraversion; key row 3",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_E_3"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Extraversion:4",
+    "localItemId": "mipip-04",
+    "originalText": "Keep in the background.",
+    "dimension": "extraversion",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor extraversion; key row 4",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_E_4"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Agreeableness:1",
+    "localItemId": "mipip-05",
+    "originalText": "Sympathize with others' feelings.",
+    "dimension": "agreeableness",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor agreeableness; key row 1",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_A_1"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Agreeableness:2",
+    "localItemId": "mipip-06",
+    "originalText": "Feel others' emotions.",
+    "dimension": "agreeableness",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor agreeableness; key row 2",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_A_2"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Agreeableness:3",
+    "localItemId": "mipip-07",
+    "originalText": "Am not really interested in others.",
+    "dimension": "agreeableness",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor agreeableness; key row 3",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_A_3"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Agreeableness:4",
+    "localItemId": "mipip-08",
+    "originalText": "Am not interested in other people's problems.",
+    "dimension": "agreeableness",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor agreeableness; key row 4",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_A_4"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Conscientiousness:1",
+    "localItemId": "mipip-09",
+    "originalText": "Get chores done right away.",
+    "dimension": "conscientiousness",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor conscientiousness; key row 1",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_C_1"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Conscientiousness:2",
+    "localItemId": "mipip-10",
+    "originalText": "Like order.",
+    "dimension": "conscientiousness",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor conscientiousness; key row 2",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_C_2"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Conscientiousness:3",
+    "localItemId": "mipip-11",
+    "originalText": "Often forget to put things back in their proper place.",
+    "dimension": "conscientiousness",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor conscientiousness; key row 3",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_C_3"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Conscientiousness:4",
+    "localItemId": "mipip-12",
+    "originalText": "Make a mess of things.",
+    "dimension": "conscientiousness",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor conscientiousness; key row 4",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_C_4"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Neuroticism:1",
+    "localItemId": "mipip-13",
+    "originalText": "Have frequent mood swings.",
+    "dimension": "neuroticism",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor neuroticism; key row 1",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_N_1"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Neuroticism:2",
+    "localItemId": "mipip-14",
+    "originalText": "Get upset easily.",
+    "dimension": "neuroticism",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor neuroticism; key row 2",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_N_2"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Neuroticism:3",
+    "localItemId": "mipip-15",
+    "originalText": "Am relaxed most of the time.",
+    "dimension": "neuroticism",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor neuroticism; key row 3",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_N_3"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Neuroticism:4",
+    "localItemId": "mipip-16",
+    "originalText": "Seldom feel blue.",
+    "dimension": "neuroticism",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor neuroticism; key row 4",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_N_4"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Intellect:1",
+    "localItemId": "mipip-17",
+    "originalText": "Have a vivid imagination.",
+    "dimension": "intellect_imagination",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor intellect_imagination; key row 1",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_O_1"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Intellect:2",
+    "localItemId": "mipip-18",
+    "originalText": "Have difficulty understanding abstract ideas.",
+    "dimension": "intellect_imagination",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor intellect_imagination; key row 2",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_O_2"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Intellect:3",
+    "localItemId": "mipip-19",
+    "originalText": "Am not interested in abstract ideas.",
+    "dimension": "intellect_imagination",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor intellect_imagination; key row 3",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_O_3"
+  },
+  {
+    "instrument": "mini-ipip",
+    "version": "2006-official-key-en-1",
+    "scoringVersion": "ipip-sum-1",
+    "itemNumber": null,
+    "originalItemId": "official-key:Intellect:4",
+    "localItemId": "mipip-20",
+    "originalText": "Do not have a good imagination.",
+    "dimension": "intellect_imagination",
+    "responseScale": [
+      {
+        "value": 1,
+        "text": "Very Inaccurate"
+      },
+      {
+        "value": 2,
+        "text": "Moderately Inaccurate"
+      },
+      {
+        "value": 3,
+        "text": "Neither Inaccurate nor Accurate"
+      },
+      {
+        "value": 4,
+        "text": "Moderately Accurate"
+      },
+      {
+        "value": 5,
+        "text": "Very Accurate"
+      }
+    ],
+    "reverseScored": true,
+    "source": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "sourcePage": null,
+    "sourceLocator": "Factor intellect_imagination; key row 4",
+    "sourceHash": "36dbd15b6c89941540b37f85b946b75d4f8799b92089983246e46015b211f253",
+    "licenseStatus": "public-domain",
+    "chineseSource": null,
+    "translationStatus": "not-translated",
+    "validationStatus": {
+      "originalTool": "source-supported",
+      "chineseVersion": "unknown",
+      "implementation": "engineering-tests-only"
+    },
+    "sumRule": "4 items per dimension; sum 4–20",
+    "normalizedRule": "(sum - 4) / 16; UI only, not percentile",
+    "missingRule": {
+      "officialIndividualPolicy": null,
+      "productRule": "no imputation; incomplete battery not interpreted"
+    },
+    "thresholds": null,
+    "norms": null,
+    "interpretationSource": "https://ipip.ori.org/MiniIPIPKey.htm",
+    "donorItemId": "BIG5_O_4"
+  }
+]

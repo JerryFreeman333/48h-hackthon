@@ -10,7 +10,7 @@ const browser=await chromium.launch({channel:'chrome',headless:true});
 try{
  const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  const next=async()=>{await page.locator('#next').waitFor({state:'visible'});await page.waitForFunction(()=>!document.querySelector('#next').disabled);await page.locator('#next').click();};
- await page.goto(`http://127.0.0.1:${server.address().port}/demo/a`);
+ await page.goto(`http://127.0.0.1:${server.address().port}/demo/a/v1`);
  await page.locator('#instrument').selectOption('onet-mini-ip');await next();
  await page.getByRole('radio',{name:'Unsure',exact:true}).first().check();
  await page.waitForFunction(()=>document.querySelector('#notice').textContent==='已自动保存');await page.reload();
