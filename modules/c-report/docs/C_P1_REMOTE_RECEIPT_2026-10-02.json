@@ -1,0 +1,31 @@
+{
+  "module": "C",
+  "phase": "P1_offline_core",
+  "documentVersion": "1.1",
+  "publicSchemaVersion": "1.0.0",
+  "repository": "JerryFreeman333/48h-hackthon",
+  "branch": "codex/c-offline-core",
+  "status": "p1_code_pushed_to_branch_not_merged_to_main",
+  "baseCommit": "465c9f32c340b3e46a1c0674ba8feb1e2db02702",
+  "p1Commit": "3c9d4a2b2b6c056ff0bef02dd588a2ea45e9dede",
+  "p1TreeSha": "6c1e36d1d4b1ebde01b97c51cd8d7a3ebd597fed",
+  "changedPathsAllUnderModulesCReport": true,
+  "changedFileCount": 34,
+  "nonCPathsModified": [],
+  "verifiedChecks": {
+    "everyBlobShaMatchesLocalGitRevParse": true,
+    "remoteTreeShaEqualsLocalHeadTree": true,
+    "parentIsMainHeadAtPushTime": true,
+    "refCreatedWithForceFalse": true
+  },
+  "pushMethod": "Authenticated GitHub API git data endpoints (blobs -> tree with base_tree -> commit -> ref); ordinary git-over-HTTPS to github.com:443 failed repeatedly (connect timeout), api.github.com worked",
+  "applicationTestsRun": true,
+  "applicationTestSummary": "tsc --noEmit: 0 errors; vitest: 7 files / 83 tests passed; demo: 14/14 manual expectations PASS against public fixtures",
+  "demoOutputCommitted": "modules/c-report/docs/C_P1_DEMO_OUTPUT_2026-10-02.json",
+  "realBusinessProviderApiCallsMade": false,
+  "networkCallsInEngine": false,
+  "schemaOrRootChanges": "none",
+  "mergeStatus": "branch only; merging to main is a team decision after checking concurrent teammate commits",
+  "receiptNote": "Receipt commits itself at the tip of the branch; later commits may exist. Verify by comparing remote tree sha to the local checkout.",
+  "generatedAt": "2026-10-02T09:16:43+00:00"
+}
