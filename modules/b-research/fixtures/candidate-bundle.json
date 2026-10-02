@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "bundleId": "bundle-demo-1",
+  "projectId": "project-demo-1",
+  "intentId": "intent-demo-1",
+  "intentRevision": 1,
+  "mode": "demo",
+  "retrievedAt": "2026-10-02T05:00:00Z",
+  "companies": [{ "companyId": "company-demo-1", "legalName": "合成演示软件公司", "creditCode": null, "brandName": null, "identityStatus": "confirmed" }],
+  "jobs": [{ "jobId": "job-demo-1", "companyId": "company-demo-1", "title": "产品运营", "rawJd": "负责客户拓展，完成签单指标，收集产品反馈。", "city": "上海", "sourceUrl": null, "publishedAt": null, "vacancyStatus": "unknown", "salary": { "currency": "CNY", "min": 10000, "max": 15000, "period": "month", "basis": "total", "taxBasis": "pre_tax", "months": null } }],
+  "evidence": [{ "evidenceId": "evidence-demo-1", "companyId": "company-demo-1", "jobId": "job-demo-1", "scope": "job", "sourceType": "demo_fixture", "title": "合成JD", "url": null, "publishedAt": null, "retrievedAt": "2026-10-02T05:00:00Z", "excerpt": "负责客户拓展，完成签单指标，收集产品反馈。", "mode": "demo", "verification": "verified" }],
+  "facts": [{ "factId": "fact-demo-1", "companyId": "company-demo-1", "jobId": "job-demo-1", "key": "job.sales_kpi", "value": true, "status": "supported", "evidenceIds": ["evidence-demo-1"], "asOf": null }],
+  "coverage": [{ "companyId": "company-demo-1", "jobId": null, "topic": "business_financials", "status": "not_connected", "reason": "合成演示，不代表真实调查", "checkedAt": "2026-10-02T05:00:00Z" }],
+  "usage": []
+}
