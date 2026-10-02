@@ -1,6 +1,6 @@
 # A独立API
 
-此页描述保留的v1接口。当前v0.4范围、停用接口、语言与历史数据处理见 [SCOPE_TRANSLATION_2026-10-02.md](SCOPE_TRANSLATION_2026-10-02.md)。默认界面使用独立 `/api/a/v2`；[V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md) 是v0.3历史说明，经历功能已停用。公共v1契约字段保留。
+此页描述保留的v1接口。当前v0.5选择项校验、本机中文审校与历史迁移见 [V05_CHOICES_PRIVATE_REVIEW.md](V05_CHOICES_PRIVATE_REVIEW.md)。v0.4停用经历接口的说明保留在 [SCOPE_TRANSLATION_2026-10-02.md](SCOPE_TRANSLATION_2026-10-02.md)。默认界面使用独立 `/api/a/v2`；[V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md) 是v0.3历史说明，经历功能已停用。公共v1契约字段保留。
 
 GET `/api/a/bootstrap`建立HttpOnly/SameSite=Strict本地会话并返回当前题本、工具说明、分类和本人记录。旧记录在启动时封存，不返回旧答案。接口只支持同源请求，JSON正文限制256KB。
 

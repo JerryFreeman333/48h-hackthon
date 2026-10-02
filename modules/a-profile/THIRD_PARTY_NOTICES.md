@@ -24,7 +24,7 @@ License and attribution requirements: https://www.onetcenter.org/license_tools.h
 
 CC BY-ND 4.0: https://creativecommons.org/licenses/by-nd/4.0/
 
-Software-only integration; USDOL/ETA has not approved, endorsed, or tested this product. No translated/adapted item text is included. Any future content adaptation must separately satisfy the applicable developer license and validation requirements.
+Software-only public integration; USDOL/ETA has not approved, endorsed, or tested this product. No translated/adapted O*NET item text is distributed in this public repository. v0.5 supports explicit private local translation review using a separate Git-ignored file under CC BY-ND section 2(a)(1)(B); it is not a public translated release. Public content adaptation must separately satisfy the applicable developer license and validation requirements.
 
 ## Architectural references
 
@@ -52,3 +52,5 @@ Dependency licenses are retained in installed npm packages; package-lock.json pi
 
 
 v0.4 retirement: pdf-parse, mammoth, Tesseract.js and the optional OCR installer are no longer active dependencies or runtime code. Their notices are retained for the historical archive. Zod remains active. O*NET Chinese draft is private local adaptation under CC BY-ND section 2(a)(1)(B), not distributed or enabled; modified public versions require the Developer License validation study and notices: https://www.onetcenter.org/license_toolsdev.html . This is an implementation release restriction, not compliance by disclaimer.
+
+v0.5 local review: `npm start` continues to disable private O*NET translation. `npm run start:review` explicitly reads the user's own private draft for loopback-only authenticated review. Chinese O*NET items, user state and review snapshots are excluded from Git publication; no validation study or public-release permission beyond the stated licenses is claimed. A runtime flag or disclaimer does not itself satisfy Developer License validation requirements.

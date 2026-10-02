@@ -34,7 +34,7 @@ test('portrait and export share score; confirmation never invents constraints',(
  const meta=s.state.metadata[`${p.profileId}:1`];assert.deepEqual(p.assessment.scores,meta.portrait.displayScores);assert.equal(p.assessment.interpretation,meta.portrait.interpretation);
  s.intent('u',{assessmentId:a.id,profileRevision:1,industryTags:['software_it'],roleTypes:['product_operations']});
  const x=s.export('u',a.projectId);validateExport(x);assert.equal(x.SearchIntent.filters[1].value,null);assert.equal(x.SearchIntent.filters[1].strength,'unknown');
- confirm(s,a,{goals:['新目标']});assert.equal(s.export('u',a.projectId).UserProfile.revision,1);assert.deepEqual(meta.answersSnapshot,all(2));
+ confirm(s,a,{goals:['明确职业方向']});assert.equal(s.export('u',a.projectId).UserProfile.revision,1);assert.deepEqual(meta.answersSnapshot,all(2));
 });
 test('ownership, conflicts, version and incomplete confirmation',()=>{
  const s=new Service();const a=s.create('u');assert.throws(()=>s.owned('v',a.id),e=>e.status===403);assert.throws(()=>confirm(s,a));

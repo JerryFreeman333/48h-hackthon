@@ -22,15 +22,15 @@ try{
   if(p<5){await page.getByRole('button',{name:'下一页',exact:true}).click();await page.waitForFunction(()=>!document.querySelector('#next').disabled);}
  }
  await page.waitForFunction(()=>!document.querySelector('#next').disabled);await next();
- await page.locator('#goals').fill('探索软件岗位');assert.equal(await page.locator('#education,#skills,#experiences').count(),0);await next();
+ await page.locator('#goal-clarify_direction').check();assert.equal(await page.locator('#education,#skills,#experiences').count(),0);await next();
  await page.locator('input[value=software_it]').check();await next();await page.locator('input[value=product_operations]').check();await next();
  await page.locator('#accept_sales_kpi').selectOption('false');await page.locator('#accept_sales_kpi-strength').selectOption('hard');await page.locator('#accept_sales_kpi-confirmed').check();await next();
  await page.locator('#confirm').check();await next();await page.locator('#download').waitFor();
  let x=JSON.parse(await page.locator('pre').textContent());assert.equal(x.UserProfile.assessment.scores.social,50);assert.equal(x.UserProfile.assessment.instrumentId,'onet-mini-ip');assert.equal(x.SearchIntent.filters.find(p=>p.key==='accept_sales_kpi').value,false);
- await page.reload();await page.locator('#download').waitFor();await page.locator('#edit').click();await page.locator('#goals').fill('探索测试岗位');
+ await page.reload();await page.locator('#download').waitFor();await page.locator('#edit').click();await page.locator('#goal-find_internship').check();
  for(let i=0;i<4;i++){await next();}await page.locator('#confirm').check();await next();await page.locator('#download').waitFor();
  x=JSON.parse(await page.locator('pre').textContent());assert.equal(x.UserProfile.revision,2);assert.deepEqual(x.UserProfile.background,{education:null,major:null,skills:[],experiences:[]});
- await page.locator('#new').click();await page.locator('#instrument').selectOption('not-administered');await next();await page.locator('#goals').waitFor();
+ await page.locator('#new').click();await page.locator('#instrument').selectOption('not-administered');await next();await page.locator('#goal-clarify_direction').waitFor();
  assert.match(await page.locator('#app').textContent(),/未进行职业兴趣测评/);
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'test-results/mobile.png',fullPage:true});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await page.setViewportSize({width:1280,height:900});await page.screenshot({path:'test-results/desktop.png',fullPage:true});assert.deepEqual(errors,[]);

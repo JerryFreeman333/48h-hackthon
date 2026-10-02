@@ -63,9 +63,9 @@ test('rejected insight excluded; scores retained; changed answers invalidate old
 });
 
 test('immutable revisions, constraints unknown/hard semantics, hard v2 downgrade blocked',()=>{
- const svc=service();let {s,p}=confirmed(svc,'None');s=svc.update('u',s.id,{expectedRevision:s.revision,draft:{...s.draft,constraints:[{key:'work_schedule',value:'不接受夜班',strength:'hard',confirmed:true,evidenceIds:[]}],groups:[['收入','成长']],tradeoffs:[],goals:[],jobStage:null}});
+ const svc=service();let {s,p}=confirmed(svc,'None');s=svc.update('u',s.id,{expectedRevision:s.revision,draft:{...s.draft,constraints:[{key:'work_schedule',value:'daytime',strength:'hard',confirmed:true,evidenceIds:[]}],groups:[['收入','成长']],tradeoffs:[],goals:[],jobStage:null}});
  const x=svc.confirm('u',s.profileId,{expectedRevision:s.revision,confirmed:true});s=x.session;const i=svc.intent('u',{expectedRevision:s.revision,profileId:s.profileId,profileRevision:2,selectedCodes:[],maxCandidates:3});s=i.session;
- assert.deepEqual(svc.profile('u',s.profileId,1),p);assert.throws(()=>svc.export('u',s.profileId,2,'v1'),/硬条件/);assert.equal(svc.export('u',s.profileId,2).SearchIntentV2.filters[0].value,'不接受夜班');
+ assert.deepEqual(svc.profile('u',s.profileId,1),p);assert.throws(()=>svc.export('u',s.profileId,2,'v1'),/硬条件/);assert.equal(svc.export('u',s.profileId,2).SearchIntentV2.filters[0].value,'daytime');
 });
 test('v2 handoff import validates facts/ranges, isolates identity and never recalculates absent answers',()=>{
  const svc=service();let {s}=confirmed(svc);s=svc.intent('u',{expectedRevision:s.revision,profileId:s.profileId,profileRevision:1,selectedCodes:['15-1252.00'],maxCandidates:3}).session;

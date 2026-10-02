@@ -1,6 +1,6 @@
 # 2026-10-02 开源组件整合记录
 
-本页记录v0.2整合与公共v1兼容的历史背景。当前v0.4已移除经历与能力采集；范围和交接占位处理以 [SCOPE_TRANSLATION_2026-10-02.md](SCOPE_TRANSLATION_2026-10-02.md) 为准。[V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md) 与 [PORT_MAP.md](PORT_MAP.md) 保留为v0.3历史说明。
+本页记录v0.2整合与公共v1兼容的历史背景。当前v0.5选择项映射、本机中文审校及交接限制见 [V05_CHOICES_PRIVATE_REVIEW.md](V05_CHOICES_PRIVATE_REVIEW.md)；v0.4移除经历与能力采集的说明保留在 [SCOPE_TRANSLATION_2026-10-02.md](SCOPE_TRANSLATION_2026-10-02.md)。[V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md) 与 [PORT_MAP.md](PORT_MAP.md) 保留为v0.3历史说明。
 
 ## 实际复用范围
 
