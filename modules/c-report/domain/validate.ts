@@ -19,7 +19,7 @@ export interface ValidatedInputs {
   bundle: CandidateBundle;
 }
 
-function zodFirstIssue(error: { issues: { path: (string | number)[]; message: string }[] }): {
+function zodFirstIssue(error: { issues: { path: PropertyKey[]; message: string }[] }): {
   path: string;
   message: string;
 } {
@@ -39,7 +39,7 @@ export function validateStructure(
   intent: unknown,
   bundle: unknown,
 ): { ok: true } | { ok: false; error: CError } {
-  const checks: [string, unknown, { safeParse(data: unknown): { success: boolean; error?: { issues: { path: (string | number)[]; message: string }[] } } }][] = [
+  const checks: [string, unknown, { safeParse(data: unknown): { success: boolean; error?: { issues: { path: PropertyKey[]; message: string }[] } } }][] = [
     ['profile', profile, userProfileSchema],
     ['intent', intent, searchIntentSchema],
     ['bundle', bundle, candidateBundleSchema],

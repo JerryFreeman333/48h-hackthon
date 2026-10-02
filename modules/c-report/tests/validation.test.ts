@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 import { runMatchPipeline, FIXED_GENERATED_AT, FIXED_REPORT_ID, loadDemoInputs, clone } from './helpers.js';
 import type { CandidateBundle, SearchIntent, UserProfile } from '../domain/contract.js';
 
@@ -17,9 +18,9 @@ function runWith(mutate: (inputs: { profile: UserProfile; intent: SearchIntent; 
 }
 
 function expectError(result: ReturnType<typeof runMatchPipeline>, code: string) {
-  expect(result.ok).toBe(false);
+  assert.strictEqual(result.ok, false);
   if (result.ok) throw new Error(`expected error ${code}, got ok`);
-  expect(result.error.code).toBe(code);
+  assert.strictEqual(result.error.code, code);
 }
 
 describe('输入结构校验（规格 §3.1/§4）', () => {
@@ -61,9 +62,9 @@ describe('输入结构校验（规格 §3.1/§4）', () => {
       bundle,
       options: { reportId: FIXED_REPORT_ID, generatedAt: FIXED_GENERATED_AT },
     });
-    expect(result.ok).toBe(false);
+    assert.strictEqual(result.ok, false);
     if (!result.ok) {
-      expect(result.error.code).toBe('INPUT_STRUCT_INVALID');
+      assert.strictEqual(result.error.code, 'INPUT_STRUCT_INVALID');
     }
   });
 

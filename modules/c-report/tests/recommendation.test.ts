@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 import { ACTION_PRIORITY, HOLD_RULES } from '../domain/recommendation.js';
 import { runMatchPipeline, FIXED_GENERATED_AT, FIXED_REPORT_ID, loadDemoInputs, clone } from './helpers.js';
 import type { CandidateBundle, SearchIntent, UserProfile } from '../domain/contract.js';
@@ -19,30 +20,30 @@ function runWith(mutate: (inputs: { profile: UserProfile; intent: SearchIntent; 
 
 describe('动作优先级（规格 §8）', () => {
   it('优先级常量顺序正确', () => {
-    expect(ACTION_PRIORITY).toEqual(['insufficient', 'hold', 'deprioritize', 'verify_first', 'explore']);
+    assert.deepStrictEqual(ACTION_PRIORITY, ['insufficient', 'hold', 'deprioritize', 'verify_first', 'explore']);
   });
 
   it('hold 规则表 1.0.0 为空：可疑文本不自动触发 hold（无已协调命题）', () => {
-    expect(HOLD_RULES).toHaveLength(0);
+    assert.strictEqual((HOLD_RULES).length, 0);
     const result = runWith(({ bundle }) => {
       bundle.jobs[0]!.rawJd = '入职需先向私人账户支付押金，完后退还。';
     });
-    expect(result.ok).toBe(true);
+    assert.strictEqual(result.ok, true);
     if (!result.ok) return;
     const action = result.report.results[0]?.recommendation;
-    expect(action).not.toBe('hold');
-    expect(action).toBe('deprioritize'); // 硬冲突仍由确定性规则得出
+    assert.notStrictEqual(action, 'hold');
+    assert.strictEqual(action, 'deprioritize'); // 硬冲突仍由确定性规则得出
   });
 
   it('deprioritize 保留多原因：事实 + 推断 + 未知共存', () => {
     const result = runWith(() => {});
     if (!result.ok) throw new Error('pipeline failed');
     const first = result.report.results[0];
-    expect(first?.recommendation).toBe('deprioritize');
+    assert.strictEqual(first?.recommendation, 'deprioritize');
     const kinds = new Set(first?.reasons.map((r) => r.kind));
-    expect(kinds.has('fact')).toBe(true);
-    expect(kinds.has('inference')).toBe(true);
-    expect(kinds.has('unknown')).toBe(true);
+    assert.strictEqual(kinds.has('fact'), true);
+    assert.strictEqual(kinds.has('inference'), true);
+    assert.strictEqual(kinds.has('unknown'), true);
   });
 
   it('已确认硬约束关键条件未核验 → verify_first（高于 explore）', () => {
@@ -50,9 +51,9 @@ describe('动作优先级（规格 §8）', () => {
     const result = runWith(({ bundle }) => {
       bundle.facts[0]!.status = 'unknown';
     });
-    expect(result.ok).toBe(true);
+    assert.strictEqual(result.ok, true);
     if (!result.ok) return;
-    expect(result.report.results[0]?.recommendation).toBe('verify_first');
+    assert.strictEqual(result.report.results[0]?.recommendation, 'verify_first');
   });
 
   it('主体未确认 → verify_first', () => {
@@ -60,10 +61,10 @@ describe('动作优先级（规格 §8）', () => {
       bundle.companies[0]!.identityStatus = 'ambiguous';
       bundle.facts[0]!.value = false; // 消除硬冲突，隔离主体变量
     });
-    expect(result.ok).toBe(true);
+    assert.strictEqual(result.ok, true);
     if (!result.ok) return;
-    expect(result.report.results[0]?.recommendation).toBe('verify_first');
-    expect(result.report.results[0]?.reasons.some((r) => r.text.includes('主体未确认'))).toBe(true);
+    assert.strictEqual(result.report.results[0]?.recommendation, 'verify_first');
+    assert.strictEqual(result.report.results[0]?.reasons.some((r) => r.text.includes('主体未确认')), true);
   });
 
   it('job.companyId=null 主体未定位 → verify_first，不自动绑定第一个公司', () => {
@@ -71,10 +72,10 @@ describe('动作优先级（规格 §8）', () => {
       bundle.jobs[0]!.companyId = null;
       bundle.facts[0]!.value = false;
     });
-    expect(result.ok).toBe(true);
+    assert.strictEqual(result.ok, true);
     if (!result.ok) return;
-    expect(result.report.results[0]?.recommendation).toBe('verify_first');
-    expect(result.report.results[0]?.reasons.some((r) => r.text.includes('主体未定位'))).toBe(true);
+    assert.strictEqual(result.report.results[0]?.recommendation, 'verify_first');
+    assert.strictEqual(result.report.results[0]?.reasons.some((r) => r.text.includes('主体未定位')), true);
   });
 
   it('正向依据存在且无阻断 → explore', () => {
@@ -82,9 +83,9 @@ describe('动作优先级（规格 §8）', () => {
     const result = runWith(({ profile }) => {
       profile.preferences[0]!.value = true;
     });
-    expect(result.ok).toBe(true);
+    assert.strictEqual(result.ok, true);
     if (!result.ok) return;
-    expect(result.report.results[0]?.recommendation).toBe('explore');
+    assert.strictEqual(result.report.results[0]?.recommendation, 'explore');
   });
 
   it('有材料但无正向依据 → verify_first（不轻易 explore，C-10 本地预案）', () => {
@@ -92,10 +93,10 @@ describe('动作优先级（规格 §8）', () => {
     const result = runWith(({ profile }) => {
       profile.preferences = [];
     });
-    expect(result.ok).toBe(true);
+    assert.strictEqual(result.ok, true);
     if (!result.ok) return;
-    expect(result.report.results[0]?.recommendation).toBe('verify_first');
-    expect(result.report.results[0]?.reasons.some((r) => r.text.includes('缺少正向适配依据'))).toBe(true);
+    assert.strictEqual(result.report.results[0]?.recommendation, 'verify_first');
+    assert.strictEqual(result.report.results[0]?.reasons.some((r) => r.text.includes('缺少正向适配依据')), true);
   });
 
   it('岗位无任何事实/证据 → insufficient', () => {
@@ -103,10 +104,10 @@ describe('动作优先级（规格 §8）', () => {
       bundle.facts = [];
       bundle.evidence = [];
     });
-    expect(result.ok).toBe(true);
+    assert.strictEqual(result.ok, true);
     if (!result.ok) return;
-    expect(result.report.results[0]?.recommendation).toBe('insufficient');
-    expect(result.report.results[0]?.reasons[0]?.text).toContain('没有任何事实或证据');
+    assert.strictEqual(result.report.results[0]?.recommendation, 'insufficient');
+    assert.ok((result.report.results[0]?.reasons[0]?.text).includes('没有任何事实或证据'));
   });
 
   it('空候选：results=[] 且不伪造 jobId；私有 diagnostics 携带 insufficient 说明', () => {
@@ -116,15 +117,15 @@ describe('动作优先级（规格 §8）', () => {
       bundle.evidence = [];
       bundle.coverage = [];
     });
-    expect(result.ok).toBe(true);
+    assert.strictEqual(result.ok, true);
     if (!result.ok) return;
-    expect(result.report.results).toEqual([]);
-    expect(result.report.completeness).toBe('partial');
-    expect(result.snapshot.diagnostics.insufficientNote).not.toBeNull();
-    expect(result.snapshot.diagnostics.insufficientNote).toContain('没有候选岗位');
+    assert.deepStrictEqual(result.report.results, []);
+    assert.strictEqual(result.report.completeness, 'partial');
+    assert.notStrictEqual(result.snapshot.diagnostics.insufficientNote, null);
+    assert.ok(result.snapshot.diagnostics.insufficientNote?.includes('没有候选岗位'));
     // 公共 MatchReport 不私加顶层 recommendation/message 字段。
-    expect(Object.keys(result.report)).not.toContain('recommendation');
-    expect(Object.keys(result.report)).not.toContain('message');
+    assert.ok(!(Object.keys(result.report)).includes('recommendation'));
+    assert.ok(!(Object.keys(result.report)).includes('message'));
   });
 });
 
@@ -137,9 +138,9 @@ describe('同一事实对不同用户解释不同，但事实本身不变（产�
       profile.preferences[0]!.value = true;
     });
     if (!rejecting.ok || !accepting.ok) throw new Error('pipeline failed');
-    expect(rejecting.report.results[0]?.constraints[0]?.result).toBe('fail');
-    expect(accepting.report.results[0]?.constraints[0]?.result).toBe('pass');
-    expect(accepting.report.factsSnapshot).toEqual(rejecting.report.factsSnapshot);
-    expect(accepting.report.evidenceSnapshot).toEqual(rejecting.report.evidenceSnapshot);
+    assert.strictEqual(rejecting.report.results[0]?.constraints[0]?.result, 'fail');
+    assert.strictEqual(accepting.report.results[0]?.constraints[0]?.result, 'pass');
+    assert.deepStrictEqual(accepting.report.factsSnapshot, rejecting.report.factsSnapshot);
+    assert.deepStrictEqual(accepting.report.evidenceSnapshot, rejecting.report.evidenceSnapshot);
   });
 });

@@ -25,7 +25,7 @@ P1 = 无网络、无模型、无数据库的 C 确定性核心，全部在 `modu
 | `application/hash.ts` | canonical JSON（键排序、数组顺序保留、拒绝非有限值）+ SHA256 输入哈希 |
 | `application/diagnostics.ts` | 私有 run 诊断：阶段记录、空候选 insufficient 说明（C-13）、关键主题缺口 |
 | `scripts/run-demo.ts` | 独立演示入口：读公共 fixtures → 出报告 → 逐项对照人工预期（14 项 PASS/FAIL，退出码判失败） |
-| `package.json` / `tsconfig.json` / `vitest.config.ts` / `.gitignore` | C 自有工程配置（根目录未动；依赖版本以提交的 package-lock.json 为准） |
+| `package.json` / `tsconfig.json` / `.gitignore` | C 自有工程配置（根目录未动；zod ^4.1.0 与公共底座同主版本；测试经 tsx --test/node:test；依赖版本以提交的 package-lock.json 为准） |
 
 ## 2. 实际启动与验证命令
 
@@ -35,20 +35,29 @@ P1 = 无网络、无模型、无数据库的 C 确定性核心，全部在 `modu
 # 1) 文档/固定样例核对（不是应用测试）
 python3 modules/c-report/scripts/verify_c_docs.py
 
-# 2) 安装依赖并运行真实单元/契约测试（83 项）
+# 2) 安装依赖并运行真实单元/契约测试（83 项，node:test + tsx，zod v4）
 cd modules/c-report
 npm install
 npm run typecheck   # tsc --noEmit，0 错误
-npm test            # vitest run，7 文件 83 测试全过
+npm test            # tsx --test（node:test），7 文件 83 测试全过
 
 # 3) 独立演示（网络关闭、无模型）：输出 MatchReport + 私有快照 + 14 项人工预期对照
 npm run demo -- --generated-at 2026-10-02T09:00:00Z --out docs/C_P1_DEMO_OUTPUT_2026-10-02.json
 ```
 
+## 2.1 与公共底座的对齐记录（2026-10-02 实施中途发现并完成）
+
+P1 实施开始时仓库根无任何工程配置（已核实）。实施期间，公共维护人向 main 合并了完整应用骨架：root Next.js 15 + `packages/contracts|runtime|ui` + `.github/workflows/checks.yml`（`npm ci → typecheck → npm test → test:b → next build`），B 模块已并入。经核对 B 的接入模式（`modules/b-research/`：本地 contract 镜像 + node:test + 跑在 root 依赖下 + CI 条件步骤），C 已完成同模式对齐，全部改动仍只在 C 目录内：
+
+1. **Zod v4**：`domain/schema.ts` 迁移到 zod v4 API（`z.strictObject`、两参 `z.record`、`z.url()`），与 root `zod ^4.1.0` 同主版本；迁移后演示输出与迁移前逐字节一致（引擎行为未变）。
+2. **测试运行器**：vitest 全部迁移为 `node:test` + `node:assert/strict`，经 `tsx --test` 运行，与 root/B 一致；vitest 依赖已移除。
+3. **契约镜像保留**：按 B 先例，C 保留本地 `domain/contract.ts` + `domain/schema.ts`（比 packages/contracts 更严格：空串、min≤max、有限数、strict 拒绝未知字段）。`packages/contracts` 是集成的规范来源；是否统一由 C 直接 import contracts 属公共决策（C 侧 refine 的严格行为需先并入 contracts，见协调项）。
+4. **待公共维护人处理的协调项（C 不改根文件）**：root `package.json` 增加 `test:c`（`tsx --test modules/c-report/tests/...`）；CI 增加 C 条件步骤（同 B 模式）。在此之前，root CI 不运行 C 测试——C 的已测状态以本模块命令为准。
+
 ## 3. 实际测试结果（2026-10-02 本轮真实运行）
 
 - `tsc --noEmit`：0 错误。
-- `vitest run`：**7 个测试文件，83 个测试全部通过**。覆盖：
+- `tsx --test`（node:test）：**7 个测试文件，83 个测试全部通过**（zod v4 下运行）。覆盖：
   - 公共样例契约：deprioritize、accept_sales_kpi fail 引用 fact-demo-1、五维各一次、mustStayUnknown 三项、mustNotClaim 五项（无占比数字/无产品设计声称/无匹配概率/主体非绿色）、快照与输入逐值一致、可复现（同输入同输出）。
   - 校验矩阵：schemaVersion 锁定、空串冒充未知、min>max、NaN、未知字段漂移、未确认画像、projectId/profileId/revision/intentId/intentRevision/mode 全部绑定错配、证据 mode 混用、重复 ID、缺失引用、跨主体引用、事实-岗位主体不一致。
   - 约束引擎：薪资比较器 11 分支（pass/fail/跨阈值/单边区间/total/币种/周期/税后/months 歧义/全未知）、城市比较器 3 分支、销售KPI 7 分支（含 conflicting/contradicted/主体错位不可用）。

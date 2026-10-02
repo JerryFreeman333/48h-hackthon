@@ -27,5 +27,6 @@
   "schemaOrRootChanges": "none",
   "mergeStatus": "branch only; merging to main is a team decision after checking concurrent teammate commits",
   "receiptNote": "Receipt commits itself at the tip of the branch; later commits may exist. Verify by comparing remote tree sha to the local checkout.",
-  "generatedAt": "2026-10-02T09:16:43+00:00"
+  "generatedAt": "2026-10-02T09:16:43+00:00",
+  "alignmentFollowUp": "After this receipt was generated, the shared foundation landed on main (Next.js root, packages/contracts|runtime|ui, CI). C aligned to it in a follow-up commit on this same branch: zod v4 API, node:test runner via tsx, vitest removed; demo output byte-identical. See docs/C_P1_DELIVERY_2026-10-02.md section 2.1."
 }
