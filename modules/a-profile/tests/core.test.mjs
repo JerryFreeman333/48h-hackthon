@@ -1,15 +1,55 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {questions,score,validateAnswers} from '../src/questionnaire.mjs';
+import {readFileSync} from 'node:fs';
+import {mini,itemProvenance,dimensions,getInstrument} from '../src/instruments/registry.mjs';
+import {score,validateAnswers} from '../src/instruments/scoring.mjs';
 import {Service} from '../src/service.mjs';
 import {validateExport} from '../src/contracts.mjs';
-import {validatePreference} from '../src/contracts.mjs';
 const background={education:null,major:null,skills:[],experiences:[]};
-test('known null constraints, lost hard filters and stale confirmations rejected',()=>{assert.throws(()=>validatePreference({key:'accept_sales_kpi',value:null,strength:'hard',confirmed:true}));const s=new Service();const a=s.create('u');const body={expectedRevision:1,confirmed:true,background,goals:[],preferences:[{key:'accept_sales_kpi',value:false,strength:'hard',confirmed:true}]};s.confirm('u',a.id,body);assert.throws(()=>s.confirm('u',a.id,body),e=>e.status===409);s.intent('u',{assessmentId:a.id,profileRevision:1,industryTags:[],roleTypes:[]});const x=s.export('u',a.projectId);assert.throws(()=>validateExport({...x,SearchIntent:{...x.SearchIntent,filters:[]}}));assert.equal(s.state.metadata[`${a.profileId}:1`].answersSnapshot.q01,undefined);a.version='future';assert.throws(()=>s.result('u',a.id));});
-test('48 unique questions, group counts and six legal options',()=>{assert.equal(questions.length,48);assert.equal(new Set(questions.map(q=>q.id)).size,48);assert.deepEqual([...new Set(questions.map(q=>q.group))].map(g=>questions.filter(q=>q.group===g).length),[18,10,8,8,4]);questions.forEach(q=>assert.equal(q.options.length,6));});
-test('readable portrait uses exactly the server score and coverage',()=>{const result=score({q01:5,q02:4,q03:3});for(const section of result.portrait.sections)for(const d of section.dimensions){assert.equal(d.score,result.scores[d.key]);assert.deepEqual(d.coverage,result.coverage[d.key]);}assert.equal(result.portrait.interpretation,result.interpretation);assert.equal(result.portrait.validation,'prototype');});
-test('unknown, exact 75% boundary, reverse and deterministic score',()=>{assert.equal(score({}).scores.autonomy,null);assert.equal(score({q29:5,q30:5}).scores.autonomy,null);assert.equal(score({q29:5,q30:5,q31:5}).scores.autonomy,100);const a={q29:1,q30:1,q31:1};assert.deepEqual(score(a),score(a));assert.equal(score(a,questions.map(q=>({...q,reverse:true}))).scores.autonomy,100);assert.throws(()=>validateAnswers({q01:3.5}));assert.throws(()=>validateAnswers({fake:3}));});
-test('ownership, revision conflict and bank version checked',()=>{const s=new Service();const a=s.create('u');assert.throws(()=>s.owned('v',a.id),e=>e.status===403);s.update('u',a.id,{expectedRevision:1,version:'1',answers:{q01:5}});assert.throws(()=>s.update('u',a.id,{expectedRevision:1,version:'1',answers:{}}),e=>e.status===409);assert.throws(()=>s.update('u',a.id,{expectedRevision:2,version:'2',answers:{}}));assert.equal(a.answers.q01,5);});
-test('immutable revisions, unknown filters and export references',()=>{const s=new Service();const a=s.create('u');const payload={expectedRevision:1,confirmed:true,background,goals:[],preferences:[{key:'accept_sales_kpi',value:false,strength:'hard',confirmed:true},{key:'accept_travel',value:false,strength:'hard',confirmed:false}]};const p=s.confirm('u',a.id,payload);const i=s.intent('u',{assessmentId:a.id,profileRevision:p.revision,industryTags:['software_it'],roleTypes:['product_operations']});assert.deepEqual(i.industryCodes,['I']);assert.equal(i.filters[1].strength,'unknown');assert.equal(i.filters[1].value,null);assert.equal(s.confirm('u',a.id,{...payload,expectedRevision:a.revision,goals:['新目标']}).revision,2);const x=s.export('u',a.projectId);assert.equal(x.UserProfile.revision,1);assert.deepEqual(x.UserProfile.goals,[]);validateExport(x);x.UserProfile.goals.push('外部修改');assert.deepEqual(s.state.profiles[0].goals,[]);});
-test('import rejects invalid references and unconfirmed hard filters',()=>{const s=new Service();const a=s.create('u');s.confirm('u',a.id,{expectedRevision:1,confirmed:true,background,goals:[],preferences:[]});s.intent('u',{assessmentId:a.id,profileRevision:1,industryTags:[],roleTypes:[]});const x=s.export('u',a.projectId);assert.throws(()=>validateExport({...x,SearchIntent:{...x.SearchIntent,profileRevision:2}}));assert.throws(()=>validateExport({...x,SearchIntent:{...x.SearchIntent,filters:[{key:'accept_sales_kpi',value:false,strength:'hard'}]}}));const imported=s.import('v',x);assert.notEqual(imported.attempt.projectId,a.projectId);validateExport(s.export('v',imported.attempt.projectId));});
-
+const all=value=>Object.fromEntries(mini.items.map(q=>[q.id,value]));
+const confirm=(s,a,extra={})=>s.confirm('u',a.id,{expectedRevision:a.revision,confirmed:true,background,goals:[],preferences:[],...extra});
+test('official complete instrument, item numbers, dimension keys and provenance',()=>{
+ assert.equal(mini.items.length,30);assert.deepEqual(mini.items.map(q=>q.itemNumber),Array.from({length:30},(_,i)=>i+1));
+ for(const d of dimensions)assert.equal(mini.items.filter(q=>q.dimension===d).length,5);
+ for(const p of itemProvenance()){assert.equal(p.reverseScored,false);assert.equal(p.chineseSource,null);assert.equal(p.translationStatus,'original-English-unmodified');assert.ok([18,19].includes(p.sourcePage.pdfPage));assert.equal(p.missingRule,null);}
+ assert.throws(()=>getInstrument('career-prototype-48'));
+});
+test('0–4 anchors, Unsure valid, raw sums, display conversion and ties',()=>{
+ assert.deepEqual(Object.values(score(all(0)).rawScores),[0,0,0,0,0,0]);
+ assert.deepEqual(Object.values(score(all(2)).rawScores),[10,10,10,10,10,10]);
+ assert.deepEqual(Object.values(score(all(4)).scores),[100,100,100,100,100,100]);
+ const mixed=all(0);for(const [i,q] of mini.items.filter(q=>q.dimension==='realistic').entries())mixed[q.id]=i;
+ assert.equal(score(mixed).rawScores.realistic,10);assert.equal(score(mixed).scores.realistic,50);
+ assert.equal(score(all(2)).portrait.ranking.length,1);assert.equal(score(all(2)).portrait.ranking[0].dimensions.length,6);
+});
+test('missing, invalid values and old IDs never fabricate results',()=>{
+ const x=all(4);x['mini-01']=null;assert.equal(score(x).scores.realistic,null);assert.equal(score(x).scores.social,null);
+ assert.equal(score(x).portrait.complete,false);assert.equal(score(x).coverage.realistic.answered,4);
+ for(const input of [{'mini-01':5},{'mini-01':1.5},{'mini-01':'2'},{q01:4}])assert.throws(()=>validateAnswers(input));
+ assert.deepEqual(Object.values(score({},'not-administered').scores),[null,null,null,null,null,null]);
+});
+test('portrait and export share score; confirmation never invents constraints',()=>{
+ const s=new Service();const a=s.create('u');s.update('u',a.id,{expectedRevision:1,version:a.version,answers:all(2)});
+ const p=confirm(s,a,{preferences:[{key:'accept_sales_kpi',value:false,strength:'hard',confirmed:true},{key:'accept_travel',value:false,strength:'hard',confirmed:false}]});
+ const meta=s.state.metadata[`${p.profileId}:1`];assert.deepEqual(p.assessment.scores,meta.portrait.displayScores);assert.equal(p.assessment.interpretation,meta.portrait.interpretation);
+ s.intent('u',{assessmentId:a.id,profileRevision:1,industryTags:['software_it'],roleTypes:['product_operations']});
+ const x=s.export('u',a.projectId);validateExport(x);assert.equal(x.SearchIntent.filters[1].value,null);assert.equal(x.SearchIntent.filters[1].strength,'unknown');
+ confirm(s,a,{goals:['新目标']});assert.equal(s.export('u',a.projectId).UserProfile.revision,1);assert.deepEqual(meta.answersSnapshot,all(2));
+});
+test('ownership, conflicts, version and incomplete confirmation',()=>{
+ const s=new Service();const a=s.create('u');assert.throws(()=>s.owned('v',a.id),e=>e.status===403);assert.throws(()=>confirm(s,a));
+ s.update('u',a.id,{expectedRevision:1,version:a.version,answers:{'mini-01':0}});
+ assert.throws(()=>s.update('u',a.id,{expectedRevision:1,version:a.version,answers:{}}),e=>e.status===409);
+ assert.throws(()=>s.update('u',a.id,{expectedRevision:2,version:'future',answers:{}}));
+ a.version='future';assert.throws(()=>s.result('u',a.id));
+});
+test('skipped assessment supports A flow; import never recomputes absent answers',()=>{
+ const s=new Service();const a=s.create('u','demo','not-administered');const p=confirm(s,a);s.intent('u',{assessmentId:a.id,profileRevision:p.revision,industryTags:[],roleTypes:[]});
+ const exported=s.export('u',a.projectId);const imported=s.import('v',exported);assert.notEqual(imported.attempt.projectId,a.projectId);
+ validateExport(s.export('v',imported.attempt.projectId));assert.throws(()=>s.result('v',imported.attempt.id));
+ s.update('v',imported.attempt.id,{expectedRevision:1,version:'1',draft:{imported:false}});assert.throws(()=>s.result('v',imported.attempt.id));
+});
+test('legacy exports rejected without mutation',()=>{
+ const s=new Service();const x={UserProfile:JSON.parse(readFileSync(new URL('../rubbish/legacy-20261002/fixtures/UserProfile.json',import.meta.url))),SearchIntent:JSON.parse(readFileSync(new URL('../rubbish/legacy-20261002/fixtures/SearchIntent.json',import.meta.url)))};
+ assert.throws(()=>s.import('u',x));assert.equal(Object.keys(s.state.attempts).length,0);
+});

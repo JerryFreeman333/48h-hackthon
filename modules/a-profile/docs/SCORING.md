@@ -1,9 +1,22 @@
-# 题库与计分v1
+# 当前计分与解释
 
-题库全文见src/questionnaire.mjs，每题包含规格要求字段。48题：兴趣18、价值10、方式8、情境8、风险4。统一1–5符合程度及null不确定。情境题表达取舍，不直接生成硬要求。题库原创，不声称O*NET正式测评。
+使用官方 [Mini-IP 2016开发报告](https://www.onetcenter.org/dl_files/Mini-IP.pdf)，Appendix A印刷19–20页列出全部30题及维度；印刷13页规定电子版计分。原PDF SHA256与逐题原文在 src/instruments/onet-mini-ip.json；来源台账在 ITEM_PROVENANCE.json。
 
-维度有效题数不足75%为null；其余 `round((有效均值−1)×25)`。null/缺答不计均值，覆盖单独展示。当前没有反向题；算法支持6−答案且有测试。分数不代表能力或职业成功概率，不能用于职业排除。
+| 核查项 | 实现及证据 |
+|---|---|
+| 题本 | 英文原文，2016电子版，30题完整保留；不混入60题纸笔版本 |
+| 维度 | R/I/A/S/E/C，每维5题；按官方题号映射 |
+| 编码 | Strongly dislike=0，Dislike=1，Unsure=2，Like=3，Strongly like=4 |
+| 正反向 | 所有题按兴趣编码直接累加；无反向题 |
+| 维度原始分 | 每维5题求和，范围0–20；服务器执行 |
+| 缺答 | 原工具个体缺答插补规则未确认，记录null。产品选择完整答题才出分，不按75%覆盖或均值外推；不称为官方缺答规则 |
+| 展示分 | raw/20×100，仅UI线性转换，不是百分位或原正式原始分 |
+| 解释 | 六维相对排序。依据[官方技术手册第3章，印刷33页](https://www.onetcenter.org/dl_files/IP_Manual.pdf)；同分并列是透明产品展示策略，不冒称官方固定同分算法 |
+| 阈值/常模 | 本实现不使用高低分类、常模、百分位；未找到可直接沿用的中文解释标准，保持未知 |
+| 许可 | [CC BY-ND 4.0及官方工具许可说明](https://www.onetcenter.org/license_tools.html)，原文不改写、不翻译。软件集成不代表工具方背书 |
+| 中文 | 无经核实可用于本产品的中文版本；不生成中文题目 |
+| 验证 | 原始英语工具有官方研究；本实现、中文目标人群及移动界面尚未独立验证，导出validation保留prototype |
 
-解释采用确定性模板，用户纠正另存不改分。题库版本1与答案保存，以ID恢复。版本升级需保留旧题库。
+`scoring.mjs`一次确定性计算生成rawScores、displayScores、ranking、interpretation、portrait。Service.confirm同时保存同一结果到UserProfile与内部metadata；用户文字纠正不改分。硬约束只能由用户显式填写并确认。
 
-行业来源：https://www.stats.gov.cn/sj/tjbz/gmjjhyfl/ （2026-10-02核对入口包含2017分类按第1号修改单修订）。首版使用门类候选与多对多产品标签，不声称具体公司分类已核实。岗位为产品类别，官方代码null待核验。
+“暂不测评”使用not-administered/version1，六维均为null，不生成兴趣代码。工作价值观仍待核实，现实条件表单不宣称是经验证价值观测评。

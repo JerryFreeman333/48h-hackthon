@@ -6,17 +6,13 @@
   "mode": "demo",
   "confirmedAt": "2026-10-02T05:00:00Z",
   "assessment": {
-    "instrumentId": "not-administered",
+    "instrumentId": "career-prototype-48",
     "version": "1",
     "scores": {
-      "realistic": null,
-      "investigative": null,
-      "artistic": null,
-      "social": null,
-      "enterprising": null,
-      "conventional": null
+      "social": 70,
+      "investigative": 65
     },
-    "interpretation": "合成演示：未进行测评，职业兴趣保持未知。",
+    "interpretation": "合成演示：偏好理解需求和沟通",
     "status": "confirmed",
     "validation": "prototype"
   },
