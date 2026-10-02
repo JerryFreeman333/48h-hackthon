@@ -9,11 +9,11 @@
  * 路径：401 无凭据 / 404 跨用户读不泄露 / 404 报告快照缺失 / 200 完整 snapshot。
  */
 import { handleGetReportSnapshot } from "@/modules/c-report/application/api/handlers";
-import { createCApiContext } from "@/modules/c-report/adapters/memory/context";
+import { createSharedCApiContext } from "@/modules/c-report/adapters/memory/context";
 
 export const dynamic = "force-dynamic";
 
-const context = createCApiContext();
+const context = createSharedCApiContext();
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

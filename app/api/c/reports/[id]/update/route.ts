@@ -5,11 +5,11 @@
  * 行为：原子幂等预留 + 不可变版本生成（v2+）。
  */
 import { handleUpdateReport } from "@/modules/c-report/application/api/handlers";
-import { createCApiContext } from "@/modules/c-report/adapters/memory/context";
+import { createSharedCApiContext } from "@/modules/c-report/adapters/memory/context";
 
 export const dynamic = "force-dynamic";
 
-const context = createCApiContext();
+const context = createSharedCApiContext();
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

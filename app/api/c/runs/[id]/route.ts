@@ -3,11 +3,11 @@
  * DELETE /api/c/runs/:id —— 取消运行中的 run（C §6.2 根挂载：P5 §6.2 增强）。
  */
 import { handleGetRun, handleCancelRun } from "@/modules/c-report/application/api/handlers";
-import { createCApiContext } from "@/modules/c-report/adapters/memory/context";
+import { createSharedCApiContext } from "@/modules/c-report/adapters/memory/context";
 
 export const dynamic = "force-dynamic";
 
-const context = createCApiContext();
+const context = createSharedCApiContext();
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

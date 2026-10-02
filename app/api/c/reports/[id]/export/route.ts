@@ -6,11 +6,11 @@
  * 422 不支持格式 / 404 跨用户读不泄露 / 200 导出。
  */
 import { handleExportReport } from "@/modules/c-report/application/api/handlers";
-import { createCApiContext } from "@/modules/c-report/adapters/memory/context";
+import { createSharedCApiContext } from "@/modules/c-report/adapters/memory/context";
 
 export const dynamic = "force-dynamic";
 
-const context = createCApiContext();
+const context = createSharedCApiContext();
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

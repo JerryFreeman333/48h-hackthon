@@ -8,13 +8,13 @@
  * - run 被 cancel：skip_cancelled
  * - demo runtime 通过 onStartup 触发
  */
-import { describe, it } from 'node:test';
+import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { FileSystemCheckpointStore } from '../adapters/memory/in-memory-checkpoint.js';
-import { createCApiContext } from '../adapters/memory/context.js';
+import { createCApiContext, createSharedCApiContext, resetSharedCApiContextForTests } from '../adapters/memory/context.js';
 import { resumeInterruptedRuns, runOne } from '../application/api/startup-resume.js';
 import { loadDemoInputs } from './helpers.js';
 
@@ -164,5 +164,63 @@ describe('§6.2 [C-IMPL-STARTUP-RESUME]', () => {
     } finally {
       await rm(baseDir, { recursive: true, force: true });
     }
+  });
+});
+
+describe('§6.2 §6.3 [C-IMPL-ROOT-MOUNT] route mount singleton (C-23)', () => {
+  beforeEach(() => {
+    resetSharedCApiContextForTests();
+  });
+
+  it('createSharedCApiContext 两次调用返同一 ctx；避免跨 route 文件状态隔离', () => {
+    const a = createSharedCApiContext();
+    const b = createSharedCApiContext();
+    assert.strictEqual(a, b);
+  });
+
+  it('createCApiContext 两次调用返独立 ctx；测试隔离', () => {
+    const a = createCApiContext();
+    const b = createCApiContext();
+    assert.notStrictEqual(a, b);
+  });
+
+  it('createSharedCApiContext 跨 module-level 调用 → POST→GET 链路可工作（修复 C-23）', () => {
+    // 模拟两个 route 文件 module-level（matches/route.ts + reports/[id]/route.ts）
+    const matchesCtx = createSharedCApiContext();
+    const reportsCtx = createSharedCApiContext();
+    assert.strictEqual(matchesCtx, reportsCtx);
+    assert.strictEqual(matchesCtx.stores, reportsCtx.stores);
+  });
+
+  it('createSharedCApiContext stores 是同一实例：POST→GET 跨路由可工作', async () => {
+    // 真实端到端：POST 写入 matchesCtx → GET 读 reportsCtx 应得 200
+    const matchesCtx = createSharedCApiContext();
+    const reportsCtx = createSharedCApiContext();
+    // 注：两个引用同一 ctx（singleton），所以创建/读取走同一 store。
+    const { handleCreateMatch, handleGetReport } = await import('../application/api/handlers.js');
+    const inputs = loadDemoInputs();
+    const body = {
+      profile: inputs.profile,
+      intentContext: inputs.intent,
+      bundle: inputs.bundle,
+      idempotencyKey: 'singleton-cross-route-test',
+    };
+    const createResp = await handleCreateMatch(
+      matchesCtx,
+      new Request('http://t/api/c/matches', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', authorization: 'Bearer token-user-demo-1' },
+        body: JSON.stringify(body),
+      }),
+    );
+    assert.strictEqual(createResp.status, 202);
+    const created = await createResp.json() as { reportId?: string };
+    assert.ok(typeof created.reportId === 'string');
+    const getResp = await handleGetReport(
+      reportsCtx,
+      new Request('http://t/x', { headers: { authorization: 'Bearer token-user-demo-1' } }),
+      created.reportId as string,
+    );
+    assert.strictEqual(getResp.status, 200);
   });
 });

@@ -5,11 +5,11 @@
  * 生产宿主替换为公共 runtime adapter（持久快照 + IdentityProvider + DurableScheduler）。
  */
 import { handleCreateMatch } from "@/modules/c-report/application/api/handlers";
-import { createCApiContext } from "@/modules/c-report/adapters/memory/context";
+import { createSharedCApiContext } from "@/modules/c-report/adapters/memory/context";
 
 export const dynamic = "force-dynamic";
 
-const context = createCApiContext();
+const context = createSharedCApiContext();
 
 export async function POST(request: Request) {
   return handleCreateMatch(context, request);
