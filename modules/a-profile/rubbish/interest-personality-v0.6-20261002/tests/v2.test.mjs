@@ -74,3 +74,20 @@ test('v2 handoff import validates facts/ranges, isolates identity and never reca
  assert.throws(()=>svc.get('u',imported.id),/访问权限/);
 });
 
+test('V2 HTTP save/restart, ownership, import, report and private deletion',async()=>{
+ const dir=mkdtempSync(join(tmpdir(),'v2-http-')),options={dataDir:join(dir,'data'),archiveDir:join(dir,'archive'),modelsDir:join(dir,'absent')};let server=createServer(options);
+ async function start(){await new Promise(r=>server.listen(0,'127.0.0.1',r));return 'http://127.0.0.1:'+server.address().port;}
+ let origin=await start();const bootstrap=await fetch(origin+'/api/a/v2/bootstrap');const cookie=bootstrap.headers.get('set-cookie').split(';')[0];
+ const request=async(p,method='GET',body,c=cookie)=>{const r=await fetch(origin+'/api/a/v2/'+p,{method,headers:{cookie:c,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});return {status:r.status,x:await r.json()};};
+ try{
+  let {x:s}=await request('sessions','POST',{battery:'None',mode:'demo'});s=(await request('sessions/'+s.id,'PATCH',{expectedRevision:s.revision,step:4})).x;
+  await new Promise(r=>server.close(r));server=createServer(options);origin=await start();assert.equal((await request('sessions/'+s.id)).x.step,4);
+  const second=await fetch(origin+'/api/a/v2/bootstrap'),other=second.headers.get('set-cookie').split(';')[0];assert.equal((await request('sessions/'+s.id,'GET',undefined,other)).status,403);
+  const confirmed=(await request('profiles/'+s.profileId+'/confirm','POST',{expectedRevision:s.revision,confirmed:true})).x;s=confirmed.session;
+  const intent=(await request('search-intents','POST',{expectedRevision:s.revision,profileId:s.profileId,profileRevision:1,selectedCodes:[],maxCandidates:3})).x;s=intent.session;
+  const exported=(await request('profiles/'+s.profileId+'/export')).x;validateHandoff(exported);assert(exported.Report.sections.length);
+  assert.equal((await fetch(origin+'/.data/state.json')).status,404);assert.equal((await fetch(origin+'/rubbish/private/state.json')).status,404);
+  assert.equal((await request('profiles/'+s.profileId,'DELETE',{})).status,200);assert.equal((await request('profiles/'+s.profileId)).status,404);
+  assert(!JSON.parse(readFileSync(join(options.dataDir,'state.json'))).v2.profiles.length);
+ }finally{await new Promise(r=>server.close(r));}
+});

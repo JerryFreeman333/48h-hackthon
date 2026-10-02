@@ -1,5 +1,7 @@
 # v0.5 选择式输入与本机中文审校
 
+v0.6入口变更：英语网页、答题API与界面语言切换已停用；原文保留溯源，本文关于公开英语流程和原文展开的描述是v0.5历史行为。当前入口与逐题审查以 [QUESTION_REVIEW_2026-10-02.md](QUESTION_REVIEW_2026-10-02.md) 为准。
+
 基线：A提交84dfcce39ecdf38173f06a142ef2e1df75c772bc、main合并99161950572d21340ea8af53630247cb7f4c62fc。只修改A，未增加量表题、维度或公共底座。
 
 ## 仓库中的原题与算法是什么
@@ -14,7 +16,7 @@
 |Mini-IPIP原始分|每题1–5，每维4题；反向6-answer后求和4–20|[官方key](https://ipip.ori.org/MiniIPIPKey.htm)、[官方计分说明](https://ipip.ori.org/newScoringInstructions.htm)|
 |结果展示|兴趣raw/20；人格(raw-4)/16；乘100展示量程位置；无常模、百分位或35/65阈值|产品UI转换，未冒称官方百分位|
 |缺答与解释|不插补；不完整时解释未知；同分并列|透明产品缺答与展示策略，不冒称已找到官方个体缺答标准|
-|职业方向参考|与O*NET职业兴趣向量做Pearson相关，常量向量不排名|现有独立产品策略interest-pearson-complete-1；不是量表官方匹配算法，未证明国内岗位适配或能力|
+|职业方向参考|与O*NET职业兴趣向量做Pearson相关，常量向量不排名|2026-10-02复核补正：[官方手册第128印刷页](https://www.onetcenter.org/dl_files/IP_Manual.pdf)明确使用Pearson比较个人与职业兴趣形状。我们的工程实现、常量/并列处理和展示转换仍是产品实现，未证明国内岗位适配或能力；此前“不是官方匹配算法”的表述过宽|
 
 本轮 `battery.mjs`、`scoring.mjs`、`onet-mini-ip.json`、`mini-ipip.json`与原v0.3四个Git blob保持字节一致。没有“把所有算法扒下来”的宣称，也没有修改正式计分去迁就中文。
 

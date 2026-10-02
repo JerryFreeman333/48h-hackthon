@@ -1,0 +1,884 @@
+{
+  "version": "job-needs-20261002-1",
+  "measurement": "user-declared-job-needs-not-psychometric-assessment",
+  "validationStatus": "not-validated",
+  "sources": [
+    {
+      "id": "weng2010",
+      "titleZh": "职业成长与组织承诺",
+      "authors": "Weng, McElroy, Morrow & Liu",
+      "year": 2010,
+      "doi": "10.1016/j.jvb.2010.05.003",
+      "url": "https://bs.ustc.edu.cn/UserFiles/Editor/file/20130403/20130403212479297929.pdf",
+      "locator": "期刊页391–394：摘要、职业成长与测量；PDF第3–6页",
+      "scope": "中国在职员工；摘要称10城，方法列出9城；961份可用问卷。职业成长包含职业目标进展、专业发展、晋升和薪酬增长。",
+      "limit": "研究的是在职员工成长感受与组织承诺，不是我们的求职需求题；不证明当前岗位能晋升。",
+      "access": "original-paper-accessed"
+    },
+    {
+      "id": "stofberg2022",
+      "titleZh": "薪酬透明、离职意向与组织支持及公平",
+      "authors": "Stofberg, Bussin & Mabaso",
+      "year": 2022,
+      "doi": "10.1108/ER-02-2022-0077",
+      "url": "https://pure.uj.ac.za/en/publications/pay-transparency-job-turnover-intentions-and-the-mediating-role-o/",
+      "locator": "原研究机构摘要；Employee Relations 44(7),162–182",
+      "scope": "南非4家组织299名员工；研究薪酬信息透明与组织支持、公平及离职意向。",
+      "limit": "不能将不透明直接判成违法或诈骗；原研究的在职感知测量不能直接当成求职偏好题。",
+      "access": "author-institution-abstract"
+    },
+    {
+      "id": "pega2021",
+      "titleZh": "长工时相关疾病负担的WHO／ILO联合估计",
+      "authors": "Pega et al.",
+      "year": 2021,
+      "doi": "10.1016/j.envint.2021.106595",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8204267/",
+      "locator": "摘要；Environment International 154,106595",
+      "scope": "194个国家2000–2016年群体负担分析；研究长工时的健康关联。",
+      "limit": "不用于个人健康预测、法律工时阈值或个人风险承受评分。",
+      "access": "original-article-indexed-abstract"
+    },
+    {
+      "id": "tremblay1998",
+      "titleZh": "员工福利满意度的决定因素与福利灵活性的影响",
+      "authors": "Tremblay, Sire & Pelchat",
+      "year": 1998,
+      "doi": "10.1177/001872679805100505",
+      "url": "https://journals.sagepub.com/doi/10.1177/001872679805100505",
+      "locator": "出版社摘要；Human Relations 51(5)",
+      "scope": "研究员工福利满意度及福利灵活性。",
+      "limit": "不是中国五险一金量表；五险一金的合规要求应另按适用法域及用工形式核实。样本细节本次未核实。",
+      "access": "publisher-abstract"
+    },
+    {
+      "id": "cable2002",
+      "titleZh": "主观适配感受的聚合与区分效度",
+      "authors": "Cable & DeRue",
+      "year": 2002,
+      "doi": "10.1037/0021-9010.87.5.875",
+      "url": "https://doi.org/10.1037/0021-9010.87.5.875",
+      "locator": "原论文摘要；Journal of Applied Psychology 87(5),875–884",
+      "scope": "区分价值观适配、需求供给适配与要求能力适配；两组样本，其中纵向样本187名经理。",
+      "limit": "本产品只记录需求及团队工作方式偏好，不据此评估能力或推断整家公司文化。原文完整题本与复制许可本次未确认。",
+      "access": "original-paper-indexed-abstract-full-fetch-unavailable"
+    },
+    {
+      "id": "campello2010",
+      "titleZh": "金融危机中融资约束对企业经营的实际影响",
+      "authors": "Campello, Graham & Harvey",
+      "year": 2010,
+      "doi": "10.1016/j.jfineco.2010.02.009",
+      "url": "https://scholars.duke.edu/publication/774061",
+      "locator": "作者所在大学摘要；Journal of Financial Economics 97(3),470–487",
+      "scope": "金融危机中的企业融资约束与就业、投资等决策。",
+      "limit": "不是公司倒闭预测量表；公开财务不可得、公司小或注册资本低不能直接解释成不稳定。",
+      "access": "author-institution-abstract"
+    },
+    {
+      "id": "sverke2002",
+      "titleZh": "工作不安全感及其后果的元分析",
+      "authors": "Sverke, Hellgren & Näswall",
+      "year": 2002,
+      "doi": "10.1037/1076-8998.7.3.242",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12148956/",
+      "locator": "原论文摘要；Journal of Occupational Health Psychology 7(3),242–264",
+      "scope": "工作不安全感与工作态度、健康和行为关系的元分析。",
+      "limit": "不能用于预测某岗位裁员概率，不能把求稳偏好解释成人格或能力不足。",
+      "access": "original-paper-indexed-abstract"
+    }
+  ],
+  "questions": [
+    {
+      "id": "growth.priority",
+      "text": "选择下一份工作时，晋升与成长对你有多重要？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "priority",
+          "text": "这是我的求职重点"
+        },
+        {
+          "id": "secondary",
+          "text": "会考虑，但不是当前重点"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "growth",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "weng2010"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "growth.details",
+      "text": "关于晋升与成长，你希望进一步了解哪些具体信息？",
+      "kind": "multiple",
+      "options": [
+        {
+          "id": "promotion",
+          "text": "晋升条件、评审流程与评审周期"
+        },
+        {
+          "id": "learning",
+          "text": "带教、培训与学习资源"
+        },
+        {
+          "id": "path",
+          "text": "岗位的发展路径与职责变化"
+        },
+        {
+          "id": "pay_growth",
+          "text": "调薪条件和规则"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "growth",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "weng2010"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "growth.policy",
+      "text": "如果你关心的晋升与成长信息还不清楚，你希望如何继续？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "verify_first",
+          "text": "先核实我关心的项目，再作决定"
+        },
+        {
+          "id": "continue_with_unknown",
+          "text": "可以继续了解，但保留未知"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "growth",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "weng2010"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "pay.priority",
+      "text": "选择下一份工作时，薪酬透明对你有多重要？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "priority",
+          "text": "这是我的求职重点"
+        },
+        {
+          "id": "secondary",
+          "text": "会考虑，但不是当前重点"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "pay",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "stofberg2022"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "pay.details",
+      "text": "关于薪酬透明，你希望进一步了解哪些具体信息？",
+      "kind": "multiple",
+      "options": [
+        {
+          "id": "fixed",
+          "text": "固定工资和浮动报酬分别是多少"
+        },
+        {
+          "id": "formula",
+          "text": "奖金、绩效或提成的计算与发放规则"
+        },
+        {
+          "id": "probation",
+          "text": "试用期与转正后的报酬差异"
+        },
+        {
+          "id": "payment",
+          "text": "发薪时间、税前税后口径及书面约定"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "pay",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "stofberg2022"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "pay.policy",
+      "text": "如果你关心的薪酬透明信息还不清楚，你希望如何继续？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "verify_first",
+          "text": "先核实我关心的项目，再作决定"
+        },
+        {
+          "id": "continue_with_unknown",
+          "text": "可以继续了解，但保留未知"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "pay",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "stofberg2022"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "hours.priority",
+      "text": "选择下一份工作时，工时与休息对你有多重要？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "priority",
+          "text": "这是我的求职重点"
+        },
+        {
+          "id": "secondary",
+          "text": "会考虑，但不是当前重点"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "hours",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "pega2021"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "hours.details",
+      "text": "关于工时与休息，你希望进一步了解哪些具体信息？",
+      "kind": "multiple",
+      "options": [
+        {
+          "id": "schedule",
+          "text": "正常上下班、轮班或值班安排"
+        },
+        {
+          "id": "overtime",
+          "text": "加班频率、提前告知与补偿安排"
+        },
+        {
+          "id": "rest",
+          "text": "每周休息及休假安排"
+        },
+        {
+          "id": "after_hours",
+          "text": "下班后响应工作消息的要求"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "hours",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "pega2021"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "hours.policy",
+      "text": "如果你关心的工时与休息信息还不清楚，你希望如何继续？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "verify_first",
+          "text": "先核实我关心的项目，再作决定"
+        },
+        {
+          "id": "continue_with_unknown",
+          "text": "可以继续了解，但保留未知"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "hours",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "pega2021"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "benefits.priority",
+      "text": "选择下一份工作时，五险一金与保障对你有多重要？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "priority",
+          "text": "这是我的求职重点"
+        },
+        {
+          "id": "secondary",
+          "text": "会考虑，但不是当前重点"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "benefits",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "tremblay1998"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "benefits.details",
+      "text": "关于五险一金与保障，你希望进一步了解哪些具体信息？",
+      "kind": "multiple",
+      "options": [
+        {
+          "id": "coverage",
+          "text": "适用的社保与公积金项目"
+        },
+        {
+          "id": "basis",
+          "text": "缴纳主体、地点、基数与比例"
+        },
+        {
+          "id": "start",
+          "text": "从何时开始缴纳及试用期安排"
+        },
+        {
+          "id": "verification",
+          "text": "如何查询自己的缴纳记录与书面约定"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "benefits",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "tremblay1998"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "benefits.policy",
+      "text": "如果你关心的五险一金与保障信息还不清楚，你希望如何继续？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "verify_first",
+          "text": "先核实我关心的项目，再作决定"
+        },
+        {
+          "id": "continue_with_unknown",
+          "text": "可以继续了解，但保留未知"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "benefits",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "tremblay1998"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "culture.priority",
+      "text": "选择下一份工作时，团队文化与工作方式对你有多重要？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "priority",
+          "text": "这是我的求职重点"
+        },
+        {
+          "id": "secondary",
+          "text": "会考虑，但不是当前重点"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "culture",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "cable2002"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "culture.details",
+      "text": "关于团队文化与工作方式，你希望进一步了解哪些具体信息？",
+      "kind": "multiple",
+      "options": [
+        {
+          "id": "communication",
+          "text": "任务分配、沟通和反馈方式"
+        },
+        {
+          "id": "respect",
+          "text": "对不同意见、错误和个人边界的处理"
+        },
+        {
+          "id": "evaluation",
+          "text": "绩效评价标准与申诉渠道"
+        },
+        {
+          "id": "collaboration",
+          "text": "协作方式、管理支持与团队氛围"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "culture",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "cable2002"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "culture.policy",
+      "text": "如果你关心的团队文化与工作方式信息还不清楚，你希望如何继续？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "verify_first",
+          "text": "先核实我关心的项目，再作决定"
+        },
+        {
+          "id": "continue_with_unknown",
+          "text": "可以继续了解，但保留未知"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "culture",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "cable2002"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "company.priority",
+      "text": "选择下一份工作时，企业经营稳定对你有多重要？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "priority",
+          "text": "这是我的求职重点"
+        },
+        {
+          "id": "secondary",
+          "text": "会考虑，但不是当前重点"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "company",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "campello2010"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "company.details",
+      "text": "关于企业经营稳定，你希望进一步了解哪些具体信息？",
+      "kind": "multiple",
+      "options": [
+        {
+          "id": "business",
+          "text": "当前主营业务、产品和经营变化"
+        },
+        {
+          "id": "public_finance",
+          "text": "可获得的公开财务信息及披露日期"
+        },
+        {
+          "id": "continuity",
+          "text": "业务收缩、扩张或重组的可核查信息"
+        },
+        {
+          "id": "payment_record",
+          "text": "欠薪等与持续履约有关的可核查记录"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "company",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "campello2010"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "company.policy",
+      "text": "如果你关心的企业经营稳定信息还不清楚，你希望如何继续？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "verify_first",
+          "text": "先核实我关心的项目，再作决定"
+        },
+        {
+          "id": "continue_with_unknown",
+          "text": "可以继续了解，但保留未知"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "company",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "campello2010"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "position.priority",
+      "text": "选择下一份工作时，职位与用工稳定对你有多重要？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "priority",
+          "text": "这是我的求职重点"
+        },
+        {
+          "id": "secondary",
+          "text": "会考虑，但不是当前重点"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "position",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "sverke2002"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "position.details",
+      "text": "关于职位与用工稳定，你希望进一步了解哪些具体信息？",
+      "kind": "multiple",
+      "options": [
+        {
+          "id": "hiring_reason",
+          "text": "新增岗位、替补岗位还是短期项目"
+        },
+        {
+          "id": "contract",
+          "text": "签约主体、用工形式与合同期限"
+        },
+        {
+          "id": "role_change",
+          "text": "职责、工作地点或团队可能如何变化"
+        },
+        {
+          "id": "probation_rules",
+          "text": "试用期考核及岗位变动的书面规则"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "position",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "sverke2002"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    },
+    {
+      "id": "position.policy",
+      "text": "如果你关心的职位与用工稳定信息还不清楚，你希望如何继续？",
+      "kind": "single",
+      "options": [
+        {
+          "id": "verify_first",
+          "text": "先核实我关心的项目，再作决定"
+        },
+        {
+          "id": "continue_with_unknown",
+          "text": "可以继续了解，但保留未知"
+        },
+        {
+          "id": "unsure",
+          "text": "暂不确定"
+        }
+      ],
+      "topicId": "position",
+      "provenance": {
+        "author": "求职 X-Ray A 产品需求采集",
+        "version": "job-needs-20261002-1",
+        "originalInstrument": null,
+        "originalItemNumber": null,
+        "itemOrigin": "product-authored",
+        "sourceIds": [
+          "sverke2002"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation",
+        "validationStatus": "not-validated",
+        "scoring": "none",
+        "reverseScored": null,
+        "licenseStatus": "original-product-text-not-copied-scale"
+      }
+    }
+  ]
+}

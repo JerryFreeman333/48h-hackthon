@@ -21,6 +21,6 @@ export function presentation(id,locale='en',version=null,privateDraft=null){
  if(version!==null&&version!==chinese.translationVersion)throw new Error('翻译版本不支持');
  return {locale:'zh-CN',translationVersion:chinese.translationVersion,chineseValidation:'not-validated'};
 }
-export function decorateTools(items,privateDraft=null){return items.map(t=>({...t,defaultLocale:t.instrumentId==='mini-ipip'||privateDraft?'zh-CN':'en',availableLocales:t.instrumentId==='mini-ipip'||privateDraft?['en','zh-CN']:['en'],chineseDraft:t.instrumentId==='mini-ipip'?chinese:privateDraft,privateReviewOnly:t.instrumentId==='onet-mini-ip'&&!!privateDraft}));}
+export function decorateTools(items,privateDraft=null){return items.map(t=>({...t,defaultLocale:t.instrumentId==='mini-ipip'||privateDraft?'zh-CN':null,availableLocales:t.instrumentId==='mini-ipip'||privateDraft?['zh-CN']:[],englishEntryEnabled:false,chineseDraft:t.instrumentId==='mini-ipip'?chinese:privateDraft,privateReviewOnly:t.instrumentId==='onet-mini-ip'&&!!privateDraft}));}
 export function defaultPresentation(id,privateDraft=null){return presentation(id,id==='mini-ipip'||privateDraft?'zh-CN':'en',null,privateDraft);}
 export {chinese as miniIpipChinese};

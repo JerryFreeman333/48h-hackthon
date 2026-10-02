@@ -5,11 +5,12 @@ import {constraint,insight,text,valuesSchema,validateProfileV2,validateHandoff} 
 import {fit,catalog} from '../occupation-fit/index.mjs';
 import {buildReport} from '../report/template.mjs';
 import {exportV1} from '../adapters/v1.mjs';
+import {labels as interestLabels} from '../instruments/registry.mjs';
 export class V2Error extends Error{constructor(status,code,message){super(message);this.status=status;this.code=code;}}
 const fail=(status,code,message)=>{throw new V2Error(status,code,message);};
 import {publicSession,publicProfile,FLOW_VERSION} from './scope.mjs';
 import {presentation,defaultPresentation,decorateTools} from '../instruments/presentation.mjs';
-import {valueOptions,selectionCatalog,selectionVersion,validateSelectionDraft,validateSelectionProfile,selectionSnapshot} from './selections.mjs';
+import {valueOptions,selectionCatalog,selectionVersion,validateSelectionDraft,validateSelectionProfile,selectionSnapshot,conditionLabels} from './selections.mjs';
 const scoreAttempt=(a,privateDraft=null)=>({...assess(a.instrumentId,a.answers),...presentation(a.instrumentId,a.locale??'en',a.translationVersion??null,privateDraft)});
 const time=()=>new Date().toISOString();
 const unique=(a,message)=>{if(new Set(a).size!==a.length)fail(422,'validation_error',message);};
@@ -55,7 +56,7 @@ export class ProfileService{
   if(snapshot.complete&&!a.scoreEvidenceId){
    const evidenceId=randomUUID();s.evidence.push({evidenceId,kind:'assessment',sourceRef:a.id,locator:'answersHash:'+snapshot.answersHash,instrumentId:a.instrumentId,instrumentVersion:a.instrumentVersion,locale:snapshot.locale,collectedAt:time(),text:null,status:'confirmed'});a.scoreEvidenceId=evidenceId;
    const top=Math.max(...snapshot.scores.map(x=>x.raw)),names=snapshot.scores.filter(x=>x.raw===top).map(x=>x.dimension);
-   const description=a.instrumentId==='onet-mini-ip'?(names.length===6?'本次六类活动兴趣原始分相同，尚未区分出相对兴趣方向。':'本次问卷中，相对原始分最高的自报兴趣维度是 '+names.join(' / ')+'；兴趣不证明实际能力。'):'本次Mini-IPIP只描述本人自报行为倾向；神经质分沿情绪波动方向记录，不用于判断岗位胜任能力。';
+   const description=a.instrumentId==='onet-mini-ip'?(names.length===6?'本次六类活动兴趣原始分相同，尚未区分出相对兴趣方向。':'本次问卷中，相对原始分最高的自报兴趣维度是 '+names.map(n=>interestLabels[n]).join(' / ')+'；兴趣不证明实际能力。'):'本次人格问卷只描述本人自报行为倾向；情绪波动方向不用于判断岗位胜任能力。';
    const insightId=randomUUID();s.insights.push({insightId,text:description,evidenceIds:[evidenceId],status:'pending',userEditedText:null,limitations:['这是当前问卷范围内的解释，不是完整人格或就业结果预测。']});a.insightId=insightId;
   }
   this.touch(s);return {session:publicSession(s),snapshot};
@@ -85,7 +86,7 @@ export class ProfileService{
   const goals=d.goals.map(t=>({text:t,evidenceIds:[statement(t)]}));if(d.jobStage)goals.push({text:'当前求职阶段：'+d.jobStage,evidenceIds:[statement(d.jobStage)]});
   const p={schemaVersion:'2.0.0',profileId:s.profileId,projectId:s.projectId,revision:1+Math.max(0,...this.db.profiles.filter(p=>p.profileId===s.profileId).map(p=>p.revision)),ownerId:s.ownerId,mode:s.mode,createdAt:s.createdAt,confirmedAt:time(),assessments,
    values:{priorityIds:d.groups.flat(),groups:structuredClone(d.groups),tradeoffs:[...d.tradeoffs],evidenceIds:valueIds},capabilities:[],constraints,goals,insights:structuredClone(visible.insights),
-   uncertainties:[...assessments.filter(a=>!a.complete).map(a=>({code:'incomplete_assessment',message:a.instrumentId+'尚未完整测评，解释保持未知。',evidenceIds:[a.evidenceId]})),...constraints.filter(c=>!c.confirmed||c.strength==='unknown').map(c=>({code:'unknown_constraint',message:c.key+'尚待本人明确。',evidenceIds:c.evidenceIds}))],evidence};
+   uncertainties:[...assessments.filter(a=>!a.complete).map(a=>({code:'incomplete_assessment',message:(a.instrumentId==='onet-mini-ip'?'职业兴趣':'人格倾向')+'尚未完整测评，解释保持未知。',evidenceIds:[a.evidenceId]})),...constraints.filter(c=>!c.confirmed||c.strength==='unknown').map(c=>({code:'unknown_constraint',message:(conditionLabels[c.key]??'历史条件')+'尚待本人明确。',evidenceIds:c.evidenceIds}))],evidence};
   validateProfileV2(p);this.db.profiles.push(structuredClone(p));s.profileRevision=p.revision;s.selectionResetRequired=false;this.touch(s);return {profile:p,session:publicSession(s)};
  }
  occupationFit(owner,id,revision){return fit(this.profile(owner,id,revision));}

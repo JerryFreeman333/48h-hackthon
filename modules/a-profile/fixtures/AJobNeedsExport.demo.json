@@ -1,0 +1,734 @@
+{
+  "schemaVersion": "a-job-needs-export-1",
+  "UserProfile": {
+    "schemaVersion": "1.0.0",
+    "profileId": "62a41d80-65b7-44a2-8f50-b1f368921a11",
+    "revision": 1,
+    "projectId": "d0e18946-c105-41a5-9802-d18c9f1dbb8c",
+    "mode": "demo",
+    "confirmedAt": "2026-10-02T15:51:16.883Z",
+    "assessment": {
+      "instrumentId": "not-administered",
+      "version": "1",
+      "scores": {
+        "R": null,
+        "I": null,
+        "A": null,
+        "S": null,
+        "E": null,
+        "C": null
+      },
+      "interpretation": "本次未进行兴趣或人格测评。求职需求由用户选择并确认；七主题明细见JobNeedsSnapshot，不计算能力、人格或风险分。",
+      "status": "confirmed",
+      "validation": "prototype"
+    },
+    "background": {
+      "education": null,
+      "major": null,
+      "skills": [],
+      "experiences": []
+    },
+    "goals": [
+      "寻找第一份全职工作",
+      "当前求职阶段：应届求职"
+    ],
+    "preferences": [
+      {
+        "key": "city",
+        "value": [
+          "杭州"
+        ],
+        "strength": "soft",
+        "confirmed": true
+      },
+      {
+        "key": "min_fixed_monthly_salary",
+        "value": null,
+        "strength": "unknown",
+        "confirmed": false
+      },
+      {
+        "key": "accept_sales_kpi",
+        "value": false,
+        "strength": "hard",
+        "confirmed": true
+      },
+      {
+        "key": "accept_travel",
+        "value": null,
+        "strength": "unknown",
+        "confirmed": false
+      },
+      {
+        "key": "accept_outsourcing",
+        "value": null,
+        "strength": "unknown",
+        "confirmed": false
+      }
+    ]
+  },
+  "SearchIntent": {
+    "schemaVersion": "1.0.0",
+    "intentId": "02d3f54c-8981-454d-b20a-f18f2c1e8679",
+    "revision": 1,
+    "projectId": "d0e18946-c105-41a5-9802-d18c9f1dbb8c",
+    "profileId": "62a41d80-65b7-44a2-8f50-b1f368921a11",
+    "profileRevision": 1,
+    "mode": "demo",
+    "industryTags": [
+      "software_it"
+    ],
+    "industryCodes": [
+      "I"
+    ],
+    "roleTypes": [
+      "product_operations"
+    ],
+    "cities": [
+      "杭州"
+    ],
+    "filters": [
+      {
+        "key": "city",
+        "value": [
+          "杭州"
+        ],
+        "strength": "soft"
+      },
+      {
+        "key": "min_fixed_monthly_salary",
+        "value": null,
+        "strength": "unknown"
+      },
+      {
+        "key": "accept_sales_kpi",
+        "value": false,
+        "strength": "hard"
+      },
+      {
+        "key": "accept_travel",
+        "value": null,
+        "strength": "unknown"
+      },
+      {
+        "key": "accept_outsourcing",
+        "value": null,
+        "strength": "unknown"
+      }
+    ],
+    "maxCandidates": 3
+  },
+  "JobNeedsSnapshot": {
+    "schemaVersion": "a-job-needs-1",
+    "instrumentId": "job-needs-requirements",
+    "questionnaireVersion": "job-needs-20261002-1",
+    "projectId": "d0e18946-c105-41a5-9802-d18c9f1dbb8c",
+    "profileId": "62a41d80-65b7-44a2-8f50-b1f368921a11",
+    "profileRevision": 1,
+    "mode": "demo",
+    "confirmedAt": "2026-10-02T15:51:16.883Z",
+    "measurement": "user-declared-job-needs-not-psychometric-assessment",
+    "validationStatus": "not-validated",
+    "scores": null,
+    "answers": {
+      "growth.priority": "priority",
+      "growth.details": [
+        "promotion"
+      ],
+      "growth.policy": "verify_first",
+      "pay.priority": "priority",
+      "pay.details": [
+        "fixed"
+      ],
+      "pay.policy": "verify_first",
+      "hours.priority": "priority",
+      "hours.details": [
+        "schedule"
+      ],
+      "hours.policy": "verify_first",
+      "benefits.priority": "priority",
+      "benefits.details": [
+        "coverage"
+      ],
+      "benefits.policy": "verify_first",
+      "culture.priority": "priority",
+      "culture.details": [
+        "communication"
+      ],
+      "culture.policy": "verify_first",
+      "company.priority": "priority",
+      "company.details": [
+        "business"
+      ],
+      "company.policy": "verify_first",
+      "position.priority": "priority",
+      "position.details": [
+        "hiring_reason"
+      ],
+      "position.policy": "verify_first"
+    },
+    "selectionData": {
+      "answers": {
+        "growth.priority": "priority",
+        "growth.details": [
+          "promotion"
+        ],
+        "growth.policy": "verify_first",
+        "pay.priority": "priority",
+        "pay.details": [
+          "fixed"
+        ],
+        "pay.policy": "verify_first",
+        "hours.priority": "priority",
+        "hours.details": [
+          "schedule"
+        ],
+        "hours.policy": "verify_first",
+        "benefits.priority": "priority",
+        "benefits.details": [
+          "coverage"
+        ],
+        "benefits.policy": "verify_first",
+        "culture.priority": "priority",
+        "culture.details": [
+          "communication"
+        ],
+        "culture.policy": "verify_first",
+        "company.priority": "priority",
+        "company.details": [
+          "business"
+        ],
+        "company.policy": "verify_first",
+        "position.priority": "priority",
+        "position.details": [
+          "hiring_reason"
+        ],
+        "position.policy": "verify_first"
+      },
+      "conditions": [
+        {
+          "key": "city",
+          "value": [
+            "杭州"
+          ],
+          "strength": "soft"
+        },
+        {
+          "key": "min_fixed_monthly_salary",
+          "value": null,
+          "strength": "unknown"
+        },
+        {
+          "key": "accept_sales_kpi",
+          "value": false,
+          "strength": "hard"
+        },
+        {
+          "key": "accept_travel",
+          "value": null,
+          "strength": "unknown"
+        },
+        {
+          "key": "accept_outsourcing",
+          "value": null,
+          "strength": "unknown"
+        }
+      ],
+      "goalIds": [
+        "find_first_job"
+      ],
+      "stageId": "graduate",
+      "industryTags": [
+        "software_it"
+      ],
+      "roleTypes": [
+        "product_operations"
+      ]
+    },
+    "topics": [
+      {
+        "topicId": "growth",
+        "title": "晋升与成长",
+        "priority": "priority",
+        "verificationItemIds": [
+          "promotion"
+        ],
+        "verificationSelectionStatus": "selected",
+        "unknownHandling": "verify_first",
+        "userConfirmed": true,
+        "sourceIds": [
+          "weng2010"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation"
+      },
+      {
+        "topicId": "pay",
+        "title": "薪酬透明",
+        "priority": "priority",
+        "verificationItemIds": [
+          "fixed"
+        ],
+        "verificationSelectionStatus": "selected",
+        "unknownHandling": "verify_first",
+        "userConfirmed": true,
+        "sourceIds": [
+          "stofberg2022"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation"
+      },
+      {
+        "topicId": "hours",
+        "title": "工时与休息",
+        "priority": "priority",
+        "verificationItemIds": [
+          "schedule"
+        ],
+        "verificationSelectionStatus": "selected",
+        "unknownHandling": "verify_first",
+        "userConfirmed": true,
+        "sourceIds": [
+          "pega2021"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation"
+      },
+      {
+        "topicId": "benefits",
+        "title": "五险一金与保障",
+        "priority": "priority",
+        "verificationItemIds": [
+          "coverage"
+        ],
+        "verificationSelectionStatus": "selected",
+        "unknownHandling": "verify_first",
+        "userConfirmed": true,
+        "sourceIds": [
+          "tremblay1998"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation"
+      },
+      {
+        "topicId": "culture",
+        "title": "团队文化与工作方式",
+        "priority": "priority",
+        "verificationItemIds": [
+          "communication"
+        ],
+        "verificationSelectionStatus": "selected",
+        "unknownHandling": "verify_first",
+        "userConfirmed": true,
+        "sourceIds": [
+          "cable2002"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation"
+      },
+      {
+        "topicId": "company",
+        "title": "企业经营稳定",
+        "priority": "priority",
+        "verificationItemIds": [
+          "business"
+        ],
+        "verificationSelectionStatus": "selected",
+        "unknownHandling": "verify_first",
+        "userConfirmed": true,
+        "sourceIds": [
+          "campello2010"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation"
+      },
+      {
+        "topicId": "position",
+        "title": "职位与用工稳定",
+        "priority": "priority",
+        "verificationItemIds": [
+          "hiring_reason"
+        ],
+        "verificationSelectionStatus": "selected",
+        "unknownHandling": "verify_first",
+        "userConfirmed": true,
+        "sourceIds": [
+          "sverke2002"
+        ],
+        "evidenceRelation": "topic-support-only-not-item-validation"
+      }
+    ],
+    "handoff": {
+      "status": "requires-bc-needs-mapping",
+      "message": "公共1.0.0契约只传递既有五类条件；七主题侧写保存在A附表中，尚未接入B/C判断。",
+      "unmappedTopics": [
+        "growth",
+        "pay",
+        "hours",
+        "benefits",
+        "culture",
+        "company",
+        "position"
+      ]
+    }
+  },
+  "questionProvenance": [
+    {
+      "itemId": "growth.priority",
+      "text": "选择下一份工作时，晋升与成长对你有多重要？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "weng2010"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "growth.details",
+      "text": "关于晋升与成长，你希望进一步了解哪些具体信息？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "weng2010"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "growth.policy",
+      "text": "如果你关心的晋升与成长信息还不清楚，你希望如何继续？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "weng2010"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "pay.priority",
+      "text": "选择下一份工作时，薪酬透明对你有多重要？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "stofberg2022"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "pay.details",
+      "text": "关于薪酬透明，你希望进一步了解哪些具体信息？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "stofberg2022"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "pay.policy",
+      "text": "如果你关心的薪酬透明信息还不清楚，你希望如何继续？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "stofberg2022"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "hours.priority",
+      "text": "选择下一份工作时，工时与休息对你有多重要？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "pega2021"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "hours.details",
+      "text": "关于工时与休息，你希望进一步了解哪些具体信息？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "pega2021"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "hours.policy",
+      "text": "如果你关心的工时与休息信息还不清楚，你希望如何继续？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "pega2021"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "benefits.priority",
+      "text": "选择下一份工作时，五险一金与保障对你有多重要？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "tremblay1998"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "benefits.details",
+      "text": "关于五险一金与保障，你希望进一步了解哪些具体信息？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "tremblay1998"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "benefits.policy",
+      "text": "如果你关心的五险一金与保障信息还不清楚，你希望如何继续？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "tremblay1998"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "culture.priority",
+      "text": "选择下一份工作时，团队文化与工作方式对你有多重要？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "cable2002"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "culture.details",
+      "text": "关于团队文化与工作方式，你希望进一步了解哪些具体信息？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "cable2002"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "culture.policy",
+      "text": "如果你关心的团队文化与工作方式信息还不清楚，你希望如何继续？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "cable2002"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "company.priority",
+      "text": "选择下一份工作时，企业经营稳定对你有多重要？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "campello2010"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "company.details",
+      "text": "关于企业经营稳定，你希望进一步了解哪些具体信息？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "campello2010"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "company.policy",
+      "text": "如果你关心的企业经营稳定信息还不清楚，你希望如何继续？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "campello2010"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "position.priority",
+      "text": "选择下一份工作时，职位与用工稳定对你有多重要？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "sverke2002"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "position.details",
+      "text": "关于职位与用工稳定，你希望进一步了解哪些具体信息？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "sverke2002"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    },
+    {
+      "itemId": "position.policy",
+      "text": "如果你关心的职位与用工稳定信息还不清楚，你希望如何继续？",
+      "author": "求职 X-Ray A 产品需求采集",
+      "version": "job-needs-20261002-1",
+      "originalInstrument": null,
+      "originalItemNumber": null,
+      "itemOrigin": "product-authored",
+      "sourceIds": [
+        "sverke2002"
+      ],
+      "evidenceRelation": "topic-support-only-not-item-validation",
+      "validationStatus": "not-validated",
+      "scoring": "none",
+      "reverseScored": null,
+      "licenseStatus": "original-product-text-not-copied-scale"
+    }
+  ],
+  "taxonomyVersion": "a-taxonomy-1",
+  "Report": {
+    "templateVersion": "a-needs-report-1",
+    "markdown": "# 求职需求侧写\n\n画像版本：1；问卷版本：job-needs-20261002-1\n\n这是用户确认的求职需求，不是经过验证的心理量表。没有兴趣、人格、能力或公司风险分。\n\n## 晋升与成长\n\n这是我的求职重点\n\n- 晋升条件、评审流程与评审周期\n\n先核实我关心的项目，再作决定\n\n了解机会和规则，不预测晋升概率，也不评估你的能力。\n\n## 薪酬透明\n\n这是我的求职重点\n\n- 固定工资和浮动报酬分别是多少\n\n先核实我关心的项目，再作决定\n\n关注自己的报酬口径与兑现规则，不要求公开其他员工的私人薪资。\n\n## 工时与休息\n\n这是我的求职重点\n\n- 正常上下班、轮班或值班安排\n\n先核实我关心的项目，再作决定\n\n了解实际安排和休息边界，不把任何偏好视为放弃依法应有的权益。\n\n## 五险一金与保障\n\n这是我的求职重点\n\n- 适用的社保与公积金项目\n\n先核实我关心的项目，再作决定\n\n按工作地区及用工形式核验适用保障。这里选择的是关注重点，不能豁免法定义务。\n\n## 团队文化与工作方式\n\n这是我的求职重点\n\n- 任务分配、沟通和反馈方式\n\n先核实我关心的项目，再作决定\n\n关注具体团队行为；公司口号或单条匿名评价不能证明实际文化。\n\n## 企业经营稳定\n\n这是我的求职重点\n\n- 当前主营业务、产品和经营变化\n\n先核实我关心的项目，再作决定\n\n企业持续经营与一个职位是否持续是两件事；资料不公开时保持未知。\n\n## 职位与用工稳定\n\n这是我的求职重点\n\n- 新增岗位、替补岗位还是短期项目\n\n先核实我关心的项目，再作决定\n\n关注这份岗位和具体用工安排，不从企业规模推断岗位安全。\n\n## 现实条件\n\n- 工作城市：杭州（偏好）\n- 最低固定月薪：未知\n- 销售KPI：不接受（本人确认必须满足）\n- 出差：未知\n- 外包用工：未知\n\n## 行业与岗位\n\n行业：软件 / IT / 互联网\n\n岗位：运营内容\n\n## 交接状态\n\n公共1.0.0契约只传递既有五类条件；七主题侧写保存在A附表中，尚未接入B/C判断。\n\n## 研究依据\n\n- 职业成长与组织承诺：https://bs.ustc.edu.cn/UserFiles/Editor/file/20130403/20130403212479297929.pdf；只支持主题，不验证本产品题目。\n- 薪酬透明、离职意向与组织支持及公平：https://pure.uj.ac.za/en/publications/pay-transparency-job-turnover-intentions-and-the-mediating-role-o/；只支持主题，不验证本产品题目。\n- 长工时相关疾病负担的WHO／ILO联合估计：https://pmc.ncbi.nlm.nih.gov/articles/PMC8204267/；只支持主题，不验证本产品题目。\n- 员工福利满意度的决定因素与福利灵活性的影响：https://journals.sagepub.com/doi/10.1177/001872679805100505；只支持主题，不验证本产品题目。\n- 主观适配感受的聚合与区分效度：https://doi.org/10.1037/0021-9010.87.5.875；只支持主题，不验证本产品题目。\n- 金融危机中融资约束对企业经营的实际影响：https://scholars.duke.edu/publication/774061；只支持主题，不验证本产品题目。\n- 工作不安全感及其后果的元分析：https://pubmed.ncbi.nlm.nih.gov/12148956/；只支持主题，不验证本产品题目。"
+  },
+  "checksum": "88a32a38255eb9d5f49d9a9701ae3258bf99156c38bb032adc9afd2abc5dfa12"
+}
