@@ -4,6 +4,11 @@
 - 公共 schemaVersion：1.0.0，未修改。
 - “规格已修正”只表示文字规范闭合，**不是业务实现或测试通过**。
 - 修改依据：[C 新开发规格](C_DEVELOPMENT_SPEC_V1.1_2026-10-02.md)。
+## 0. 现行迁移交接
+
+- 当前生效：[C_MIGRATION_HANDOVER_V4_2026-10-02.md](C_MIGRATION_HANDOVER_V4_2026-10-02.md)（v4，含 P1-P5 + promptfoo + 21 项借鉴项目处理）
+- 历史版本：v1 / v2 / v3 仅作溯源，**不要再读**
+
 
 ## 1. 状态定义
 
@@ -129,3 +134,34 @@ C 名称在目录、README、所有新增规格和迁移标题中明确。远程
 - **C-17 补充（partially_implemented in p5）**：重试预算 `maxCalls=8` 默认；超 budget 抛 RetryBudgetError；单次 run 整体重试 ≤3 次（maxAttempts）；不冒无限重试。
 - **C-08 / C-12 兼容已检查**：unknown / 不可变版本 在 cancelled 与 restart 路径均不被破坏（重启路径输出与一次跑完字节级一致；cancelled 路径不进入 report 装配）。
 - **协调项**：handler 启动时遍历 listInterrupted 续跑需独立 PR；公共 ModelClient adapter 仍属 §9 待办（adapter 用 RetryingModelPort 包装即可对齐 P5 行为）。
+
+## 11. promptfoo P4 回归矩阵（2026-10-02，应用户"可借鉴项目"清单 §4 落地）
+
+依据：[可借鉴项目清单 §4 C 板块 promptfoo 条目](#)（高置信度，已实际安装 promptfoo 0.123.1）。
+
+- 范围：仅 `modules/c-report/tools/eval/` + devDep；A/B/packages/根工程零触
+- 安装：`npm install --save-dev promptfoo@^0.123.1`（仅 devDep，不进 production runtime）
+- 配置文件：`tools/eval/promptfooconfig.yaml`（4 个回归用例）
+- Provider：`tools/eval/provider.ts`（类 `P4Provider`，调 `ScriptedFakeModelPort`，不引入外部 API key 依赖）
+- npm script：`npm run eval:p4`
+- 实证：4/4 通过；故意破坏 test 1（移除【证据】标记）后 1/4 fail，精确识别；还原后 4/4 pass
+- 与现有测试套的关系：node:test 守代码分支、demo 守端到端、eval 守 prompt 模板结构；三层互补
+- 落地文档：[C_PROMPTFOO_EVAL_2026-10-02.md](C_PROMPTFOO_EVAL_2026-10-02.md)
+
+不安装项与拒绝理由（按可借鉴项目清单逐条）：
+
+- **next-forge**：影响 packages/根工程共享底座，与"仅 C"约束不符 → 拒绝
+- **turborepo**：影响根 CI 条件步骤（全模块），与"仅 C"约束不符 → 拒绝
+- **oasdiff**：要在 packages/contracts 暴露 OpenAPI，跨模块 → 拒绝
+- **changesets**：同上，跨模块 → 拒绝
+- **instructor**：Python 库，C 是 TS 模块 → 不可用
+- **guardrails-ai**：Python 库，C 是 TS → 不可用
+- **langfuse**：Python 库，C 是 TS（生产期可考虑 Python 适配层另议）→ 不可用
+- **OpenMeter / Dagster**：平台运行时（共享），与"仅 C"约束不符 → 拒绝
+- **KoboToolbox / surveyjs / Formbricks**：A 板块 → 拒绝
+- **JobSpy / get_jobs / splink / trafilatura / Great Expectations**：B 板块 → 拒绝
+- **gpt-researcher / STORM**：B 板块调研调度 → 拒绝
+- **Resume-Matcher**：用户明确"只看不抄" → 拒绝
+- **Morphic**：Next.js App；C 仅参考其引用 UI 范本（v3 §7 已引用），无需安装 → 仅参考
+
+**结论**：在用户列出的 21 个项目中，仅 `promptfoo` 对 C 当前阶段有立即可用的自动化回归价值，且能 100% 在 `modules/c-report/` 边界内落地；其余或跨模块、或语言不符、或定位不匹配。
