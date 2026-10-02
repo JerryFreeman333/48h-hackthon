@@ -42,13 +42,14 @@ npm run demo:p2     # P2：五个 API + 幂等/越权/版本不可变端到端�
 
 ## 阅读顺序
 
-1. [C 新开发规格 v1.1](docs/C_DEVELOPMENT_SPEC_V1.1_2026-10-02.md)——实现依据。
-2. [C P1 交付签收](docs/C_P1_DELIVERY_2026-10-02.md)——本轮实际实现/测试/缺口。
-3. [C 缺陷修订与公共待协调登记](docs/C_REMEDIATION_REGISTER_2026-10-02.md)——含 P1 实施记录。
-4. [C 迁移交接文档](docs/C_MIGRATION_HANDOVER_2026-10-02.md)——上下文与禁止越界事项。
+1. [C 迁移交接文档 v2](docs/C_MIGRATION_HANDOVER_V2_2026-10-02.md)——**新对话从这份开始**（P1+P2 状态、仓库/分支现状、技术坑、P3 任务与启动指令）。
+2. [C 新开发规格 v1.1](docs/C_DEVELOPMENT_SPEC_V1.1_2026-10-02.md)——实现依据。
+3. [C P1 交付签收](docs/C_P1_DELIVERY_2026-10-02.md)与[P2 交付签收](docs/C_P2_DELIVERY_2026-10-02.md)——实际实现/测试/缺口。
+4. [C 缺陷修订与公共待协调登记](docs/C_REMEDIATION_REGISTER_2026-10-02.md)——含 P1/P2 实施记录。
 5. [C 原始附件只读副本](docs/source/C_Matching_Report.original.md)——公共契约与三份公共输入。
-6. [前期可行性审查](docs/C_FEASIBILITY_AND_DELIVERY_PLAN_2026-10-02.md)与[历史输入核对记录](docs/contract-audit-2026-10-02.json)——背景，不覆盖新版约束。
-7. [C 文档核对结果](docs/C_DOCUMENT_VERIFICATION_2026-10-02.json)与[C 远程交付凭证](docs/C_REMOTE_DELIVERY_RECEIPT_2026-10-02.json)——实际执行记录。
+6. [P2 Next.js 集成片段](docs/C_P2_INTEGRATION_SNIPPETS.md)——根目录挂载协调用。
+7. [v1 迁移交接文档](docs/C_MIGRATION_HANDOVER_2026-10-02.md)——历史记录，其任务已完成。
+8. [前期可行性审查](docs/C_FEASIBILITY_AND_DELIVERY_PLAN_2026-10-02.md)、[历史输入核对记录](docs/contract-audit-2026-10-02.json)、[文档核对结果](docs/C_DOCUMENT_VERIFICATION_2026-10-02.json)、[远程交付凭证](docs/C_REMOTE_DELIVERY_RECEIPT_2026-10-02.json)——背景与执行记录。
 
 ## 代码结构（P1）
 
