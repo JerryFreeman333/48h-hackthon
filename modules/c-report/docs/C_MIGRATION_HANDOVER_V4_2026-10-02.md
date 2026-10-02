@@ -6,9 +6,9 @@
 
 ## 0. 一句话状态
 
-P1 + P2 + P3 + P4 + P5 + promptfoo 回归矩阵全部在 main 上落地（main HEAD `9bfb62e5…`，promptfoo API merge `9bfb62e5` 含 `818b349`；P5 合并提交 `f0d467b`）；P5 路径控制严格、213 测试 + 88 演示 + 4 eval 全绿。下一对话只剩**根挂载接线（§6.2）**、**handler 启动续跑（§6.2）**、**整体联调（§6.3）**三条主线，全部需要维护人授权 / 协调窗口。
+P1 + P2 + P3 + P4 + P5 + promptfoo + §6.2 根挂载 + §6.2 启动续跑全部在 main 上落地；P5 路径控制严格、226 测试 + 88 演示 + 4 eval 全绿。**下一对话只剩整体联调（§6.3）这条线，需要三方协调窗口。**
 
-> 本轮（2026-10-02 末段）已落地**：§6.1（promptfoo commit + push + API merge）已完成；合并后基线全部复绿（13/13 验证项见 §4）。§6.2/§6.3 仍未动，等维护人授权 / 协调窗口。
+> **本轮（2026-10-02 末段）已落地**：§6.1（promptfoo commit + push + API merge）+ §6.2（root mount + startup resume）全部完成；合并后基线全部复绿（详见 §4 + [C_HOOKUP_DELIVERY_2026-10-02.md](C_HOOKUP_DELIVERY_2026-10-02.md)）。§6.3 仍未动，等三方协调。
 
 ## 1. 仓库与分支现状（2026-10-02 本轮末尾实测，动手前必须重新核实）
 
@@ -17,6 +17,8 @@ P1 + P2 + P3 + P4 + P5 + promptfoo 回归矩阵全部在 main 上落地（main H
 | `main` | `9bfb62e5…` | P1-P4 (PR #4 → `0e0a101`) + P5 (API merge → `f0d467b`) + 队友 PR #5 (`84dfcce`) + promptfoo (API merge → `9bfb62e5`) 全部已合；C 子树 SHA `a895483ca…` |
 | `codex/c-p5-resume` | `197ed69772` | P5 提交链（已合入 main，本地 HEAD 在这；保留分支做审计） |
 | `codex/c-promptfoo-eval` | `818b349…` | promptfoo 提交（已 API 合入 main `9bfb62e5`）；保留分支做审计 |
+| `codex/c-handover-v4` | `e779d9f…` | v4 交接 doc 提交（已 API 合入 main `f3335ed7`）；保留分支做审计 |
+| `codex/c-hookup` | (本轮) | §6.2 根挂载 + 启动续跑提交（待合并） |
 | `codex/c-offline-core` | `f4bfcc8ab1` | P1-P4 链；保留做历史溯源 |
 | `feat/a-profile` | `84dfcce39e` | A 业务分支；最新合入是 PR #5 |
 | `work/b-research` | `fefd938480` | B 业务分支 |
@@ -41,6 +43,8 @@ P1 + P2 + P3 + P4 + P5 + promptfoo 回归矩阵全部在 main 上落地（main H
 | promptfoo tip 提交 | `818b349df75da821338319dc6431e5302e327982` | `codex/c-promptfoo-eval` 分支 tip；tree `8aca505ab3e97d97077b4483dd4456660a27f071` |
 | promptfoo 合并提交 | `9bfb62e5feebf32c1e6fab082057aedfa5b45496` | API merge 到 main 的 merge commit；parents: `9916195057` + `818b349` |
 | promptfoo 合并 tree | `8aca505ab3e97d97077b4483dd4456660a27f071` | 与 `818b349` tip tree 完全一致 |
+| hookup §6.2 tip 提交 | (本轮) | `codex/c-hookup` 分支 tip；含 5 route + demo + reports + startup resume + storedInputs |
+| hookup §6.2 合并提交 | (本轮) | API merge 到 main（包含 §6.1 + §6.2 全部 PR） |
 
 
 ## 2. 本轮交付（P5 + promptfoo，全部在 main 上的真值）
@@ -176,18 +180,23 @@ diff -q /tmp/regen.json docs/C_P1_DEMO_OUTPUT_2026-10-02.json   # 字节级一�
 
 > ⚠️ **owner 决策点（次要）**：§2.2 字面写"仅 devDep 不影响 production"，技术上成立但**未披露 2.2 GB 实情**。下一次交接 doc 应在 §2.2 / §7.3 / §8 都明示体积代价。
 
-### 6.2 中优先级（需维护人授权）
+### 6.2 中优先级（需维护人授权）—— **✅ 全部完成（2026-10-02 末段）**
 
-**[C-IMPL-ROOT-MOUNT]** 根目录挂载接线（v3 §8.2）
-- 等维护人授权才动根工程文件
-- 片段已备于 `docs/C_P2_INTEGRATION_SNIPPETS.md` + `docs/C_P3_INTEGRATION_SNIPPETS.md`
-- handler 路径已具备 P5 入口分流：`ctx.checkpoint !== undefined` 时走 `runMatchPipelineCancellable`
-- 估计耗时：30-60 分钟（独立 PR 走）
+**[C-IMPL-ROOT-MOUNT]** 根目录挂载接线 —— **已落地**
+- 实现：5 route（matches / runs / reports / **新增 snapshot** / export / update）+ `/demo/c` + `/demo/c/export` + `/reports` + `app/foundation-page.tsx` C 状态更新
+- 修改根工程：`package.json`（新增 `test:c` script）+ `package-lock.json`（首次装根依赖）
+- 修改 C：`createCApiContext()` 工厂 + `handleGetReportSnapshot` 新 handler + `CApiContext.onStartup` 字段
+- 跑通基线：root `npm run test:c` 226/226 + root `npm run typecheck` 0 错 + 5 demos + eval:p4 + P1 字节级一致
+- 部署前替换提示详见 [docs/C_HOOKUP_DELIVERY_2026-10-02.md §2.3](C_HOOKUP_DELIVERY_2026-10-02.md)
 
-**[C-IMPL-STARTUP-RESUME]** handler 启动时遍历 `listInterrupted` 续跑
-- 当前 P5 仅提供 `CheckpointStore.listInterrupted` 机制；handler 启动续跑属独立 PR
-- 建议实现：在 `CApiContext` 加 `onStartup?: (stores, checkpoint) => Promise<void>` 钩子，demo runtime 用 `setTimeout` 异步触发；生产由宿主在 boot 时同步调
-- 估计耗时：30 分钟
+**[C-IMPL-STARTUP-RESUME]** handler 启动时遍历 `listInterrupted` 续跑 —— **已落地**
+- 实现：`CheckpointStore.init(metadata, storedInputs)` + `CheckpointStore.listProjects()` + `resumeInterruptedRuns(ctx)` + `CApiContext.onStartup` 默认实现 = resumeInterruptedRuns
+- 修改：`appendStage` 透传 storedInputs（修复 init→append→resume 路径丢字段 bug）
+- demo runtime：setTimeout 异步触发避免 boot 阻塞首请求；生产：boot 同步调
+- 测试覆盖：`tests/startup-resume.test.ts` 8 项（init / listProjects / storedInputs 透传 / no-op on completedStages / runOne skip / full resume / onStartup 触发）
+- 关键设计选择详见 [docs/C_HOOKUP_DELIVERY_2026-10-02.md §4.3](C_HOOKUP_DELIVERY_2026-10-02.md)
+
+> ⚠️ **owner 决策点（非阻塞）**：根工程 `package-lock.json` 首次入仓（`npm install` 拉 Next 15 + React 19，约 400 MB）；`app/api/c/*/route.ts` 当前 ctx 仍是 fake runtime，**生产部署前必须替换为公共 runtime adapter**。`app/demo/c/*` 不得部署到 live。详见 C_HOOKUP_DELIVERY §2.3。
 
 ### 6.3 待协调（不主动启动）
 
