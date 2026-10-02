@@ -60,3 +60,30 @@ C 名称在目录、README、所有新增规格和迁移标题中明确。远程
 下一对话先做 P1 代码和实际测试。只有实际实现后才能将条目标记 implemented/tested；不能因本登记存在就宣称缺陷已在运行系统修复。
 
 模块独立签收与端到端签收分别记录。真实来源、付费效果、供应商覆盖与真实语义质量保持未验证，直到存在相应证据。
+
+## 6. P1 实施记录（2026-10-02，代码落地后追加）
+
+依据：[P1 交付签收](C_P1_DELIVERY_2026-10-02.md)。范围仅限本轮实际编码与测试（vitest 83 项通过、演示 14 项预期通过）；"implemented_in_p1" 不等于生产验证，也不改变 open_shared 条目的公共依赖。
+
+| ID | P1 状态 | 说明 |
+|---|---|---|
+| C-01 | implemented_in_p1（C 侧策略） | 完整 SearchIntent 快照校验已实现；部分上下文仅 demo 显式放行，live/manual 拒绝。总控传快照方式仍待确认 |
+| C-02 | partially_implemented | 模板文案已区分兴趣/自报经历/能力；语义级分离需 P4 模型与真实材料 |
+| C-03 | implemented_in_p1 | DecisionTrace.profilePath 已实现；trace 为 C 私有，不进公共 MatchReport（有测试） |
+| C-04 | partially_implemented | 结构/主体/scope 层已实现并有测试；片段-命题语义检查属 P4，语义仍需人工评审 |
+| C-05 | partially_implemented | 无 provenance → unknown 的守门已实现（薪资/城市/identity）；fieldProvenance 公共结构未提出 |
+| C-06 | implemented_in_p1 | 仅消费 `job.sales_kpi`；未登记 key 不触发确定性结论（有测试） |
+| C-07 | partially_implemented | P1 不作任何当前/历史断言；时间协议未确认前不启用相关规则 |
+| C-08 | implemented_in_p1 | 模板层 supported≠适合：identity/salary 等声明字段不产生绿色/安全结论（有测试） |
+| C-09 | implemented_in_p1（框架） | 比较器全分支实现并单测；管线按 §6(3) 守门为 unknown，provenance 协调后自动生效 |
+| C-10 | partially_implemented | 本地优先级预案已实现（insufficient→hold→deprioritize→verify_first→explore，多原因保留）；跨模块确认仍是 open_shared |
+| C-11 | not_applicable_p1 | P1 无模型；promptVersion 明确标记 no-model；七层校验在 P4 |
+| C-12 | partially_implemented | 私有快照/trace/输入哈希已实现（内存对象）；持久化、不可变版本存储属 P2 |
+| C-13 | implemented_in_p1 | 空 jobs → results=[]，私有 diagnostics 携带说明，不伪造公共字段（有测试） |
+| C-14 | partially_implemented | demo scope 已冻结并产出 partial；complete_for_scope 跨模块语义待确认 |
+| C-15 | implemented_in_p1 | C 私有目标路径字典（16 个现有目标）；resolves 越界在装配与测试中双重拒绝 |
+| C-16 | not_implemented | P2 范围：持久 ports、数据库唯一约束、越权校验 |
+| C-17 | not_implemented | P4 范围：预算/费用；P1 无付费调用，无成本发生 |
+| C-18 | implemented_in_p1（范围） | 本轮仅提交 `modules/c-report/`；未复制/绕接公共底座或 A/B 数据 |
+| C-19 | partially_implemented | 应用测试与文档核对已分离且均为真实运行；语义质量仍需真实材料人工评审 |
+| C-20 | not_validated | 不变 |

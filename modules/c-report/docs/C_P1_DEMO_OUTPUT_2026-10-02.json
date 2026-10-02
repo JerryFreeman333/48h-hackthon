@@ -1,0 +1,720 @@
+{
+  "artifactType": "c_demo_match_report_with_private_snapshot",
+  "report": {
+    "schemaVersion": "1.0.0",
+    "reportId": "report-demo-p1-1",
+    "version": 1,
+    "projectId": "project-demo-1",
+    "profileId": "profile-demo-1",
+    "profileRevision": 1,
+    "bundleId": "bundle-demo-1",
+    "mode": "demo",
+    "generatedAt": "2026-10-02T09:00:00Z",
+    "completeness": "partial",
+    "results": [
+      {
+        "jobId": "job-demo-1",
+        "recommendation": "deprioritize",
+        "reasons": [
+          {
+            "text": "岗位事实：job.sales_kpi=true（supported，事实 fact-demo-1）。",
+            "kind": "fact",
+            "factIds": [
+              "fact-demo-1"
+            ]
+          },
+          {
+            "text": "已确认硬约束 accept_sales_kpi 判定为 fail（岗位侧事实：fact-demo-1）：确定性规则得出，软偏好不能抵消。",
+            "kind": "inference",
+            "factIds": [
+              "fact-demo-1"
+            ]
+          },
+          {
+            "text": "固定月薪口径未知（声明为 total/unknown）：不比较固定收入，total 不能冒充底薪。",
+            "kind": "unknown",
+            "factIds": []
+          },
+          {
+            "text": "真实在招状态未知：公司适合不等于当前有招聘。",
+            "kind": "unknown",
+            "factIds": []
+          },
+          {
+            "text": "经营证据覆盖不足：财务/稳定性未知，未知不等于安全。",
+            "kind": "unknown",
+            "factIds": []
+          }
+        ],
+        "constraints": [
+          {
+            "key": "accept_sales_kpi",
+            "result": "fail",
+            "factIds": [
+              "fact-demo-1"
+            ]
+          }
+        ],
+        "dimensions": [
+          {
+            "key": "identity_credit",
+            "summary": "【证据】B 声明招聘主体 identityStatus=confirmed（legalName=合成演示软件公司）。【缺口】1.0.0 中该字段无逐字段来源，mode=demo 的声明不能当作现实主体核验结果；信用线索（统一社会信用代码）未提供。【推断】在主体来源得到核验前，本维度保持 unknown，不产生确定的公司风险结论。",
+            "status": "unknown",
+            "factIds": []
+          },
+          {
+            "key": "business",
+            "summary": "【证据】business_financials 覆盖状态=not_connected（合成演示，不代表真实调查，checkedAt=2026-10-02T05:00:00Z）。【缺口】经营稳定性/财务状况没有可核验材料。【推断】未知不等于安全；没有查到负面信息不等于没有风险。在获得可靠经营证据前本维度保持 unknown。",
+            "status": "unknown",
+            "factIds": []
+          },
+          {
+            "key": "role_clarity",
+            "summary": "【证据】岗位名称「产品运营」，JD 原文列出的任务需以原文为准（evidenceSnapshot 中可查）；考核方面：job.sales_kpi=supported（事实 fact-demo-1，来源证据片段）明确销售签单指标存在。【缺口】JD 未写明各项职责的占比（本报告不生成占比），是否存在 JD 未列出的其他任务与考核未知；岗位名称与实际任务是否一致需向招聘方确认。【推断】在职责构成得到确认前，本维度保持 unknown；supported 状态表示命题有支持，不等于岗位清晰适合。",
+            "status": "unknown",
+            "factIds": [
+              "fact-demo-1"
+            ]
+          },
+          {
+            "key": "career_value",
+            "summary": "【证据】本人目标：积累产品交付经验。已确认经历：「完成过课程产品原型」（自报，本人确认）。【推断】目标与 JD 中「收集产品反馈」等任务存在表面关联线索，但自报经历与问卷兴趣不证明实际能力；本报告不声称该岗位已被证明能带来产品设计或产品交付成长。【缺口】成长价值未经真实材料验证；能否积累目标技能需通过面试核验（见 questions）。注意：岗位考核含销售签单指标（事实 fact-demo-1），时间分配会影响目标技能的积累空间。",
+            "status": "unknown",
+            "factIds": []
+          },
+          {
+            "key": "personal_fit",
+            "summary": "【证据】已确认硬约束与岗位事实存在直接冲突（accept_sales_kpi）。【推断】硬冲突由确定性规则得出；软偏好不能抵消硬冲突。【缺口】冲突是否可接受由本人决定；本报告不据此断言岗位不适合所有人。",
+            "status": "contradicted",
+            "factIds": [
+              "fact-demo-1"
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "text": "固定底薪和绩效各是多少？签单指标是否计入固定底薪考核？",
+            "priority": "must",
+            "resolves": [
+              "job.salary.basis",
+              "job.salary.min",
+              "job.salary.max"
+            ]
+          },
+          {
+            "text": "能否提供招聘主体公司全称与统一社会信用代码，用于入职前主体复核？",
+            "priority": "optional",
+            "resolves": [
+              "company.legalName",
+              "company.creditCode",
+              "company.identityStatus"
+            ]
+          },
+          {
+            "text": "该岗位当前是否仍在真实招聘？可通过招聘平台状态或直接联系招聘方确认。",
+            "priority": "optional",
+            "resolves": [
+              "job.vacancyStatus"
+            ]
+          },
+          {
+            "text": "能否提供可核验的基本经营信息（如官方公示、官网或财报链接）？",
+            "priority": "optional",
+            "resolves": [
+              "coverage:business_financials"
+            ]
+          },
+          {
+            "text": "能否举一个该岗位近期基于产品反馈推动改进的具体例子？",
+            "priority": "optional",
+            "resolves": [
+              "job.rawJd"
+            ]
+          }
+        ]
+      }
+    ],
+    "evidenceSnapshot": [
+      {
+        "evidenceId": "evidence-demo-1",
+        "companyId": "company-demo-1",
+        "jobId": "job-demo-1",
+        "scope": "job",
+        "sourceType": "demo_fixture",
+        "title": "合成JD",
+        "url": null,
+        "publishedAt": null,
+        "retrievedAt": "2026-10-02T05:00:00Z",
+        "excerpt": "负责客户拓展，完成签单指标，收集产品反馈。",
+        "mode": "demo",
+        "verification": "verified"
+      }
+    ],
+    "factsSnapshot": [
+      {
+        "factId": "fact-demo-1",
+        "companyId": "company-demo-1",
+        "jobId": "job-demo-1",
+        "key": "job.sales_kpi",
+        "value": true,
+        "status": "supported",
+        "evidenceIds": [
+          "evidence-demo-1"
+        ],
+        "asOf": null
+      }
+    ],
+    "coverageSnapshot": [
+      {
+        "companyId": "company-demo-1",
+        "jobId": null,
+        "topic": "business_financials",
+        "status": "not_connected",
+        "reason": "合成演示，不代表真实调查",
+        "checkedAt": "2026-10-02T05:00:00Z"
+      }
+    ],
+    "ruleVersion": "c-rules-1.0.0-p1",
+    "promptVersion": "template-no-model-p1.0.0"
+  },
+  "snapshot": {
+    "artifactType": "c_private_report_snapshot_v1",
+    "report": {
+      "schemaVersion": "1.0.0",
+      "reportId": "report-demo-p1-1",
+      "version": 1,
+      "projectId": "project-demo-1",
+      "profileId": "profile-demo-1",
+      "profileRevision": 1,
+      "bundleId": "bundle-demo-1",
+      "mode": "demo",
+      "generatedAt": "2026-10-02T09:00:00Z",
+      "completeness": "partial",
+      "results": [
+        {
+          "jobId": "job-demo-1",
+          "recommendation": "deprioritize",
+          "reasons": [
+            {
+              "text": "岗位事实：job.sales_kpi=true（supported，事实 fact-demo-1）。",
+              "kind": "fact",
+              "factIds": [
+                "fact-demo-1"
+              ]
+            },
+            {
+              "text": "已确认硬约束 accept_sales_kpi 判定为 fail（岗位侧事实：fact-demo-1）：确定性规则得出，软偏好不能抵消。",
+              "kind": "inference",
+              "factIds": [
+                "fact-demo-1"
+              ]
+            },
+            {
+              "text": "固定月薪口径未知（声明为 total/unknown）：不比较固定收入，total 不能冒充底薪。",
+              "kind": "unknown",
+              "factIds": []
+            },
+            {
+              "text": "真实在招状态未知：公司适合不等于当前有招聘。",
+              "kind": "unknown",
+              "factIds": []
+            },
+            {
+              "text": "经营证据覆盖不足：财务/稳定性未知，未知不等于安全。",
+              "kind": "unknown",
+              "factIds": []
+            }
+          ],
+          "constraints": [
+            {
+              "key": "accept_sales_kpi",
+              "result": "fail",
+              "factIds": [
+                "fact-demo-1"
+              ]
+            }
+          ],
+          "dimensions": [
+            {
+              "key": "identity_credit",
+              "summary": "【证据】B 声明招聘主体 identityStatus=confirmed（legalName=合成演示软件公司）。【缺口】1.0.0 中该字段无逐字段来源，mode=demo 的声明不能当作现实主体核验结果；信用线索（统一社会信用代码）未提供。【推断】在主体来源得到核验前，本维度保持 unknown，不产生确定的公司风险结论。",
+              "status": "unknown",
+              "factIds": []
+            },
+            {
+              "key": "business",
+              "summary": "【证据】business_financials 覆盖状态=not_connected（合成演示，不代表真实调查，checkedAt=2026-10-02T05:00:00Z）。【缺口】经营稳定性/财务状况没有可核验材料。【推断】未知不等于安全；没有查到负面信息不等于没有风险。在获得可靠经营证据前本维度保持 unknown。",
+              "status": "unknown",
+              "factIds": []
+            },
+            {
+              "key": "role_clarity",
+              "summary": "【证据】岗位名称「产品运营」，JD 原文列出的任务需以原文为准（evidenceSnapshot 中可查）；考核方面：job.sales_kpi=supported（事实 fact-demo-1，来源证据片段）明确销售签单指标存在。【缺口】JD 未写明各项职责的占比（本报告不生成占比），是否存在 JD 未列出的其他任务与考核未知；岗位名称与实际任务是否一致需向招聘方确认。【推断】在职责构成得到确认前，本维度保持 unknown；supported 状态表示命题有支持，不等于岗位清晰适合。",
+              "status": "unknown",
+              "factIds": [
+                "fact-demo-1"
+              ]
+            },
+            {
+              "key": "career_value",
+              "summary": "【证据】本人目标：积累产品交付经验。已确认经历：「完成过课程产品原型」（自报，本人确认）。【推断】目标与 JD 中「收集产品反馈」等任务存在表面关联线索，但自报经历与问卷兴趣不证明实际能力；本报告不声称该岗位已被证明能带来产品设计或产品交付成长。【缺口】成长价值未经真实材料验证；能否积累目标技能需通过面试核验（见 questions）。注意：岗位考核含销售签单指标（事实 fact-demo-1），时间分配会影响目标技能的积累空间。",
+              "status": "unknown",
+              "factIds": []
+            },
+            {
+              "key": "personal_fit",
+              "summary": "【证据】已确认硬约束与岗位事实存在直接冲突（accept_sales_kpi）。【推断】硬冲突由确定性规则得出；软偏好不能抵消硬冲突。【缺口】冲突是否可接受由本人决定；本报告不据此断言岗位不适合所有人。",
+              "status": "contradicted",
+              "factIds": [
+                "fact-demo-1"
+              ]
+            }
+          ],
+          "questions": [
+            {
+              "text": "固定底薪和绩效各是多少？签单指标是否计入固定底薪考核？",
+              "priority": "must",
+              "resolves": [
+                "job.salary.basis",
+                "job.salary.min",
+                "job.salary.max"
+              ]
+            },
+            {
+              "text": "能否提供招聘主体公司全称与统一社会信用代码，用于入职前主体复核？",
+              "priority": "optional",
+              "resolves": [
+                "company.legalName",
+                "company.creditCode",
+                "company.identityStatus"
+              ]
+            },
+            {
+              "text": "该岗位当前是否仍在真实招聘？可通过招聘平台状态或直接联系招聘方确认。",
+              "priority": "optional",
+              "resolves": [
+                "job.vacancyStatus"
+              ]
+            },
+            {
+              "text": "能否提供可核验的基本经营信息（如官方公示、官网或财报链接）？",
+              "priority": "optional",
+              "resolves": [
+                "coverage:business_financials"
+              ]
+            },
+            {
+              "text": "能否举一个该岗位近期基于产品反馈推动改进的具体例子？",
+              "priority": "optional",
+              "resolves": [
+                "job.rawJd"
+              ]
+            }
+          ]
+        }
+      ],
+      "evidenceSnapshot": [
+        {
+          "evidenceId": "evidence-demo-1",
+          "companyId": "company-demo-1",
+          "jobId": "job-demo-1",
+          "scope": "job",
+          "sourceType": "demo_fixture",
+          "title": "合成JD",
+          "url": null,
+          "publishedAt": null,
+          "retrievedAt": "2026-10-02T05:00:00Z",
+          "excerpt": "负责客户拓展，完成签单指标，收集产品反馈。",
+          "mode": "demo",
+          "verification": "verified"
+        }
+      ],
+      "factsSnapshot": [
+        {
+          "factId": "fact-demo-1",
+          "companyId": "company-demo-1",
+          "jobId": "job-demo-1",
+          "key": "job.sales_kpi",
+          "value": true,
+          "status": "supported",
+          "evidenceIds": [
+            "evidence-demo-1"
+          ],
+          "asOf": null
+        }
+      ],
+      "coverageSnapshot": [
+        {
+          "companyId": "company-demo-1",
+          "jobId": null,
+          "topic": "business_financials",
+          "status": "not_connected",
+          "reason": "合成演示，不代表真实调查",
+          "checkedAt": "2026-10-02T05:00:00Z"
+        }
+      ],
+      "ruleVersion": "c-rules-1.0.0-p1",
+      "promptVersion": "template-no-model-p1.0.0"
+    },
+    "profile": {
+      "schemaVersion": "1.0.0",
+      "profileId": "profile-demo-1",
+      "revision": 1,
+      "projectId": "project-demo-1",
+      "mode": "demo",
+      "confirmedAt": "2026-10-02T05:00:00Z",
+      "assessment": {
+        "instrumentId": "career-prototype-48",
+        "version": "1",
+        "scores": {
+          "social": 70,
+          "investigative": 65
+        },
+        "interpretation": "合成演示：偏好理解需求和沟通",
+        "status": "confirmed",
+        "validation": "prototype"
+      },
+      "background": {
+        "education": "本科",
+        "major": "示例专业",
+        "skills": [
+          "需求访谈"
+        ],
+        "experiences": [
+          {
+            "text": "完成过课程产品原型",
+            "source": "user",
+            "confirmed": true
+          }
+        ]
+      },
+      "goals": [
+        "积累产品交付经验"
+      ],
+      "preferences": [
+        {
+          "key": "accept_sales_kpi",
+          "value": false,
+          "strength": "hard",
+          "confirmed": true
+        }
+      ]
+    },
+    "intentContext": {
+      "schemaVersion": "1.0.0",
+      "intentId": "intent-demo-1",
+      "revision": 1,
+      "projectId": "project-demo-1",
+      "profileId": "profile-demo-1",
+      "profileRevision": 1,
+      "mode": "demo",
+      "industryTags": [
+        "software_it"
+      ],
+      "industryCodes": [
+        "I"
+      ],
+      "roleTypes": [
+        "product_operations"
+      ],
+      "cities": [
+        "上海"
+      ],
+      "filters": [
+        {
+          "key": "accept_sales_kpi",
+          "value": false,
+          "strength": "hard"
+        }
+      ],
+      "maxCandidates": 3
+    },
+    "bundle": {
+      "schemaVersion": "1.0.0",
+      "bundleId": "bundle-demo-1",
+      "projectId": "project-demo-1",
+      "intentId": "intent-demo-1",
+      "intentRevision": 1,
+      "mode": "demo",
+      "retrievedAt": "2026-10-02T05:00:00Z",
+      "companies": [
+        {
+          "companyId": "company-demo-1",
+          "legalName": "合成演示软件公司",
+          "creditCode": null,
+          "brandName": null,
+          "identityStatus": "confirmed"
+        }
+      ],
+      "jobs": [
+        {
+          "jobId": "job-demo-1",
+          "companyId": "company-demo-1",
+          "title": "产品运营",
+          "rawJd": "负责客户拓展，完成签单指标，收集产品反馈。",
+          "city": "上海",
+          "sourceUrl": null,
+          "publishedAt": null,
+          "vacancyStatus": "unknown",
+          "salary": {
+            "currency": "CNY",
+            "min": 10000,
+            "max": 15000,
+            "period": "month",
+            "basis": "total",
+            "taxBasis": "pre_tax",
+            "months": null
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "evidence-demo-1",
+          "companyId": "company-demo-1",
+          "jobId": "job-demo-1",
+          "scope": "job",
+          "sourceType": "demo_fixture",
+          "title": "合成JD",
+          "url": null,
+          "publishedAt": null,
+          "retrievedAt": "2026-10-02T05:00:00Z",
+          "excerpt": "负责客户拓展，完成签单指标，收集产品反馈。",
+          "mode": "demo",
+          "verification": "verified"
+        }
+      ],
+      "facts": [
+        {
+          "factId": "fact-demo-1",
+          "companyId": "company-demo-1",
+          "jobId": "job-demo-1",
+          "key": "job.sales_kpi",
+          "value": true,
+          "status": "supported",
+          "evidenceIds": [
+            "evidence-demo-1"
+          ],
+          "asOf": null
+        }
+      ],
+      "coverage": [
+        {
+          "companyId": "company-demo-1",
+          "jobId": null,
+          "topic": "business_financials",
+          "status": "not_connected",
+          "reason": "合成演示，不代表真实调查",
+          "checkedAt": "2026-10-02T05:00:00Z"
+        }
+      ],
+      "usage": []
+    },
+    "scope": {
+      "profileId": "profile-demo-1",
+      "candidateJobIds": [
+        "job-demo-1"
+      ],
+      "dimensionKeys": [
+        "identity_credit",
+        "business",
+        "role_clarity",
+        "career_value",
+        "personal_fit"
+      ],
+      "confirmedHardConstraintKeys": [
+        "accept_sales_kpi"
+      ],
+      "keyTopics": [
+        "job.sales_kpi",
+        "salary_income_assessability",
+        "current_real_vacancy",
+        "business_financials",
+        "company_identity"
+      ],
+      "requiredStages": [
+        "input_schema",
+        "binding",
+        "references",
+        "preferences",
+        "constraints",
+        "dimensions",
+        "questions",
+        "reasons",
+        "action",
+        "report_selfcheck"
+      ]
+    },
+    "inputHashes": {
+      "profile": "7f7c94c0a06cc665c525f0ff0c28b424fecd815ea775f8f963609f4019814900",
+      "intent": "4eb7a6f3a1ec12714e76a28a301ceb48c16af5458101c5c3a6df1dcf4935090a",
+      "bundle": "1c2e91bfbe7d97b5f16aa0898717e45adfa9fb1133e02d9d07884af5f5915a42"
+    },
+    "decisionTraces": [
+      {
+        "jobId": "job-demo-1",
+        "constraints": [
+          {
+            "key": "accept_sales_kpi",
+            "profilePath": "preferences[0].key=accept_sales_kpi",
+            "jobFactIds": [
+              "fact-demo-1"
+            ],
+            "ruleId": "c.constraint.accept_sales_kpi.v1",
+            "result": "fail",
+            "basis": "fact",
+            "diagnostics": [],
+            "notes": [
+              "已确认不接受销售KPI，且岗位事实（supported）明确销售签单指标存在。"
+            ]
+          }
+        ],
+        "dimensions": [
+          {
+            "key": "identity_credit",
+            "ruleId": "c.dimensions.v1",
+            "factIds": [],
+            "notes": []
+          },
+          {
+            "key": "business",
+            "ruleId": "c.dimensions.v1",
+            "factIds": [],
+            "notes": []
+          },
+          {
+            "key": "role_clarity",
+            "ruleId": "c.dimensions.v1",
+            "factIds": [
+              "fact-demo-1"
+            ],
+            "notes": []
+          },
+          {
+            "key": "career_value",
+            "ruleId": "c.dimensions.v1",
+            "factIds": [],
+            "notes": []
+          },
+          {
+            "key": "personal_fit",
+            "ruleId": "c.dimensions.v1",
+            "factIds": [
+              "fact-demo-1"
+            ],
+            "notes": []
+          }
+        ],
+        "action": {
+          "ruleId": "c.action.priority.v1",
+          "recommendation": "deprioritize",
+          "triggeredBy": [
+            "constraint:accept_sales_kpi:fail"
+          ],
+          "notes": [
+            "hold 规则表条目数：0（1.0.0 为空，激活需公共命题协议）"
+          ]
+        }
+      }
+    ],
+    "diagnostics": {
+      "stages": [
+        {
+          "stage": "input_schema",
+          "status": "executed"
+        },
+        {
+          "stage": "binding",
+          "status": "executed"
+        },
+        {
+          "stage": "references",
+          "status": "executed"
+        },
+        {
+          "stage": "references",
+          "status": "executed"
+        },
+        {
+          "stage": "preferences",
+          "status": "executed",
+          "detail": "hard=1"
+        },
+        {
+          "stage": "constraints",
+          "status": "executed"
+        },
+        {
+          "stage": "dimensions",
+          "status": "executed"
+        },
+        {
+          "stage": "questions",
+          "status": "executed"
+        },
+        {
+          "stage": "reasons",
+          "status": "executed"
+        },
+        {
+          "stage": "action",
+          "status": "executed"
+        },
+        {
+          "stage": "report_selfcheck",
+          "status": "executed"
+        }
+      ],
+      "intentContextPartial": false,
+      "insufficientNote": null,
+      "keyTopicGaps": [
+        "salary_income_assessability",
+        "current_real_vacancy",
+        "business_financials"
+      ],
+      "scope": {
+        "profileId": "profile-demo-1",
+        "candidateJobIds": [
+          "job-demo-1"
+        ],
+        "dimensionKeys": [
+          "identity_credit",
+          "business",
+          "role_clarity",
+          "career_value",
+          "personal_fit"
+        ],
+        "confirmedHardConstraintKeys": [
+          "accept_sales_kpi"
+        ],
+        "keyTopics": [
+          "job.sales_kpi",
+          "salary_income_assessability",
+          "current_real_vacancy",
+          "business_financials",
+          "company_identity"
+        ],
+        "requiredStages": [
+          "input_schema",
+          "binding",
+          "references",
+          "preferences",
+          "constraints",
+          "dimensions",
+          "questions",
+          "reasons",
+          "action",
+          "report_selfcheck"
+        ]
+      },
+      "inputHashes": {
+        "profile": "7f7c94c0a06cc665c525f0ff0c28b424fecd815ea775f8f963609f4019814900",
+        "intent": "4eb7a6f3a1ec12714e76a28a301ceb48c16af5458101c5c3a6df1dcf4935090a",
+        "bundle": "1c2e91bfbe7d97b5f16aa0898717e45adfa9fb1133e02d9d07884af5f5915a42"
+      },
+      "bundleUsageEntryCount": 0
+    },
+    "ruleVersion": "c-rules-1.0.0-p1",
+    "promptVersion": "template-no-model-p1.0.0",
+    "generatedAt": "2026-10-02T09:00:00Z"
+  }
+}

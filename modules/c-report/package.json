@@ -1,0 +1,24 @@
+{
+  "name": "@xray/c-report",
+  "private": true,
+  "version": "0.1.0",
+  "description": "求职 X-Ray 模块 C：个性化匹配、比较与报告（P1 无模型离线核心）",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "demo": "tsx scripts/run-demo.ts"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0"
+  }
+}
