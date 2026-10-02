@@ -1,0 +1,26 @@
+{
+  "name": "@xray/c-report",
+  "private": true,
+  "version": "0.1.0",
+  "description": "求职 X-Ray 模块 C：个性化匹配、比较与报告（P1 无模型离线核心 + P2 API + P3 页面渲染）",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/constraints.test.ts tests/fixtures-contract.test.ts tests/hash.test.ts tests/immutability-trace.test.ts tests/intent-context.test.ts tests/recommendation.test.ts tests/validation.test.ts tests/api-flows.test.ts tests/api-ownership-idempotency.test.ts tests/api-update-export.test.ts tests/ui-view-model.test.ts tests/ui-html.test.ts tests/api-export-json.test.ts tests/model-validate-output.test.ts tests/model-refine.test.ts",
+    "demo": "tsx scripts/run-demo.ts",
+    "demo:p2": "tsx scripts/run-p2-demo.ts",
+    "demo:p3": "tsx scripts/run-p3-demo.ts",
+    "demo:p4": "tsx scripts/run-p4-demo.ts"
+  },
+  "dependencies": {
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}

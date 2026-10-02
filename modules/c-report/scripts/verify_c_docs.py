@@ -19,6 +19,20 @@ ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "docs/C_DOCUMENT_VERIFICATION_2026-10-02.json"
 RECEIPT = ROOT / "docs/C_REMOTE_DELIVERY_RECEIPT_2026-10-02.json"
 SOURCE = ROOT / "docs/source/C_Matching_Report.original.md"
+# 生成物目录不属于 C 文档/样例：依赖来自锁文件可重建，不进入本审计。
+EXCLUDED_DIRECTORY_NAMES = {"node_modules", "dist", "coverage", ".git"}
+
+
+def in_excluded_directory(path: Path) -> bool:
+    return any(part in EXCLUDED_DIRECTORY_NAMES for part in path.relative_to(ROOT).parts)
+
+
+def c_files() -> list[Path]:
+    return [
+        path
+        for path in sorted(ROOT.rglob("*"))
+        if path.is_file() and not in_excluded_directory(path)
+    ]
 FIXTURE_NAMES = (
     "user-profile.demo.v1.json",
     "search-intent.demo.v1.json",
@@ -115,7 +129,7 @@ def audit() -> dict:
     if set(expected.get("requiredDimensionKeys", [])) != {"identity_credit", "business", "role_clarity", "career_value", "personal_fit"}:
         errors.append("expected dimension key list differs from public contract")
 
-    markdown_paths = sorted(ROOT.rglob("*.md"))
+    markdown_paths = [path for path in c_files() if path.suffix == ".md"]
     checked_links = 0
     for path in markdown_paths:
         text = path.read_text()
@@ -142,8 +156,8 @@ def audit() -> dict:
             errors.append("required document missing: " + name)
     hashes = {
         str(path.relative_to(ROOT)): sha256(path)
-        for path in sorted(ROOT.rglob("*"))
-        if path.is_file() and path not in (REPORT, RECEIPT)
+        for path in c_files()
+        if path not in (REPORT, RECEIPT)
     }
     return {
         "module": "C",
@@ -171,6 +185,7 @@ def audit() -> dict:
             "Negative mutations exercise this audit, not an application validator.",
             "No MatchReport is generated and no semantic quality or real company truth is established.",
             "No A/B, root files, shared schema or runtime are modified.",
+            "Generated directories (node_modules/dist/coverage) are excluded from the file walk; dependencies are reproducible from the lockfile.",
         ],
     }
 
