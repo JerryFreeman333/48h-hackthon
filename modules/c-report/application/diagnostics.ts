@@ -21,6 +21,11 @@ export interface RunDiagnostics {
   inputHashes: { profile: string; intent: string; bundle: string } | null;
   /** B usage 原样保留的条数（成本归集属 P2+ UsagePort）。 */
   bundleUsageEntryCount: number;
+  /**
+   * P4：模型调用用量（C 私有诊断）。costMinor null=未知（不是零，C-17）；
+   * 传输失败的调用也记录（用量在取消后仍保留，§13/§14）。
+   */
+  modelUsage?: { provider: string; requestId: string | null; costMinor: number | null; tokens: number | null }[];
 }
 
 export function createDiagnostics(scope: ReportScope, bundleUsageEntryCount: number): RunDiagnostics {

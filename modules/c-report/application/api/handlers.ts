@@ -15,6 +15,8 @@
 import type { MatchReport } from '../../domain/contract.js';
 import { cError, type CError } from '../../domain/errors.js';
 import { runMatchPipeline, type PipelineResult } from '../pipeline.js';
+import { runMatchPipelineWithModel } from '../pipeline-model.js';
+import type { ModelRuntimeConfig } from '../model/refine.js';
 import { canonicalize } from '../hash.js';
 import { renderReportMarkdown } from '../markdown.js';
 import type {
@@ -38,6 +40,11 @@ export interface CApiContext {
   now(): string;
   newRequestId(): string;
   newId(prefix: string): string;
+  /**
+   * P4 可选模型运行时（规格 §16）：配置后创建/更新走"确定性管线 + 七层校验精炼"；
+   * 未配置则与 P2 行为逐字节一致（纯模板）。生产由宿主注入公共 ModelClient adapter。
+   */
+  model?: ModelRuntimeConfig;
 }
 
 interface ReportRequestBody {
@@ -230,18 +237,32 @@ async function executeOrReuse(
 
   await ctx.stores.runs.updateStatus(project.projectId, runId, 'running', 'input_schema');
 
-  const pipeline = runMatchPipeline({
-    profile: body.profile,
-    intentContext: body.intentContext,
-    bundle: body.bundle,
-    options: {
-      reportId,
-      generatedAt: ctx.now(),
-      version: nextVersion,
-      ruleVersion: RULE_VERSION,
-      promptVersion: PROMPT_VERSION,
-    },
-  });
+  // P4：未配置模型 → 同步确定性管线（P1 语义，零改动）；配置了 → 确定性 + 七层校验精炼。
+  const pipeline: PipelineResult = ctx.model !== undefined
+    ? await runMatchPipelineWithModel({
+        profile: body.profile,
+        intentContext: body.intentContext,
+        bundle: body.bundle,
+        options: {
+          reportId,
+          generatedAt: ctx.now(),
+          version: nextVersion,
+          ruleVersion: RULE_VERSION,
+          promptVersion: PROMPT_VERSION,
+        },
+      }, ctx.model)
+    : runMatchPipeline({
+        profile: body.profile,
+        intentContext: body.intentContext,
+        bundle: body.bundle,
+        options: {
+          reportId,
+          generatedAt: ctx.now(),
+          version: nextVersion,
+          ruleVersion: RULE_VERSION,
+          promptVersion: PROMPT_VERSION,
+        },
+      });
 
   if (!pipeline.ok) {
     await ctx.stores.runs.updateStatus(project.projectId, runId, 'failed', `failed:${pipeline.error.code}`);

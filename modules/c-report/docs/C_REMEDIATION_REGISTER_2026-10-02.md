@@ -1,6 +1,6 @@
 # C｜缺陷修订登记与公共待协调事项
 
-- 板块：C；日期：2026-10-02；文档版本：1.2。
+- 板块：C；日期：2026-10-02；文档版本：1.3。
 - 公共 schemaVersion：1.0.0，未修改。
 - “规格已修正”只表示文字规范闭合，**不是业务实现或测试通过**。
 - 修改依据：[C 新开发规格](C_DEVELOPMENT_SPEC_V1.1_2026-10-02.md)。
@@ -106,3 +106,12 @@ C 名称在目录、README、所有新增规格和迁移标题中明确。远程
 - C-12 补充（implemented_in_p3）：页面/比较/MD/JSON 读同一不可变快照（v1 工件逐字节不变、两次导出逐字节一致有测试）；`StoredReportSnapshot` 工件补 `report` 字段使复现包自洽。
 - C-02/C-03 补充：页面画像摘要区分「自报且本人确认 ≠ 外部能力证明」；混合结论仍走 trace，页面只展示结构化数据。
 - 协调项新增：`app/demo/c/` 与 `app/reports/` 挂载片段（见 [P3 集成片段](C_P3_INTEGRATION_SNIPPETS.md)）；`/reports` 上线前提为公共 runtime；生产快照读取方式待确认。root `test:c` 与 CI 条件步骤维持待协调。
+
+## 9. P4 实施记录（2026-10-02，代码落地后追加）
+
+依据：[P4 交付签收](C_P4_DELIVERY_2026-10-02.md)。范围：C 私有 ModelPort/ModelBudget、固定 prompt、七层输出校验（确定性层）、一次修复降级编排、脚本化 fake 模型。169 项 node:test（新增 22 项）通过；P4 演示 12 项通过；P1/P2/P3 无回归。
+
+- C-11 补充（implemented_in_p4）：模型无工具权限、只能改五维 summary 文本；L7 不变量逐字段断言（动作/约束/状态/事实引用被改即抛错）；注入端到端用例（JD 夹带指令 + 模型服从）被七层校验拦截。
+- C-17 补充（partially_implemented）：预算门在调用前拒绝「付费无上界」（MODEL_COST_UNKNOWN）与超次（MODEL_BUDGET_EXHAUSTED）；usage 记录含 unknown（null≠0）。生产价表/供应商幂等仍 open_shared。
+- C-04 补充：L3 断言-状态一致性检查落地（在招/固定底薪/主体核验/实时类断言与材料状态矛盾即拒绝）；开放式语义支持判断仍需真实材料人工评审。
+- 协调项：生产 ModelClient adapter 由宿主提供（packages/runtime 尚无模型接口）；C 的 ModelPort 是私有接口建议，公共接口成型后对齐。
