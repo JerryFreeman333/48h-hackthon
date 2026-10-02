@@ -1,0 +1,42 @@
+{
+  "artifactType": "c_expected_behavior_not_match_report",
+  "module": "C",
+  "documentVersion": "1.1",
+  "schemaVersionUnderReview": "1.0.0",
+  "mode": "demo",
+  "expectationStatus": "manual_review_expectation_not_executed_by_application",
+  "jobId": "job-demo-1",
+  "expectedRecommendation": "deprioritize",
+  "expectedConstraint": {
+    "key": "accept_sales_kpi",
+    "result": "fail",
+    "factIds": [
+      "fact-demo-1"
+    ]
+  },
+  "requiredDimensionKeys": [
+    "identity_credit",
+    "business",
+    "role_clarity",
+    "career_value",
+    "personal_fit"
+  ],
+  "mustStayUnknown": [
+    "fixed_monthly_salary",
+    "current_real_vacancy",
+    "business_financials"
+  ],
+  "mustNotClaim": [
+    "actual_company_identity_verified",
+    "sales_responsibility_percentage",
+    "product_design_responsibility",
+    "proven_product_delivery_growth",
+    "overall_match_probability"
+  ],
+  "factsMustRemainUnchanged": true,
+  "notes": [
+    "Salary uses total, not fixed.",
+    "No new salary or city hard constraint may be invented.",
+    "Demo verified/confirmed strings do not establish real-world authenticity."
+  ]
+}

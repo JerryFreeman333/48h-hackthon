@@ -1,0 +1,12 @@
+{
+  "module": "C",
+  "documentVersion": "1.1",
+  "publicSchemaVersion": "1.0.0",
+  "repository": "JerryFreeman333/48h-hackthon",
+  "status": "pending_publication",
+  "allowedPathPrefix": "modules/c-report/",
+  "integratedCommit": null,
+  "mainVerified": false,
+  "nonCPathsModified": null,
+  "note": "本记录尚未证明远程发布；将由实际GitHub API提交与读取结果更新。"
+}
