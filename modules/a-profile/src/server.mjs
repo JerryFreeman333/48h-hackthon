@@ -18,13 +18,13 @@ export function createServer({dataDir=join(root,'../.data')}={}){
  if(req.headers.origin&&req.headers.origin!==`http://${req.headers.host}`)throw new ServiceError(403,'拒绝跨站请求');
  const cookies=Object.fromEntries((req.headers.cookie??'').split(';').map(x=>x.trim().split('=')));
  let owner=cookies.a_session;if(!owner||!service.state.sessions?.includes(owner)){if(req.method==='GET'&&url.pathname==='/api/a/bootstrap'){owner=randomUUID();service.state.sessions??=[];service.state.sessions.push(owner);service.save();res.setHeader('Set-Cookie',`a_session=${owner}; HttpOnly; SameSite=Strict; Path=/`);}else throw new ServiceError(401,'请先打开页面建立本地演示会话');}
- let body={};if(req.method!=='GET'){let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>256000)throw new ServiceError(422,'输入过大');}try{body=raw?JSON.parse(raw):{};}catch{throw new ServiceError(422,'JSON格式错误');}}
+ let body={};if(req.method!=='GET'){const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>256000)throw new ServiceError(422,'输入过大');chunks.push(chunk);}const raw=Buffer.concat(chunks).toString('utf8');try{body=raw?JSON.parse(raw):{};}catch{throw new ServiceError(422,'JSON格式错误');}if(!body||typeof body!=='object'||Array.isArray(body))throw new ServiceError(422,'请求体必须为对象');}
  let result;let status=200;const p=url.pathname;const match=p.match(/^\/api\/a\/assessments\/([^/]+)(?:\/(answers|score))?$/);
  if(req.method==='GET'&&p==='/api/a/bootstrap')result={questions,labels,version,industries,roles,taxonomyVersion,attempts:Object.values(service.state.attempts).filter(a=>a.owner===owner).map(({owner,...a})=>a)};
  else if(req.method==='POST'&&p==='/api/a/assessments'){result=service.create(owner,body.mode);status=201;}
- else if(match&&req.method==='GET')result=service.owned(owner,match[1]);
+ else if(match&&!match[2]&&req.method==='GET')result=service.owned(owner,match[1]);
  else if(match&&match[2]==='answers'&&req.method==='PATCH')result=service.update(owner,match[1],body);
- else if(match&&match[2]==='score'&&req.method==='POST')result=score(service.owned(owner,match[1]).answers);
+ else if(match&&match[2]==='score'&&req.method==='POST')result=service.result(owner,match[1]);
  else if(req.method==='PUT'&&/^\/api\/a\/profiles\/[^/]+\/confirm$/.test(p)){const a=service.owned(owner,body.assessmentId);if(a.profileId!==p.split('/')[4])throw new ServiceError(422,'画像ID与答题记录不一致');result=service.confirm(owner,body.assessmentId,body);}
  else if(req.method==='POST'&&p==='/api/a/profiles/extract')throw new ServiceError(503,'模型提取未接入，请使用手填；未发送任何简历文本');
  else if(req.method==='GET'&&p==='/api/a/taxonomy/industries')result={version:taxonomyVersion,items:industries};
@@ -39,3 +39,4 @@ export function createServer({dataDir=join(root,'../.data')}={}){
  });
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){const port=Number(process.env.PORT??3100);createServer().listen(port,'127.0.0.1',()=>console.log(`A module: http://127.0.0.1:${port}/demo/a`));}
+

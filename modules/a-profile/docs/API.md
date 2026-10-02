@@ -20,3 +20,5 @@
 导出引用最新意向对应的确切画像版本。coverage、用户纠正和taxonomyVersion保存在内部元数据，不添加到公共1.0.0对象。未确认偏好转为unknown/null，已确认硬约束才能进入硬筛选。
 
 B取SearchIntent，C取UserProfile，均不可直接读A数据文件。公共维护者需提供正式所有权、存储、模型客户端、宿主路由，并确认分类ID（保留product_operations）。联调用fixtures中的公共合成样例检查版本、模式和项目关系。C验证销售KPI冲突；A不输出匹配结论。
+
+复审修正：确认成功会递增答题记录revision，后续草稿保存前重新GET记录；重复使用旧expectedRevision返回409。score返回内部portrait，与scores/coverage同源；公共UserProfile字段不变。不能用null声明已知hard/soft；导入筛选不得遗漏或改变确认画像中的偏好。

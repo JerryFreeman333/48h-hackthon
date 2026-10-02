@@ -26,5 +26,6 @@ export function score(answers,bank=questions){
  validateAnswers(answers); const scores={},coverage={};
  for(const d of new Set(bank.map(q=>q.dimension))){const qs=bank.filter(q=>q.dimension===d);const values=qs.filter(q=>answers[q.id]!=null).map(q=>q.reverse?6-answers[q.id]:answers[q.id]);coverage[d]={answered:values.length,total:qs.length};scores[d]=values.length/qs.length<.75?null:Math.round((values.reduce((a,b)=>a+b,0)/values.length-1)*25);}
  const interpretation=Object.entries(scores).map(([d,v])=>`${labels[d]}：${v===null?'信息不足':v>=65?'目前自报偏好较明显':v<=35?'目前自报偏好较少':'目前偏好居中'}`).join('；')+'。这是原型问卷结果，不代表能力或职业成功概率。';
- return {scores,coverage,interpretation};
+ const portrait={instrumentId,version,validation:'prototype',basis:'自编题及原型规则；无常模、信效度或中文验证证据',sections:[...new Set(bank.map(q=>q.group))].map(group=>({group,dimensions:[...new Set(bank.filter(q=>q.group===group).map(q=>q.dimension))].map(d=>({key:d,label:labels[d],score:scores[d],coverage:coverage[d],questionIds:bank.filter(q=>q.dimension===d).map(q=>q.id),unknown:scores[d]===null}))})),interpretation,limitations:['75%覆盖阈值及35/65解释分界为产品原型规则，尚未验证。','分数是回答的描述性汇总，不是能力、概率、常模百分位或硬约束。']};
+ return {scores,coverage,interpretation,portrait};
 }

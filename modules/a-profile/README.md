@@ -15,3 +15,5 @@
 导出为 `{UserProfile,SearchIntent}`。B取SearchIntent；C取UserProfile。导入创建当前会话新项目，重新分配ID，不覆盖旧数据；不含原始答题记录的导入画像需新建问卷后重算。
 
 尚未接入公共Next.js宿主、Zod、PostgreSQL、正式runtime、模型客户端。独立服务使用Node与手写校验，后续通过适配器接入公共宿主。模型提取接口明确503；行业细类和官方岗位代码待核验。没有心理量表有效性或全系统联调结论。
+
+复审结果与待审核修改路线见 `docs/REVIEW_2026-10-02.md`；48题来源逐条见 `docs/ITEM_PROVENANCE.json`。当前题库全部自编未验证，75%覆盖及35/65解释阈值只是原型规则。尚未替换成熟题库或升级公共契约。
