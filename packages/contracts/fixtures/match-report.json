@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0", "reportId": "report-demo-1", "version": 1, "projectId": "project-demo-1",
+  "profileId": "profile-demo-1", "profileRevision": 1, "bundleId": "bundle-demo-1", "mode": "demo",
+  "generatedAt": "2026-10-02T05:00:00Z", "completeness": "partial",
+  "results": [{
+    "jobId": "job-demo-1", "recommendation": "deprioritize",
+    "reasons": [{"text": "合成样例：JD 存在签单指标，与已确认的不接受销售 KPI 约束冲突。", "kind": "fact", "factIds": ["fact-demo-1"]}],
+    "constraints": [{"key": "accept_sales_kpi", "result": "fail", "factIds": ["fact-demo-1"]}],
+    "dimensions": [
+      {"key": "identity_credit", "summary": "仅演示主体，真实信用未知。", "status": "unknown", "factIds": []},
+      {"key": "business", "summary": "财务数据未接入。", "status": "unknown", "factIds": []},
+      {"key": "role_clarity", "summary": "JD 明确签单指标，职责比例未知。", "status": "supported", "factIds": ["fact-demo-1"]},
+      {"key": "career_value", "summary": "实际产品交付和带教未知。", "status": "unknown", "factIds": []},
+      {"key": "personal_fit", "summary": "销售 KPI 与明确约束冲突。", "status": "contradicted", "factIds": ["fact-demo-1"]}
+    ],
+    "questions": [{"text": "固定税前月薪和绩效分别是多少？", "priority": "must", "resolves": ["job.fixed_salary"]}]
+  }],
+  "evidenceSnapshot": [{"evidenceId": "evidence-demo-1", "companyId": "company-demo-1", "jobId": "job-demo-1", "scope": "job", "sourceType": "demo_fixture", "title": "合成JD", "url": null, "publishedAt": null, "retrievedAt": "2026-10-02T05:00:00Z", "excerpt": "负责客户拓展，完成签单指标，收集产品反馈。", "mode": "demo", "verification": "verified"}],
+  "factsSnapshot": [{"factId": "fact-demo-1", "companyId": "company-demo-1", "jobId": "job-demo-1", "key": "job.sales_kpi", "value": true, "status": "supported", "evidenceIds": ["evidence-demo-1"], "asOf": null}],
+  "coverageSnapshot": [{"companyId": "company-demo-1", "jobId": null, "topic": "business_financials", "status": "not_connected", "reason": "合成演示，不代表真实调查", "checkedAt": "2026-10-02T05:00:00Z"}],
+  "ruleVersion": "demo-fixture-1", "promptVersion": "none"
+}

@@ -1,0 +1,14 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #182e29; background: #f5f7f5; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 960px; padding: 32px 24px; margin: auto; }
+h1 { font-size: 26px; letter-spacing: 0; }
+.page-header { border-bottom: 1px solid #d7e0db; margin-bottom: 20px; }
+.state-badge { border-radius: 4px; padding: 4px 8px; font-size: 12px; }
+.state-known { color: #125c49; background: #e0eee6; }
+.state-unknown { color: #785225; background: #faf0d9; }
+.state-conflict { color: #9e3a38; background: #f8e6e4; }
+table { width: 100%; border-collapse: collapse; }
+td, th { padding: 12px; border-bottom: 1px solid #d7e0db; text-align: left; }
+a { color: #176c58; }
+@media(max-width: 600px) { main { padding: 20px 12px; } td, th { padding: 8px; } }
