@@ -9,8 +9,9 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/constraints.test.ts tests/fixtures-contract.test.ts tests/hash.test.ts tests/immutability-trace.test.ts tests/intent-context.test.ts tests/recommendation.test.ts tests/validation.test.ts",
-    "demo": "tsx scripts/run-demo.ts"
+    "test": "tsx --test tests/constraints.test.ts tests/fixtures-contract.test.ts tests/hash.test.ts tests/immutability-trace.test.ts tests/intent-context.test.ts tests/recommendation.test.ts tests/validation.test.ts tests/api-flows.test.ts tests/api-ownership-idempotency.test.ts tests/api-update-export.test.ts",
+    "demo": "tsx scripts/run-demo.ts",
+    "demo:p2": "tsx scripts/run-p2-demo.ts"
   },
   "dependencies": {
     "zod": "^4.1.0"

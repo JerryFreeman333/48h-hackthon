@@ -2,13 +2,17 @@
 
 > 板块：**C**。本目录仅由 C 负责；不代表 A、B 或总控已实现。文档版本 **1.1**；公共数据契约保持 **1.0.0**。
 
-## 当前交付状态（2026-10-02，P1 已实施并与公共底座对齐）
+## 当前交付状态（2026-10-02，P1+P2 已实施并与公共底座对齐）
 
-**P1 无模型离线核心已完成并通过真实测试**：输入/绑定/引用校验、确认硬约束引擎（销售KPI fail、薪资/城市确定性框架 + provenance 守门）、动作优先级、五维模板、核验问题、C 私有 DecisionTrace 与快照。83 项 node:test 测试通过（zod v4，与公共底座同主版本）；公共样例演示产出 `deprioritize` 且 14 项人工预期全部满足；全程无网络、无模型、无外部服务。
+**P1 无模型离线核心已完成**：输入/绑定/引用校验、确认硬约束引擎、动作优先级、五维模板、核验问题、C 私有 DecisionTrace 与快照。
 
-对齐说明：公共维护人已向 main 合并 Next.js 应用骨架与 `packages/contracts|runtime|ui`，C 已按 B 模块先例对齐（zod v4、node:test + tsx、本地契约镜像）。root `test:c`/CI 接线属根文件变更，已列入协调项，见 [P1 交付签收 §2.1](docs/C_P1_DELIVERY_2026-10-02.md)。
+**P2 API/快照/幂等/权限已完成（显式内存 fake runtime 上）**：五个框架无关 handler（创建 202/run 查询/报告/MD 导出/更新新版本）、原子幂等预留（同键复用、同键不同输入 409、并发恰一 run）、所有权钩子（503/401/403/404 语义）、报告版本不可变（更新产生新版本，旧版本逐字节不变）、MD 导出转义与协议白名单。
 
-尚未实现：API/持久化/幂等（P2）、页面/比较/导出（P3）、模型解释与语义校验（P4）、故障恢复与整体联调（P5）。逐项状态见 [P1 交付签收](docs/C_P1_DELIVERY_2026-10-02.md) 与[修订登记的 P1 实施记录](docs/C_REMEDIATION_REGISTER_2026-10-02.md)。
+**112 项 node:test 测试通过**；P1 演示 14/14 人工预期、P2 端到端演示 15/15 项通过；全程无网络、无模型、无外部服务。fake runtime 单进程、重启即丢，**不得部署为无鉴权 live**。
+
+对齐说明：C 的端口结构与 `packages/runtime` 逐形状等价，公共实现就绪后 adapter 直换。根目录挂载（app/api/c 五个路由 + root test:c/CI 条件步骤）属根文件协调项，片段见 [P2 集成片段](docs/C_P2_INTEGRATION_SNIPPETS.md)。
+
+尚未实现：P3 页面/比较/证据抽屉、P4 模型与预算、P5 故障恢复与整体联调。逐项状态见 [P1 交付签收](docs/C_P1_DELIVERY_2026-10-02.md)、[P2 交付签收](docs/C_P2_DELIVERY_2026-10-02.md) 与[修订登记](docs/C_REMEDIATION_REGISTER_2026-10-02.md)。
 
 ## 模块输入输出
 
@@ -29,8 +33,9 @@ python3 modules/c-report/scripts/verify_c_docs.py
 cd modules/c-report
 npm install
 npm run typecheck   # tsc --noEmit
-npm test            # tsx --test（node:test，83 项）
-npm run demo        # 公共样例 → MatchReport + 14 项人工预期对照（无网络、无模型）
+npm test            # tsx --test（node:test，112 项）
+npm run demo        # P1：公共样例 → MatchReport + 14 项人工预期对照（无网络、无模型）
+npm run demo:p2     # P2：五个 API + 幂等/越权/版本不可变端到端走查（fake runtime）
 ```
 
 `npm run demo -- --out <path> --generated-at <ISO时间>` 可写出可复现的演示输出；已提交样例见 `docs/C_P1_DEMO_OUTPUT_2026-10-02.json`。
@@ -49,10 +54,11 @@ npm run demo        # 公共样例 → MatchReport + 14 项人工预期对照（
 
 ```text
 domain/       # 契约镜像、Zod schema、校验、约束引擎、五维/问题/动作/报告装配、trace
-application/  # 十阶段管线、canonical 哈希、私有 run 诊断
+application/  # 十阶段管线、canonical 哈希、私有 run 诊断、五 API handler、MD 序列化、ports
+adapters/     # 显式内存 fake runtime（非生产）；公共 runtime 就绪后 adapter 直换
 fixtures/     # 公共合成输入与人工预期（未由业务代码生成）
-scripts/      # verify_c_docs.py（文档核对，非应用测试）、run-demo.ts（独立演示）
-tests/        # node:test 单元/契约测试（83 项，tsx --test 运行）
+scripts/      # verify_c_docs.py（文档核对，非应用测试）、run-demo.ts / run-p2-demo.ts（独立演示）
+tests/        # node:test 单元/契约测试（112 项，tsx --test 运行）
 docs/         # 规格、登记、迁移、交付签收、核对与凭证记录
 ```
 
@@ -67,4 +73,4 @@ docs/         # 规格、登记、迁移、交付签收、核对与凭证记录
 
 ## 下一步
 
-P2：五个 API 接口、持久化快照、幂等与所有权校验（公共 ports 缺失时用显式本地 fake，不复制生产能力）。模块独立完成与整体联调完成分别签收。
+P3：/demo/c 页面、五维/比较视图、证据抽屉、导出入口与可访问性（读同一不可变快照）。根目录路由挂载与 test:c/CI 接线待维护人协调（片段已备）。模块独立完成与整体联调完成分别签收。

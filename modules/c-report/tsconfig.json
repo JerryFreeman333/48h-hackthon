@@ -16,8 +16,8 @@
   "include": [
     "domain/**/*.ts",
     "application/**/*.ts",
+    "adapters/**/*.ts",
     "scripts/**/*.ts",
-    "tests/**/*.ts",
-    "vitest.config.ts"
+    "tests/**/*.ts"
   ]
 }

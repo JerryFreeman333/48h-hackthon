@@ -82,8 +82,17 @@ C 名称在目录、README、所有新增规格和迁移标题中明确。远程
 | C-13 | implemented_in_p1 | 空 jobs → results=[]，私有 diagnostics 携带说明，不伪造公共字段（有测试） |
 | C-14 | partially_implemented | demo scope 已冻结并产出 partial；complete_for_scope 跨模块语义待确认 |
 | C-15 | implemented_in_p1 | C 私有目标路径字典（16 个现有目标）；resolves 越界在装配与测试中双重拒绝 |
-| C-16 | not_implemented | P2 范围：持久 ports、数据库唯一约束、越权校验 |
+| C-16 | partially_implemented | P2 已实现：端口结构与公共 runtime 等价、原子幂等预留（fake 层）、越权 401/403/404 校验（有测试）；生产持久存储/唯一约束/事务仍 open_shared |
 | C-17 | not_implemented | P4 范围：预算/费用；P1 无付费调用，无成本发生 |
 | C-18 | implemented_in_p1（范围） | 本轮仅提交 `modules/c-report/`；未复制/绕接公共底座或 A/B 数据 |
 | C-19 | partially_implemented | 应用测试与文档核对已分离且均为真实运行；语义质量仍需真实材料人工评审 |
 | C-20 | not_validated | 不变 |
+
+## 7. P2 实施记录（2026-10-02，代码落地后追加）
+
+依据：[P2 交付签收](C_P2_DELIVERY_2026-10-02.md)。范围：五个框架无关 API handler、原子幂等预留、所有权钩子、不可变报告版本、MD 导出（转义 + 协议白名单）、显式内存 fake runtime。112 项 node:test 通过；端到端演示 15 项通过。
+
+- C-13 补充：空候选说明经 `GET /api/c/reports/:id` 的私有 diagnostics 投影返回（不伪造公共字段）。
+- C-14 补充：run 状态与 completeness 分离（executed+partial → run=partial）。
+- C-16：fake 层已覆盖原子幂等与越权测试；生产持久化仍 open_shared。
+- 协调项新增：根目录 `app/api/c/` 挂载片段、root `test:c`、CI 条件步骤（见 P2 集成片段）；内存 fake 不得部署为无鉴权 live。
