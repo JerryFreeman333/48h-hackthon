@@ -49,6 +49,10 @@ class MapSnapshotRepository<T> implements SnapshotRepository<T> {
 class InMemoryRunStore implements CRunStore {
   private readonly runs = new Map<string, RunRecord>();
   private readonly reservations = new Map<string, RunReservation>();
+  /** P5：cancel 标记集合（O(1) 查询；与 status=cancelled 同步维护）。 */
+  private readonly cancelFlags = new Set<string>();
+  /** P5：cancel listener 集合（按 runKey）。listener 触发后自动清空。 */
+  private readonly cancelListeners = new Map<string, Set<() => void>>();
 
   /**
    * 原子临界区（单事件循环内无 await）：同 scopeKey 只允许一次插入。
@@ -80,6 +84,8 @@ class InMemoryRunStore implements CRunStore {
     const run = await this.read(projectId, runId);
     if (run && (run.status === 'queued' || run.status === 'running')) {
       await this.updateStatus(projectId, runId, 'cancelled', 'cancelled');
+      // P5：保留 cancel 旧语义（status=cancelled），同时通过 requestCancel 路径
+      //     确保 listener 被触发。cancel() 的设计草案语义 = requestCancel 的简写。
     }
   }
 
@@ -90,6 +96,58 @@ class InMemoryRunStore implements CRunStore {
       run.stage = stage;
       run.updatedAt = new Date().toISOString();
     }
+  }
+
+  // P5 §4.1：cancel 三件套（cooperative cancel 的输入）。
+  // 实现要点：
+  // - isCancelled 仅查 cancel flag set（O(1)），与 status=cancelled 等价但无 IO
+  // - requestCancel 是幂等；状态变更触发已注册 listener 一次
+  // - listener 在触发后自动 unsubscribe（避免泄漏）
+  async isCancelled(projectId: string, runId: string): Promise<boolean> {
+    return this.cancelFlags.has(this.runKey(projectId, runId));
+  }
+
+  addCancelListener(projectId: string, runId: string, fn: () => void): () => void {
+    const key = this.runKey(projectId, runId);
+    const set = this.cancelListeners.get(key) ?? new Set<() => void>();
+    set.add(fn);
+    this.cancelListeners.set(key, set);
+    return () => {
+      set.delete(fn);
+      if (set.size === 0) this.cancelListeners.delete(key);
+    };
+  }
+
+  async requestCancel(projectId: string, runId: string): Promise<{ wasRunning: boolean }> {
+    const key = this.runKey(projectId, runId);
+    const run = this.runs.get(runId);
+    if (!run || run.projectId !== projectId) {
+      return { wasRunning: false };
+    }
+    const wasRunning = run.status === 'queued' || run.status === 'running';
+    if (!wasRunning) {
+      // 幂等：已是 completed/partial/failed/cancelled，不重复触发 listener
+      return { wasRunning: false };
+    }
+    this.cancelFlags.add(key);
+    await this.updateStatus(projectId, runId, 'cancelled', 'cancelled');
+    const listeners = this.cancelListeners.get(key);
+    if (listeners !== undefined) {
+      // 触发后清空（每个 listener 只触发一次）
+      this.cancelListeners.delete(key);
+      for (const fn of listeners) {
+        try {
+          fn();
+        } catch {
+          // listener 错误不传播：cancel 必须幂等成功
+        }
+      }
+    }
+    return { wasRunning: true };
+  }
+
+  private runKey(projectId: string, runId: string): string {
+    return `${projectId}\u0000${runId}`;
   }
 }
 
