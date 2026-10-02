@@ -21,10 +21,18 @@
     "validation": "prototype"
   },
   "background": {
-    "education": null,
-    "major": null,
-    "skills": [],
-    "experiences": []
+    "education": "本科",
+    "major": "示例专业",
+    "skills": [
+      "需求访谈"
+    ],
+    "experiences": [
+      {
+        "text": "完成过课程产品原型",
+        "source": "user",
+        "confirmed": true
+      }
+    ]
   },
   "goals": [
     "积累产品交付经验"

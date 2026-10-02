@@ -1,5 +1,7 @@
 # Career DNA V2 来源与替换台账
 
+> 此页为v0.3历史记录。当前v0.4已移除经历流程、启用IPIP未验证中文译稿；当前能力、启动及接口以 [SCOPE_TRANSLATION_2026-10-02.md](SCOPE_TRANSLATION_2026-10-02.md) 为准。
+
 目标基线：`JerryFreeman333/48h-hackthon@ef3377fd19ff2cef5a511e31ee2c560b0e03f6cf`。
 源固定提交：`thphuc06/agentic-career-recommendation-system@87844ee3e19717875f59f727b5a313b231f5a81e`。
 

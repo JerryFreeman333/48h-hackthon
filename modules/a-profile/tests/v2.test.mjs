@@ -8,7 +8,6 @@ import {pearson,catalog,fit,domesticSeeds} from '../src/occupation-fit/index.mjs
 import {ProfileService} from '../src/profile/service.mjs';
 import {validateHandoff} from '../src/profile/schemas.mjs';
 import {buildReport,validateReport} from '../src/report/template.mjs';
-import {checkFile,candidatesFromText} from '../src/resume/extract.mjs';
 import {createServer} from '../src/server.mjs';
 
 const service=()=>new ProfileService({},()=>{}, {dataDir:mkdtempSync(join(tmpdir(),'a-v2-'))});
@@ -17,7 +16,7 @@ function fill(svc,s,id,kind='shape'){
  s=svc.updateAttempt('u',a.id,{expectedRevision:s.revision,instrumentVersion:a.instrumentVersion,scoringVersion:a.scoringVersion,responses});
  return svc.score('u',a.id,{expectedRevision:s.revision}).session;
 }
-function acknowledge(svc,s){for(const i of s.insights)s=svc.claim('u',i.insightId,{expectedRevision:s.revision,status:'confirmed'});return s;}
+function acknowledge(svc,s){for(const i of s.insights)s=svc.reviewInsight('u',i.insightId,{expectedRevision:s.revision,status:'confirmed'});return s;}
 function confirmed(svc,battery='Quick',kind='shape'){let s=svc.create('u',{battery,mode:'demo'});for(const id of Object.keys(s.attempts))s=fill(svc,s,id,kind);s=acknowledge(svc,s);const x=svc.confirm('u',s.profileId,{expectedRevision:s.revision,confirmed:true});return {s:x.session,p:x.profile};}
 
 test('Mini-IPIP complete official key: exact dimensions, 1 positive/3 negative O, extrema',()=>{
@@ -56,17 +55,13 @@ test('confirmed scores, readable report and interest comparison share facts; N n
  assert(s.profileRevision===p.revision);
 });
 test('rejected insight excluded; scores retained; changed answers invalidate old explanations',()=>{
- const svc=service();let s=svc.create('u',{battery:'Quick'});s=fill(svc,s,'onet-mini-ip');const old=s.insights[0];s=svc.claim('u',old.insightId,{expectedRevision:s.revision,status:'rejected'});
+ const svc=service();let s=svc.create('u',{battery:'Quick'});s=fill(svc,s,'onet-mini-ip');const old=s.insights[0];s=svc.reviewInsight('u',old.insightId,{expectedRevision:s.revision,status:'rejected'});
  const {profile:p}=svc.confirm('u',s.profileId,{expectedRevision:s.revision,confirmed:true});const r=buildReport(p,fit(p));assert(p.assessments[0].complete);assert(!r.sections.find(s=>s.title==='已确认的解释').claims.length);
  const bad=structuredClone(r);bad.sections[0].claims[0].evidenceIds=['fake'];assert.throws(()=>validateReport(bad,p,fit(p)),/引用无效/);
  const numeric=structuredClone(r);numeric.sections[0].claims[0].text='职业兴趣匹配100%，适合创业';assert.throws(()=>validateReport(numeric,p,fit(p)),/偏离冻结/);
  s=svc.get('u',s.id);const a=s.attempts['onet-mini-ip'];s=svc.updateAttempt('u',a.id,{expectedRevision:s.revision,instrumentVersion:a.instrumentVersion,scoringVersion:a.scoringVersion,responses:[{itemId:'mini-01',value:4}]});assert.equal(s.evidence.find(e=>e.evidenceId===old.evidenceIds[0]).status,'superseded');assert.equal(s.insights[0].status,'rejected');
 });
-test('resume candidates preserve literal participation/limited skill and are pending until confirmation',()=>{
- const rows=candidatesFromText([{locator:'page1',text:'本科\n专业：计算机\n技能：了解Python\n参与项目，完成测试\n电话：12345678901'}]);assert.equal(rows.length,4);assert(rows.some(r=>r.description==='参与项目，完成测试'));assert(!JSON.stringify(rows).includes('负责人'));
- const svc=service();let s=svc.create('u',{battery:'None'});s=svc.statement('u',s.id,{expectedRevision:s.revision,text:'参与项目，完成测试'});assert.equal(s.claims[0].status,'pending');assert.throws(()=>svc.confirm('u',s.profileId,{expectedRevision:s.revision,confirmed:true}),/逐条/);
- const c=s.claims[0];s=svc.claim('u',c.claimId,{expectedRevision:s.revision,status:'confirmed',description:'参与项目，完成手工测试'});const {profile:p}=svc.confirm('u',s.profileId,{expectedRevision:s.revision,confirmed:true});assert(p.evidence.some(e=>e.text==='参与项目，完成测试'));assert(p.evidence.some(e=>e.kind==='user_edit'));assert(p.capabilities[0].description==='参与项目，完成手工测试');
-});
+
 test('immutable revisions, constraints unknown/hard semantics, hard v2 downgrade blocked',()=>{
  const svc=service();let {s,p}=confirmed(svc,'None');s=svc.update('u',s.id,{expectedRevision:s.revision,draft:{...s.draft,constraints:[{key:'work_schedule',value:'不接受夜班',strength:'hard',confirmed:true,evidenceIds:[]}],groups:[['收入','成长']],tradeoffs:[],goals:[],jobStage:null}});
  const x=svc.confirm('u',s.profileId,{expectedRevision:s.revision,confirmed:true});s=x.session;const i=svc.intent('u',{expectedRevision:s.revision,profileId:s.profileId,profileRevision:2,selectedCodes:[],maxCandidates:3});s=i.session;
@@ -78,10 +73,7 @@ test('v2 handoff import validates facts/ranges, isolates identity and never reca
  const bad=structuredClone(out);bad.ProfileBundleV2.assessments[0].scores[0].normalized=.99;assert.throws(()=>svc.import('other',bad),/量程/);
  assert.throws(()=>svc.get('u',imported.id),/访问权限/);
 });
-test('upload signature and size checks reject disguised files and zip bombs',()=>{
- assert.throws(()=>checkFile('resume.pdf',Buffer.from('not pdf')));assert.throws(()=>checkFile('resume.docx',Buffer.from([80,75,3,4])));
- assert.throws(()=>checkFile('resume.png',Buffer.alloc(10*1024*1024+1)));
-});
+
 test('V2 HTTP save/restart, ownership, import, report and private deletion',async()=>{
  const dir=mkdtempSync(join(tmpdir(),'v2-http-')),options={dataDir:join(dir,'data'),archiveDir:join(dir,'archive'),modelsDir:join(dir,'absent')};let server=createServer(options);
  async function start(){await new Promise(r=>server.listen(0,'127.0.0.1',r));return 'http://127.0.0.1:'+server.address().port;}

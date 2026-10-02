@@ -1,5 +1,7 @@
 # A V2 实际验证 · 2026-10-02
 
+> 此页为v0.3历史记录。当前v0.4已移除经历流程、启用IPIP未验证中文译稿；当前能力、启动及接口以 [SCOPE_TRANSLATION_2026-10-02.md](SCOPE_TRANSLATION_2026-10-02.md) 为准。
+
 环境：Windows，Node.js 24.20.0，SurveyJS 3.1.2，Playwright 1.58.2 + 本机Chrome。模块package版本0.3.0。
 
 本模块锁文件通过 `npm ci --cache .npm-cache --no-audit --no-fund` 干净安装（50个包）；安装后重跑以下27项与两套浏览器测试，结果相同。工作区沙箱无法写默认用户npm缓存，改用本模块Git忽略缓存目录；没有修改公共根锁文件。

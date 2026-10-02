@@ -34,13 +34,13 @@ riasec-co (MIT): https://github.com/affromero/riasec-co ; psyche-public (origina
 
 ## IPIP Mini-IPIP
 
-The complete English 20-item scoring key was extracted from https://ipip.ori.org/MiniIPIPKey.htm . IPIP items and scales are public domain; permission: https://ipip.ori.org/newPermission.htm . Scoring anchors and sum/reversal instructions: https://ipip.ori.org/newScoringInstructions.htm . Original research: Donnellan, Oswald, Baird, and Lucas (2006), *The Mini-IPIP scales: Tiny-yet-effective measures of the Big Five factors of personality*, https://doi.org/10.1037/1040-3590.18.2.192 . Original research does not establish Chinese validation of this implementation. Official scoring-key row order is recorded explicitly; no translated item text is included.
+The complete English 20-item scoring key was extracted from https://ipip.ori.org/MiniIPIPKey.htm . IPIP items and scales are public domain; permission: https://ipip.ori.org/newPermission.htm . Scoring anchors and sum/reversal instructions: https://ipip.ori.org/newScoringInstructions.htm . Original research: Donnellan, Oswald, Baird, and Lucas (2006), *The Mini-IPIP scales: Tiny-yet-effective measures of the Big Five factors of personality*, https://doi.org/10.1037/1040-3590.18.2.192 . Original research does not establish Chinese validation of this implementation. Official scoring-key row order is recorded explicitly; v0.4 adds a faithful Chinese draft with the English originals retained, under the IPIP public-domain permission. It has not undergone independent bilingual review, back-translation, cognitive interviews, or psychometric validation; it is not an official validated Chinese version.
 
 ## O*NET Database 31.0
 
 This product uses the O*NET® 31.0 Database by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA), available at https://www.onetcenter.org/database.html under CC BY 4.0: https://www.onetcenter.org/license_db.html . Data files were selected, filtered to complete OI six-dimensional profiles, and reorganized into JSON; Chinese browsing aliases were added by this project and are not official O*NET translations. Original title, description, raw ratings, scale/element IDs, data date, domain source, source URLs, and hashes are retained. USDOL/ETA has not approved, endorsed, or tested this product. O*NET® is a trademark of USDOL/ETA. Database licensing is separate from Career Exploration Tools licensing.
 
-## Local parsing and validation dependencies
+## Retired local parsing dependencies and active validation dependency
 
 - pdf-parse 2.4.5, Apache-2.0: https://github.com/mehmet-kozan/pdf-parse
 - mammoth 1.13.0, BSD-2-Clause: https://github.com/mwilliamson/mammoth.js
@@ -49,3 +49,6 @@ This product uses the O*NET® 31.0 Database by the U.S. Department of Labor, Emp
 - Optional tessdata_fast English / simplified Chinese models, Apache-2.0: https://github.com/tesseract-ocr/tessdata_fast/tree/65727574dfcd264acbb0c3e07860e4e9e9b22185 . Downloaded models remain local and Git-ignored; installer checks official Git blob hashes and records SHA256.
 
 Dependency licenses are retained in installed npm packages; package-lock.json pins versions and integrity. Parsing runs on the local server and does not send personal files to those projects.
+
+
+v0.4 retirement: pdf-parse, mammoth, Tesseract.js and the optional OCR installer are no longer active dependencies or runtime code. Their notices are retained for the historical archive. Zod remains active. O*NET Chinese draft is private local adaptation under CC BY-ND section 2(a)(1)(B), not distributed or enabled; modified public versions require the Developer License validation study and notices: https://www.onetcenter.org/license_toolsdev.html . This is an implementation release restriction, not compliance by disclaimer.
