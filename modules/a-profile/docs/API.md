@@ -18,6 +18,10 @@
 
 完整输出见[演示文件](../fixtures/AJobNeedsExport.demo.json)。现实条件只有五个既有公共key；七主题记录在`JobNeedsSnapshot`，不混进旧filters。新流不接受经历、简历、技能字段或任意自由文字。
 
+2026-10-03：现实条件页使用“实习机会／第一份全职工作／新的全职工作”单选入口，删除重复的阶段和任务。bootstrap提供`opportunities`以及独立的改善目标。新草稿沿用`goalIds`中的`find_internship`、`find_first_job`、`change_job`，至多一个；`stageId`保持null，不新增公共契约字段。
+
+草稿允许工作机会、行业和岗位暂未确定。进入step8或POST confirm时，服务端要求一个工作机会、至少一个行业和至少一个岗位，否则返回422且不写入确认版本。城市、薪资等仍允许未知。旧阶段／任务快照保持原内容，可查看、导出及导入；修改后再次确认需使用当前入口。旧演示包保存在`rubbish/opportunity-entry-20261003/`，不作为当前演示数据。
+
 错误结构为`{error:{code,message,retryable,requestId}}`。未建立会话401、越权／跨站403、无记录404、版本冲突409、旧功能410、非法选择／格式422。checksum不等于签名或身份真实性证明。
 
 ## 历史接口
