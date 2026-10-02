@@ -21,3 +21,11 @@
 存档manifest 23个原文件的SHA256逐项一致。本机原state的5个旧项目已封存到rubbish/private，活动状态移除其引用。个人材料未提交GitHub。
 
 这些测试验证工程行为，不验证量表在中文人群的信效度。未执行B/C联调、生产部署、简历解析或模型调用；不宣称已完成。
+
+## GitHub 公共 CI 的已知限制
+
+合并前检查发现，公共 main 基线 `233b0d858d75172ad63341397a19a9f8401781fe` 已在根目录 `npm ci` 阶段失败，原因是公共 package-lock.json 缺少 sharp 0.35.5 的平台依赖记录；尚未运行到公共类型检查、测试和构建。本次 PR 的公共 CI 出现同一失败。
+
+证据：[main 基线工作流日志](https://github.com/JerryFreeman333/48h-hackthon/actions/runs/36988172062/job/110777888182)、[A PR 公共工作流日志](https://github.com/JerryFreeman333/48h-hackthon/actions/runs/36990628205/job/110785743682)。
+
+本次只改 modules/a-profile，没有更改公共依赖锁文件或 ABC 契约。上述 A 独立测试实际通过，不能将此解释为公共 CI 或整体联调通过。公共锁文件修复需由公共架构维护者协调处理。
