@@ -1,0 +1,31 @@
+{
+  "version": "domestic-seed-1",
+  "reviewStatus": "requires_domestic_jd_review",
+  "meaning": "中文浏览别名，不是国内岗位与O*NET一一对应关系；真实JD映射由B核对",
+  "entries": [
+    {"onetCode":"15-1252.00","titleZh":"软件开发","aliases":["开发工程师","软件工程师"]},
+    {"onetCode":"15-1253.00","titleZh":"软件测试与质量","aliases":["测试工程师","软件QA"]},
+    {"onetCode":"15-1211.00","titleZh":"计算机系统分析","aliases":["系统分析","需求分析"]},
+    {"onetCode":"15-1212.00","titleZh":"信息安全分析","aliases":["安全分析","网络安全"]},
+    {"onetCode":"15-1242.00","titleZh":"数据库管理","aliases":["数据库管理员"]},
+    {"onetCode":"15-1244.00","titleZh":"网络与系统管理","aliases":["系统管理员","网络管理"]},
+    {"onetCode":"15-2051.00","titleZh":"数据科学","aliases":["数据科学家","数据分析方向"]},
+    {"onetCode":"27-1024.00","titleZh":"平面设计","aliases":["视觉设计","平面设计师"]},
+    {"onetCode":"27-3042.00","titleZh":"技术写作","aliases":["技术文档","技术写作者"]},
+    {"onetCode":"27-3031.00","titleZh":"公共关系","aliases":["公关","传播方向"]},
+    {"onetCode":"13-1161.00","titleZh":"市场研究与营销分析","aliases":["市场研究","营销分析"]},
+    {"onetCode":"13-1111.00","titleZh":"管理分析","aliases":["管理咨询方向"]},
+    {"onetCode":"13-1151.00","titleZh":"培训与发展","aliases":["培训方向"]},
+    {"onetCode":"13-2011.00","titleZh":"会计与审计","aliases":["会计","审计"]},
+    {"onetCode":"13-1071.00","titleZh":"人力资源","aliases":["HR","招聘方向"]},
+    {"onetCode":"13-1081.00","titleZh":"物流管理","aliases":["物流","供应链方向"]},
+    {"onetCode":"17-2141.00","titleZh":"机械工程","aliases":["机械工程师"]},
+    {"onetCode":"17-2071.00","titleZh":"电气工程","aliases":["电气工程师"]},
+    {"onetCode":"17-2112.03","titleZh":"制造工程","aliases":["制造工程师"]},
+    {"onetCode":"23-1011.00","titleZh":"法律服务","aliases":["律师方向"]},
+    {"onetCode":"29-1141.00","titleZh":"注册护理职业参考","aliases":["护理方向"]},
+    {"onetCode":"25-2031.00","titleZh":"中学教育职业参考","aliases":["教师方向"]},
+    {"onetCode":"43-4051.00","titleZh":"客户服务","aliases":["客服方向"]},
+    {"onetCode":"41-3091.00","titleZh":"服务销售","aliases":["销售方向"]}
+  ]
+}

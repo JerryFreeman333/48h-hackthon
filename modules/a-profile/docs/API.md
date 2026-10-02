@@ -1,5 +1,7 @@
 # A独立API
 
+此页描述保留的v1接口。当前默认界面使用独立 `/api/a/v2`，接口与实际后端状态见 [V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md)。公共v1契约未改。
+
 GET `/api/a/bootstrap`建立HttpOnly/SameSite=Strict本地会话并返回当前题本、工具说明、分类和本人记录。旧记录在启动时封存，不返回旧答案。接口只支持同源请求，JSON正文限制256KB。
 
 | 接口 | 行为 |

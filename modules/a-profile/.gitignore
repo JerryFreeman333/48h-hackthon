@@ -4,3 +4,5 @@ test-results/
 .npm-cache/
 mini-ip-source.pdf
 rubbish/private/
+.sources/
+.models/

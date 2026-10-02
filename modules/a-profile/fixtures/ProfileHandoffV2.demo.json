@@ -1,0 +1,872 @@
+{
+  "ProfileBundleV2": {
+    "schemaVersion": "2.0.0",
+    "profileId": "18b03e1a-faf4-4bad-90e5-416c85955129",
+    "projectId": "efb25d72-0a9a-4ee5-9ddd-f4af69d1bb88",
+    "revision": 1,
+    "ownerId": "9005f58d-54e9-46f2-a4e3-c153f7e043bf",
+    "mode": "demo",
+    "createdAt": "2026-10-02T11:47:53.857Z",
+    "confirmedAt": "2026-10-02T11:47:53.867Z",
+    "assessments": [
+      {
+        "instrumentId": "onet-mini-ip",
+        "instrumentVersion": "2016-computerized-en",
+        "scoringVersion": "mini-sum-0-4-1",
+        "locale": "en",
+        "validationStatus": "source_supported",
+        "translationVersion": null,
+        "chineseValidation": "unknown",
+        "complete": true,
+        "completeness": 1,
+        "scores": [
+          {
+            "dimension": "realistic",
+            "raw": 0,
+            "normalized": 0,
+            "answeredItems": 5,
+            "totalItems": 5
+          },
+          {
+            "dimension": "investigative",
+            "raw": 5,
+            "normalized": 0.25,
+            "answeredItems": 5,
+            "totalItems": 5
+          },
+          {
+            "dimension": "artistic",
+            "raw": 10,
+            "normalized": 0.5,
+            "answeredItems": 5,
+            "totalItems": 5
+          },
+          {
+            "dimension": "social",
+            "raw": 15,
+            "normalized": 0.75,
+            "answeredItems": 5,
+            "totalItems": 5
+          },
+          {
+            "dimension": "enterprising",
+            "raw": 20,
+            "normalized": 1,
+            "answeredItems": 5,
+            "totalItems": 5
+          },
+          {
+            "dimension": "conventional",
+            "raw": 0,
+            "normalized": 0,
+            "answeredItems": 5,
+            "totalItems": 5
+          }
+        ],
+        "answersHash": "a63f5f4f91216bacee5d595ee535c8e053a5c268b95e7e1dc27ff5381b25860b",
+        "confidence": null,
+        "displayTransform": "normalized * 100; range display, not percentile",
+        "missingPolicy": "product rule: no imputation; incomplete battery not interpreted",
+        "thresholds": null,
+        "norms": null,
+        "evidenceId": "f22ee4d6-1390-465b-b185-48245e3dfedd"
+      },
+      {
+        "instrumentId": "mini-ipip",
+        "instrumentVersion": "2006-official-key-en-1",
+        "scoringVersion": "ipip-sum-1",
+        "locale": "en",
+        "validationStatus": "source_supported",
+        "translationVersion": null,
+        "chineseValidation": "unknown",
+        "complete": true,
+        "completeness": 1,
+        "scores": [
+          {
+            "dimension": "extraversion",
+            "raw": 12,
+            "normalized": 0.5,
+            "answeredItems": 4,
+            "totalItems": 4
+          },
+          {
+            "dimension": "agreeableness",
+            "raw": 12,
+            "normalized": 0.5,
+            "answeredItems": 4,
+            "totalItems": 4
+          },
+          {
+            "dimension": "conscientiousness",
+            "raw": 12,
+            "normalized": 0.5,
+            "answeredItems": 4,
+            "totalItems": 4
+          },
+          {
+            "dimension": "neuroticism",
+            "raw": 12,
+            "normalized": 0.5,
+            "answeredItems": 4,
+            "totalItems": 4
+          },
+          {
+            "dimension": "intellect_imagination",
+            "raw": 12,
+            "normalized": 0.5,
+            "answeredItems": 4,
+            "totalItems": 4
+          }
+        ],
+        "answersHash": "8920495ff4f752ef334e6afb05bcd7ecd5134513d7f5414fa2627d7d28d8108f",
+        "confidence": null,
+        "displayTransform": "normalized * 100; range display, not percentile",
+        "missingPolicy": "product rule: no imputation; incomplete battery not interpreted",
+        "thresholds": null,
+        "norms": null,
+        "evidenceId": "5056b34c-7eae-4bf1-b534-d5c1497724a6"
+      }
+    ],
+    "values": {
+      "priorityIds": [
+        "成长",
+        "收入"
+      ],
+      "groups": [
+        [
+          "成长",
+          "收入"
+        ]
+      ],
+      "tradeoffs": [
+        "愿意先了解岗位职责再明确其他条件"
+      ],
+      "evidenceIds": [
+        "7e398340-33d9-4a0f-9703-983eb2d05dbb"
+      ]
+    },
+    "capabilities": [],
+    "constraints": [
+      {
+        "key": "accept_sales_kpi",
+        "value": false,
+        "strength": "hard",
+        "confirmed": true,
+        "evidenceIds": [
+          "2dfffe08-ddfb-4f2a-bac7-5a754b773647"
+        ]
+      }
+    ],
+    "goals": [
+      {
+        "text": "探索软件开发方向",
+        "evidenceIds": [
+          "544b84d4-c9a3-4ba2-942f-ddd91819c5b7"
+        ]
+      },
+      {
+        "text": "当前求职阶段：应届求职",
+        "evidenceIds": [
+          "37137a22-9a37-4c35-bed1-8acf9d6822c8"
+        ]
+      }
+    ],
+    "insights": [
+      {
+        "insightId": "f70104fd-de07-484f-958f-6ee2933f08ed",
+        "text": "本次问卷中，相对原始分最高的自报兴趣维度是 enterprising；兴趣不证明实际能力。",
+        "evidenceIds": [
+          "3129e3a9-eb22-4e44-b3f3-105437dd73a5"
+        ],
+        "status": "confirmed",
+        "userEditedText": null,
+        "limitations": [
+          "这是当前问卷范围内的解释，不是完整人格或就业结果预测。"
+        ]
+      },
+      {
+        "insightId": "6148cb75-5c5d-4476-8dd9-fa9fe36b4649",
+        "text": "本次Mini-IPIP只描述本人自报行为倾向；神经质分沿情绪波动方向记录，不用于判断岗位胜任能力。",
+        "evidenceIds": [
+          "bfae9324-9a57-4466-a22a-4701042b637d"
+        ],
+        "status": "confirmed",
+        "userEditedText": null,
+        "limitations": [
+          "这是当前问卷范围内的解释，不是完整人格或就业结果预测。"
+        ]
+      }
+    ],
+    "uncertainties": [
+      {
+        "code": "no_confirmed_experience",
+        "message": "没有已确认经历，不能推断实际能力。",
+        "evidenceIds": []
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "3129e3a9-eb22-4e44-b3f3-105437dd73a5",
+        "kind": "assessment",
+        "sourceRef": "64676871-4bd4-4962-87db-55f698fd7a20",
+        "locator": "answersHash:a63f5f4f91216bacee5d595ee535c8e053a5c268b95e7e1dc27ff5381b25860b",
+        "instrumentId": "onet-mini-ip",
+        "instrumentVersion": "2016-computerized-en",
+        "locale": "en",
+        "collectedAt": "2026-10-02T11:47:53.861Z",
+        "text": null,
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "bfae9324-9a57-4466-a22a-4701042b637d",
+        "kind": "assessment",
+        "sourceRef": "933ff4d7-b50a-46fd-aaea-1121770e118b",
+        "locator": "answersHash:8920495ff4f752ef334e6afb05bcd7ecd5134513d7f5414fa2627d7d28d8108f",
+        "instrumentId": "mini-ipip",
+        "instrumentVersion": "2006-official-key-en-1",
+        "locale": "en",
+        "collectedAt": "2026-10-02T11:47:53.863Z",
+        "text": null,
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "f22ee4d6-1390-465b-b185-48245e3dfedd",
+        "kind": "assessment",
+        "sourceRef": "64676871-4bd4-4962-87db-55f698fd7a20",
+        "locator": "answersHash:a63f5f4f91216bacee5d595ee535c8e053a5c268b95e7e1dc27ff5381b25860b",
+        "instrumentId": "onet-mini-ip",
+        "instrumentVersion": "2016-computerized-en",
+        "locale": "en",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": null,
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "5056b34c-7eae-4bf1-b534-d5c1497724a6",
+        "kind": "assessment",
+        "sourceRef": "933ff4d7-b50a-46fd-aaea-1121770e118b",
+        "locator": "answersHash:8920495ff4f752ef334e6afb05bcd7ecd5134513d7f5414fa2627d7d28d8108f",
+        "instrumentId": "mini-ipip",
+        "instrumentVersion": "2006-official-key-en-1",
+        "locale": "en",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": null,
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "7e398340-33d9-4a0f-9703-983eb2d05dbb",
+        "kind": "user_statement",
+        "sourceRef": "1d8e1f95-1279-4e82-af6f-563e46347436",
+        "locator": null,
+        "instrumentId": null,
+        "instrumentVersion": null,
+        "locale": "zh-CN",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": "{\"groups\":[[\"成长\",\"收入\"]],\"tradeoffs\":[\"愿意先了解岗位职责再明确其他条件\"]}",
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "2dfffe08-ddfb-4f2a-bac7-5a754b773647",
+        "kind": "user_statement",
+        "sourceRef": "1d8e1f95-1279-4e82-af6f-563e46347436",
+        "locator": null,
+        "instrumentId": null,
+        "instrumentVersion": null,
+        "locale": "zh-CN",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": "accept_sales_kpi: false (hard, confirmed=true)",
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "544b84d4-c9a3-4ba2-942f-ddd91819c5b7",
+        "kind": "user_statement",
+        "sourceRef": "1d8e1f95-1279-4e82-af6f-563e46347436",
+        "locator": null,
+        "instrumentId": null,
+        "instrumentVersion": null,
+        "locale": "zh-CN",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": "探索软件开发方向",
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "37137a22-9a37-4c35-bed1-8acf9d6822c8",
+        "kind": "user_statement",
+        "sourceRef": "1d8e1f95-1279-4e82-af6f-563e46347436",
+        "locator": null,
+        "instrumentId": null,
+        "instrumentVersion": null,
+        "locale": "zh-CN",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": "应届求职",
+        "status": "confirmed"
+      }
+    ]
+  },
+  "SearchIntentV2": {
+    "schemaVersion": "2.0.0",
+    "intentId": "f11d0974-b624-47cf-a6d8-229848bef8f3",
+    "revision": 1,
+    "profileId": "18b03e1a-faf4-4bad-90e5-416c85955129",
+    "profileRevision": 1,
+    "mode": "demo",
+    "selectedDirections": [
+      {
+        "roleFamily": "软件开发",
+        "aliases": [
+          "Software Developers",
+          "开发工程师",
+          "软件工程师"
+        ],
+        "onetCodes": [
+          "15-1252.00"
+        ],
+        "selectedByUser": true,
+        "mappingVersion": "domestic-seed-1",
+        "reviewStatus": "requires_domestic_jd_review"
+      }
+    ],
+    "filters": [
+      {
+        "key": "accept_sales_kpi",
+        "value": false,
+        "strength": "hard",
+        "confirmed": true,
+        "evidenceIds": [
+          "2dfffe08-ddfb-4f2a-bac7-5a754b773647"
+        ]
+      }
+    ],
+    "maxCandidates": 3
+  },
+  "OccupationFitSnapshot": {
+    "schemaVersion": "2.0.0",
+    "profileId": "18b03e1a-faf4-4bad-90e5-416c85955129",
+    "profileRevision": 1,
+    "catalogVersion": "onet-31.0-OI-1",
+    "strategyVersion": "interest-pearson-complete-1",
+    "status": "ranked",
+    "numericalTolerance": 1e-12,
+    "catalogCounts": {
+      "loaded": 1016,
+      "complete": 923
+    },
+    "candidates": [
+      {
+        "onetCode": "21-2021.00",
+        "title": "Directors, Religious Activities and Education",
+        "titleZh": null,
+        "description": "Coordinate or design programs and conduct outreach to promote the religious education or activities of a denominational group. May provide counseling, guidance, and leadership relative to marital, health, financial, and religious problems.",
+        "pearsonR": 0.8751602840809631,
+        "interestIndex": 0.9375801420404816,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:21-2021.00"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/21-2021.00",
+        "rank": 1
+      },
+      {
+        "onetCode": "27-3031.00",
+        "title": "Public Relations Specialists",
+        "titleZh": "公共关系",
+        "description": "Promote or create an intended public image for individuals, groups, or organizations. May write or select material for release to various communications media. May specialize in using social media.",
+        "pearsonR": 0.8239491296606191,
+        "interestIndex": 0.9119745648303095,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:27-3031.00"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/27-3031.00",
+        "rank": 2
+      },
+      {
+        "onetCode": "13-1011.00",
+        "title": "Agents and Business Managers of Artists, Performers, and Athletes",
+        "titleZh": null,
+        "description": "Represent and promote artists, performers, and athletes in dealings with current or prospective employers. May handle contract negotiation and other business matters for clients.",
+        "pearsonR": 0.8106027972812281,
+        "interestIndex": 0.905301398640614,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:13-1011.00"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/13-1011.00",
+        "rank": 3
+      },
+      {
+        "onetCode": "11-3131.00",
+        "title": "Training and Development Managers",
+        "titleZh": null,
+        "description": "Plan, direct, or coordinate the training and development activities and staff of an organization.",
+        "pearsonR": 0.7815368654756832,
+        "interestIndex": 0.8907684327378416,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:11-3131.00"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/11-3131.00",
+        "rank": 4
+      },
+      {
+        "onetCode": "11-9151.00",
+        "title": "Social and Community Service Managers",
+        "titleZh": null,
+        "description": "Plan, direct, or coordinate the activities of a social service program or community outreach organization. Oversee the program or organization's budget and policies regarding participant involvement, program requirements, and benefits. Work may involve directing social workers, counselors, or probation officers.",
+        "pearsonR": 0.7739227040472499,
+        "interestIndex": 0.886961352023625,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:11-9151.00"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/11-9151.00",
+        "rank": 5
+      },
+      {
+        "onetCode": "21-2011.00",
+        "title": "Clergy",
+        "titleZh": null,
+        "description": "Conduct religious worship and perform other spiritual functions associated with beliefs and practices of religious faith or denomination. Provide spiritual and moral guidance and assistance to members.",
+        "pearsonR": 0.7634293511325674,
+        "interestIndex": 0.8817146755662837,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:21-2011.00"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/21-2011.00",
+        "rank": 6
+      },
+      {
+        "onetCode": "13-1131.00",
+        "title": "Fundraisers",
+        "titleZh": null,
+        "description": "Organize activities to raise funds or otherwise solicit and gather monetary donations or other gifts for an organization. May design and produce promotional materials. May also raise awareness of the organization's work, goals, and financial needs.",
+        "pearsonR": 0.758231867063056,
+        "interestIndex": 0.879115933531528,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:13-1131.00"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/13-1131.00",
+        "rank": 7
+      },
+      {
+        "onetCode": "11-2032.00",
+        "title": "Public Relations Managers",
+        "titleZh": null,
+        "description": "Plan, direct, or coordinate activities designed to create or maintain a favorable public image or raise issue awareness for their organization or client.",
+        "pearsonR": 0.7573917303443941,
+        "interestIndex": 0.878695865172197,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:11-2032.00"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/11-2032.00",
+        "rank": 8
+      },
+      {
+        "onetCode": "27-2012.04",
+        "title": "Talent Directors",
+        "titleZh": null,
+        "description": "Audition and interview performers to select most appropriate talent for parts in stage, television, radio, or motion picture productions.",
+        "pearsonR": 0.7536333836581348,
+        "interestIndex": 0.8768166918290674,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:27-2012.04"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/27-2012.04",
+        "rank": 9
+      },
+      {
+        "onetCode": "11-1031.00",
+        "title": "Legislators",
+        "titleZh": null,
+        "description": "Develop, introduce, or enact laws and statutes at the local, tribal, state, or federal level. Includes only workers in elected positions.",
+        "pearsonR": 0.7355373546087698,
+        "interestIndex": 0.8677686773043849,
+        "workFitExperimental": null,
+        "missingDataFlags": [],
+        "evidenceIds": [
+          "f22ee4d6-1390-465b-b185-48245e3dfedd",
+          "onet:11-1031.00"
+        ],
+        "sourceUrl": "https://www.onetonline.org/link/summary/11-1031.00",
+        "rank": 10
+      }
+    ],
+    "limitations": [
+      "仅比较六维兴趣形状，不表示能力、录用概率或国内岗位匹配。",
+      "职业数据覆盖美国职业；国内名称与任务映射仍需逐项核查。",
+      "工作方式、价值、市场和公司风险未混入此兴趣排序。"
+    ]
+  },
+  "Report": {
+    "schemaVersion": "2.0.0",
+    "profileId": "18b03e1a-faf4-4bad-90e5-416c85955129",
+    "profileRevision": 1,
+    "reportVersion": "template-zh-1",
+    "provider": "none",
+    "model": null,
+    "promptVersion": null,
+    "contextHash": "4e8b03476c09d4dbfcddb50688f18ccf8962d5053c1a78858a23614fc84b4ce9",
+    "sections": [
+      {
+        "title": "自报职业兴趣",
+        "claims": [
+          {
+            "text": "实践活动兴趣：0/20；量程展示 0.0；研究活动兴趣：5/20；量程展示 25.0；创作活动兴趣：10/20；量程展示 50.0；助人活动兴趣：15/20；量程展示 75.0；经营与推动活动兴趣：20/20；量程展示 100.0；组织与记录活动兴趣：0/20；量程展示 0.0",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd"
+            ]
+          },
+          {
+            "text": "英文源工具有研究依据；当前中文题本未启用。本产品不提供常模、高低阈值、能力判断或测评准确率。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "工作方式自报倾向",
+        "claims": [
+          {
+            "text": "外向表达：12/20；量程展示 50.0；合作与体谅：12/20；量程展示 50.0；条理与尽责：12/20；量程展示 50.0；情绪波动（神经质方向）：12/20；量程展示 50.0；智力／想象倾向：12/20；量程展示 50.0",
+            "evidenceIds": [
+              "5056b34c-7eae-4bf1-b534-d5c1497724a6"
+            ]
+          },
+          {
+            "text": "英文源工具有研究依据；当前中文题本未启用。本产品不提供常模、高低阈值、能力判断或测评准确率。",
+            "evidenceIds": [
+              "5056b34c-7eae-4bf1-b534-d5c1497724a6"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "由你声明的价值与取舍",
+        "claims": [
+          {
+            "text": "1级（同级并列）：成长、收入",
+            "evidenceIds": [
+              "7e398340-33d9-4a0f-9703-983eb2d05dbb"
+            ]
+          },
+          {
+            "text": "愿意先了解岗位职责再明确其他条件",
+            "evidenceIds": [
+              "7e398340-33d9-4a0f-9703-983eb2d05dbb"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "确认的经历与技能记录",
+        "claims": []
+      },
+      {
+        "title": "现实条件与目标",
+        "claims": [
+          {
+            "text": "accept_sales_kpi：false；hard",
+            "evidenceIds": [
+              "2dfffe08-ddfb-4f2a-bac7-5a754b773647"
+            ]
+          },
+          {
+            "text": "探索软件开发方向",
+            "evidenceIds": [
+              "544b84d4-c9a3-4ba2-942f-ddd91819c5b7"
+            ]
+          },
+          {
+            "text": "当前求职阶段：应届求职",
+            "evidenceIds": [
+              "37137a22-9a37-4c35-bed1-8acf9d6822c8"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "职业方向探索",
+        "claims": [
+          {
+            "text": "Directors, Religious Activities and Education（21-2021.00）：兴趣形状相关 r=0.8752，展示指数=0.9376；同分排序位次 1。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:21-2021.00"
+            ]
+          },
+          {
+            "text": "Public Relations Specialists（27-3031.00）：兴趣形状相关 r=0.8239，展示指数=0.9120；同分排序位次 2。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:27-3031.00"
+            ]
+          },
+          {
+            "text": "Agents and Business Managers of Artists, Performers, and Athletes（13-1011.00）：兴趣形状相关 r=0.8106，展示指数=0.9053；同分排序位次 3。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:13-1011.00"
+            ]
+          },
+          {
+            "text": "Training and Development Managers（11-3131.00）：兴趣形状相关 r=0.7815，展示指数=0.8908；同分排序位次 4。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:11-3131.00"
+            ]
+          },
+          {
+            "text": "Social and Community Service Managers（11-9151.00）：兴趣形状相关 r=0.7739，展示指数=0.8870；同分排序位次 5。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:11-9151.00"
+            ]
+          },
+          {
+            "text": "Clergy（21-2011.00）：兴趣形状相关 r=0.7634，展示指数=0.8817；同分排序位次 6。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:21-2011.00"
+            ]
+          },
+          {
+            "text": "Fundraisers（13-1131.00）：兴趣形状相关 r=0.7582，展示指数=0.8791；同分排序位次 7。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:13-1131.00"
+            ]
+          },
+          {
+            "text": "Public Relations Managers（11-2032.00）：兴趣形状相关 r=0.7574，展示指数=0.8787；同分排序位次 8。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:11-2032.00"
+            ]
+          },
+          {
+            "text": "Talent Directors（27-2012.04）：兴趣形状相关 r=0.7536，展示指数=0.8768；同分排序位次 9。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:27-2012.04"
+            ]
+          },
+          {
+            "text": "Legislators（11-1031.00）：兴趣形状相关 r=0.7355，展示指数=0.8678；同分排序位次 10。",
+            "evidenceIds": [
+              "f22ee4d6-1390-465b-b185-48245e3dfedd",
+              "onet:11-1031.00"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "已确认的解释",
+        "claims": [
+          {
+            "text": "本次问卷中，相对原始分最高的自报兴趣维度是 enterprising；兴趣不证明实际能力。",
+            "evidenceIds": [
+              "3129e3a9-eb22-4e44-b3f3-105437dd73a5"
+            ]
+          },
+          {
+            "text": "本次Mini-IPIP只描述本人自报行为倾向；神经质分沿情绪波动方向记录，不用于判断岗位胜任能力。",
+            "evidenceIds": [
+              "bfae9324-9a57-4466-a22a-4701042b637d"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "还需要了解",
+        "claims": [
+          {
+            "text": "没有已确认经历，不能推断实际能力。",
+            "evidenceIds": []
+          },
+          {
+            "text": "职业方向是探索参考。国内JD、入门准备、招聘状态和公司风险需要B/C结合真实材料核查。",
+            "evidenceIds": []
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "3129e3a9-eb22-4e44-b3f3-105437dd73a5",
+        "kind": "assessment",
+        "sourceRef": "64676871-4bd4-4962-87db-55f698fd7a20",
+        "locator": "answersHash:a63f5f4f91216bacee5d595ee535c8e053a5c268b95e7e1dc27ff5381b25860b",
+        "instrumentId": "onet-mini-ip",
+        "instrumentVersion": "2016-computerized-en",
+        "locale": "en",
+        "collectedAt": "2026-10-02T11:47:53.861Z",
+        "text": null,
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "bfae9324-9a57-4466-a22a-4701042b637d",
+        "kind": "assessment",
+        "sourceRef": "933ff4d7-b50a-46fd-aaea-1121770e118b",
+        "locator": "answersHash:8920495ff4f752ef334e6afb05bcd7ecd5134513d7f5414fa2627d7d28d8108f",
+        "instrumentId": "mini-ipip",
+        "instrumentVersion": "2006-official-key-en-1",
+        "locale": "en",
+        "collectedAt": "2026-10-02T11:47:53.863Z",
+        "text": null,
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "f22ee4d6-1390-465b-b185-48245e3dfedd",
+        "kind": "assessment",
+        "sourceRef": "64676871-4bd4-4962-87db-55f698fd7a20",
+        "locator": "answersHash:a63f5f4f91216bacee5d595ee535c8e053a5c268b95e7e1dc27ff5381b25860b",
+        "instrumentId": "onet-mini-ip",
+        "instrumentVersion": "2016-computerized-en",
+        "locale": "en",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": null,
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "5056b34c-7eae-4bf1-b534-d5c1497724a6",
+        "kind": "assessment",
+        "sourceRef": "933ff4d7-b50a-46fd-aaea-1121770e118b",
+        "locator": "answersHash:8920495ff4f752ef334e6afb05bcd7ecd5134513d7f5414fa2627d7d28d8108f",
+        "instrumentId": "mini-ipip",
+        "instrumentVersion": "2006-official-key-en-1",
+        "locale": "en",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": null,
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "7e398340-33d9-4a0f-9703-983eb2d05dbb",
+        "kind": "user_statement",
+        "sourceRef": "1d8e1f95-1279-4e82-af6f-563e46347436",
+        "locator": null,
+        "instrumentId": null,
+        "instrumentVersion": null,
+        "locale": "zh-CN",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": "{\"groups\":[[\"成长\",\"收入\"]],\"tradeoffs\":[\"愿意先了解岗位职责再明确其他条件\"]}",
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "2dfffe08-ddfb-4f2a-bac7-5a754b773647",
+        "kind": "user_statement",
+        "sourceRef": "1d8e1f95-1279-4e82-af6f-563e46347436",
+        "locator": null,
+        "instrumentId": null,
+        "instrumentVersion": null,
+        "locale": "zh-CN",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": "accept_sales_kpi: false (hard, confirmed=true)",
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "544b84d4-c9a3-4ba2-942f-ddd91819c5b7",
+        "kind": "user_statement",
+        "sourceRef": "1d8e1f95-1279-4e82-af6f-563e46347436",
+        "locator": null,
+        "instrumentId": null,
+        "instrumentVersion": null,
+        "locale": "zh-CN",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": "探索软件开发方向",
+        "status": "confirmed"
+      },
+      {
+        "evidenceId": "37137a22-9a37-4c35-bed1-8acf9d6822c8",
+        "kind": "user_statement",
+        "sourceRef": "1d8e1f95-1279-4e82-af6f-563e46347436",
+        "locator": null,
+        "instrumentId": null,
+        "instrumentVersion": null,
+        "locale": "zh-CN",
+        "collectedAt": "2026-10-02T11:47:53.867Z",
+        "text": "应届求职",
+        "status": "confirmed"
+      }
+    ],
+    "occupationSources": [
+      {
+        "evidenceId": "onet:21-2021.00",
+        "url": "https://www.onetonline.org/link/summary/21-2021.00",
+        "catalogVersion": "onet-31.0-OI-1"
+      },
+      {
+        "evidenceId": "onet:27-3031.00",
+        "url": "https://www.onetonline.org/link/summary/27-3031.00",
+        "catalogVersion": "onet-31.0-OI-1"
+      },
+      {
+        "evidenceId": "onet:13-1011.00",
+        "url": "https://www.onetonline.org/link/summary/13-1011.00",
+        "catalogVersion": "onet-31.0-OI-1"
+      },
+      {
+        "evidenceId": "onet:11-3131.00",
+        "url": "https://www.onetonline.org/link/summary/11-3131.00",
+        "catalogVersion": "onet-31.0-OI-1"
+      },
+      {
+        "evidenceId": "onet:11-9151.00",
+        "url": "https://www.onetonline.org/link/summary/11-9151.00",
+        "catalogVersion": "onet-31.0-OI-1"
+      },
+      {
+        "evidenceId": "onet:21-2011.00",
+        "url": "https://www.onetonline.org/link/summary/21-2011.00",
+        "catalogVersion": "onet-31.0-OI-1"
+      },
+      {
+        "evidenceId": "onet:13-1131.00",
+        "url": "https://www.onetonline.org/link/summary/13-1131.00",
+        "catalogVersion": "onet-31.0-OI-1"
+      },
+      {
+        "evidenceId": "onet:11-2032.00",
+        "url": "https://www.onetonline.org/link/summary/11-2032.00",
+        "catalogVersion": "onet-31.0-OI-1"
+      },
+      {
+        "evidenceId": "onet:27-2012.04",
+        "url": "https://www.onetonline.org/link/summary/27-2012.04",
+        "catalogVersion": "onet-31.0-OI-1"
+      },
+      {
+        "evidenceId": "onet:11-1031.00",
+        "url": "https://www.onetonline.org/link/summary/11-1031.00",
+        "catalogVersion": "onet-31.0-OI-1"
+      }
+    ],
+    "limitations": [
+      "仅比较六维兴趣形状，不表示能力、录用概率或国内岗位匹配。",
+      "职业数据覆盖美国职业；国内名称与任务映射仍需逐项核查。",
+      "工作方式、价值、市场和公司风险未混入此兴趣排序。"
+    ]
+  }
+}

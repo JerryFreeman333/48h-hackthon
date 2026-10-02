@@ -1,5 +1,7 @@
 # 2026-10-02 开源组件整合记录
 
+本页记录v0.2整合与公共v1兼容的历史背景。V2新实现、真实简历解析和A内部v2交接以 [V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md) 与 [PORT_MAP.md](PORT_MAP.md) 为准。
+
 ## 实际复用范围
 
 | 项目 | 固定来源 | 实际整合 | 排除 |

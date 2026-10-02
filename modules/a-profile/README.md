@@ -1,43 +1,48 @@
-# A｜用户画像与意向选择
+# A｜用户画像与意向选择 · V2
 
-独立目录 `modules/a-profile/`；开发分支 `feat/a-profile`，整合后合并 main。只负责职业问卷、可读兴趣画像、经历、行业、岗位、现实条件与 UserProfile/SearchIntent。
+本模块独立保存于 `modules/a-profile/`，开发分支 `feat/a-profile`。负责问卷、可读画像、经历证据确认、价值偏好、职业方向和现实条件，输出版本化画像与搜索意向。
 
-## 后续开发指导
-
-[Career DNA 嫁接与多源画像扩展开发规格 V2](docs/求职X-Ray_CareerDNA嫁接与扩展开发规格_V2.md) 作为后续扩展指导，原文保留。该规格描述计划，不代表已实现；具体实施、提交和发布以用户授权范围为准。中文题本、第三方许可及 v2 交接需完成相应核查，不改变现有公共 v1 契约或历史数据。
+开发指导原文：[Career DNA 嫁接与扩展规格 V2](docs/求职X-Ray_CareerDNA嫁接与扩展开发规格_V2.md)。实际实现、接口和限制见 [V2_IMPLEMENTATION](docs/V2_IMPLEMENTATION.md)，第三方来源与替换关系见 [PORT_MAP](docs/PORT_MAP.md)。
 
 ## 启动
 
-Node.js 22+，进入本目录：
+Node.js 22+，在本目录运行：
 
 ```sh
 npm ci
+npm run setup:ocr
 npm start
 ```
 
-打开 http://127.0.0.1:3100/demo/a 。可用 PORT 更换端口。所有问卷静态资源从本机 node_modules 提供，无运行时 CDN。
+打开 http://127.0.0.1:3100/demo/a 。`setup:ocr` 为可选模型安装步骤；未安装时扫描件与图片解析明确显示未连接，PDF/DOCX文字提取和手填可用。PORT 可修改端口。所有页面资源、本地解析和OCR在本机运行，不调用模型或运行时CDN。
 
-## 整合结果
+## 当前流程
 
-- 直接使用 SurveyJS Form Library 3.1.2（MIT）：分页、必答校验、进度、返回修改；自有后端保存答案与页码。
-- 借鉴 riasec-co 的题库 / 答题状态 / 计分分离，实际评分使用官方 Mini-IP 规则；未移植贝叶斯、自适应删题或职业匹配。
-- 借鉴 psyche-public 的工具注册与许可台账。题目原文从官方 PDF 提取，逐题记录题号、来源页码、维度和许可；未复制其 RIASEC 题库或 AI 画像融合。
-- 保留原 A 的经历、行业岗位、条件确认、不可变画像版本、服务器权限隔离与 JSON 导入导出。
+1. Quick 完整英文 Mini-IP 30题，Standard 再加完整英文 Mini-IPIP 20题；允许暂不测评。
+2. 原始分与可读解释共用服务器确定性计分；解释草稿由本人确认、编辑或拒绝。
+3. 价值偏好直接选择与并列排序；上传PDF/DOCX/扫描件/图片，或输入经历原句；提取候选逐条核对。
+4. 确认城市、固定月薪及其他必要条件，明确硬、软、未知与本人确认状态。
+5. 冻结新画像版本，查看O*NET兴趣形状参考或浏览职业，最多选择3个方向，保存搜索意向。
+6. 导出完整v2 JSON、最小SearchIntentV2、中文模板报告；可修改生成新版本，保留旧快照。
 
-默认允许“暂不测评”，兴趣保持未知。另可选择官方英文完整 30 题 O*NET Mini-IP（固定2016电子版，不称为最新版本）。没有上线 AI 翻译；没有正式工作价值观问卷。英文工具有原始研究支持，不表示中文用户、此界面或本产品已验证。
+正式题文保持英文原文，没有上线AI中文翻译；[50题逐题来源台账](docs/ITEM_PROVENANCE_V2.json)记录来源、计分、反向题、许可与未知。价值偏好是本人声明，不是正式工作价值观测评。没有35/65分类、常模百分位或实际能力推断。
 
-## 存档
+职业参考使用O*NET®31.0官方完整六维OI数据：923个可排序职业，93个缺维职业排除；Pearson相关只比较兴趣形状，不代表匹配概率。中文浏览别名的国内JD对应关系仍待人工核对。A不实施公司调查、真实职位检索或C的最终匹配。
 
-旧48题、规则、代码、样例、文档与测试保存在 `rubbish/legacy-20261002/`，只供历史查阅。活动服务不导入这里的代码、不重新评分、不接受旧48题 JSON。真实本机历史状态保存在 Git 忽略的 `rubbish/private/`，禁止上传。启动迁移先校验完整备份，再隔离相关旧项目。
+## 后端、交接与存档
 
-## 计分与契约
+真实Node后端保存答案、草稿、画像版本、意向和异步解析状态；Cookie隔离本人项目。数据在Git忽略的 `.data/`，OCR模型在 `.models/`。这是本地单进程后端，生产身份、数据库及B/C v2联调尚未完成。
 
-原始维度分为5题0–4分求和（0–20）；Unsure=2。缺答不出分，完整题本才能确认测评。无缺失插补、35/65阈值、百分位或能力推断。同分并列显示，不强行打破同分。
+公共ABC v1契约文件保持原样；A内部v2单独定义。v1导出返回丢失信息警告；无法表达额外已确认硬条件时拒绝导出，避免静默丢条件。现有v1独立入口保留 `/demo/a/v1`。
 
-公共 ABC JSON schemaVersion仍是1.0.0，未修改字段/枚举。现有scores字段0–100存储的是原始分乘5的界面展示分，interpretation明确原始分；原始分、语言、依据、覆盖、答案快照保存在 A 内部 metadata。assessment.validation保守保留prototype，不能宣称本产品已经验证。下游须按instrumentId/version解释，不能套旧48题阈值。
+旧自编48题与历史实现保存在 `rubbish/legacy-20261002/`，只存档、不加载、不重算。旧v0.2 README存放 `rubbish/release-v0.2-20261002/`；本机私人历史数据留在Git忽略的 `rubbish/private/`。不删除旧历史。
 
-## 验证与限制
+## 验证
 
-`npm test`：计分、来源、版本、权限、存档、恢复与HTTP交接。`node tests/browser.mjs`：需要安装 Chrome，验证真实 SurveyJS 全流程与手机版面。
+```sh
+npm test
+npm run test:browser
+npm run fixtures:v2
+```
 
-仍为单进程、仅监听127.0.0.1的本地后端；持久化 `.data/state.json`，不是PostgreSQL或生产账户鉴权。简历/模型提取明确503，未接入公共runtime或B/C服务；当前只是A独立验证。详情见 docs/INTEGRATION.md 与 docs/SCORING.md。
+浏览器验证需要本机Chrome；OCR实测需要已安装的两份模型。合成输入输出在 `fixtures/ProfileHandoffV2.demo.json`，明确demo。实际测试记录见 [V2_TEST_RESULTS](docs/V2_TEST_RESULTS.md)。工程测试通过不表示中文心理测量验证或整个ABC联调通过。
