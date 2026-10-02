@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "intentId": "intent-demo-1",
+  "revision": 1,
+  "projectId": "project-demo-1",
+  "profileId": "profile-demo-1",
+  "profileRevision": 1,
+  "mode": "demo",
+  "industryTags": [
+    "software_it"
+  ],
+  "industryCodes": [
+    "I"
+  ],
+  "roleTypes": [
+    "product_operations"
+  ],
+  "cities": [
+    "上海"
+  ],
+  "filters": [
+    {
+      "key": "accept_sales_kpi",
+      "value": false,
+      "strength": "hard"
+    }
+  ],
+  "maxCandidates": 3
+}

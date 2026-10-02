@@ -1,0 +1,60 @@
+{
+  "auditDate": "2026-10-02",
+  "auditType": "document_and_fixture_consistency_only",
+  "workspace": "/Users/jerryzheng/Documents/ChatGPT/职业经理",
+  "sourceFiles": {
+    "A": {
+      "path": "/Users/jerryzheng/Desktop/职业经理/A_Profile_Industry_Role(1).md",
+      "sha256": "d73df83db7cc1012e8a9d94dca8004cbf8fdecd76558c829ace207df0e768d20"
+    },
+    "B": {
+      "path": "/Users/jerryzheng/Desktop/职业经理/B_Company_Job_Research(1).md",
+      "sha256": "309b1693b938332b40ff8202e1b02b4463699ade52aa9c62fa9e5e70688d10b4"
+    },
+    "C": {
+      "path": "/Users/jerryzheng/Desktop/职业经理/C_Matching_Report(1).md",
+      "sha256": "947f2f6fb39c22ea2fdd4b242c761a0ec0155f0c752e4d16d1f1429d2162910a"
+    }
+  },
+  "repositoryBeforeReview": {
+    "trackedFileCount": 0,
+    "businessCodePresent": false,
+    "techStackImplemented": false
+  },
+  "publicSectionTextIdentical": true,
+  "typescriptContractTextIdentical": true,
+  "typescriptContractSha256": "5eedaf95ac7a03c8250354aa5f72779cc5e494a362ae147111d1b1f10860cc8e",
+  "jsonFixtureCounts": {
+    "A": 3,
+    "B": 3,
+    "C": 3
+  },
+  "jsonFixtureValuesIdentical": true,
+  "canonicalFixtureSha256": "1c1b7933c81330559e2a201ee0c97ade861d339e3f19c472c491eced6ccb6ced",
+  "inputConsistencyCheckCount": 15,
+  "inputConsistencyChecks": {
+    "schema_version_all_1_0_0": true,
+    "project_ids_match": true,
+    "modes_match_demo": true,
+    "profile_confirmed": true,
+    "profile_intent_link": true,
+    "bundle_intent_link": true,
+    "fact_evidence_refs_exist": true,
+    "fact_job_company_scopes_match": true,
+    "job_company_refs_exist": true,
+    "evidence_mode_consistent": true,
+    "confirmed_hard_sales_constraint": true,
+    "supported_sales_kpi": true,
+    "salary_total_not_fixed": true,
+    "vacancy_unknown": true,
+    "financials_not_connected": true
+  },
+  "applicationTestsRun": false,
+  "realProviderApiCallsMade": false,
+  "limits": [
+    "不是完整Zod schema验证",
+    "不是应用单元或集成测试",
+    "未验证真实公司、真实职位或市场准确率",
+    "合成样例的建议动作尚未由产品代码执行"
+  ]
+}

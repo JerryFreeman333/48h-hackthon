@@ -1,0 +1,53 @@
+{
+  "module": "C",
+  "documentVersion": "1.1",
+  "publicSchemaVersion": "1.0.0",
+  "repository": "JerryFreeman333/48h-hackthon",
+  "repositoryPrivate": true,
+  "branch": "codex/c-docs-v1-1-20261002",
+  "status": "documents_integrated_to_main",
+  "allowedPathPrefix": "modules/c-report/",
+  "initialRepositoryEmpty": false,
+  "baseCommit": "a8a98164e1f1126ef36fb065a4280ce6248974f9",
+  "integratedCommit": "cb4827acd636e2294e7379e0e95fb92fa49b10fa",
+  "verifiedMainHeadAtDocumentCheck": "cb4827acd636e2294e7379e0e95fb92fa49b10fa",
+  "mainVerified": true,
+  "verifiedAt": "2026-10-02T08:01:03.761106+00:00",
+  "integrationMethod": "Authenticated GitHub API, base_tree + C-only file entries, fast-forward reference update with force=false",
+  "changedPaths": [
+    "modules/c-report/README.md",
+    "modules/c-report/docs/C_DEVELOPMENT_SPEC_V1.1_2026-10-02.md",
+    "modules/c-report/docs/C_DOCUMENT_VERIFICATION_2026-10-02.json",
+    "modules/c-report/docs/C_FEASIBILITY_AND_DELIVERY_PLAN_2026-10-02.md",
+    "modules/c-report/docs/C_MIGRATION_HANDOVER_2026-10-02.md",
+    "modules/c-report/docs/C_REMEDIATION_REGISTER_2026-10-02.md",
+    "modules/c-report/docs/C_REMOTE_DELIVERY_RECEIPT_2026-10-02.json",
+    "modules/c-report/docs/contract-audit-2026-10-02.json",
+    "modules/c-report/docs/source/C_Matching_Report.original.md",
+    "modules/c-report/fixtures/C_EXPECTED_BEHAVIOR.demo.v1.json",
+    "modules/c-report/fixtures/candidate-bundle.demo.v1.json",
+    "modules/c-report/fixtures/search-intent.demo.v1.json",
+    "modules/c-report/fixtures/user-profile.demo.v1.json",
+    "modules/c-report/scripts/verify_c_docs.py"
+  ],
+  "nonCPathsModified": [],
+  "publishedFileCount": 14,
+  "remoteFileBlobChecksumsMatched": true,
+  "localGitCheckoutSynchronized": false,
+  "localGitNote": "Local workspace is an initially uncommitted document workdir, not a checked-out remote main; ordinary Git HTTPS failed in this run.",
+  "receiptNote": "This receipt records the verified documentation commit. The receipt itself is delivered in a later C-only commit; later main commits may exist.",
+  "applicationTestsRun": false,
+  "realBusinessProviderApiCallsMade": false,
+  "initialInspectionNote": "Repository was empty at first inspection; before C publication, teammate A initialized main with its independent README. C used that existing main as parent.",
+  "cInitializedMain": false,
+  "preservedNonCFilesAtDocumentPublication": [
+    {
+      "path": "modules/a-profile/README.md",
+      "gitBlobSha": "1b3c2328911b0ba0408269e9205d885855136c71",
+      "unchanged": true
+    }
+  ],
+  "otherBranchHeadsObservedAfterPublication": {
+    "feat/a-profile": "a8a98164e1f1126ef36fb065a4280ce6248974f9"
+  }
+}
