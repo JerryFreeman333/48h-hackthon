@@ -15,6 +15,7 @@
   },
   "include": [
     "domain/**/*.ts",
+    "ui/**/*.ts",
     "application/**/*.ts",
     "adapters/**/*.ts",
     "scripts/**/*.ts",

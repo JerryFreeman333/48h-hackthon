@@ -89,6 +89,8 @@ export interface StoredReportSnapshot {
   report: MatchReport;
   snapshot: {
     artifactType: string;
+    /** 复现包内含其对应的公共 MatchReport（同 c_private_report_snapshot_v1 工件形状）。 */
+    report: MatchReport;
     profile: unknown;
     intentContext: unknown;
     bundle: unknown;

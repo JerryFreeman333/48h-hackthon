@@ -117,7 +117,8 @@ describe('P2 API｜GET /api/c/reports/:id/export?format=md（同快照导出与�
   it('不支持的导出格式 → 422 UNSUPPORTED_FORMAT', async () => {
     const harness = createHarness();
     const created = await readJson(await harness.createMatch({ idempotencyKey: 'export-fmt' }));
-    const response = await exportReport(harness, created.reportId as string, undefined, 'json');
+    // P3 起 json 为受支持格式（私有复现包）；此处用真正不支持的格式验证。
+    const response = await exportReport(harness, created.reportId as string, undefined, 'docx');
     assert.strictEqual(response.status, 422);
     const body = await readJson(response);
     assert.strictEqual(body.error.code, 'UNSUPPORTED_FORMAT');

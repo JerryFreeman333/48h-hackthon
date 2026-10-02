@@ -1,6 +1,6 @@
 # C｜缺陷修订登记与公共待协调事项
 
-- 板块：C；日期：2026-10-02；文档版本：1.1。
+- 板块：C；日期：2026-10-02；文档版本：1.2。
 - 公共 schemaVersion：1.0.0，未修改。
 - “规格已修正”只表示文字规范闭合，**不是业务实现或测试通过**。
 - 修改依据：[C 新开发规格](C_DEVELOPMENT_SPEC_V1.1_2026-10-02.md)。
@@ -96,3 +96,13 @@ C 名称在目录、README、所有新增规格和迁移标题中明确。远程
 - C-14 补充：run 状态与 completeness 分离（executed+partial → run=partial）。
 - C-16：fake 层已覆盖原子幂等与越权测试；生产持久化仍 open_shared。
 - 协调项新增：根目录 `app/api/c/` 挂载片段、root `test:c`、CI 条件步骤（见 P2 集成片段）；内存 fake 不得部署为无鉴权 live。
+
+## 8. P3 实施记录（2026-10-02，代码落地后追加）
+
+依据：[P3 交付签收](C_P3_DELIVERY_2026-10-02.md)。范围：框架无关视图模型与 HTML 渲染（`ui/`）、`export?format=json` 私有复现包、显式 demo 宿主运行时、P3 端到端演示。147 项 node:test（新增 35 项）通过；P3 演示 24 项通过；P1/P2 演示与输出无回归。
+
+- C-08 补充（implemented_in_p3）：页面层 unknown 不画绿/不当 0 有实现与测试——灰色 chip + 文字标签双通道；比较单元格渲染「未知」；动作 `explore` 中性灰不暗示安全；核验/在招状态独立配色通道。
+- C-13 补充（implemented_in_p3）：空候选页面的 insufficient 空状态展示（VM + HTML + 演示覆盖）。
+- C-12 补充（implemented_in_p3）：页面/比较/MD/JSON 读同一不可变快照（v1 工件逐字节不变、两次导出逐字节一致有测试）；`StoredReportSnapshot` 工件补 `report` 字段使复现包自洽。
+- C-02/C-03 补充：页面画像摘要区分「自报且本人确认 ≠ 外部能力证明」；混合结论仍走 trace，页面只展示结构化数据。
+- 协调项新增：`app/demo/c/` 与 `app/reports/` 挂载片段（见 [P3 集成片段](C_P3_INTEGRATION_SNIPPETS.md)）；`/reports` 上线前提为公共 runtime；生产快照读取方式待确认。root `test:c` 与 CI 条件步骤维持待协调。

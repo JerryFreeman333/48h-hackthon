@@ -259,6 +259,7 @@ async function executeOrReuse(
     report,
     snapshot: {
       artifactType: pipeline.snapshot.artifactType,
+      report: pipeline.snapshot.report,
       profile: pipeline.snapshot.profile,
       intentContext: pipeline.snapshot.intentContext,
       bundle: pipeline.snapshot.bundle,
@@ -398,24 +399,43 @@ export async function handleGetReport(ctx: CApiContext, request: Request, report
   return jsonResponse(200, { report: value.version.report, diagnostics: value.snapshot?.snapshot.diagnostics ?? null }, value.requestId);
 }
 
-/** GET /api/c/reports/:id/export?format=md —— 从不可变快照渲染，不再模型重写。 */
+/**
+ * GET /api/c/reports/:id/export?format=md|json —— 从不可变快照渲染，不再模型重写。
+ * md：公共报告导出（application/markdown.ts）。
+ * json：C 私有复现包（artifactType=c_private_report_snapshot_v1，规格 §12），
+ *       含完整输入快照与 trace，与裸 MatchReport 分开，仅所有者可导出。
+ */
 export async function handleExportReport(ctx: CApiContext, request: Request, reportId: string, url: URL): Promise<Response> {
   const format = url.searchParams.get('format') ?? 'md';
-  if (format !== 'md') {
-    return errorResponse('UNSUPPORTED_FORMAT', `不支持的导出格式：${format}（当前仅支持 md）`, ctx.newRequestId());
+  if (format !== 'md' && format !== 'json') {
+    return errorResponse('UNSUPPORTED_FORMAT', `不支持的导出格式：${format}（当前支持 md、json）`, ctx.newRequestId());
   }
   const located = await locateReport(ctx, request, reportId);
   if (!located.ok) {
     return located.response;
   }
   const { value } = located;
+  if (format === 'json') {
+    const artifact = value.snapshot?.snapshot ?? null;
+    if (artifact === null) {
+      return errorResponse('NOT_FOUND', `报告快照缺失：${reportId}`, value.requestId);
+    }
+    return new Response(JSON.stringify(artifact), {
+      status: 200,
+      headers: {
+        'content-type': 'application/json; charset=utf-8',
+        'x-request-id': value.requestId,
+        'content-disposition': `attachment; filename="${reportId}-v${String(value.version.report.version)}-snapshot.json"`,
+      },
+    });
+  }
   const markdown = renderReportMarkdown(value.version.report, value.snapshot);
   return new Response(markdown, {
     status: 200,
     headers: {
       'content-type': 'text/markdown; charset=utf-8',
       'x-request-id': value.requestId,
-      'content-disposition': `attachment; filename="${reportId}-v${value.version.report.version}.md"`,
+      'content-disposition': `attachment; filename="${reportId}-v${String(value.version.report.version)}.md"`,
     },
   });
 }
