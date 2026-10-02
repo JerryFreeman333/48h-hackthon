@@ -5,6 +5,7 @@ import {catalog,version,topics,questions,priorities,policies} from './catalog.mj
 import {keys,validateProfile,validateIntent,validateExport} from '../contracts.mjs';
 import {industries,roles,taxonomyVersion} from '../taxonomy.mjs';
 import {cityOptions,salaryOptions,goalOptions,stageOptions,conditionLabels,conditionText,validateChosenConstraints} from '../profile/selections.mjs';
+import {goalBranches,expectationIds,primaryGoalIds,validateGoalBranch} from './condition-branches.mjs';
 
 export class NeedsError extends Error{constructor(status,message,code='validation_error'){super(message);this.status=status;this.code=code;}}
 const bad=message=>{throw new NeedsError(422,message);};
@@ -81,18 +82,22 @@ export class NeedsService{
  commit(db){this.write({...this.state,needs:db});this.state.needs=db;}
  owned(owner,id){const s=this.db().sessions[id];if(!s)throw new NeedsError(404,'求职需求记录不存在');if(s.owner!==owner)throw new NeedsError(403,'没有访问权限');return s;}
  public(s){const {owner,...rest}=s;return clone(rest);}
- bootstrap(owner){const sessions=Object.values(this.db().sessions).filter(s=>s.owner===owner);return {catalog,conditions:{labels:conditionLabels,cities:cityOptions,salaries:salaryOptions},goals:goalOptions,stages:stageOptions,industries,roles,taxonomyVersion,latestSessionId:sessions.at(-1)?.id??null,sessions:sessions.map(s=>({id:s.id,revision:s.revision,confirmedRevisions:s.confirmedRevisions,mode:s.mode})),historicalRecordCount:Object.values(this.state.attempts??{}).filter(s=>s.owner===owner).length+Object.values(this.state.v2?.sessions??{}).filter(s=>s.owner===owner).length,backend:'local-persistent-cookie-session'};}
+ bootstrap(owner){const sessions=Object.values(this.db().sessions).filter(s=>s.owner===owner);return {catalog,conditions:{labels:conditionLabels,cities:cityOptions,salaries:salaryOptions},goals:goalOptions,stages:stageOptions,goalBranches,expectationIds,primaryGoalIds,industries,roles,taxonomyVersion,latestSessionId:sessions.at(-1)?.id??null,sessions:sessions.map(s=>({id:s.id,revision:s.revision,confirmedRevisions:s.confirmedRevisions,mode:s.mode})),historicalRecordCount:Object.values(this.state.attempts??{}).filter(s=>s.owner===owner).length+Object.values(this.state.v2?.sessions??{}).filter(s=>s.owner===owner).length,backend:'local-persistent-cookie-session'};}
  create(owner,input){const {mode}=parse(z.strictObject({mode:z.enum(['manual','demo']).default('manual')}),input);const db=clone(this.db()),s={id:randomUUID(),owner,projectId:randomUUID(),profileId:randomUUID(),intentId:randomUUID(),questionnaireVersion:version,mode,revision:1,step:0,data:emptyData(),confirmedRevisions:[],createdAt:new Date().toISOString()};db.sessions[s.id]=s;this.commit(db);return this.public(s);}
  get(owner,id){return this.public(this.owned(owner,id));}
  update(owner,id,input){
   const body=parse(z.strictObject({expectedRevision:z.number().int().positive(),questionnaireVersion:z.literal(version),step:z.number().int().min(0).max(9),data:dataSchema}),input),s=this.owned(owner,id);
   if(body.expectedRevision!==s.revision)throw new NeedsError(409,'另一个页面已保存，请刷新后重试','revision_conflict');
-  validateData(body.data);const db=clone(this.db()),next=db.sessions[id];Object.assign(next,{data:clone(body.data),step:body.step,revision:s.revision+1});this.commit(db);return this.public(next);
+  validateData(body.data);
+  // Old drafts may retain old goal combinations until this page is edited; never rewrite snapshots.
+  if(body.step===8||body.data.stageId!==s.data.stageId||!isDeepStrictEqual(body.data.goalIds,s.data.goalIds))validateGoalBranch(body.data.stageId,body.data.goalIds);
+  const db=clone(this.db()),next=db.sessions[id];Object.assign(next,{data:clone(body.data),step:body.step,revision:s.revision+1});this.commit(db);return this.public(next);
  }
  preview(owner,id){const s=this.owned(owner,id),n=deriveNeeds(s.data,{...s,revision:s.confirmedRevisions.length+1,confirmedAt:null});return {snapshot:n,description:describe(n)};}
  confirm(owner,id,input){
   const body=parse(z.strictObject({expectedRevision:z.number().int().positive(),confirmed:z.literal(true)}),input),s=this.owned(owner,id);
   if(body.expectedRevision!==s.revision)throw new NeedsError(409,'记录已更新，请刷新后确认','revision_conflict');
+  validateGoalBranch(s.data.stageId,s.data.goalIds);
   const revision=s.confirmedRevisions.length+1,n=deriveNeeds(s.data,{...s,revision,confirmedAt:new Date().toISOString()}),out=pack(n,s.intentId),db=clone(this.db());
   db.snapshots[s.id+':'+revision]=out;const next=db.sessions[id];next.confirmedRevisions.push(revision);next.revision++;next.step=9;this.commit(db);return {session:this.public(next),export:clone(out),description:describe(n)};
  }
