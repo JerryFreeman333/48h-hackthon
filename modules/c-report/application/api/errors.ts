@@ -15,7 +15,8 @@ export type ApiErrorCode =
   | 'MISSING_FIELD'
   | 'IDEMPOTENCY_KEY_CONFLICT'
   | 'UNSUPPORTED_FORMAT'
-  | 'INTERNAL_ERROR';
+  | 'INTERNAL_ERROR'
+  | 'RUN_NOT_CANCELLABLE';
 
 const STATUS_BY_CODE: Record<ApiErrorCode, number> = {
   // C 领域错误
@@ -42,6 +43,7 @@ const STATUS_BY_CODE: Record<ApiErrorCode, number> = {
   IDEMPOTENCY_KEY_CONFLICT: 409,
   UNSUPPORTED_FORMAT: 422,
   INTERNAL_ERROR: 500,
+  RUN_NOT_CANCELLABLE: 409,
 };
 
 const RETRYABLE_BY_CODE: Partial<Record<ApiErrorCode, boolean>> = {

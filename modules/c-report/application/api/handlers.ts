@@ -18,6 +18,8 @@ import { runMatchPipeline, type PipelineResult } from '../pipeline.js';
 import { runMatchPipelineWithModel } from '../pipeline-model.js';
 import type { ModelRuntimeConfig } from '../model/refine.js';
 import { canonicalize } from '../hash.js';
+import { runMatchPipelineCancellable, PipelineCancelledError } from '../pipeline-cancellable.js';
+import type { CheckpointStore, RetryPolicy, RetryBudget } from '../ports.js';
 import { renderReportMarkdown } from '../markdown.js';
 import type {
   CStores,
@@ -45,6 +47,17 @@ export interface CApiContext {
    * 未配置则与 P2 行为逐字节一致（纯模板）。生产由宿主注入公共 ModelClient adapter。
    */
   model?: ModelRuntimeConfig;
+  /**
+   * P5 可选 checkpoint（设计草案 §4.2）。
+   * 设置后 executeOrReuse 改走 runMatchPipelineCancellable；未设置时维持原 P2 行为字节级一致。
+   */
+  checkpoint?: CheckpointStore;
+  /**
+   * P5 可选重试策略（设计草案 §4.3）。仅在 checkpoint 设置 + 模型 retry 调用时生效。
+   * 未设置时维持 P4 §13 边界（响应丢失不盲重发）。
+   */
+  retryPolicy?: RetryPolicy;
+  retryBudget?: RetryBudget;
 }
 
 interface ReportRequestBody {
@@ -186,7 +199,8 @@ type ExecuteOutcome =
   | { kind: 'executed'; runId: string; reportId: string; status: 'completed' | 'partial' }
   | { kind: 'reused'; runId: string; status: string; reportId: string | null }
   | { kind: 'conflict' }
-  | { kind: 'error'; response: Response };
+  | { kind: 'error'; response: Response }
+  | { kind: 'cancelled'; runId: string; reportId: string; atStage: string };
 
 /**
  * 原子幂等门 + 执行：enqueueWithReservation 在同一临界区完成幂等预留与 run 插入。
@@ -238,8 +252,11 @@ async function executeOrReuse(
   await ctx.stores.runs.updateStatus(project.projectId, runId, 'running', 'input_schema');
 
   // P4：未配置模型 → 同步确定性管线（P1 语义，零改动）；配置了 → 确定性 + 七层校验精炼。
-  const pipeline: PipelineResult = ctx.model !== undefined
-    ? await runMatchPipelineWithModel({
+  // P5 入口分流：未配置时字节级复用 P2 + P4；配置后走 runMatchPipelineCancellable。
+  let pipeline: PipelineResult;
+  if (ctx.checkpoint !== undefined) {
+    try {
+      pipeline = await runMatchPipelineCancellable({
         profile: body.profile,
         intentContext: body.intentContext,
         bundle: body.bundle,
@@ -250,19 +267,50 @@ async function executeOrReuse(
           ruleVersion: RULE_VERSION,
           promptVersion: PROMPT_VERSION,
         },
-      }, ctx.model)
-    : runMatchPipeline({
-        profile: body.profile,
-        intentContext: body.intentContext,
-        bundle: body.bundle,
-        options: {
-          reportId,
-          generatedAt: ctx.now(),
-          version: nextVersion,
-          ruleVersion: RULE_VERSION,
-          promptVersion: PROMPT_VERSION,
-        },
+      }, {
+        runStore: ctx.stores.runs,
+        checkpoint: ctx.checkpoint,
+        retryPolicy: ctx.retryPolicy,
+        retryBudget: ctx.retryBudget,
+        model: ctx.model,
+        projectId: project.projectId,
+        runId,
       });
+    } catch (err) {
+      if (err instanceof PipelineCancelledError) {
+        await ctx.stores.runs.updateStatus(project.projectId, runId, 'cancelled', err.atStage);
+        await ctx.checkpoint.finalize(project.projectId, runId, 'cancelled');
+        return { kind: 'cancelled', runId, reportId, atStage: err.atStage };
+      }
+      throw err;
+    }
+  } else {
+    pipeline = ctx.model !== undefined
+      ? await runMatchPipelineWithModel({
+          profile: body.profile,
+          intentContext: body.intentContext,
+          bundle: body.bundle,
+          options: {
+            reportId,
+            generatedAt: ctx.now(),
+            version: nextVersion,
+            ruleVersion: RULE_VERSION,
+            promptVersion: PROMPT_VERSION,
+          },
+        }, ctx.model)
+      : runMatchPipeline({
+          profile: body.profile,
+          intentContext: body.intentContext,
+          bundle: body.bundle,
+          options: {
+            reportId,
+            generatedAt: ctx.now(),
+            version: nextVersion,
+            ruleVersion: RULE_VERSION,
+            promptVersion: PROMPT_VERSION,
+          },
+        });
+  }
 
   if (!pipeline.ok) {
     await ctx.stores.runs.updateStatus(project.projectId, runId, 'failed', `failed:${pipeline.error.code}`);
@@ -327,6 +375,9 @@ export async function handleCreateMatch(ctx: CApiContext, request: Request): Pro
   }
   if (outcome.kind === 'error') {
     return outcome.response;
+  }
+  if (outcome.kind === 'cancelled') {
+    return jsonResponse(202, { runId: outcome.runId, status: 'cancelled', reportId: outcome.reportId, atStage: outcome.atStage }, ctx.newRequestId());
   }
 
   const indexRecord: ReportIndexRecord = {
@@ -498,9 +549,56 @@ export async function handleUpdateReport(ctx: CApiContext, request: Request, rep
   if (outcome.kind === 'error') {
     return outcome.response;
   }
+  if (outcome.kind === 'cancelled') {
+    return jsonResponse(202, { runId: outcome.runId, status: 'cancelled', reportId: outcome.reportId, atStage: outcome.atStage }, ctx.newRequestId());
+  }
 
   await ctx.stores.reportIndex.appendVersion(projectId, reportId, nextVersion, outcome.runId, ctx.now(), outcome.status);
   return jsonResponse(202, { runId: outcome.runId, status: outcome.status, reportId, version: nextVersion }, requestId);
+}
+
+/**
+ * DELETE /api/c/runs/:runId —— 取消正在跑 / 排队的 run。
+ *
+ * 路径：401 无凭据 / 404 跨用户读不泄露 / 409 RUN_NOT_CANCELLABLE（已完成/失败/已取消） / 202 取消成功
+ * 幂等：第二次 DELETE 同 runId 在 queued/running 已被取消后 → wasRunning=false → 409 with currentStatus
+ *
+ * 注：本端点不依赖 ctx.checkpoint；requestCancel 在 InMemoryRunStore 上始终可用。
+ */
+export async function handleCancelRun(ctx: CApiContext, request: Request, runId: string): Promise<Response> {
+  const requestId = ctx.newRequestId();
+  if (ctx.identity === null) {
+    return errorResponse('NOT_CONFIGURED', '鉴权/所有权能力未配置，拒绝处理请求', requestId);
+  }
+  const principal = await ctx.identity.authenticate(request);
+  if (principal === null) {
+    return errorResponse('UNAUTHENTICATED', '登录后才能访问', requestId);
+  }
+  const readableIds = await ctx.readableProjectIds(principal);
+  if (readableIds.length === 0) {
+    return errorResponse('NOT_FOUND', `运行不存在：${runId}`, requestId);
+  }
+  // 跨用户读不泄露：逐项目 read，找不到则 404
+  let locatedProjectId: string | null = null;
+  let runRecord: import('../ports.js').RunRecord | null = null;
+  for (const projectId of readableIds) {
+    const r = await ctx.stores.runs.read(projectId, runId);
+    if (r !== null) {
+      locatedProjectId = projectId;
+      runRecord = r;
+      break;
+    }
+  }
+  if (locatedProjectId === null || runRecord === null) {
+    return errorResponse('NOT_FOUND', `运行不存在：${runId}`, requestId);
+  }
+  const outcome = await ctx.stores.runs.requestCancel(locatedProjectId, runId);
+  if (!outcome.wasRunning) {
+    return errorResponse('RUN_NOT_CANCELLABLE', `run 已处于终态（${runRecord.status}），不可再取消`, requestId, {
+      currentStatus: runRecord.status,
+    });
+  }
+  return jsonResponse(202, { runId, status: 'cancelled', requestId }, requestId);
 }
 
 export type { MatchReport };

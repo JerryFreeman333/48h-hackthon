@@ -115,3 +115,17 @@ C 名称在目录、README、所有新增规格和迁移标题中明确。远程
 - C-17 补充（partially_implemented）：预算门在调用前拒绝「付费无上界」（MODEL_COST_UNKNOWN）与超次（MODEL_BUDGET_EXHAUSTED）；usage 记录含 unknown（null≠0）。生产价表/供应商幂等仍 open_shared。
 - C-04 补充：L3 断言-状态一致性检查落地（在招/固定底薪/主体核验/实时类断言与材料状态矛盾即拒绝）；开放式语义支持判断仍需真实材料人工评审。
 - 协调项：生产 ModelClient adapter 由宿主提供（packages/runtime 尚无模型接口）；C 的 ModelPort 是私有接口建议，公共接口成型后对齐。
+
+## 10. P5 实施记录（2026-10-02，代码落地后追加）
+
+依据：[P5 设计草案](C_P5_DESIGN_2026-10-02.md) + [P5 交付签收](C_P5_DELIVERY_2026-10-02.md)。范围：C 私有取消 / 重启 / 外部失败恢复，含 run.cancel 三件套（isCancelled / addCancelListener / requestCancel）、CheckpointStore（FileSystemCheckpointStore，原子 tmp+rename）、RetryPolicy（DefaultRetryPolicy 退避 + InMemoryRetryBudget 预算门）、RetryingModelPort（端口级受控重试）、DELETE /api/c/runs/:runId 端点。213 项 node:test（新增 44 项）通过；P5 演示 23 项通过；P1/P2/P3/P4 无回归。
+
+- **§5.1 cooperative cancel**：PipelineContext.cancelCheck 在每个 stage 边界（validated_inputs / hard_prefs / per_job_eval / per_job:<jobId> / report / hash / model_or_done）触发 isCancelled 检查；listener 在 requestCancel 时被触发一次后自动清理。
+- **§5.2 restart / 重启**：FileSystemCheckpointStore 原子追加阶段；handler 在启动时可遍历 listInterrupted 续跑（当前 P5 仅提供机制，handler 启动续跑属独立 PR）。
+- **§5.3 checkpoint 不变性**：stageOutputs 重跑时覆盖同 stage（用于 resume），completedStages 不重复追加；finalize 后 listInterrupted 不返回。
+- **§5.4 外部失败恢复**：RetryingModelPort 在 port.complete 层做受控重试（maxAttempts 默认 3、baseDelayMs 100、maxDelayMs 5000、jitterMs 100）；与 refine.ts §13 边界兼容（单 refine 内连续失败 → refine 走 transport_error 降级）；与 P4 ModelBudget 并列计数（不互相取代）。
+- **新增 C-21**：cancel 失败链路 —— pipeline 抛 PipelineCancelledError → handler catch → checkpoint.finalize('cancelled') → 不落 reportVersions / reportSnapshots（保持 C-12 不变原则）。
+- **新增 C-22**：取消非 owned run 跨用户读不泄露 → 404（同 get report 401/403/404 边界一致）。
+- **C-17 补充（partially_implemented in p5）**：重试预算 `maxCalls=8` 默认；超 budget 抛 RetryBudgetError；单次 run 整体重试 ≤3 次（maxAttempts）；不冒无限重试。
+- **C-08 / C-12 兼容已检查**：unknown / 不可变版本 在 cancelled 与 restart 路径均不被破坏（重启路径输出与一次跑完字节级一致；cancelled 路径不进入 report 装配）。
+- **协调项**：handler 启动时遍历 listInterrupted 续跑需独立 PR；公共 ModelClient adapter 仍属 §9 待办（adapter 用 RetryingModelPort 包装即可对齐 P5 行为）。

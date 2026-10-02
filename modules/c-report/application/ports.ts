@@ -75,6 +75,12 @@ export interface CRunStore {
   read(projectId: string, runId: string): Promise<RunRecord | null>;
   cancel(projectId: string, runId: string): Promise<void>;
   updateStatus(projectId: string, runId: string, status: RunStatus, stage: string): Promise<void>;
+  /** 检查 run 是否已被标记取消（O(1) 查 cancel flag set）。 */
+  isCancelled(projectId: string, runId: string): Promise<boolean>;
+  /** 订阅取消事件；返回 unsubscribe。listener 在取消被消费后自动失效。 */
+  addCancelListener(projectId: string, runId: string, fn: () => void): () => void;
+  /** 标记 cancel；幂等；返回 wasRunning（曾为 queued/running 则 true）。 */
+  requestCancel(projectId: string, runId: string): Promise<{ wasRunning: boolean }>;
 }
 
 export interface StoredReportVersion {
@@ -131,4 +137,89 @@ export interface CStores {
   reportVersions: SnapshotRepository<StoredReportVersion>;
   reportSnapshots: SnapshotRepository<StoredReportSnapshot>;
   reportIndex: ReportIndexStore;
+}
+
+// =====================================================================
+// P5（设计草案 §4）：取消 / 重启 / 外部失败恢复 —— C 私有追加
+// 公共契约 1.0.0 不动；新增的是 C 私有 run 调度与 checkpoint 机制。
+// =====================================================================
+
+/**
+ * P5 §4.1：CRunStore 扩展已合并入上方原 CRunStore 定义（取消语义保留；新增 3 个方法用于 cooperative 取消）。
+ */
+
+/**
+ * P5 §4.2：CheckpointStore（新增端口）。
+ * 阶段结果原子落盘；用于断点续跑。
+ *
+ * 不变性：
+ * - 阶段一旦写入不可变；addAtStage 是追加，不修改既有 completedStages
+ * - 同 checkpoint 的 stageOutputs 决定 resume 后跳过哪些 stage；resume 后 stage 重跑会重写 stageOutputs[stage]
+ * - 不存 MatchReport（最终 report 在 reportVersions/reportSelfcheck 后由 handler 落不可变存储）
+ */
+export interface CheckpointStage {
+  stage: string;
+  completedAt: string;
+  /** 阶段输出 SHA-1（用于完整性校验；不参与决策）。 */
+  partialOutputHash: string;
+}
+
+/**
+ * 已接受维度摘要（模型精炼最终被采纳的维度 summary 映射，jobId -> { dimensionKey -> summary }）。
+ * 维度被模型拒绝的维度不要进入 acceptedDimensions；restart 时只重放已接受的。
+ */
+export type AcceptedDimensionOverrides = Record<string, Record<string, string>>;
+
+export interface RunCheckpoint {
+  runId: string;
+  projectId: string;
+  reportId: string;
+  version: number;
+  ruleVersion: string;
+  promptVersion: string;
+  inputHashes: { profile: string; intent: string; bundle: string } | null;
+  completedStages: CheckpointStage[];
+  /** 阶段输出快照；仅做 phase→data。模型精炼不在此存（存于 acceptedDimensionOverrides）。 */
+  stageOutputs: Record<string, unknown>;
+  /** 模型精炼后被接受的维度摘要；null 表示未配置 / 未运行 / 全部被拒。 */
+  acceptedDimensionOverrides: AcceptedDimensionOverrides | null;
+  startedAt: string;
+  lastCheckpointAt: string;
+  /** P5 finalize 写入；true 后 listInterrupted 不再返回该 checkpoint。 */
+  finalized?: boolean;
+  finalStatus?: 'completed' | 'partial' | 'cancelled' | 'failed';
+}
+
+export interface CheckpointStore {
+  /** 原子：appendStage 阶段追加到 completedStages + 写入 stageOutputs[stage]。已存在的 stage 直接覆盖 stageOutputs[stage]（用于重跑）。 */
+  appendStage(projectId: string, runId: string, stage: string, stageOutput: unknown): Promise<void>;
+  /** 读取 checkpoint；finalize 后仍可读（仅供诊断）。 */
+  read(projectId: string, runId: string): Promise<RunCheckpoint | null>;
+  /** 标记结束；finalize 后该 runId 不会再出现在 listInterrupted 中。 */
+  finalize(projectId: string, runId: string, finalStatus: 'completed' | 'partial' | 'cancelled' | 'failed'): Promise<void>;
+  /** 列出 project 下未 final 化的 checkpoint，用于启动时恢复。 */
+  listInterrupted(projectId: string): Promise<RunCheckpoint[]>;
+}
+
+/**
+ * P5 §4.3：RetryPolicy 与 RetryBudget（新增端口）。
+ * 重试策略本身是值对象；RetryBudget 是调用前预占门（与 P4 ModelBudget 同构）。
+ *
+ * Note: 重试预算不能与 P4 模型预算合并：模型预算针对"模型调用"，重试预算针对"重试次数"。
+ * 一层调用最多消耗重试预算 1 次；调多次调用各消耗 1 次。
+ */
+export interface RetryDecision {
+  attempt: number;
+  /** 0 = 不再重试。 */
+  nextDelayMs: number;
+  reason: 'retry_budget_left' | 'non_retryable' | 'budget_exhausted';
+}
+
+export interface RetryPolicy {
+  shouldRetry(error: unknown, attempt: number): RetryDecision;
+}
+
+export interface RetryBudget {
+  reserve(): void;
+  get callsUsed(): number;
 }
