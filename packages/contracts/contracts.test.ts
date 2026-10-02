@@ -4,11 +4,12 @@ import profile from "./fixtures/user-profile.json";
 import intent from "./fixtures/search-intent.json";
 import bundle from "./fixtures/candidate-bundle.json";
 import report from "./fixtures/match-report.json";
-import { userProfileSchema, searchIntentSchema, candidateBundleSchema, matchReportSchema, validateIntegration, validateBundleReferences } from "./index";
+import { userProfileSchema, searchIntentSchema, candidateBundleSchema, matchReportSchema, validateIntegration, validateBundleReferences, validateReportReferences } from "./index";
 
 test("four public fixture schemas and handoff validate", () => {
   const p = userProfileSchema.parse(profile); const i = searchIntentSchema.parse(intent); const b = candidateBundleSchema.parse(bundle);
-  matchReportSchema.parse(report);
+  const r = matchReportSchema.parse(report);
+  assert.deepEqual(validateReportReferences(r, b), []);
   assert.deepEqual(validateIntegration(p, i, b), []);
   assert.deepEqual(report.evidenceSnapshot, b.evidence);
   assert.deepEqual(report.factsSnapshot, b.facts);
@@ -28,4 +29,10 @@ test("unsupported citations and demo contamination fail", () => {
 });
 test("version changes are not silently accepted", () => {
   assert.equal(searchIntentSchema.safeParse({ ...intent, schemaVersion: "2.0.0" }).success, false);
+});
+
+test("report validation rejects fabricated citations and missing dimensions", () => {
+  const b = candidateBundleSchema.parse(bundle); const r = matchReportSchema.parse(report);
+  const result = { ...r.results[0], dimensions: [], reasons: [{ text: "unsupported", kind: "fact" as const, factIds: ["fake"] }] };
+  assert.ok(validateReportReferences({ ...r, results: [result] }, b).length >= 2);
 });

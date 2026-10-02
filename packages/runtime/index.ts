@@ -18,7 +18,7 @@ export async function requireProjectAccess(request: Request, projectId: string, 
   const principal = await identity.authenticate(request);
   if (!principal) throw new RuntimeError("UNAUTHENTICATED", "Login required", 401);
   const project = await identity.getProject(projectId);
-  if (!project || project.ownerId !== principal.userId) throw new RuntimeError("FORBIDDEN", "Project access denied", 403);
+  if (!project || project.projectId !== projectId || project.ownerId !== principal.userId) throw new RuntimeError("FORBIDDEN", "Project access denied", 403);
   return project;
 }
 

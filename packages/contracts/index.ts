@@ -92,3 +92,26 @@ export function validateIntegration(profile: UserProfile, intent: SearchIntent, 
   if (!profile.confirmedAt || profile.assessment.status !== "confirmed") errors.push("Profile not confirmed");
   return errors;
 }
+
+export function validateReportReferences(report: MatchReport, bundle: CandidateBundle): string[] {
+  const errors: string[] = [];
+  const jobs = new Set(bundle.jobs.map(x => x.jobId));
+  const facts = new Map(bundle.facts.map(x => [x.factId, x]));
+  if (report.bundleId !== bundle.bundleId || report.projectId !== bundle.projectId || report.mode !== bundle.mode) errors.push("Report/bundle mismatch");
+  if (JSON.stringify(report.evidenceSnapshot) !== JSON.stringify(bundle.evidence) || JSON.stringify(report.factsSnapshot) !== JSON.stringify(bundle.facts) || JSON.stringify(report.coverageSnapshot) !== JSON.stringify(bundle.coverage)) errors.push("Snapshot mismatch");
+  for (const result of report.results) {
+    if (!jobs.has(result.jobId)) errors.push(`Unknown result job: ${result.jobId}`);
+    const dimensions = new Set(result.dimensions.map(x => x.key));
+    if (dimensions.size !== 5 || result.dimensions.length !== 5) errors.push("Five unique dimensions required");
+    for (const reason of result.reasons) if (reason.kind === "fact" && !reason.factIds.length) errors.push("Fact reason requires citations");
+    for (const item of [...result.reasons, ...result.constraints, ...result.dimensions]) {
+      for (const id of item.factIds) {
+        const fact = facts.get(id);
+        if (!fact) errors.push(`Unknown report fact: ${id}`);
+        else if (fact.jobId && fact.jobId !== result.jobId) errors.push(`Report fact/job mismatch: ${id}`);
+        else if (fact.companyId && bundle.jobs.find(job => job.jobId === result.jobId)?.companyId !== fact.companyId) errors.push(`Report fact/company mismatch: ${id}`);
+      }
+    }
+  }
+  return errors;
+}
