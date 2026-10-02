@@ -55,7 +55,7 @@ modules/c-report/
 
 必须同时满足：
 
-1. 四对象的 schemaVersion 为已支持版本，不静默迁移。
+1. 三个输入对象（profile、intent、bundle）的 schemaVersion 为已支持版本，不静默迁移；生成的 MatchReport 单独校验其公共输出版本。
 2. profile、intent、bundle 的 projectId 一致。
 3. profile.profileId = intent.profileId。
 4. profile.revision = intent.profileRevision。

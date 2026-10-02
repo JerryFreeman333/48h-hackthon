@@ -2,7 +2,7 @@
   "module": "C",
   "documentVersion": "1.1",
   "publicSchemaVersion": "1.0.0",
-  "verifiedAt": "2026-10-02T08:09:05.802047+00:00",
+  "verifiedAt": "2026-10-02T08:26:49.049356+00:00",
   "verificationType": "documentation_and_fixed_fixture_integrity_only",
   "originalSourceSha256Matches": true,
   "threePublicFixtureValuesIdenticalToSource": true,
@@ -43,7 +43,7 @@
   "realBusinessProviderApiCallsMade": false,
   "fileSha256ExcludingGeneratedReports": {
     "README.md": "268b6e76b6246b3c36e7ac28aa8b40a66e075f1b0e612d7fcb646d4a98eb4212",
-    "docs/C_DEVELOPMENT_SPEC_V1.1_2026-10-02.md": "87fad04ee3c116faafa5b68f634b842f72f175fdf5deedcb0462fc0767fd84c4",
+    "docs/C_DEVELOPMENT_SPEC_V1.1_2026-10-02.md": "de130d229eeb0329e77cab4fdc45a6bbb09f49a89e28727a56fdc37ba6cb3e7a",
     "docs/C_FEASIBILITY_AND_DELIVERY_PLAN_2026-10-02.md": "1f718cfd2302ed29c476c21df670bcb143c7ae1cfaf7fb40b3d9a26a25432fd4",
     "docs/C_MIGRATION_HANDOVER_2026-10-02.md": "38a18dc92d28887d8f53482b010610488c49f9a1bce8ed3addbd2121dee8bff3",
     "docs/C_REMEDIATION_REGISTER_2026-10-02.md": "d89d0e6e46c8f681258594acdfa8c37f12885cb817b738e96d40c63eba2d10c6",
