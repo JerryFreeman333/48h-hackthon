@@ -9,31 +9,33 @@ export class V2Error extends Error{constructor(status,code,message){super(messag
 const fail=(status,code,message)=>{throw new V2Error(status,code,message);};
 import {publicSession,publicProfile,FLOW_VERSION} from './scope.mjs';
 import {presentation,defaultPresentation,decorateTools} from '../instruments/presentation.mjs';
-const scoreAttempt=a=>({...assess(a.instrumentId,a.answers),...presentation(a.instrumentId,a.locale??'en',a.translationVersion??null)});
+import {valueOptions,selectionCatalog,selectionVersion,validateSelectionDraft,validateSelectionProfile,selectionSnapshot} from './selections.mjs';
+const scoreAttempt=(a,privateDraft=null)=>({...assess(a.instrumentId,a.answers),...presentation(a.instrumentId,a.locale??'en',a.translationVersion??null,privateDraft)});
 const time=()=>new Date().toISOString();
 const unique=(a,message)=>{if(new Set(a).size!==a.length)fail(422,'validation_error',message);};
-export const valueOptions=['收入','稳定','成长','自主','创造','帮助他人','团队支持','认可','生活平衡','地点灵活性'];
+export {valueOptions};
 export class ProfileService{
- constructor(state,save){
+ constructor(state,save,{privateDraft=null}={}){
   this.state=state;this.save=save;
+  this.privateDraft=privateDraft;
   this.db=state.v2??={sessions:{},profiles:[],intents:[]};
  }
- owned(owner,id){const s=this.db.sessions[id];if(!s)fail(404,'not_found','会话不存在');if(s.owner!==owner)fail(403,'forbidden','没有访问权限');return s;}
+ owned(owner,id){const s=this.db.sessions[id];if(!s)fail(404,'not_found','会话不存在');if(s.owner!==owner)fail(403,'forbidden','没有访问权限');if(s.privateReviewOnly&&!this.privateDraft)fail(403,'private_preview_disabled','该记录属于本机私有译稿审校，当前未开启预览');return s;}
  byProfile(owner,id){const s=Object.values(this.db.sessions).find(s=>s.profileId===id);if(!s)fail(404,'not_found','画像不存在');return this.owned(owner,s.id);}
  expected(s,input){if(input.expectedRevision!==s.revision)fail(409,'revision_conflict','记录已保存更新，请刷新后重试');}
  touch(s){s.revision++;s.updatedAt=time();this.save();}
- list(owner){return Object.values(this.db.sessions).filter(s=>s.owner===owner).map(publicSession);}
+ list(owner){return Object.values(this.db.sessions).filter(s=>s.owner===owner&&(!s.privateReviewOnly||this.privateDraft)).map(publicSession);}
  create(owner,input){
   const x=z.object({battery:z.enum(['Quick','Standard','None']),mode:z.enum(['manual','demo']).default('manual')}).strict().parse(input);
-  const s={id:randomUUID(),owner,ownerId:randomUUID(),profileId:randomUUID(),projectId:randomUUID(),revision:1,createdAt:time(),updatedAt:time(),battery:x.battery,mode:x.mode,step:0,flowVersion:FLOW_VERSION,draft:{groups:[],tradeoffs:[],constraints:[],goals:[],jobStage:null},attempts:{},evidence:[],insights:[]};
+  const s={id:randomUUID(),owner,ownerId:randomUUID(),profileId:randomUUID(),projectId:randomUUID(),revision:1,createdAt:time(),updatedAt:time(),battery:x.battery,mode:x.mode,step:0,flowVersion:FLOW_VERSION,selectionVersion,privateReviewOnly:!!this.privateDraft&&x.battery!=='None',draft:{groups:[],tradeoffs:[],constraints:[],goals:[],jobStage:null},attempts:{},evidence:[],insights:[]};
   const ids=x.battery==='Standard'?['onet-mini-ip','mini-ipip']:x.battery==='Quick'?['onet-mini-ip']:[];
-  for(const id of ids){const t=instrument(id);s.attempts[id]={id:randomUUID(),instrumentId:id,instrumentVersion:t.instrumentVersion,scoringVersion:t.scoringVersion,...defaultPresentation(id),answers:{},page:0,revision:1};}
+  for(const id of ids){const t=instrument(id);s.attempts[id]={id:randomUUID(),instrumentId:id,instrumentVersion:t.instrumentVersion,scoringVersion:t.scoringVersion,...defaultPresentation(id,this.privateDraft),answers:{},page:0,revision:1};}
   this.db.sessions[s.id]=s;this.save();return publicSession(s);
  }
  get(owner,id){return publicSession(this.owned(owner,id));}
  update(owner,id,input){const s=this.owned(owner,id);this.expected(s,input);
   const x=z.object({expectedRevision:z.number().int(),step:z.number().int().min(0).max(6).optional(),draft:z.object({groups:z.array(z.array(text).min(1).max(30)).max(30),tradeoffs:z.array(text).max(30),constraints:z.array(constraint).max(30),goals:z.array(text).max(30),jobStage:z.string().max(100).nullable()}).strict().optional()}).strict().parse(input);
-  if(x.draft){unique(x.draft.groups.flat(),'价值偏好不能重复');unique(x.draft.constraints.map(c=>c.key),'条件不能重复');if(x.draft.constraints.some(c=>c.evidenceIds.length))fail(422,'validation_error','草稿证据由服务器生成');s.draft=structuredClone(x.draft);}
+  if(x.draft){validateSelectionDraft(x.draft);if(x.draft.constraints.some(c=>c.evidenceIds.length))fail(422,'validation_error','草稿证据由服务器生成');s.draft=structuredClone(x.draft);s.selectionVersion=selectionVersion;}
   if(x.step!==undefined)s.step=x.step;s.flowVersion=FLOW_VERSION;this.touch(s);return publicSession(s);
  }
  attempt(owner,id){for(const s of Object.values(this.db.sessions))for(const a of Object.values(s.attempts))if(a.id===id){this.owned(owner,s.id);return {s,a};}fail(404,'not_found','答题记录不存在');}
@@ -41,15 +43,15 @@ export class ProfileService{
   const x=z.object({expectedRevision:z.number().int(),instrumentVersion:z.string(),scoringVersion:z.string(),responses:z.array(z.object({itemId:z.string(),value:z.number().int().nullable()}).strict()).max(60),page:z.number().int().min(0).max(20).optional(),locale:z.enum(['en','zh-CN']).optional(),translationVersion:z.string().nullable().optional()}).strict().parse(input);
   const t=instrument(a.instrumentId);if(x.instrumentVersion!==a.instrumentVersion||x.scoringVersion!==a.scoringVersion||a.instrumentVersion!==t.instrumentVersion)fail(422,'version_mismatch','题库或计分版本不一致');
   if(s.imported)fail(422,'insufficient_data','导入快照没有原始答案，不能编辑或重算');
-  const display=presentation(a.instrumentId,x.locale??a.locale??'en',x.translationVersion!==undefined?x.translationVersion:x.locale!==undefined&&x.locale!==a.locale?null:a.translationVersion??null);
+  const display=presentation(a.instrumentId,x.locale??a.locale??'en',x.translationVersion!==undefined?x.translationVersion:x.locale!==undefined&&x.locale!==a.locale?null:a.translationVersion??null,this.privateDraft);
   const answers=canonicalResponses(x.responses,t);
   const changed=Object.entries(answers).some(([id,v])=>(a.answers[id]??null)!==v);
   const presentationChanged=display.locale!==(a.locale??'en')||display.translationVersion!==(a.translationVersion??null);
   if((changed||presentationChanged)&&a.scoreEvidenceId){for(const i of s.insights)if(i.evidenceIds.includes(a.scoreEvidenceId))i.status='rejected';const e=s.evidence.find(e=>e.evidenceId===a.scoreEvidenceId);if(e)e.status='superseded';delete a.scoreEvidenceId;delete a.insightId;}
-  Object.assign(a,display);Object.assign(a.answers,answers);if(x.page!==undefined)a.page=x.page;a.revision++;delete a.scoredSnapshot;this.touch(s);return publicSession(s);
+  Object.assign(a,display);if(a.instrumentId==='onet-mini-ip'&&display.locale==='zh-CN')s.privateReviewOnly=true;Object.assign(a.answers,answers);if(x.page!==undefined)a.page=x.page;a.revision++;delete a.scoredSnapshot;this.touch(s);return publicSession(s);
  }
  score(owner,id,input){const {s,a}=this.attempt(owner,id);this.expected(s,input);if(s.imported)fail(422,'insufficient_data','导入结果缺少原始答案，不能重算');
-  const snapshot=scoreAttempt(a);a.scoredSnapshot={...snapshot,attemptRevision:a.revision};
+  const snapshot=scoreAttempt(a,this.privateDraft);a.scoredSnapshot={...snapshot,attemptRevision:a.revision};
   if(snapshot.complete&&!a.scoreEvidenceId){
    const evidenceId=randomUUID();s.evidence.push({evidenceId,kind:'assessment',sourceRef:a.id,locator:'answersHash:'+snapshot.answersHash,instrumentId:a.instrumentId,instrumentVersion:a.instrumentVersion,locale:snapshot.locale,collectedAt:time(),text:null,status:'confirmed'});a.scoreEvidenceId=evidenceId;
    const top=Math.max(...snapshot.scores.map(x=>x.raw)),names=snapshot.scores.filter(x=>x.raw===top).map(x=>x.dimension);
@@ -70,10 +72,11 @@ export class ProfileService{
  }
  profile(owner,id,revision){const s=this.byProfile(owner,id);const list=this.db.profiles.filter(p=>p.profileId===s.profileId);const p=revision===undefined?list.at(-1):list.find(p=>p.revision===Number(revision));if(!p)fail(404,'not_found','指定确认版本不存在');return publicProfile(p);}
  confirm(owner,id,input){const s=this.byProfile(owner,id);this.expected(s,input);if(input.confirmed!==true)fail(422,'validation_error','请本人确认画像');if(s.imported)fail(422,'insufficient_data','导入快照不可重算，请创建新会话');
+  validateSelectionDraft(s.draft);if(s.selectionResetRequired&&input.selectionResetConfirmed!==true)fail(422,'selection_reset_confirmation','旧自由填写草稿已存档，请确认本次按当前选项重新选择');
   const visible=publicSession(s);if(visible.insights.some(c=>c.status==='pending'))fail(422,'validation_error','请确认或拒绝待确认解释');
   const evidence=structuredClone(visible.evidence),assessments=[];
   for(const a of Object.values(s.attempts)){
-   const snapshot=scoreAttempt(a),evidenceId=randomUUID();
+   const snapshot=scoreAttempt(a,this.privateDraft),evidenceId=randomUUID();
    evidence.push({evidenceId,kind:'assessment',sourceRef:a.id,locator:'answersHash:'+snapshot.answersHash,instrumentId:a.instrumentId,instrumentVersion:a.instrumentVersion,locale:snapshot.locale,collectedAt:time(),text:null,status:snapshot.complete?'confirmed':'pending'});assessments.push({...snapshot,evidenceId});
   }
   const statement=text=>{const evidenceId=randomUUID();evidence.push({evidenceId,kind:'user_statement',sourceRef:s.id,locator:null,instrumentId:null,instrumentVersion:null,locale:'zh-CN',collectedAt:time(),text,status:'confirmed'});return evidenceId;};
@@ -83,7 +86,7 @@ export class ProfileService{
   const p={schemaVersion:'2.0.0',profileId:s.profileId,projectId:s.projectId,revision:1+Math.max(0,...this.db.profiles.filter(p=>p.profileId===s.profileId).map(p=>p.revision)),ownerId:s.ownerId,mode:s.mode,createdAt:s.createdAt,confirmedAt:time(),assessments,
    values:{priorityIds:d.groups.flat(),groups:structuredClone(d.groups),tradeoffs:[...d.tradeoffs],evidenceIds:valueIds},capabilities:[],constraints,goals,insights:structuredClone(visible.insights),
    uncertainties:[...assessments.filter(a=>!a.complete).map(a=>({code:'incomplete_assessment',message:a.instrumentId+'尚未完整测评，解释保持未知。',evidenceIds:[a.evidenceId]})),...constraints.filter(c=>!c.confirmed||c.strength==='unknown').map(c=>({code:'unknown_constraint',message:c.key+'尚待本人明确。',evidenceIds:c.evidenceIds}))],evidence};
-  validateProfileV2(p);this.db.profiles.push(structuredClone(p));s.profileRevision=p.revision;this.touch(s);return {profile:p,session:publicSession(s)};
+  validateProfileV2(p);this.db.profiles.push(structuredClone(p));s.profileRevision=p.revision;s.selectionResetRequired=false;this.touch(s);return {profile:p,session:publicSession(s)};
  }
  occupationFit(owner,id,revision){return fit(this.profile(owner,id,revision));}
  intent(owner,input){const s=this.byProfile(owner,input.profileId);this.expected(s,input);const p=this.profile(owner,input.profileId,input.profileRevision);
@@ -96,25 +99,26 @@ export class ProfileService{
  }
  export(owner,id,revision,format='v2'){
   const p=this.profile(owner,id,revision),i=this.db.intents.filter(i=>i.profileId===id&&i.profileRevision===p.revision).at(-1);if(!i)fail(422,'insufficient_data','请为此画像版本确认搜索意向');
-  if(format==='v1')return exportV1(p,i);if(format!=='v2')fail(422,'validation_error','未知导出格式');const f=fit(p);return {ProfileBundleV2:p,SearchIntentV2:structuredClone(i),OccupationFitSnapshot:f,Report:buildReport(p,f)};
+  const privateReviewOnly=p.assessments.some(a=>a.instrumentId==='onet-mini-ip'&&a.locale==='zh-CN');
+  if(format==='v1'){if(privateReviewOnly)fail(422,'private_translation_export','本机中文审校结果只提供带翻译版本的私有V2快照，不能降级为缺少语言信息的v1');return exportV1(p,i);}if(format!=='v2')fail(422,'validation_error','未知导出格式');const f=fit(p);return {ProfileBundleV2:p,SearchIntentV2:structuredClone(i),OccupationFitSnapshot:f,Report:buildReport(p,f),SelectionSnapshot:selectionSnapshot(p),...(privateReviewOnly?{privateReviewOnly:true,usage:'local-translation-review-not-public-release'}:{})};
  }
  report(owner,id,revision){const p=this.profile(owner,id,revision);return buildReport(p,fit(p));}
  import(owner,input){
-  validateHandoff(input);const original=input.ProfileBundleV2;
+  validateHandoff(input);const original=input.ProfileBundleV2;validateSelectionProfile(original);
   for(const a of original.assessments){const t=instrument(a.instrumentId);if(a.instrumentVersion!==t.instrumentVersion||a.scoringVersion!==t.scoringVersion||a.scores.length!==t.dimensions.length)fail(422,'version_mismatch','工具或分数版本不支持');
    unique(a.scores.map(s=>s.dimension),'维度重复');for(const sc of a.scores){if(!t.dimensions.includes(sc.dimension)||sc.totalItems!==t.items.filter(q=>q.dimension===sc.dimension).length||sc.answeredItems>sc.totalItems||(sc.raw!==null&&(!Number.isInteger(sc.raw)||sc.raw<t.rawMin||sc.raw>t.rawMax||sc.normalized!==(sc.raw-t.rawMin)/(t.rawMax-t.rawMin)))||((sc.raw===null)!==(sc.normalized===null))||((sc.answeredItems===sc.totalItems)!==(sc.raw!==null)))fail(422,'validation_error','导入分数与量程不一致');}
    const completeness=a.scores.reduce((n,s)=>n+s.answeredItems,0)/t.items.length;
-   const display=presentation(a.instrumentId,a.locale,a.translationVersion);
+   const display=presentation(a.instrumentId,a.locale,a.translationVersion,this.privateDraft);
    if(a.complete!==(completeness===1)||a.completeness!==completeness||a.validationStatus!=='source_supported'||a.chineseValidation!==display.chineseValidation)fail(422,'validation_error','完整状态、语言或验证声明不一致');
   }
   const session=this.create(owner,{battery:'None',mode:original.mode}),s=this.owned(owner,session.id),p=structuredClone(original),i=structuredClone(input.SearchIntentV2);
   p.profileId=s.profileId;p.projectId=s.projectId;p.ownerId=s.ownerId;p.revision=1;i.profileId=p.profileId;i.profileRevision=1;i.intentId=randomUUID();i.revision=1;
-  p.uncertainties=[...p.uncertainties.slice(0,99),{code:'imported_score_unverified',message:'导入文件缺少原始答案，仅校验结构与计分范围，不能独立重算或核实原始分。',evidenceIds:[]}];
+  s.privateReviewOnly=p.assessments.some(a=>a.instrumentId==='onet-mini-ip'&&a.locale==='zh-CN');p.uncertainties=[...p.uncertainties.slice(0,99),{code:'imported_score_unverified',message:'导入文件缺少原始答案，仅校验结构与计分范围，不能独立重算或核实原始分。',evidenceIds:[]}];
   this.db.profiles.push(p);this.db.intents.push(i);s.imported=true;s.step=6;s.profileRevision=1;s.intentProfileRevision=1;this.touch(s);return publicSession(s);
  }
  delete(owner,id){const s=this.byProfile(owner,id);
   for(const [key,j] of Object.entries(this.db.jobs??{}))if(j.sessionId===s.id)delete this.db.jobs[key];
   this.db.profiles=this.db.profiles.filter(p=>p.profileId!==id);this.db.intents=this.db.intents.filter(i=>i.profileId!==id);delete this.db.sessions[s.id];this.save();return {deleted:true};
  }
- bootstrap(owner){return {instruments:decorateTools(publicTools()),sessions:this.list(owner),valueOptions,catalog:{version:catalog.catalogVersion,loaded:catalog.loadedCount,complete:catalog.completeCount,license:catalog.license},limitations:['本地会话隔离，不是生产账户认证。','人格与兴趣为自报倾向，不评估能力或岗位胜任力。','Mini-IPIP中文为未验证译稿；O*NET中文未发布。']};}
+ bootstrap(owner){return {instruments:decorateTools(publicTools(),this.privateDraft),privateTranslationPreview:!!this.privateDraft,sessions:this.list(owner),valueOptions,selectionCatalog,catalog:{version:catalog.catalogVersion,loaded:catalog.loadedCount,complete:catalog.completeCount,license:catalog.license},limitations:['本地会话隔离，不是生产账户认证。','人格与兴趣为自报倾向，不评估能力或岗位胜任力。','Mini-IPIP中文为未验证译稿；O*NET中文只限显式开启的本机私有审校。']};}
 }

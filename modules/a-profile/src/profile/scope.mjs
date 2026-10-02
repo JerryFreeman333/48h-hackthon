@@ -1,9 +1,10 @@
 // Read projections keep original historical snapshots intact in private storage.
+import {projectSelectionDraft,projectV1Choices,selectionVersion} from './selections.mjs';
 export const FLOW_VERSION='personality-needs-1';
 export const emptyBackground=()=>({education:null,major:null,skills:[],experiences:[]});
 export function hasBackground(x){return x&&Object.entries(x).some(([k,v])=>['skills','experiences'].includes(k)?Array.isArray(v)&&v.length:v!==null&&v!==undefined&&v!=='');}
-export const cleanV1Draft=d=>Object.fromEntries(Object.entries(d??{}).filter(([k])=>['questionPage','goals','correction','industryTags','roleTypes','cities','salary','preferences','imported'].includes(k)));
-export function publicV1Attempt(a){const {owner,...out}=structuredClone(a);out.draft=cleanV1Draft(out.draft);return out;}
+export const cleanV1Draft=d=>Object.fromEntries(Object.entries(d??{}).filter(([k])=>['questionPage','goals','industryTags','roleTypes','cities','salary','preferences','imported'].includes(k)));
+export function publicV1Attempt(a){const {owner,...out}=structuredClone(a);out.draft=projectV1Choices(cleanV1Draft(out.draft));return out;}
 export function publicV1Profile(p){return {...structuredClone(p),background:emptyBackground()};}
 function filterPersonal(container){
  const out=structuredClone(container),removed=new Set(),privateRefs=new Set();
@@ -18,4 +19,4 @@ function filterPersonal(container){
  return out;
 }
 export function publicProfile(p){const out=filterPersonal(p);out.capabilities=[];return out;}
-export function publicSession(s){const {owner,...out}=filterPersonal(s);delete out.claims;if(out.draft)delete out.draft.statementBuffer;if(s.flowVersion!==FLOW_VERSION)out.step=s.step>=5?s.step-1:s.step;out.flowVersion=FLOW_VERSION;return out;}
+export function publicSession(s){const {owner,...out}=filterPersonal(s);delete out.claims;if(out.draft)delete out.draft.statementBuffer;if(s.flowVersion!==FLOW_VERSION)out.step=s.step>=5?s.step-1:s.step;out.flowVersion=FLOW_VERSION;if(s.selectionVersion!==selectionVersion){const d=projectSelectionDraft(out.draft);out.selectionResetRequired=out.selectionResetRequired||JSON.stringify(d)!==JSON.stringify(out.draft);out.draft=d;out.selectionVersion=selectionVersion;}return out;}

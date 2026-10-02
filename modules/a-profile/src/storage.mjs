@@ -2,6 +2,7 @@ import {readFileSync,writeFileSync,mkdirSync,existsSync,renameSync} from 'node:f
 import {join} from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
 import {publicSession,cleanV1Draft,FLOW_VERSION} from './profile/scope.mjs';
+import {selectionVersion,projectSelectionDraft,projectV1Choices} from './profile/selections.mjs';
 export function persistState(path,state){
  const temp=path+'.'+randomUUID()+'.tmp';writeFileSync(temp,JSON.stringify(state));
  for(let retry=0;;retry++){
@@ -33,5 +34,19 @@ export function loadState(dataDir,archiveDir){
   for(const s of Object.values(state.v2?.sessions??{})){const visible=publicSession(s);Object.assign(s,visible);delete s.claims;}
   if(state.v2)delete state.v2.jobs;
   state.scopeVersion=FLOW_VERSION;persistState(path,state);
- }return state;
+ }
+ if(state.selectionVersion!==selectionVersion){
+  const hasRecords=Object.values(state.attempts??{}).some(a=>Object.keys(a.draft??{}).length)||!!state.v2;
+  if(hasRecords){
+   mkdirSync(archiveDir,{recursive:true});const hash=createHash('sha256').update(raw).digest('hex');
+   const candidate=['choice-state-','scope-state-','state-'].map(prefix=>join(archiveDir,prefix+hash+'.json'));
+   const backup=candidate.find(p=>existsSync(p))??candidate[0];if(!existsSync(backup))writeFileSync(backup,raw,{flag:'wx'});
+   if(createHash('sha256').update(readFileSync(backup)).digest('hex')!==hash)throw new Error('选择式流程历史存档校验失败');
+   state.selectionMigration={version:selectionVersion,backupSha256:hash,backupPath:backup.split(/[\\/]/).at(-1)};
+  }
+  for(const a of Object.values(state.attempts??{})){const d=projectV1Choices(cleanV1Draft(a.draft));a.selectionResetRequired=a.selectionResetRequired||JSON.stringify(d)!==JSON.stringify(a.draft);a.draft=d;}
+  for(const s of Object.values(state.v2?.sessions??{})){const d=projectSelectionDraft(s.draft);s.selectionResetRequired=s.selectionResetRequired||JSON.stringify(d)!==JSON.stringify(s.draft);s.draft=d;s.selectionVersion=selectionVersion;}
+  state.selectionVersion=selectionVersion;persistState(path,state);
+ }
+ return state;
 }
