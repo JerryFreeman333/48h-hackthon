@@ -1,0 +1,80 @@
+# P4 prompt 回归矩阵
+#
+# 目标：给 `c-prompt-model-p4.0.0` 建自动化回归；prompt 一改自动跑这套。
+# 范围：仅 `modules/c-report/tools/eval/`，不动 A/B/packages/根工程。
+#
+# 运行：
+#   npm run eval:p4
+
+providers:
+  - id: file://./provider.ts
+    label: c-p4-fake-scripted
+
+prompts:
+  - id: c-p4-baseline
+    raw: |
+      {{dims_json}}
+
+tests:
+  # —— 案例 1：5 维结构 + 关键语义标记 ——
+  - description: 五维齐全 + 必含【证据】【推断】【缺口】三段标记
+    vars:
+      dims_json: |
+        {"dimensions":[{"key":"identity_credit","summary":"【证据】identity_credit evidence。【推断】法人已确认。【缺口】缺外部核验。"},{"key":"business","summary":"【证据】business evidence。【推断】业务概况可见。【缺口】缺经营材料。"},{"key":"role_clarity","summary":"【证据】role_clarity evidence。【推断】职责清晰。【缺口】缺考核占比。"},{"key":"career_value","summary":"【证据】career_value evidence。【推断】职业价值清晰。【缺口】缺长期成长。"},{"key":"personal_fit","summary":"【证据】personal_fit evidence。【推断】匹配度未知。【缺口】缺个人偏好。"}]}
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const parsed = JSON.parse(output);
+          if (!parsed.dimensions || parsed.dimensions.length !== 5) return false;
+          const keys = parsed.dimensions.map((d) => d.key).sort();
+          const expected = ['business', 'career_value', 'identity_credit', 'personal_fit', 'role_clarity'];
+          if (JSON.stringify(keys) !== JSON.stringify(expected)) return false;
+          for (const d of parsed.dimensions) {
+            for (const m of ['【证据】', '【推断】', '【缺口】']) {
+              if (!d.summary.includes(m)) return false;
+            }
+          }
+          return true;
+
+  # —— 案例 2：unknown 维度也必须三段（C-08） ——
+  - description: unknown 维度 summary 也含三段标记
+    vars:
+      dims_json: |
+        {"dimensions":[{"key":"identity_credit","summary":"【证据】缺身份证据。【推断】unknown 法人状态。【缺口】需主体核验后填充。"},{"key":"business","summary":"【证据】业务覆盖未接入。【推断】unknown 业务概况。【缺口】需经营材料。"},{"key":"role_clarity","summary":"【证据】岗位描述含糊。【推断】unknown 职责清晰度。【缺口】需 JD 细化。"},{"key":"career_value","summary":"【证据】价值信号缺失。【推断】unknown 职业价值。【缺口】需薪资/成长材料。"},{"key":"personal_fit","summary":"【证据】画像偏好多空缺。【推断】unknown 匹配度。【缺口】需画像完善。"}]}
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const parsed = JSON.parse(output);
+          if (!parsed.dimensions || parsed.dimensions.length !== 5) return false;
+          for (const d of parsed.dimensions) {
+            for (const m of ['【证据】', '【推断】', '【缺口】']) {
+              if (!d.summary.includes(m)) return false;
+            }
+          }
+          return true;
+
+  # —— 案例 3：契约外字段透传验证 ——
+  - description: prompt 含契约外字段 recommendation（refine.ts L1 应拒，provider 透传是合法行为）
+    vars:
+      dims_json: |
+        {"dimensions":[{"key":"identity_credit","summary":"【证据】e。【推断】i。【缺口】g。"},{"key":"business","summary":"【证据】e。【推断】i。【缺口】g。"},{"key":"role_clarity","summary":"【证据】e。【推断】i。【缺口】g。"},{"key":"career_value","summary":"【证据】e。【推断】i。【缺口】g。"},{"key":"personal_fit","summary":"【证据】e。【推断】i。【缺口】g。"}],"recommendation":"deprioritize"}
+    assert:
+      - type: javascript
+        value: |
+          let parsed;
+          try { parsed = JSON.parse(output); } catch { return true; }
+          return Array.isArray(parsed.dimensions) && parsed.dimensions.length === 5;
+
+  # —— 案例 4：契约外字段（无 dimensions） ——
+  - description: 缺失 dimensions 字段
+    vars:
+      dims_json: |
+        {"something_else":"no_dimensions"}
+    assert:
+      - type: javascript
+        value: |
+          let parsed;
+          try { parsed = JSON.parse(output); } catch { return true; }
+          return !(Array.isArray(parsed.dimensions) && parsed.dimensions.length === 5);

@@ -14,13 +14,15 @@
     "demo:p2": "tsx scripts/run-p2-demo.ts",
     "demo:p3": "tsx scripts/run-p3-demo.ts",
     "demo:p4": "tsx scripts/run-p4-demo.ts",
-    "demo:p5": "tsx scripts/run-p5-demo.ts"
+    "demo:p5": "tsx scripts/run-p5-demo.ts",
+    "eval:p4": "promptfoo eval -c tools/eval/promptfooconfig.yaml"
   },
   "dependencies": {
     "zod": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
+    "promptfoo": "^0.123.1",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"
   }
