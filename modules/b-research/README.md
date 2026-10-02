@@ -1,6 +1,6 @@
 # 求职 X-Ray：B 公司与岗位调查（独立分支原型）
 
-工作分支为 `work/b-research`，基于 main 公共架构。B 复用 `packages/contracts` 的 1.0.0 契约，模块仅增加服务端最多 3 个候选的校验。
+基于 main 公共架构，升级分支为 `codex/b-research-upgrade`。B 复用 `packages/contracts` 的 1.0.0 契约，模块仅增加服务端最多 3 个候选的校验，不修改 A、C 或公共契约。
 
 ## 启动
 
@@ -12,6 +12,16 @@ npm run dev
 ```
 
 访问 `http://localhost:3000/demo/b` 查看合成样例，或访问 `http://localhost:3000/research` 使用人工资料模式。主页为公共架构入口。检查：`npm run typecheck`、`npm run test:b`、`npm run build`。
+
+人工资料模式默认关闭。仅在本地开发时显式开启，并让导入的 SearchIntent 使用同一个 projectId：
+
+```powershell
+$env:XRAY_B_LOCAL_MODE = "1"
+$env:XRAY_B_LOCAL_PROJECT = "project-demo-1"
+npm run dev
+```
+
+旧 Next 路由在生产模式下禁止人工数据操作。`api.ts` 的 `createResearchApi` 可由集成方注入公共 IdentityProvider，复用项目权限检查；没有鉴权适配器时返回 503。该适配器尚未绑定到公共 Next 路由，不能声称已完成生产鉴权联调。
 
 ## 独立演示与输入输出
 
@@ -42,12 +52,14 @@ Invoke-RestMethod -Uri "http://localhost:3000/api/b/bundles/$($run.bundleId)/exp
 ## 数据源、存储与安全边界
 
 - Demo 使用显式标记的固定合成数据。
-- Manual 只使用本次进程内录入的用户 JD 和材料；重启丢失，尚无 PostgreSQL/持久任务表，也没有跨用户鉴权，不能用于多用户部署。
+- Manual 只使用本次进程内录入的用户 JD 和材料；按项目隔离，材料关联检查、主体选择、来源日期和冲突证据随快照保留。重启丢失，尚无 PostgreSQL/持久任务表，旧路由只允许一个配置的本地项目，不能用于多用户部署。
 - Live 当前没有企业或招聘服务密钥与许可 provider。不会发起伪造调用或回退到 demo，coverage 为 `not_connected`。
 - 手工录入的 JD 原文保存为 `unverified` evidence；薪资按用户所填口径保存，缺失字段为 `null`。
 - 没有启用任意 URL 抓取，因而不提供抓取能力；后续如接入必须实现 SSRF、重定向、大小、时间及内容类型保护。
 - 调用成本目前为无外部调用/未知；供应商、许可、字段、覆盖和价格登记待获授权数据源后填写。
+- 快照以副本保存，后续材料和主体选择不改写旧结果；相同输入去重，已关闭职位不进入结果，超过 30 天、日期未知或未来的开放职位降为在招未知。
+- 当前事实抽取仅支持明确陈述的岗位销售指标，并保留证据引用和冲突；不推测职责百分比，不把匿名讨论或公司材料转为岗位事实。
 
 ## 联调状态
 
-B 独立原型可用 fixture 启动、验证和导出。A 的 SearchIntent 与 C 的 CandidateBundle 可按契约 1.0.0 对接；此空仓库没有其他模块、统一身份/项目权限、共享存储/调度器或集成层，因此端到端联调尚未完成。身份选择、任务、职位池目前是进程内状态，需在公共基础设施确定后迁移，并补跨用户隔离和持久化验收。
+B 独立原型可用 fixture 启动、验证和导出。接收 A 的 SearchIntent，向 C 提供 CandidateBundle，均遵循契约 1.0.0。模块 API 适配器已有项目权限回归测试，但共享存储、调度器和公共路由鉴权接入尚未完成；模块测试通过不代表 A→B→C 端到端联调完成。

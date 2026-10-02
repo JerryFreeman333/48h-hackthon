@@ -1,0 +1,11 @@
+.b-workspace .b-investigation{margin-top:20px;border-top:1px solid var(--line);padding:18px 0;font-size:12px;overflow-wrap:anywhere}
+.b-investigation h2{font-size:16px}.b-investigation h3{font-size:13px;margin-top:22px}.b-investigation p{color:var(--muted);line-height:1.6}
+.b-identity{display:flex;align-items:start;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line);padding:12px 0}.b-identity .button{flex-shrink:0}
+.b-fact,.b-evidence{padding:12px 0;border-bottom:1px solid var(--line)}.b-fact>span{margin-left:12px}.b-conflict{color:#a33431;font-weight:700}
+.b-citations{display:flex;flex-wrap:wrap;gap:12px}.b-investigation a{color:#146c59;text-decoration:underline}.b-evidence summary,.b-material summary{cursor:pointer;font-weight:700;line-height:1.7}
+.b-evidence blockquote{margin:12px 0;padding:10px 14px;border-left:3px solid #9caeaf;background:#f0f4f5;white-space:pre-wrap;line-height:1.8}
+.b-material{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}.b-material fieldset{border:0;padding:0;margin:0;min-width:0}
+.b-workspace .job-desc{white-space:pre-wrap;overflow-wrap:anywhere}.b-workspace .results,.b-workspace .company-head>div,.b-workspace .company-name{min-width:0;overflow-wrap:anywhere}
+.b-workspace button:disabled{opacity:.55;cursor:not-allowed}.b-workspace .job-footer{gap:12px;flex-wrap:wrap}.b-workspace .b-run{font-size:12px;line-height:1.7;border-top:1px solid var(--line);margin-top:18px;padding:16px 0;overflow-wrap:anywhere}
+.b-workspace .job-title-row{flex-wrap:wrap}.b-workspace .detail-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.b-workspace .coverage-row{overflow-wrap:anywhere}
+@media(max-width:660px){.b-workspace .detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.b-identity{flex-direction:column}.b-workspace .tag{white-space:normal}.b-workspace .heading-row{flex-wrap:wrap}}
