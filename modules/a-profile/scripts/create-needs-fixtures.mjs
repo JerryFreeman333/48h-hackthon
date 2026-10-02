@@ -3,7 +3,7 @@ import {NeedsService} from '../src/needs/service.mjs';
 import {catalog,version,topics,questions} from '../src/needs/catalog.mjs';
 const service=new NeedsService({}),s=service.create('fixture-only',{mode:'demo'}),data=structuredClone(s.data);
 for(const t of topics){data.answers[t.id+'.priority']='priority';data.answers[t.id+'.details']=[t.details[0].id];data.answers[t.id+'.policy']='verify_first';}
-data.goalIds=['find_first_job'];data.stageId='graduate';data.industryTags=['software_it'];data.roleTypes=['product_operations'];
+data.goalIds=['find_first_job'];data.stageId=null;data.industryTags=['software_it'];data.roleTypes=['product_operations'];
 data.conditions.find(c=>c.key==='city').value=['杭州'];data.conditions.find(c=>c.key==='city').strength='soft';data.conditions.find(c=>c.key==='accept_sales_kpi').value=false;data.conditions.find(c=>c.key==='accept_sales_kpi').strength='hard';
 const next=service.update('fixture-only',s.id,{expectedRevision:s.revision,questionnaireVersion:version,step:8,data}),out=service.confirm('fixture-only',s.id,{expectedRevision:next.revision,confirmed:true}).export;
 mkdirSync('fixtures',{recursive:true});writeFileSync('fixtures/AJobNeedsExport.demo.json',JSON.stringify(out,null,2)+'\n');writeFileSync('fixtures/UserProfile.json',JSON.stringify(out.UserProfile,null,2)+'\n');writeFileSync('fixtures/SearchIntent.json',JSON.stringify(out.SearchIntent,null,2)+'\n');
