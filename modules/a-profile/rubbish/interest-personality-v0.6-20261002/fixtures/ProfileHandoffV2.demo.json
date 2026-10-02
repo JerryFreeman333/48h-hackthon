@@ -1,13 +1,13 @@
 {
   "ProfileBundleV2": {
     "schemaVersion": "2.0.0",
-    "profileId": "1ca791d5-c0fd-4204-beb7-77ed6fab1481",
-    "projectId": "7c966385-d4f0-41dc-b98a-3d5e9f542505",
+    "profileId": "9d15028d-049d-42ce-9ab9-862775e3c9e0",
+    "projectId": "b1c07502-5bc8-4f0c-877c-32b23ad965c3",
     "revision": 1,
-    "ownerId": "aae3d470-6554-41e0-a33d-11c84142d912",
+    "ownerId": "0a5f7278-be17-455a-b1e7-c0157504760d",
     "mode": "demo",
-    "createdAt": "2026-10-02T14:13:52.910Z",
-    "confirmedAt": "2026-10-02T14:13:52.921Z",
+    "createdAt": "2026-10-02T15:11:05.911Z",
+    "confirmedAt": "2026-10-02T15:11:05.923Z",
     "assessments": [
       {
         "instrumentId": "onet-mini-ip",
@@ -69,7 +69,7 @@
         "missingPolicy": "product rule: no imputation; incomplete battery not interpreted",
         "thresholds": null,
         "norms": null,
-        "evidenceId": "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb"
+        "evidenceId": "f72d243a-b3a4-4429-9961-9a7ad5dbccda"
       },
       {
         "instrumentId": "mini-ipip",
@@ -124,7 +124,7 @@
         "missingPolicy": "product rule: no imputation; incomplete battery not interpreted",
         "thresholds": null,
         "norms": null,
-        "evidenceId": "98a55c97-5454-45a1-a31e-5cf1178f303e"
+        "evidenceId": "eaf0e04c-e107-4c72-b78c-9ba824ed610c"
       }
     ],
     "values": {
@@ -142,7 +142,7 @@
         "愿意以较低起薪换取成长机会"
       ],
       "evidenceIds": [
-        "27d3c332-8fea-42fa-b295-e870fb81f003"
+        "eda8d67f-6c47-4ab6-ae7c-23944ce89852"
       ]
     },
     "capabilities": [],
@@ -153,7 +153,7 @@
         "strength": "hard",
         "confirmed": true,
         "evidenceIds": [
-          "d3bf4cae-60fb-4cff-b403-269fde367a5b"
+          "9471c553-3a65-47af-99a0-a0fba41e3d2f"
         ]
       }
     ],
@@ -161,22 +161,22 @@
       {
         "text": "寻找第一份全职工作",
         "evidenceIds": [
-          "4c809487-0901-4b8d-a9e1-9d95d036af4d"
+          "5ea70c54-3cb4-4265-8f10-a61695d610c4"
         ]
       },
       {
         "text": "当前求职阶段：应届求职",
         "evidenceIds": [
-          "be2438c8-0008-4895-a186-b38202604730"
+          "25511e02-6459-4bc7-80ff-735869d33605"
         ]
       }
     ],
     "insights": [
       {
-        "insightId": "f4dc9de0-fc69-49ec-a6cb-d669da1d7120",
-        "text": "本次问卷中，相对原始分最高的自报兴趣维度是 enterprising；兴趣不证明实际能力。",
+        "insightId": "f1989e1c-84c2-4a44-ae37-5d7a85892310",
+        "text": "本次问卷中，相对原始分最高的自报兴趣维度是 经营与推动活动兴趣；兴趣不证明实际能力。",
         "evidenceIds": [
-          "f7162007-2d61-4699-8e3e-5df4732feb05"
+          "ec120e8e-75b2-4492-9451-8f7ff5f00d4a"
         ],
         "status": "confirmed",
         "userEditedText": null,
@@ -185,10 +185,10 @@
         ]
       },
       {
-        "insightId": "b5fb941e-a749-43b4-951d-a2db391ae943",
-        "text": "本次Mini-IPIP只描述本人自报行为倾向；神经质分沿情绪波动方向记录，不用于判断岗位胜任能力。",
+        "insightId": "7d26a26e-c70d-4a26-acf8-262c795b029b",
+        "text": "本次人格问卷只描述本人自报行为倾向；情绪波动方向不用于判断岗位胜任能力。",
         "evidenceIds": [
-          "29cb2c28-ed97-43da-9995-29576fb1b87a"
+          "cb22ec28-4450-45b6-856f-232c00c2b630"
         ],
         "status": "confirmed",
         "userEditedText": null,
@@ -200,98 +200,98 @@
     "uncertainties": [],
     "evidence": [
       {
-        "evidenceId": "f7162007-2d61-4699-8e3e-5df4732feb05",
+        "evidenceId": "ec120e8e-75b2-4492-9451-8f7ff5f00d4a",
         "kind": "assessment",
-        "sourceRef": "78f31435-7e2c-4c64-ab62-0fe15ad41580",
+        "sourceRef": "88e64926-dbf0-40df-906a-155f14f7b807",
         "locator": "answersHash:a63f5f4f91216bacee5d595ee535c8e053a5c268b95e7e1dc27ff5381b25860b",
         "instrumentId": "onet-mini-ip",
         "instrumentVersion": "2016-computerized-en",
         "locale": "en",
-        "collectedAt": "2026-10-02T14:13:52.914Z",
+        "collectedAt": "2026-10-02T15:11:05.916Z",
         "text": null,
         "status": "confirmed"
       },
       {
-        "evidenceId": "29cb2c28-ed97-43da-9995-29576fb1b87a",
+        "evidenceId": "cb22ec28-4450-45b6-856f-232c00c2b630",
         "kind": "assessment",
-        "sourceRef": "1f36b17d-acac-4747-b461-4ff88d8ef9a1",
+        "sourceRef": "30929dbb-44b0-440f-b21b-8894b470d605",
         "locator": "answersHash:8920495ff4f752ef334e6afb05bcd7ecd5134513d7f5414fa2627d7d28d8108f",
         "instrumentId": "mini-ipip",
         "instrumentVersion": "2006-official-key-en-1",
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.917Z",
+        "collectedAt": "2026-10-02T15:11:05.917Z",
         "text": null,
         "status": "confirmed"
       },
       {
-        "evidenceId": "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+        "evidenceId": "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
         "kind": "assessment",
-        "sourceRef": "78f31435-7e2c-4c64-ab62-0fe15ad41580",
+        "sourceRef": "88e64926-dbf0-40df-906a-155f14f7b807",
         "locator": "answersHash:a63f5f4f91216bacee5d595ee535c8e053a5c268b95e7e1dc27ff5381b25860b",
         "instrumentId": "onet-mini-ip",
         "instrumentVersion": "2016-computerized-en",
         "locale": "en",
-        "collectedAt": "2026-10-02T14:13:52.920Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": null,
         "status": "confirmed"
       },
       {
-        "evidenceId": "98a55c97-5454-45a1-a31e-5cf1178f303e",
+        "evidenceId": "eaf0e04c-e107-4c72-b78c-9ba824ed610c",
         "kind": "assessment",
-        "sourceRef": "1f36b17d-acac-4747-b461-4ff88d8ef9a1",
+        "sourceRef": "30929dbb-44b0-440f-b21b-8894b470d605",
         "locator": "answersHash:8920495ff4f752ef334e6afb05bcd7ecd5134513d7f5414fa2627d7d28d8108f",
         "instrumentId": "mini-ipip",
         "instrumentVersion": "2006-official-key-en-1",
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": null,
         "status": "confirmed"
       },
       {
-        "evidenceId": "27d3c332-8fea-42fa-b295-e870fb81f003",
+        "evidenceId": "eda8d67f-6c47-4ab6-ae7c-23944ce89852",
         "kind": "user_statement",
-        "sourceRef": "f094380d-f88b-49a1-89fb-895b082287ca",
+        "sourceRef": "45e7f620-f3e6-4092-ba89-fb86e1c6eb92",
         "locator": null,
         "instrumentId": null,
         "instrumentVersion": null,
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": "{\"groups\":[[\"成长\",\"收入\"]],\"tradeoffs\":[\"愿意以较低起薪换取成长机会\"]}",
         "status": "confirmed"
       },
       {
-        "evidenceId": "d3bf4cae-60fb-4cff-b403-269fde367a5b",
+        "evidenceId": "9471c553-3a65-47af-99a0-a0fba41e3d2f",
         "kind": "user_statement",
-        "sourceRef": "f094380d-f88b-49a1-89fb-895b082287ca",
+        "sourceRef": "45e7f620-f3e6-4092-ba89-fb86e1c6eb92",
         "locator": null,
         "instrumentId": null,
         "instrumentVersion": null,
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": "accept_sales_kpi: false (hard, confirmed=true)",
         "status": "confirmed"
       },
       {
-        "evidenceId": "4c809487-0901-4b8d-a9e1-9d95d036af4d",
+        "evidenceId": "5ea70c54-3cb4-4265-8f10-a61695d610c4",
         "kind": "user_statement",
-        "sourceRef": "f094380d-f88b-49a1-89fb-895b082287ca",
+        "sourceRef": "45e7f620-f3e6-4092-ba89-fb86e1c6eb92",
         "locator": null,
         "instrumentId": null,
         "instrumentVersion": null,
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": "寻找第一份全职工作",
         "status": "confirmed"
       },
       {
-        "evidenceId": "be2438c8-0008-4895-a186-b38202604730",
+        "evidenceId": "25511e02-6459-4bc7-80ff-735869d33605",
         "kind": "user_statement",
-        "sourceRef": "f094380d-f88b-49a1-89fb-895b082287ca",
+        "sourceRef": "45e7f620-f3e6-4092-ba89-fb86e1c6eb92",
         "locator": null,
         "instrumentId": null,
         "instrumentVersion": null,
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": "应届求职",
         "status": "confirmed"
       }
@@ -299,9 +299,9 @@
   },
   "SearchIntentV2": {
     "schemaVersion": "2.0.0",
-    "intentId": "5f4c84fb-d562-4997-a475-96d5557f9477",
+    "intentId": "b4742b30-36fc-483d-828e-5da6380ab146",
     "revision": 1,
-    "profileId": "1ca791d5-c0fd-4204-beb7-77ed6fab1481",
+    "profileId": "9d15028d-049d-42ce-9ab9-862775e3c9e0",
     "profileRevision": 1,
     "mode": "demo",
     "selectedDirections": [
@@ -327,7 +327,7 @@
         "strength": "hard",
         "confirmed": true,
         "evidenceIds": [
-          "d3bf4cae-60fb-4cff-b403-269fde367a5b"
+          "9471c553-3a65-47af-99a0-a0fba41e3d2f"
         ]
       }
     ],
@@ -335,7 +335,7 @@
   },
   "OccupationFitSnapshot": {
     "schemaVersion": "2.0.0",
-    "profileId": "1ca791d5-c0fd-4204-beb7-77ed6fab1481",
+    "profileId": "9d15028d-049d-42ce-9ab9-862775e3c9e0",
     "profileRevision": 1,
     "catalogVersion": "onet-31.0-OI-1",
     "strategyVersion": "interest-pearson-complete-1",
@@ -356,7 +356,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:21-2021.00"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/21-2021.00",
@@ -372,7 +372,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:27-3031.00"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/27-3031.00",
@@ -388,7 +388,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:13-1011.00"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/13-1011.00",
@@ -404,7 +404,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:11-3131.00"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/11-3131.00",
@@ -420,7 +420,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:11-9151.00"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/11-9151.00",
@@ -436,7 +436,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:21-2011.00"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/21-2011.00",
@@ -452,7 +452,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:13-1131.00"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/13-1131.00",
@@ -468,7 +468,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:11-2032.00"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/11-2032.00",
@@ -484,7 +484,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:27-2012.04"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/27-2012.04",
@@ -500,7 +500,7 @@
         "workFitExperimental": null,
         "missingDataFlags": [],
         "evidenceIds": [
-          "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+          "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
           "onet:11-1031.00"
         ],
         "sourceUrl": "https://www.onetonline.org/link/summary/11-1031.00",
@@ -515,13 +515,13 @@
   },
   "Report": {
     "schemaVersion": "2.0.0",
-    "profileId": "1ca791d5-c0fd-4204-beb7-77ed6fab1481",
+    "profileId": "9d15028d-049d-42ce-9ab9-862775e3c9e0",
     "profileRevision": 1,
-    "reportVersion": "template-zh-2-personality-needs",
+    "reportVersion": "template-zh-3-chinese-interface",
     "provider": "none",
     "model": null,
     "promptVersion": null,
-    "contextHash": "e8ebff33fa34cec588a67c8c78dcf10ecce794d14d0ab98dd14d391f9bd3eb47",
+    "contextHash": "bbffe750b0f323404ae9bfa29aebb14cce0da8d8489ee8fa1aac68bd8dd71619",
     "sections": [
       {
         "title": "自报职业兴趣",
@@ -529,13 +529,13 @@
           {
             "text": "实践活动兴趣：0/20；量程展示 0.0；研究活动兴趣：5/20；量程展示 25.0；创作活动兴趣：10/20；量程展示 50.0；助人活动兴趣：15/20；量程展示 75.0；经营与推动活动兴趣：20/20；量程展示 100.0；组织与记录活动兴趣：0/20；量程展示 0.0",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb"
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda"
             ]
           },
           {
-            "text": "源工具有研究依据；本次呈现语言en，翻译版本无。中文译稿未验证，本产品不提供常模、高低阈值、能力判断或测评准确率。",
+            "text": "源工具有研究依据；本次呈现为历史原文记录，翻译与计分版本保留在数据文件。中文译稿未验证，本产品不提供常模、高低阈值、能力判断或测评准确率。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb"
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda"
             ]
           }
         ]
@@ -546,13 +546,13 @@
           {
             "text": "外向表达：12/20；量程展示 50.0；合作与体谅：12/20；量程展示 50.0；条理与尽责：12/20；量程展示 50.0；情绪波动（神经质方向）：12/20；量程展示 50.0；思维与想象倾向：12/20；量程展示 50.0",
             "evidenceIds": [
-              "98a55c97-5454-45a1-a31e-5cf1178f303e"
+              "eaf0e04c-e107-4c72-b78c-9ba824ed610c"
             ]
           },
           {
-            "text": "源工具有研究依据；本次呈现语言zh-CN，翻译版本mini-ipip-zh-CN-draft-20261002-1。中文译稿未验证，本产品不提供常模、高低阈值、能力判断或测评准确率。",
+            "text": "源工具有研究依据；本次呈现为中文审校稿，翻译与计分版本保留在数据文件。中文译稿未验证，本产品不提供常模、高低阈值、能力判断或测评准确率。",
             "evidenceIds": [
-              "98a55c97-5454-45a1-a31e-5cf1178f303e"
+              "eaf0e04c-e107-4c72-b78c-9ba824ed610c"
             ]
           }
         ]
@@ -563,13 +563,13 @@
           {
             "text": "1级（同级并列）：成长、收入",
             "evidenceIds": [
-              "27d3c332-8fea-42fa-b295-e870fb81f003"
+              "eda8d67f-6c47-4ab6-ae7c-23944ce89852"
             ]
           },
           {
             "text": "愿意以较低起薪换取成长机会",
             "evidenceIds": [
-              "27d3c332-8fea-42fa-b295-e870fb81f003"
+              "eda8d67f-6c47-4ab6-ae7c-23944ce89852"
             ]
           }
         ]
@@ -578,21 +578,21 @@
         "title": "现实条件与目标",
         "claims": [
           {
-            "text": "accept_sales_kpi：false；hard",
+            "text": "销售KPI：不接受；硬条件",
             "evidenceIds": [
-              "d3bf4cae-60fb-4cff-b403-269fde367a5b"
+              "9471c553-3a65-47af-99a0-a0fba41e3d2f"
             ]
           },
           {
             "text": "寻找第一份全职工作",
             "evidenceIds": [
-              "4c809487-0901-4b8d-a9e1-9d95d036af4d"
+              "5ea70c54-3cb4-4265-8f10-a61695d610c4"
             ]
           },
           {
             "text": "当前求职阶段：应届求职",
             "evidenceIds": [
-              "be2438c8-0008-4895-a186-b38202604730"
+              "25511e02-6459-4bc7-80ff-735869d33605"
             ]
           }
         ]
@@ -601,72 +601,72 @@
         "title": "职业方向探索",
         "claims": [
           {
-            "text": "Directors, Religious Activities and Education（21-2021.00）：兴趣形状相关 r=0.8752，展示指数=0.9376；同分排序位次 1。",
+            "text": "职业代码 21-2021.00（中文名称待核查）：兴趣形状相关 0.8752，展示指数=0.9376；同分排序位次 1。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:21-2021.00"
             ]
           },
           {
-            "text": "Public Relations Specialists（27-3031.00）：兴趣形状相关 r=0.8239，展示指数=0.9120；同分排序位次 2。",
+            "text": "公共关系：兴趣形状相关 0.8239，展示指数=0.9120；同分排序位次 2。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:27-3031.00"
             ]
           },
           {
-            "text": "Agents and Business Managers of Artists, Performers, and Athletes（13-1011.00）：兴趣形状相关 r=0.8106，展示指数=0.9053；同分排序位次 3。",
+            "text": "职业代码 13-1011.00（中文名称待核查）：兴趣形状相关 0.8106，展示指数=0.9053；同分排序位次 3。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:13-1011.00"
             ]
           },
           {
-            "text": "Training and Development Managers（11-3131.00）：兴趣形状相关 r=0.7815，展示指数=0.8908；同分排序位次 4。",
+            "text": "职业代码 11-3131.00（中文名称待核查）：兴趣形状相关 0.7815，展示指数=0.8908；同分排序位次 4。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:11-3131.00"
             ]
           },
           {
-            "text": "Social and Community Service Managers（11-9151.00）：兴趣形状相关 r=0.7739，展示指数=0.8870；同分排序位次 5。",
+            "text": "职业代码 11-9151.00（中文名称待核查）：兴趣形状相关 0.7739，展示指数=0.8870；同分排序位次 5。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:11-9151.00"
             ]
           },
           {
-            "text": "Clergy（21-2011.00）：兴趣形状相关 r=0.7634，展示指数=0.8817；同分排序位次 6。",
+            "text": "职业代码 21-2011.00（中文名称待核查）：兴趣形状相关 0.7634，展示指数=0.8817；同分排序位次 6。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:21-2011.00"
             ]
           },
           {
-            "text": "Fundraisers（13-1131.00）：兴趣形状相关 r=0.7582，展示指数=0.8791；同分排序位次 7。",
+            "text": "职业代码 13-1131.00（中文名称待核查）：兴趣形状相关 0.7582，展示指数=0.8791；同分排序位次 7。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:13-1131.00"
             ]
           },
           {
-            "text": "Public Relations Managers（11-2032.00）：兴趣形状相关 r=0.7574，展示指数=0.8787；同分排序位次 8。",
+            "text": "职业代码 11-2032.00（中文名称待核查）：兴趣形状相关 0.7574，展示指数=0.8787；同分排序位次 8。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:11-2032.00"
             ]
           },
           {
-            "text": "Talent Directors（27-2012.04）：兴趣形状相关 r=0.7536，展示指数=0.8768；同分排序位次 9。",
+            "text": "职业代码 27-2012.04（中文名称待核查）：兴趣形状相关 0.7536，展示指数=0.8768；同分排序位次 9。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:27-2012.04"
             ]
           },
           {
-            "text": "Legislators（11-1031.00）：兴趣形状相关 r=0.7355，展示指数=0.8678；同分排序位次 10。",
+            "text": "职业代码 11-1031.00（中文名称待核查）：兴趣形状相关 0.7355，展示指数=0.8678；同分排序位次 10。",
             "evidenceIds": [
-              "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+              "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
               "onet:11-1031.00"
             ]
           }
@@ -676,15 +676,15 @@
         "title": "已确认的解释",
         "claims": [
           {
-            "text": "本次问卷中，相对原始分最高的自报兴趣维度是 enterprising；兴趣不证明实际能力。",
+            "text": "本次问卷中，相对原始分最高的自报兴趣维度是 经营与推动活动兴趣；兴趣不证明实际能力。",
             "evidenceIds": [
-              "f7162007-2d61-4699-8e3e-5df4732feb05"
+              "ec120e8e-75b2-4492-9451-8f7ff5f00d4a"
             ]
           },
           {
-            "text": "本次Mini-IPIP只描述本人自报行为倾向；神经质分沿情绪波动方向记录，不用于判断岗位胜任能力。",
+            "text": "本次人格问卷只描述本人自报行为倾向；情绪波动方向不用于判断岗位胜任能力。",
             "evidenceIds": [
-              "29cb2c28-ed97-43da-9995-29576fb1b87a"
+              "cb22ec28-4450-45b6-856f-232c00c2b630"
             ]
           }
         ]
@@ -701,98 +701,98 @@
     ],
     "evidence": [
       {
-        "evidenceId": "f7162007-2d61-4699-8e3e-5df4732feb05",
+        "evidenceId": "ec120e8e-75b2-4492-9451-8f7ff5f00d4a",
         "kind": "assessment",
-        "sourceRef": "78f31435-7e2c-4c64-ab62-0fe15ad41580",
+        "sourceRef": "88e64926-dbf0-40df-906a-155f14f7b807",
         "locator": "answersHash:a63f5f4f91216bacee5d595ee535c8e053a5c268b95e7e1dc27ff5381b25860b",
         "instrumentId": "onet-mini-ip",
         "instrumentVersion": "2016-computerized-en",
         "locale": "en",
-        "collectedAt": "2026-10-02T14:13:52.914Z",
+        "collectedAt": "2026-10-02T15:11:05.916Z",
         "text": null,
         "status": "confirmed"
       },
       {
-        "evidenceId": "29cb2c28-ed97-43da-9995-29576fb1b87a",
+        "evidenceId": "cb22ec28-4450-45b6-856f-232c00c2b630",
         "kind": "assessment",
-        "sourceRef": "1f36b17d-acac-4747-b461-4ff88d8ef9a1",
+        "sourceRef": "30929dbb-44b0-440f-b21b-8894b470d605",
         "locator": "answersHash:8920495ff4f752ef334e6afb05bcd7ecd5134513d7f5414fa2627d7d28d8108f",
         "instrumentId": "mini-ipip",
         "instrumentVersion": "2006-official-key-en-1",
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.917Z",
+        "collectedAt": "2026-10-02T15:11:05.917Z",
         "text": null,
         "status": "confirmed"
       },
       {
-        "evidenceId": "f2a55043-9ac0-47b3-916d-3d6b0c4c6cfb",
+        "evidenceId": "f72d243a-b3a4-4429-9961-9a7ad5dbccda",
         "kind": "assessment",
-        "sourceRef": "78f31435-7e2c-4c64-ab62-0fe15ad41580",
+        "sourceRef": "88e64926-dbf0-40df-906a-155f14f7b807",
         "locator": "answersHash:a63f5f4f91216bacee5d595ee535c8e053a5c268b95e7e1dc27ff5381b25860b",
         "instrumentId": "onet-mini-ip",
         "instrumentVersion": "2016-computerized-en",
         "locale": "en",
-        "collectedAt": "2026-10-02T14:13:52.920Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": null,
         "status": "confirmed"
       },
       {
-        "evidenceId": "98a55c97-5454-45a1-a31e-5cf1178f303e",
+        "evidenceId": "eaf0e04c-e107-4c72-b78c-9ba824ed610c",
         "kind": "assessment",
-        "sourceRef": "1f36b17d-acac-4747-b461-4ff88d8ef9a1",
+        "sourceRef": "30929dbb-44b0-440f-b21b-8894b470d605",
         "locator": "answersHash:8920495ff4f752ef334e6afb05bcd7ecd5134513d7f5414fa2627d7d28d8108f",
         "instrumentId": "mini-ipip",
         "instrumentVersion": "2006-official-key-en-1",
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": null,
         "status": "confirmed"
       },
       {
-        "evidenceId": "27d3c332-8fea-42fa-b295-e870fb81f003",
+        "evidenceId": "eda8d67f-6c47-4ab6-ae7c-23944ce89852",
         "kind": "user_statement",
-        "sourceRef": "f094380d-f88b-49a1-89fb-895b082287ca",
+        "sourceRef": "45e7f620-f3e6-4092-ba89-fb86e1c6eb92",
         "locator": null,
         "instrumentId": null,
         "instrumentVersion": null,
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": "{\"groups\":[[\"成长\",\"收入\"]],\"tradeoffs\":[\"愿意以较低起薪换取成长机会\"]}",
         "status": "confirmed"
       },
       {
-        "evidenceId": "d3bf4cae-60fb-4cff-b403-269fde367a5b",
+        "evidenceId": "9471c553-3a65-47af-99a0-a0fba41e3d2f",
         "kind": "user_statement",
-        "sourceRef": "f094380d-f88b-49a1-89fb-895b082287ca",
+        "sourceRef": "45e7f620-f3e6-4092-ba89-fb86e1c6eb92",
         "locator": null,
         "instrumentId": null,
         "instrumentVersion": null,
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": "accept_sales_kpi: false (hard, confirmed=true)",
         "status": "confirmed"
       },
       {
-        "evidenceId": "4c809487-0901-4b8d-a9e1-9d95d036af4d",
+        "evidenceId": "5ea70c54-3cb4-4265-8f10-a61695d610c4",
         "kind": "user_statement",
-        "sourceRef": "f094380d-f88b-49a1-89fb-895b082287ca",
+        "sourceRef": "45e7f620-f3e6-4092-ba89-fb86e1c6eb92",
         "locator": null,
         "instrumentId": null,
         "instrumentVersion": null,
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": "寻找第一份全职工作",
         "status": "confirmed"
       },
       {
-        "evidenceId": "be2438c8-0008-4895-a186-b38202604730",
+        "evidenceId": "25511e02-6459-4bc7-80ff-735869d33605",
         "kind": "user_statement",
-        "sourceRef": "f094380d-f88b-49a1-89fb-895b082287ca",
+        "sourceRef": "45e7f620-f3e6-4092-ba89-fb86e1c6eb92",
         "locator": null,
         "instrumentId": null,
         "instrumentVersion": null,
         "locale": "zh-CN",
-        "collectedAt": "2026-10-02T14:13:52.921Z",
+        "collectedAt": "2026-10-02T15:11:05.923Z",
         "text": "应届求职",
         "status": "confirmed"
       }

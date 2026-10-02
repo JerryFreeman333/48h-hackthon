@@ -44,3 +44,10 @@ test('private Chinese interest uses the original numeric algorithm; public servi
  const normal=new ProfileService(svc.state,()=>{});assert(!normal.list('u').some(x=>x.id===s.id));assert.throws(()=>normal.get('u',s.id),e=>e.code==='private_preview_disabled');assert.equal(normal.bootstrap('u').instruments.find(x=>x.instrumentId==='onet-mini-ip').chineseDraft,null);assert.throws(()=>new ProfileService({},()=>{}).import('other',out),e=>e.code==='translation_not_released');assert(svc.import('other',out).privateReviewOnly);
 });
 
+test('private preview is explicitly opt-in and authenticated; runtime flags cannot be injected by client',{skip:!privateAvailable?'私有译稿未随公开仓库分发':false},async()=>{
+ const dir=mkdtempSync(join(tmpdir(),'a-preview-')),servers=[false,true].map((privateTranslationPreview,i)=>createServer({dataDir:join(dir,'data'+i),archiveDir:join(dir,'archive'+i),privateTranslationPreview}));
+ try{for(let i=0;i<servers.length;i++){const server=servers[i];await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port,r=await fetch(base+'/api/a/v2/bootstrap'),b=await r.json(),cookie=r.headers.get('set-cookie').split(';')[0],t=b.instruments.find(x=>x.instrumentId==='onet-mini-ip');assert.equal(b.privateTranslationPreview,i===1);assert.equal(!!t.chineseDraft,i===1);if(i===1)assert.equal(t.chineseDraft.items.length,30);
+  assert.equal((await fetch(base+'/.translation-drafts/onet-mini-ip.zh-CN.private-draft.json')).status,404);const injected=await fetch(base+'/api/a/v2/sessions',{method:'POST',headers:{cookie,'content-type':'application/json'},body:JSON.stringify({battery:'Quick',privateTranslationPreview:true})});assert.equal(injected.status,422);
+  const noCookie=await fetch(base+'/api/a/v2/instruments');assert.equal(noCookie.status,401);
+ }}finally{for(const s of servers)if(s.listening)await new Promise(r=>s.close(r));}
+});

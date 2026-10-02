@@ -1,0 +1,142 @@
+{
+  "archivedAt": "2026-10-02",
+  "reason": "用户将A改为七主题求职需求；原题和原算法不得套用新题",
+  "files": [
+    {
+      "path": "src/ui/v2-app.mjs",
+      "sha256": "6a76de82db383c366b75cf6c9b2b1786101c43186883014aad9ee10a9015ff59",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "src/ui/v2.html",
+      "sha256": "7fa1f183e9eea1b73332a20dcbbf68dbe4602c93f7b161d5e258f46229d757f0",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "src/ui/battery-survey.mjs",
+      "sha256": "c03a7e89b37d673a2c5a1290edf58734ef7286ee54bf7c5da9bb4119b87f01a3",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "tests/chinese-entry.test.mjs",
+      "sha256": "a43c423cfa314c406863539e937da7200e8c237348b812429dbd9f1614654aa5",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "tests/browser-chinese-only.mjs",
+      "sha256": "58d5d262a06ed8cc13102508426e34b778ebf55742c49fe0b983549b0a359ea8",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "tests/browser-private-review.mjs",
+      "sha256": "f4fad9319ce6444ff2c0d59a03b605001694bbb02519592f882097d3bd14acaa",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "tests/selections-private.test.mjs",
+      "sha256": "f0ed9c2090c3fe1661d505a4065c2c32fcb0842a4c4d01807165d86813b145f7",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "tests/v2.test.mjs",
+      "sha256": "21386bd57d8ff9472ab3ed47facec6c4eabc07577883e0947d18a5810e6fc3a3",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "src/instruments/battery.mjs",
+      "sha256": "8b35484717e13fe197ce874e460c23d5b8a2276f4ab647a4c35f96d21f3b55ac",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "src/instruments/scoring.mjs",
+      "sha256": "ec8be9a42bb384b40629aaa5fccaf6c80d49ca912c157d792d75e84da0951c5c",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "src/instruments/onet-mini-ip.json",
+      "sha256": "81199ad8e7dbb45e7a5a904a46d0732123428bfa4a6bfdb7e3add1d73a89a4e7",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "src/instruments/mini-ipip.json",
+      "sha256": "273db7feacc331c79af7bbb20586997063ca7a0897ce4a47351ae5791b61780b",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "src/instruments/mini-ipip.zh-CN.draft.json",
+      "sha256": "2291119edf6496a7ff496658bc3ca3fbdc6e55d0c23d67d83807ccf9e9aad23e",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "src/profile/selections.mjs",
+      "sha256": "286963b775a5ef878034bfa251047583fe130ae6953ac2d888cd543c14c5de3b",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "docs/QUESTION_REVIEW_2026-10-02.md",
+      "sha256": "1559df57197313f0d12243f32fd4e320af1dc336bd46f70494c184c7c4efb1bd",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "fixtures/UserProfile.json",
+      "sha256": "e2dfa41e283cd0eadda900b9ba979c54b1262cbb26abc8f9ad6d894bfb4f6cc8",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "fixtures/SearchIntent.json",
+      "sha256": "25882e02eeb395a0b495a51d51e36c22fa53199d904b0cd82be940f46394c728",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "fixtures/ProfileHandoffV2.demo.json",
+      "sha256": "46c858e22024a510112ed3209ce19436aab1438bea7c14e76f00b48fcf8698ce",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "README.md",
+      "sha256": "c682f5d603f8be600178e200b8b6d9b8688044b9f3929a893a6e536983ff606d",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "docs/API.md",
+      "sha256": "be62d6d92c8bc9b7873c7d400e7ba1c94b1fc4df17c2562b9e1e067d5c92bb1c",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "docs/INTEGRATION.md",
+      "sha256": "6f2327aea11cb21d720c69fe81402bdfa8b933e8713a6626538271c61a1644f9",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "scripts/start-private-review.mjs",
+      "sha256": "848e14c6614730feada2c168dc1a61a0088c4816ed7a7547a0bec2435a068fc2",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "scripts/create-v2-fixtures.mjs",
+      "sha256": "d48ba201d5495c0ff175110815a350512f35ddfbe68214d7aa1da0892947c2f3",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "scripts/create-v2-provenance.mjs",
+      "sha256": "b4489e4ee6e2fefcc18f5b43bd228a491d694fc761b28d48ab88a84409708a99",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "scripts/prepare-v2-sources.py",
+      "sha256": "2472b7eb8111617ad50dbd0b7ce8b7728064a3610b30abe6e575510e051d851b",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "scripts/extract-official-mini.py",
+      "sha256": "de9d3275ba5cf5cca4d2eff963c3b9807811501c04dc88d09232012931b836a8",
+      "status": "archived-not-active"
+    },
+    {
+      "path": "fixtures/CandidateBundle.json",
+      "sha256": "9108f291d7165b9f7d663bc0624f7848465149d0ad739eb832813228936340e0",
+      "status": "archived-not-active"
+    }
+  ],
+  "additionalArchivedAt": "2026-10-03"
+}

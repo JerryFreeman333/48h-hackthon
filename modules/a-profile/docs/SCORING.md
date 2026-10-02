@@ -1,3 +1,5 @@
+> 历史参考：当前v0.7不启用旧兴趣／人格问卷或分数，使用[七主题需求流](JOB_NEEDS_IMPLEMENTATION.md)。原题与原算法保持存档；本页不是新题的计分依据。
+
 # 当前计分与解释
 
 v0.5正式计分继续不变；当前本机中文审校边界及源码/算法来源区分见 [V05_CHOICES_PRIVATE_REVIEW.md](V05_CHOICES_PRIVATE_REVIEW.md)。本页英语题本描述对应默认公开模式。

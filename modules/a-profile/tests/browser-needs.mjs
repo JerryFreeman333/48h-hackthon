@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import {mkdirSync,mkdtempSync,readFileSync,writeFileSync} from 'node:fs';
+import {join} from 'node:path';
+import {chromium} from '@playwright/test';
+import {createServer} from '../src/server.mjs';
+import {topics} from '../src/needs/catalog.mjs';
+import {validateExport} from '../src/contracts.mjs';
+mkdirSync('test-results',{recursive:true});const dir=mkdtempSync(join('test-results','needs-browser-')),server=createServer({dataDir:join(dir,'data'),archiveDir:join(dir,'archive')});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port,browser=await chromium.launch({channel:'chrome',headless:true}),page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+const click=async id=>{await page.locator('#'+id).waitFor();await page.waitForFunction(id=>!document.getElementById(id)?.disabled,id);await page.locator('#'+id).click();};
+const saved=async()=>{await page.waitForFunction(()=>document.getElementById('notice').textContent==='已自动保存');};
+try{
+ await page.goto(origin+'/demo/a');await click('start');
+ assert.equal(await page.locator('textarea,input[type=text],input[type=number]').count(),0);
+ for(let index=0;index<topics.length;index++){
+  const t=topics[index];await page.getByRole('heading',{name:t.title,exact:true}).waitFor();await page.locator('input[name="'+t.id+'.priority"][value=priority]').check();await saved();
+  await page.locator('input[name="'+t.id+'.details"][value=unsure]').check();await saved();await page.locator('input[name="'+t.id+'.details"][value="'+t.details[0].id+'"]').check();await saved();assert.equal(await page.locator('input[name="'+t.id+'.details"][value=unsure]').isChecked(),false);
+  await page.locator('input[name="'+t.id+'.policy"][value=verify_first]').check();await saved();
+  if(index===2){await page.reload();await page.getByRole('heading',{name:t.title,exact:true}).waitFor();assert(await page.locator('input[name="'+t.id+'.priority"][value=priority]').isChecked());}
+  await click('next');
+ }
+ await page.locator('#stage').waitFor();await page.locator('#stage').selectOption('graduate');await saved();await page.locator('input[name=goals][value=find_first_job]').check();await saved();await page.locator('#city').selectOption(['杭州']);await saved();await page.locator('#city-strength').selectOption('hard');await saved();await page.locator('#min_fixed_monthly_salary').selectOption('8000');await saved();await page.locator('#min_fixed_monthly_salary-strength').selectOption('hard');await saved();await page.locator('input[name=industries][value=software_it]').check();await saved();await page.locator('input[name=roles][value=engineering]').check();await saved();
+ assert.equal(await page.locator('textarea,input[type=text],input[type=number]').count(),0);await page.reload();await page.locator('#stage').waitFor();assert.equal(await page.locator('#min_fixed_monthly_salary').inputValue(),'8000');await click('back');await page.getByRole('heading',{name:topics[6].title,exact:true}).waitFor();await page.locator('input[name="position.priority"][value=secondary]').check();await saved();await click('next');await page.locator('#stage').waitFor();await click('next');await page.locator('#confirmed').waitFor();
+ assert.match(await page.locator('#app').innerText(),/五险一金|企业经营稳定|职位与用工稳定/);assert.doesNotMatch(await page.locator('#app').innerText(),/人格分|能力低|RIASEC|Open the|Build kitchen/);
+ await page.locator('#confirmed').check();await click('confirm');await page.locator('#json').waitFor();const waitDownload=page.waitForEvent('download');await click('json');const out=JSON.parse(readFileSync(await(await waitDownload).path(),'utf8'));validateExport(out);assert.equal(out.JobNeedsSnapshot.topics.length,7);assert.equal(out.questionProvenance.length,21);assert.equal(out.SearchIntent.filters.find(c=>c.key==='min_fixed_monthly_salary').value,8000);assert(out.UserProfile.preferences.find(c=>c.key==='min_fixed_monthly_salary').confirmed);assert(Object.values(out.UserProfile.assessment.scores).every(x=>x===null));
+ const first=structuredClone(out);await click('edit');await page.locator('input[name="growth.priority"][value=secondary]').check();await saved();for(let i=0;i<8;i++)await click('next');await page.locator('#confirmed').waitFor();await page.locator('#confirmed').check();await click('confirm');await page.locator('#revision').waitFor();assert.equal(await page.locator('#revision').inputValue(),'2');await page.locator('#revision').selectOption('1');await page.waitForFunction(()=>document.querySelector('#saved-description .card p')?.textContent==='这是我的求职重点');
+ const firstAgain=await page.evaluate(async id=>await(await fetch('/api/a/needs/sessions/'+id+'/export?revision=1')).json(),Object.keys(JSON.parse(readFileSync(join(dir,'data/state.json'))).needs.sessions)[0]);assert.deepEqual(firstAgain,first);const stored=JSON.parse(readFileSync(join(dir,'data/state.json'))).needs;assert.equal(Object.keys(stored.snapshots).length,2);
+ const importPath=join(dir,'import.json');writeFileSync(importPath,JSON.stringify(out));await page.locator('#restore').setInputFiles(importPath);await page.waitForFunction(()=>document.querySelector('#revision')?.value==='1');await page.reload();await page.locator('#json').waitFor();assert.equal(await page.locator('#revision').inputValue(),'1');
+ for(const path of ['/demo/a/v1','/app.mjs','/survey-adapter.mjs','/v2-app.mjs','/battery-survey.mjs'])assert.equal((await page.request.get(origin+path)).status(),410);
+ const retired=await page.request.post(origin+'/api/a/v2/sessions',{data:{battery:'Standard'}});assert.equal(retired.status(),410);assert.equal((await retired.json()).error.code,'assessment_flow_retired');
+ await page.setViewportSize({width:390,height:844});await page.screenshot({path:'test-results/v07-needs-result.png',fullPage:true});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await click('edit');await page.locator('input[name="growth.priority"]').first().waitFor();await page.screenshot({path:'test-results/v07-needs-question.png',fullPage:true});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert.deepEqual(errors,[]);
+ console.log('PASS needs browser: all 21 Chinese choice questions, exclusive unknown, reload/back, preset conditions/directions, user confirmation, immutable revisions, JSON roundtrip, retired old entries, mobile layout, no JS errors');
+}finally{await browser.close();await new Promise(r=>server.close(r));}

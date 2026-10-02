@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0.0",
-  "intentId": "intent-demo-1",
+  "intentId": "02d3f54c-8981-454d-b20a-f18f2c1e8679",
   "revision": 1,
-  "projectId": "project-demo-1",
-  "profileId": "profile-demo-1",
+  "projectId": "d0e18946-c105-41a5-9802-d18c9f1dbb8c",
+  "profileId": "62a41d80-65b7-44a2-8f50-b1f368921a11",
   "profileRevision": 1,
   "mode": "demo",
   "industryTags": [
@@ -16,13 +16,35 @@
     "product_operations"
   ],
   "cities": [
-    "上海"
+    "杭州"
   ],
   "filters": [
+    {
+      "key": "city",
+      "value": [
+        "杭州"
+      ],
+      "strength": "soft"
+    },
+    {
+      "key": "min_fixed_monthly_salary",
+      "value": null,
+      "strength": "unknown"
+    },
     {
       "key": "accept_sales_kpi",
       "value": false,
       "strength": "hard"
+    },
+    {
+      "key": "accept_travel",
+      "value": null,
+      "strength": "unknown"
+    },
+    {
+      "key": "accept_outsourcing",
+      "value": null,
+      "strength": "unknown"
     }
   ],
   "maxCandidates": 3

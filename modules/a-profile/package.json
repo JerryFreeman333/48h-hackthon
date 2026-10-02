@@ -1,6 +1,6 @@
 {
   "name": "xray-a-profile",
-  "version": "0.5.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -8,10 +8,10 @@
   },
   "scripts": {
     "start": "node src/server.mjs",
-    "start:review": "node scripts/start-private-review.mjs",
+    "start:review": "node src/server.mjs",
     "test": "node --test tests/*.test.mjs",
-    "test:browser": "node tests/browser.mjs && node tests/browser-v2.mjs && node tests/browser-private-review.mjs",
-    "fixtures:v2": "node scripts/create-v2-fixtures.mjs"
+    "test:browser": "node tests/browser-needs.mjs",
+    "fixtures:needs": "node scripts/create-needs-fixtures.mjs"
   },
   "dependencies": {
     "survey-core": "3.1.2",

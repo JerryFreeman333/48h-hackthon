@@ -1,4 +1,5 @@
 export function mountBattery(container,tool,attempt,onChange,onComplete){
+ if(attempt.locale!=='zh-CN')throw new Error('英语答题入口已停用，请使用中文审校入口；历史答案仍保留');
  if(!globalThis.Survey?.Model)throw new Error('SurveyJS未加载');
  const chinese=attempt.locale==='zh-CN'?tool.chineseDraft:null;
  if(attempt.locale==='zh-CN'&&(!chinese||chinese.translationVersion!==attempt.translationVersion))throw new Error('中文译稿未发布或版本不一致');
