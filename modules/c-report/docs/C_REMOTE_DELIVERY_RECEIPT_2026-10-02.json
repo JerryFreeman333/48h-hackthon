@@ -37,5 +37,17 @@
   "localGitNote": "Local workspace is an initially uncommitted document workdir, not a checked-out remote main; ordinary Git HTTPS failed in this run.",
   "receiptNote": "This receipt records the verified documentation commit. The receipt itself is delivered in a later C-only commit; later main commits may exist.",
   "applicationTestsRun": false,
-  "realBusinessProviderApiCallsMade": false
+  "realBusinessProviderApiCallsMade": false,
+  "initialInspectionNote": "Repository was empty at first inspection; before C publication, teammate A initialized main with its independent README. C used that existing main as parent.",
+  "cInitializedMain": false,
+  "preservedNonCFilesAtDocumentPublication": [
+    {
+      "path": "modules/a-profile/README.md",
+      "gitBlobSha": "1b3c2328911b0ba0408269e9205d885855136c71",
+      "unchanged": true
+    }
+  ],
+  "otherBranchHeadsObservedAfterPublication": {
+    "feat/a-profile": "a8a98164e1f1126ef36fb065a4280ce6248974f9"
+  }
 }

@@ -15,6 +15,7 @@
 - GitHub：`https://github.com/JerryFreeman333/48h-hackthon`，私有仓库。
 - 本轮已认证为该仓库所有者，API 权限允许读写；没有在任何文档保存 token/密钥。
 - 2026-10-02 检查时仓库为空：branches=[]，根 contents 报 empty；default_branch=main，但当时尚无 main 分支。
+- **发布前状态已经变化**：队友先加入了 `modules/a-profile/README.md`，main 基线为 `a8a98164e1f1126ef36fb065a4280ce6248974f9`。C 在该基线上追加，没有初始化一份替代历史。A README 的 Git blob SHA `1b3c2328911b0ba0408269e9205d885855136c71` 在 C 发布前后完全一致；`feat/a-profile` 当时仍指向上述 A 提交。核验快照中 main 已有 A 档案与 C 文档包，不是空仓库。
 - 本轮本地工作目录：`/Users/jerryzheng/Documents/ChatGPT/职业经理/`。
 - 模块路径：仓库相对 `modules/c-report/`；当前本地绝对 `/Users/jerryzheng/Documents/ChatGPT/职业经理/modules/c-report/`。
 - 资料历史目录：`/Users/jerryzheng/Desktop/职业经理/`。下一轮不依赖这个目录，C 原文及三个样例已经随模块保存。
