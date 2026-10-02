@@ -1,0 +1,46 @@
+[
+  {
+    "path": "ITEM_PROVENANCE_V2.json",
+    "sha256": "c016752e474fe00977d4b4bed74225f27c37840333044bcc0d5f59f0dfb26274"
+  },
+  {
+    "path": "ProfileHandoffV2.demo.json",
+    "sha256": "0549f6896ca42fa303924fe9904c374659e95013facf41f26c5a9b8487ccac35"
+  },
+  {
+    "path": "README.md",
+    "sha256": "57860bc9abed8a9ecd591321d09b8c67846462795a661c5894e6f44982739dc7"
+  },
+  {
+    "path": "scripts/setup-ocr.mjs",
+    "sha256": "09a5af9e937c6ed19caf7ddb010128818111138ae789d3a56c581919d76fad23"
+  },
+  {
+    "path": "src/resume/extract.mjs",
+    "sha256": "ad38844184b95562335d0531034288c1b936717b0f5da4f16ecd8f1d0b090469"
+  },
+  {
+    "path": "src/resume/jobs.mjs",
+    "sha256": "e5667b0e02a80d7755f04830bc9e87af14ff0a01999cb46d2aba5b3d3ae848e5"
+  },
+  {
+    "path": "src/resume/worker.mjs",
+    "sha256": "43a9a860a4f32238c325470c4f136780739a3c542e5f6c493084ef33d6ccb332"
+  },
+  {
+    "path": "tests/browser-v2.mjs",
+    "sha256": "d75f65bf09056803b847595e98d49cc7ab6e33736931f45c4042d19739751a7f"
+  },
+  {
+    "path": "tests/resume.test.mjs",
+    "sha256": "e2ea22f74fcc45842a9bf226c2699946e6daaf7b988341571dfd5f7a1511f601"
+  },
+  {
+    "path": "tests/v2.test.mjs",
+    "sha256": "90ef49909aa99f4437fdbc1cfba7aca04e16d87e174a68d81cb855a258642353"
+  },
+  {
+    "path": "UserProfile.v1.json",
+    "sha256": "9ba1e7b5a10cf1fd767f2b0112745c802a99ee7418b7462061c0ca5ca65a00cf"
+  }
+]

@@ -7,12 +7,9 @@ export async function handleV2(service,owner,req,url,body){
  if(req.method==='GET'&&p==='/catalog'){const q=(url.searchParams.get('q')??'').slice(0,200).toLowerCase();const list=catalog.entries.filter(o=>!q||[o.title,o.onetCode,o.titleZh,...(o.aliases??[])].filter(Boolean).some(t=>t.toLowerCase().includes(q)));if(!q)list.sort((a,b)=>Number(!!b.titleZh)-Number(!!a.titleZh)||a.onetCode.localeCompare(b.onetCode));return {version:catalog.catalogVersion,loaded:catalog.loadedCount,complete:catalog.completeCount,items:list.slice(0,50).map(({ratings,interestVector,...o})=>o)};}
  if(req.method==='POST'&&p==='/sessions')return service.create(owner,body);
  if((m=p.match(/^\/sessions\/([^/]+)$/))){if(req.method==='GET')return service.get(owner,m[1]);if(req.method==='PATCH')return service.update(owner,m[1],body);}
- if((m=p.match(/^\/sessions\/([^/]+)\/statements$/))&&req.method==='POST')return service.statement(owner,m[1],body);
  if((m=p.match(/^\/sessions\/([^/]+)\/insights$/))&&req.method==='POST')return service.addInsight(owner,m[1],body);
  if((m=p.match(/^\/attempts\/([^/]+)(\/score)?$/))){if(req.method==='PATCH'&&!m[2])return service.updateAttempt(owner,m[1],body);if(req.method==='POST'&&m[2])return service.score(owner,m[1],body);}
- if((m=p.match(/^\/claims\/([^/]+)$/))&&req.method==='PATCH')return service.claim(owner,m[1],body);
- if(req.method==='POST'&&p==='/resume-imports')return service.upload(owner,body);
- if((m=p.match(/^\/resume-imports\/([^/]+)$/))&&req.method==='GET')return service.job(owner,m[1]);
+ if((m=p.match(/^\/insights\/([^/]+)$/))&&req.method==='PATCH')return service.reviewInsight(owner,m[1],body);
  if((m=p.match(/^\/profiles\/([^/]+)(?:\/(confirm|occupation-fit|export|report))?$/))){
   if(req.method==='POST'&&m[2]==='confirm')return service.confirm(owner,m[1],body);
   if(req.method==='POST'&&m[2]==='occupation-fit')return service.occupationFit(owner,m[1],body.profileRevision);

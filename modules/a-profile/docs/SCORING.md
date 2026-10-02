@@ -1,6 +1,6 @@
 # 当前计分与解释
 
-此页描述v1 Mini-IP计分。V2继续保留这些30题规则，另启用独立Mini-IPIP20；两者不合成统一分数。V2详情见 [V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md)，逐题记录见 [ITEM_PROVENANCE_V2.json](ITEM_PROVENANCE_V2.json)。
+此页描述v1 Mini-IP计分。V2继续保留这些30题规则，另启用独立Mini-IPIP20；两者不合成统一分数。v0.4没有更改这些算法；语言与许可处理见 [SCOPE_TRANSLATION_2026-10-02.md](SCOPE_TRANSLATION_2026-10-02.md)，逐题记录见 [ITEM_PROVENANCE_V2.json](ITEM_PROVENANCE_V2.json)。[V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md) 保留为v0.3历史说明。
 
 使用官方 [Mini-IP 2016开发报告](https://www.onetcenter.org/dl_files/Mini-IP.pdf)，Appendix A印刷19–20页列出全部30题及维度；印刷13页规定电子版计分。原PDF SHA256与逐题原文在 src/instruments/onet-mini-ip.json；来源台账在 ITEM_PROVENANCE.json。
 

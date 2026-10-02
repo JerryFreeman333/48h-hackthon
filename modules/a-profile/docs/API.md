@@ -1,6 +1,6 @@
 # A独立API
 
-此页描述保留的v1接口。当前默认界面使用独立 `/api/a/v2`，接口与实际后端状态见 [V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md)。公共v1契约未改。
+此页描述保留的v1接口。当前v0.4范围、停用接口、语言与历史数据处理见 [SCOPE_TRANSLATION_2026-10-02.md](SCOPE_TRANSLATION_2026-10-02.md)。默认界面使用独立 `/api/a/v2`；[V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md) 是v0.3历史说明，经历功能已停用。公共v1契约字段保留。
 
 GET `/api/a/bootstrap`建立HttpOnly/SameSite=Strict本地会话并返回当前题本、工具说明、分类和本人记录。旧记录在启动时封存，不返回旧答案。接口只支持同源请求，JSON正文限制256KB。
 
@@ -12,7 +12,7 @@ GET `/api/a/bootstrap`建立HttpOnly/SameSite=Strict本地会话并返回当前�
 | GET /api/a/assessments/:id | 本人答题记录 |
 | PATCH /api/a/assessments/:id/answers | expectedRevision、工具version、answers、draft、step；冲突409 |
 | POST /api/a/assessments/:id/score | 服务端计分；未完成时全维未知 |
-| PUT /api/a/profiles/:id/confirm | assessmentId、expectedRevision、confirmed=true、经历/目标/确认条件；保存新画像版本 |
+| PUT /api/a/profiles/:id/confirm | assessmentId、expectedRevision、confirmed=true、目标/确认条件；background只能为空占位，保存新画像版本 |
 | POST /api/a/intents | 确认后的profileRevision、行业和岗位；新意向版本 |
 | GET /api/a/export/:projectId | 当前意向所引用的精确UserProfile版本与SearchIntent |
 | POST /api/a/import | 当前已启用工具版本的规范JSON；旧48题拒绝。导入没有原始答案，禁止重算 |

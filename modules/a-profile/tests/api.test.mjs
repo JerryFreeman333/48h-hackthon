@@ -23,12 +23,12 @@ test('HTTP persistence, auth, vendor assets and full A export',async()=>{
  const answers=Object.fromEntries(boot.data.questions.map(q=>[q.id,2]));assert.equal((await call(`assessments/${a.id}/answers`,'PATCH',{expectedRevision:1,version:a.version,answers,draft:{questionPage:4},step:1})).status,200);
  assert.equal((await call(`assessments/${a.id}/answers`,'PATCH',{expectedRevision:1,version:a.version,answers:{}})).status,409);
  assert.equal((await call(`assessments/${a.id}/score`,'POST',{})).data.rawScores.social,10);
- assert.equal((await call('profiles/extract','POST',{text:'test'})).status,503);
+ assert.equal((await call('profiles/extract','POST',{text:'test'})).status,410);
  const foreign=(await call('bootstrap','GET',undefined,'')).cookie.split(';')[0];assert.equal((await call(`assessments/${a.id}`,'GET',undefined,foreign)).status,403);
  await new Promise(r=>server.close(r));server=createServer(config);base=await start();assert.equal((await call(`assessments/${a.id}`)).data.draft.questionPage,4);
- for(const path of ['/demo/a','/vendor/survey.core.min.js','/vendor/survey-js-ui.min.js','/vendor/survey-core.fontless.min.css'])assert.equal((await fetch(base+path)).status,200);
+ for(const path of ['/demo/a','/vendor/survey.core.min.js','/vendor/survey-js-ui.min.js','/vendor/survey-core.fontless.min.css','/vendor/survey-core.min.css'])assert.equal((await fetch(base+path)).status,200);
  assert.equal((await fetch(base+'/rubbish/legacy-20261002/src/questionnaire.mjs')).status,404);
- const input={assessmentId:a.id,expectedRevision:2,confirmed:true,background:{education:'本科',major:null,skills:[],experiences:[]},goals:[],preferences:[{key:'accept_sales_kpi',value:false,strength:'hard',confirmed:true}]};
+ const input={assessmentId:a.id,expectedRevision:2,confirmed:true,background:{education:null,major:null,skills:[],experiences:[]},goals:[],preferences:[{key:'accept_sales_kpi',value:false,strength:'hard',confirmed:true}]};
  assert.equal((await call(`profiles/${a.profileId}/confirm`,'PUT',input)).status,200);assert.equal((await call(`profiles/${a.profileId}/confirm`,'PUT',input)).status,409);
  assert.equal((await call('intents','POST',{assessmentId:a.id,profileRevision:1,industryTags:['software_it'],roleTypes:['product_operations']})).status,200);
  const x=(await call(`export/${a.projectId}`)).data;assert.equal(x.UserProfile.assessment.scores.social,50);assert.equal(x.SearchIntent.filters[0].value,false);
