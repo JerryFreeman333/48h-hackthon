@@ -2,6 +2,8 @@
 
 环境：Windows，Node.js 24.20.0，SurveyJS 3.1.2，Playwright 1.58.2 + 本机Chrome。模块package版本0.3.0。
 
+本模块锁文件通过 `npm ci --cache .npm-cache --no-audit --no-fund` 干净安装（50个包）；安装后重跑以下27项与两套浏览器测试，结果相同。工作区沙箱无法写默认用户npm缓存，改用本模块Git忽略缓存目录；没有修改公共根锁文件。
+
 ## 本次运行结果
 
 `npm test`：27项通过，0失败，0跳过。包含原v1的9项，以及V2计分、版本、证据、权限、交接与真实解析18项。
@@ -39,5 +41,7 @@ OCR安装只下载固定官方模型，校验Git blob并保存SHA256；个人文
 - B/C的v2接口尚未联调；未完成生产身份、数据库、并发部署、CAT、EQ或市场数据功能。
 - 未运行未知许可Career DNA源项目测试，未声称原代码移植等价；源关系见PORT_MAP。
 - 仓库公共根目录CI先前在npm ci因sharp平台依赖锁缺失失败，证据见历史TEST_RESULTS.md。本模块独立测试通过不能证明公共CI通过；公共锁修复不在本次A目录范围。
+
+本次 [PR3公共工作流](https://github.com/JerryFreeman333/48h-hackthon/actions/runs/37004039816/job/110828040590) 再现同一根目录npm ci错误：缺失sharp0.35.5平台包及@emnapi/runtime1.11.3锁项。类型检查、根测试与根构建未执行；A独立命令确实通过。
 
 本记录是工程运行证据，不是测评准确率、中文验证或整体ABC完成证明。
