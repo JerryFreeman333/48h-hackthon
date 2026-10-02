@@ -1,0 +1,6 @@
+.data/
+node_modules/
+test-results/
+.npm-cache/
+mini-ip-source.pdf
+rubbish/private/

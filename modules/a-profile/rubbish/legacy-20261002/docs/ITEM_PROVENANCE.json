@@ -1,0 +1,2114 @@
+[
+  {
+    "questionId": "q01",
+    "text": "我愿意动手安装或修理设备。",
+    "dimension": "realistic",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q02",
+    "text": "我喜欢操作工具或制作实物。",
+    "dimension": "realistic",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q03",
+    "text": "我愿意在现场解决具体技术问题。",
+    "dimension": "realistic",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q04",
+    "text": "我喜欢寻找现象背后的原因。",
+    "dimension": "investigative",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q05",
+    "text": "我愿意通过数据验证一个猜想。",
+    "dimension": "investigative",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q06",
+    "text": "我喜欢阅读资料并比较不同解释。",
+    "dimension": "investigative",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q07",
+    "text": "我喜欢用文字或图像表达想法。",
+    "dimension": "artistic",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q08",
+    "text": "我愿意尝试没有固定答案的创作。",
+    "dimension": "artistic",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q09",
+    "text": "我喜欢为作品寻找新的表现方式。",
+    "dimension": "artistic",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q10",
+    "text": "我愿意耐心了解他人的需要。",
+    "dimension": "social",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q11",
+    "text": "我喜欢帮助别人学习新知识。",
+    "dimension": "social",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q12",
+    "text": "我愿意通过沟通解决分歧。",
+    "dimension": "social",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q13",
+    "text": "我喜欢向他人介绍并推动一个方案。",
+    "dimension": "enterprising",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q14",
+    "text": "我愿意组织资源推进一项活动。",
+    "dimension": "enterprising",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q15",
+    "text": "我喜欢在协商中争取支持。",
+    "dimension": "enterprising",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q16",
+    "text": "我喜欢整理记录并检查准确性。",
+    "dimension": "conventional",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q17",
+    "text": "我愿意按照清晰流程完成任务。",
+    "dimension": "conventional",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q18",
+    "text": "我喜欢维护有条理的数据或文件。",
+    "dimension": "conventional",
+    "group": "职业兴趣",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q19",
+    "text": "我看重能学到新技能的工作。",
+    "dimension": "growth",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q20",
+    "text": "我看重能获得具体反馈的环境。",
+    "dimension": "growth",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q21",
+    "text": "我看重有机会承担更复杂的任务。",
+    "dimension": "growth",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q22",
+    "text": "我看重能积累可迁移的经验。",
+    "dimension": "growth",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q23",
+    "text": "我看重能持续了解专业领域。",
+    "dimension": "growth",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q24",
+    "text": "我看重收入的可预期性。",
+    "dimension": "stability",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q25",
+    "text": "我看重清晰且稳定的工作安排。",
+    "dimension": "stability",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q26",
+    "text": "我看重明确的劳动保障。",
+    "dimension": "stability",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q27",
+    "text": "我看重长期稳定的团队关系。",
+    "dimension": "stability",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q28",
+    "text": "我看重职责变化前能充分沟通。",
+    "dimension": "stability",
+    "group": "工作价值",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q29",
+    "text": "我希望能自己安排完成任务的方法。",
+    "dimension": "autonomy",
+    "group": "工作方式",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q30",
+    "text": "我喜欢独立推进一个明确的任务。",
+    "dimension": "autonomy",
+    "group": "工作方式",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q31",
+    "text": "我希望对自己的工作节奏有决定空间。",
+    "dimension": "autonomy",
+    "group": "工作方式",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q32",
+    "text": "我喜欢先自行探索再寻求帮助。",
+    "dimension": "autonomy",
+    "group": "工作方式",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q33",
+    "text": "我喜欢和同事共同拆解问题。",
+    "dimension": "collaboration",
+    "group": "工作方式",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q34",
+    "text": "我愿意频繁交流任务进展。",
+    "dimension": "collaboration",
+    "group": "工作方式",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q35",
+    "text": "我喜欢与不同专业的人合作。",
+    "dimension": "collaboration",
+    "group": "工作方式",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q36",
+    "text": "我愿意协助同事完成共同目标。",
+    "dimension": "collaboration",
+    "group": "工作方式",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q37",
+    "text": "两份工作内容相似时，即使收入更低，我也更倾向选择工时更可控的一份。",
+    "dimension": "balance",
+    "group": "情境权衡",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q38",
+    "text": "高收入伴随频繁临时加班时，我更倾向保留个人时间。",
+    "dimension": "balance",
+    "group": "情境权衡",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q39",
+    "text": "需要长期跨城市奔波的机会，即使成长更快，我也更倾向留在熟悉城市。",
+    "dimension": "balance",
+    "group": "情境权衡",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q40",
+    "text": "品牌知名但日常节奏紧张时，我更倾向节奏可持续的普通公司。",
+    "dimension": "balance",
+    "group": "情境权衡",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q41",
+    "text": "大公司职责很窄与小团队承担完整任务之间，我更倾向后者。",
+    "dimension": "responsibility",
+    "group": "情境权衡",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q42",
+    "text": "成熟流程与探索新业务之间，我更倾向探索新业务。",
+    "dimension": "responsibility",
+    "group": "情境权衡",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q43",
+    "text": "明确执行任务与自主决定方案之间，我更倾向自主决定方案。",
+    "dimension": "responsibility",
+    "group": "情境权衡",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q44",
+    "text": "稳定熟悉任务与有学习成本的新任务之间，我更倾向新任务。",
+    "dimension": "responsibility",
+    "group": "情境权衡",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q45",
+    "text": "在基本生活有保障时，我愿意接受业务方向可能调整的工作。",
+    "dimension": "risk_tolerance",
+    "group": "风险与边界",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q46",
+    "text": "在了解具体条件后，我愿意考虑处于早期阶段的团队。",
+    "dimension": "risk_tolerance",
+    "group": "风险与边界",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q47",
+    "text": "在有基本保障的情况下，我愿意接受一部分收入随业绩变化。",
+    "dimension": "risk_tolerance",
+    "group": "风险与边界",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  },
+  {
+    "questionId": "q48",
+    "text": "在有退出选择的情况下，我愿意尝试结果不确定的项目。",
+    "dimension": "risk_tolerance",
+    "group": "风险与边界",
+    "currentInstrument": "career-prototype-48",
+    "currentVersion": "1",
+    "originalTool": null,
+    "originalToolVersion": null,
+    "originalItemNumber": null,
+    "originalSourceUrl": null,
+    "origin": "coding_agent_original_prototype",
+    "translation": "not_a_traceable_translation",
+    "adaptation": "自编中文题；未建立与成熟量表原题的逐题对应",
+    "scoring": {
+      "responseValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        null
+      ],
+      "reverse": false,
+      "rule": "prototype_mean_75_percent_v1",
+      "formula": "有效覆盖>=75%时 round((均值-1)*25)，否则null",
+      "interpretationThresholds": [
+        35,
+        65
+      ],
+      "ruleEvidence": "unvalidated_product_assumption"
+    },
+    "permission": {
+      "externalToolLicense": null,
+      "status": "no_external_tool_provenance; project_distribution_license_not_set"
+    },
+    "validation": {
+      "instrument": "unvalidated",
+      "chineseVersion": "unvalidated",
+      "targetPopulation": "unvalidated"
+    },
+    "sourceLocation": "src/questionnaire.mjs",
+    "reviewDecision": "不得宣称原工具效度；保留旧版本追溯，待审核替换"
+  }
+]

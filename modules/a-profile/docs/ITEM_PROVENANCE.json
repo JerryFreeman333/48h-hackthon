@@ -1,0 +1,1442 @@
+[
+  {
+    "id": "mini-01",
+    "itemNumber": 1,
+    "originalText": "Build kitchen cabinets",
+    "dimension": "realistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-02",
+    "itemNumber": 2,
+    "originalText": "Develop a new medicine",
+    "dimension": "investigative",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-03",
+    "itemNumber": 3,
+    "originalText": "Write books or plays",
+    "dimension": "artistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-04",
+    "itemNumber": 4,
+    "originalText": "Help people with personal or emotional problems",
+    "dimension": "social",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-05",
+    "itemNumber": 5,
+    "originalText": "Manage a department within a large company",
+    "dimension": "enterprising",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-06",
+    "itemNumber": 6,
+    "originalText": "Install software across computers on a large network",
+    "dimension": "conventional",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-07",
+    "itemNumber": 7,
+    "originalText": "Repair household appliances",
+    "dimension": "realistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-08",
+    "itemNumber": 8,
+    "originalText": "Study ways to reduce water pollution",
+    "dimension": "investigative",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-09",
+    "itemNumber": 9,
+    "originalText": "Compose or arrange music",
+    "dimension": "artistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-10",
+    "itemNumber": 10,
+    "originalText": "Give career guidance to people",
+    "dimension": "social",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-11",
+    "itemNumber": 11,
+    "originalText": "Start your own business",
+    "dimension": "enterprising",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-12",
+    "itemNumber": 12,
+    "originalText": "Operate a calculator",
+    "dimension": "conventional",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-13",
+    "itemNumber": 13,
+    "originalText": "Assemble electronic parts",
+    "dimension": "realistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-14",
+    "itemNumber": 14,
+    "originalText": "Conduct chemical experiments",
+    "dimension": "investigative",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-15",
+    "itemNumber": 15,
+    "originalText": "Create special effects for movies",
+    "dimension": "artistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-16",
+    "itemNumber": 16,
+    "originalText": "Perform rehabilitation therapy",
+    "dimension": "social",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-17",
+    "itemNumber": 17,
+    "originalText": "Negotiate business contracts",
+    "dimension": "enterprising",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-18",
+    "itemNumber": 18,
+    "originalText": "Keep shipping and receiving records",
+    "dimension": "conventional",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-19",
+    "itemNumber": 19,
+    "originalText": "Drive a truck to deliver packages to offices and homes",
+    "dimension": "realistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-20",
+    "itemNumber": 20,
+    "originalText": "Examine blood samples using a microscope",
+    "dimension": "investigative",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-21",
+    "itemNumber": 21,
+    "originalText": "Paint sets for plays",
+    "dimension": "artistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-22",
+    "itemNumber": 22,
+    "originalText": "Do volunteer work at a non-profit organization",
+    "dimension": "social",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-23",
+    "itemNumber": 23,
+    "originalText": "Market a new line of clothing",
+    "dimension": "enterprising",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-24",
+    "itemNumber": 24,
+    "originalText": "Inventory supplies using a hand-held computer",
+    "dimension": "conventional",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-25",
+    "itemNumber": 25,
+    "originalText": "Test the quality of parts before shipment",
+    "dimension": "realistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-26",
+    "itemNumber": 26,
+    "originalText": "Develop a way to better predict the weather",
+    "dimension": "investigative",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-27",
+    "itemNumber": 27,
+    "originalText": "Write scripts for movies or television shows",
+    "dimension": "artistic",
+    "sourcePage": {
+      "printedPage": 19,
+      "pdfPage": 18
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-28",
+    "itemNumber": 28,
+    "originalText": "Teach a high-school class",
+    "dimension": "social",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-29",
+    "itemNumber": 29,
+    "originalText": "Sell merchandise at a department store",
+    "dimension": "enterprising",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  },
+  {
+    "id": "mini-30",
+    "itemNumber": 30,
+    "originalText": "Stamp, sort, and distribute mail for an organization",
+    "dimension": "conventional",
+    "sourcePage": {
+      "printedPage": 20,
+      "pdfPage": 19
+    },
+    "instrument": "onet-mini-ip",
+    "version": "2016-computerized-en",
+    "responseScale": [
+      {
+        "value": 0,
+        "text": "Strongly dislike"
+      },
+      {
+        "value": 1,
+        "text": "Dislike"
+      },
+      {
+        "value": 2,
+        "text": "Unsure"
+      },
+      {
+        "value": 3,
+        "text": "Like"
+      },
+      {
+        "value": 4,
+        "text": "Strongly like"
+      }
+    ],
+    "reverseScored": false,
+    "source": "https://www.onetcenter.org/dl_files/Mini-IP.pdf",
+    "licenseStatus": "CC-BY-ND-4.0",
+    "chineseSource": null,
+    "translationStatus": "original-English-unmodified",
+    "validationStatus": {
+      "originalTool": "official-development-and-validation",
+      "chineseVersion": "unknown",
+      "thisImplementation": "not-independently-validated"
+    },
+    "dimensionScore": "sum of 5 responses, range 0–20",
+    "missingRule": null,
+    "thresholds": null,
+    "norms": null
+  }
+]

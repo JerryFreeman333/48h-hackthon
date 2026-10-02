@@ -1,0 +1,6 @@
+import {questions,instrumentId,version} from '../src/questionnaire.mjs';
+import {writeFileSync} from 'node:fs';
+// Record actual origin. Never infer an official item number from similar wording.
+const records=questions.map(q=>({questionId:q.id,text:q.text,dimension:q.dimension,group:q.group,currentInstrument:instrumentId,currentVersion:version,originalTool:null,originalToolVersion:null,originalItemNumber:null,originalSourceUrl:null,origin:'coding_agent_original_prototype',translation:'not_a_traceable_translation',adaptation:'自编中文题；未建立与成熟量表原题的逐题对应',scoring:{responseValues:[1,2,3,4,5,null],reverse:q.reverse,rule:'prototype_mean_75_percent_v1',formula:'有效覆盖>=75%时 round((均值-1)*25)，否则null',interpretationThresholds:[35,65],ruleEvidence:'unvalidated_product_assumption'},permission:{externalToolLicense:null,status:'no_external_tool_provenance; project_distribution_license_not_set'},validation:{instrument:'unvalidated',chineseVersion:'unvalidated',targetPopulation:'unvalidated'},sourceLocation:'src/questionnaire.mjs',reviewDecision:'不得宣称原工具效度；保留旧版本追溯，待审核替换'}));
+writeFileSync(new URL('../docs/ITEM_PROVENANCE.json',import.meta.url),JSON.stringify(records,null,2)+'\n');
+console.log(`Recorded ${records.length} original, unvalidated items`);

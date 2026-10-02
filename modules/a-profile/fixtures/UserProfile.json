@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "profileId": "profile-demo-1",
+  "revision": 1,
+  "projectId": "project-demo-1",
+  "mode": "demo",
+  "confirmedAt": "2026-10-02T05:00:00Z",
+  "assessment": {
+    "instrumentId": "not-administered",
+    "version": "1",
+    "scores": {
+      "realistic": null,
+      "investigative": null,
+      "artistic": null,
+      "social": null,
+      "enterprising": null,
+      "conventional": null
+    },
+    "interpretation": "合成演示：未进行测评，职业兴趣保持未知。",
+    "status": "confirmed",
+    "validation": "prototype"
+  },
+  "background": {
+    "education": "本科",
+    "major": "示例专业",
+    "skills": [
+      "需求访谈"
+    ],
+    "experiences": [
+      {
+        "text": "完成过课程产品原型",
+        "source": "user",
+        "confirmed": true
+      }
+    ]
+  },
+  "goals": [
+    "积累产品交付经验"
+  ],
+  "preferences": [
+    {
+      "key": "accept_sales_kpi",
+      "value": false,
+      "strength": "hard",
+      "confirmed": true
+    }
+  ]
+}
