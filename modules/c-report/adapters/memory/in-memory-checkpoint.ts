@@ -22,6 +22,7 @@ import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import type {
   AcceptedDimensionOverrides,
+  CheckpointMetadata,
   CheckpointStage,
   CheckpointStore,
   RunCheckpoint,
@@ -54,6 +55,69 @@ function nowIso(): string {
 export class FileSystemCheckpointStore implements CheckpointStore {
   constructor(public readonly baseDir: string = defaultBaseDir()) {}
 
+  /**
+   * 初始化 checkpoint 元数据；已存在则保留既有 metadata 不覆盖（idempotent）。
+   * 不写 completedStages（init 不代表有阶段完成过）。
+   * 原子：tmp + rename 同 appendStage。
+   */
+  async init(projectId: string, runId: string, metadata: CheckpointMetadata): Promise<void> {
+    const base = this.baseDir;
+    const dir = projectDir(base, projectId);
+    await mkdir(dir, { recursive: true });
+    const path = runPath(base, projectId, runId);
+    const existing = await this.read(projectId, runId);
+    if (existing !== null && existing.completedStages.length > 0) {
+      // 已有 completedStages，跳过（保护 resume 不被 init 覆盖关键中间态）
+      return;
+    }
+    const checkpoint: RunCheckpoint = existing ?? {
+      runId,
+      projectId,
+      reportId: metadata.reportId,
+      version: metadata.version,
+      ruleVersion: metadata.ruleVersion,
+      promptVersion: metadata.promptVersion,
+      inputHashes: metadata.inputHashes,
+      completedStages: [],
+      stageOutputs: {},
+      acceptedDimensionOverrides: null,
+      startedAt: nowIso(),
+      lastCheckpointAt: nowIso(),
+    };
+    // 若 existing 是空的 completedStages ckpt，仅 patch metadata 字段
+    const merged: RunCheckpoint = existing === null
+      ? checkpoint
+      : {
+          ...existing,
+          reportId: existing.reportId.length > 0 ? existing.reportId : metadata.reportId,
+          version: existing.version > 0 ? existing.version : metadata.version,
+          ruleVersion: existing.ruleVersion.length > 0 ? existing.ruleVersion : metadata.ruleVersion,
+          promptVersion: existing.promptVersion.length > 0 ? existing.promptVersion : metadata.promptVersion,
+          inputHashes: existing.inputHashes ?? metadata.inputHashes,
+        };
+    // storedInputs 总是 patch（最新 init 调用覆盖旧值；handler 单线程负责这点）
+    if (metadata.storedInputs !== undefined) {
+      (merged as RunCheckpoint & { storedInputs?: unknown }).storedInputs = metadata.storedInputs ?? undefined;
+    }
+    merged.lastCheckpointAt = nowIso();
+    const tmp = tmpPath(base, projectId, runId);
+    await writeFile(tmp, JSON.stringify(merged), 'utf8');
+    await fsRenameFile(tmp, path);
+  }
+
+  async listProjects(): Promise<string[]> {
+    const base = this.baseDir;
+    let entries: string[];
+    try {
+      entries = await readdir(base);
+    } catch (err) {
+      const e = err as NodeJS.ErrnoException;
+      if (e.code === 'ENOENT') return [];
+      throw err;
+    }
+    return entries.filter((name) => !name.startsWith('.')).sort();
+  }
+
   async appendStage(projectId: string, runId: string, stage: string, stageOutput: unknown): Promise<void> {
     const base = this.baseDir;
     const dir = projectDir(base, projectId);
@@ -64,6 +128,7 @@ export class FileSystemCheckpointStore implements CheckpointStore {
       ? [...existing.completedStages.filter((s) => s.stage !== stage), { stage, completedAt: nowIso(), partialOutputHash: sha1Of(stageOutput) }]
       : [{ stage, completedAt: nowIso(), partialOutputHash: sha1Of(stageOutput) }];
     const stageOutputs = { ...(existing?.stageOutputs ?? {}), [stage]: stageOutput };
+    const existingRaw = existing as (RunCheckpoint & { storedInputs?: { profile: unknown; intentContext: unknown; bundle: unknown } | null }) | null;
     const checkpoint: RunCheckpoint = {
       runId,
       projectId,
@@ -78,6 +143,10 @@ export class FileSystemCheckpointStore implements CheckpointStore {
       startedAt: existing?.startedAt ?? nowIso(),
       lastCheckpointAt: nowIso(),
     };
+    // 保留 storedInputs（init 写入后 appendStage 必须透传）
+    if (existingRaw?.storedInputs !== undefined && existingRaw.storedInputs !== null) {
+      (checkpoint as RunCheckpoint & { storedInputs?: unknown }).storedInputs = existingRaw.storedInputs;
+    }
     // 原子：写 .tmp → rename
     const tmp = tmpPath(base, projectId, runId);
     await writeFile(tmp, JSON.stringify(checkpoint), 'utf8');
