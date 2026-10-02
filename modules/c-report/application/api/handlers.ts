@@ -58,6 +58,13 @@ export interface CApiContext {
    */
   retryPolicy?: RetryPolicy;
   retryBudget?: RetryBudget;
+  /**
+   * §6.2 [C-IMPL-STARTUP-RESUME]：handler 启动续跑回调（v4 §6.2 提议）。
+   * demo runtime：setTimeout 异步触发避免 boot 阻塞首请求；
+   * 生产宿主：boot 同步触发；如需 durable scheduler，宿主自行包装。
+   * 默认实现：resumeInterruptedRuns(this)；宿主可替换为心跳/长任务/取数。
+   */
+  onStartup?: (ctx: CApiContext) => Promise<unknown>;
 }
 
 interface ReportRequestBody {
@@ -469,6 +476,29 @@ export async function handleGetReport(ctx: CApiContext, request: Request, report
   }
   const { value } = located;
   return jsonResponse(200, { report: value.version.report, diagnostics: value.snapshot?.snapshot.diagnostics ?? null }, value.requestId);
+}
+
+/**
+ * GET /api/c/reports/:id/snapshot —— 返回 C 私有报告快照（含 bundle 上下文，
+ * 用于 /reports 页面渲染候选岗位标题、公司名、证据 URL 等）。
+ *
+ * 与 GET /api/c/reports/:id 差异：
+ * - /reports/:id 返回公共 MatchReport + diagnostics（已足够 buildReportViewModel 的主数据）
+ * - /reports/:id/snapshot 返回私有 snapshot（含 bundle + trace + inputs），仅所有者可读
+ *
+ * 路径：401 无凭据 / 404 跨用户读不泄露 / 404 报告快照缺失 / 200 完整 snapshot。
+ */
+export async function handleGetReportSnapshot(ctx: CApiContext, request: Request, reportId: string): Promise<Response> {
+  const located = await locateReport(ctx, request, reportId);
+  if (!located.ok) {
+    return located.response;
+  }
+  const { value } = located;
+  const artifact = value.snapshot?.snapshot ?? null;
+  if (artifact === null) {
+    return errorResponse('NOT_FOUND', `报告快照缺失：${reportId}`, value.requestId);
+  }
+  return jsonResponse(200, { snapshot: artifact }, value.requestId);
 }
 
 /**

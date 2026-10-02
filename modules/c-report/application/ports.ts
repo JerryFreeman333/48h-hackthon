@@ -170,6 +170,22 @@ export interface CheckpointStage {
  */
 export type AcceptedDimensionOverrides = Record<string, Record<string, string>>;
 
+export interface CheckpointMetadata {
+  reportId: string;
+  version: number;
+  ruleVersion: string;
+  promptVersion: string;
+  inputHashes: { profile: string; intent: string; bundle: string } | null;
+  /** P5 startup resume 用的最小输入快照（profile + intentContext + bundle）。
+   *  optional — 不存则 handler 无法续跑（graceful skip + 私有诊断记录）。
+   *  与 CheckpointStore.init 同步落地。 */
+  storedInputs?: {
+    profile: unknown;
+    intentContext: unknown;
+    bundle: unknown;
+  } | null;
+}
+
 export interface RunCheckpoint {
   runId: string;
   projectId: string;
@@ -191,6 +207,11 @@ export interface RunCheckpoint {
 }
 
 export interface CheckpointStore {
+  /** 初始化 checkpoint 元数据；首次 appendStage 前调一次。
+   *  - 若 checkpoint 已存在，no-op 保留既有 metadata（不覆盖 stageOutputs）。
+   *  - 若 checkpoint 不存在，创建一个空的 metadata-only checkpoint（不写 completedStages）。
+   *  实现必须原子（同 appendStage 的 tmp+rename 约定）。 */
+  init(projectId: string, runId: string, metadata: CheckpointMetadata): Promise<void>;
   /** 原子：appendStage 阶段追加到 completedStages + 写入 stageOutputs[stage]。已存在的 stage 直接覆盖 stageOutputs[stage]（用于重跑）。 */
   appendStage(projectId: string, runId: string, stage: string, stageOutput: unknown): Promise<void>;
   /** 读取 checkpoint；finalize 后仍可读（仅供诊断）。 */
@@ -199,6 +220,9 @@ export interface CheckpointStore {
   finalize(projectId: string, runId: string, finalStatus: 'completed' | 'partial' | 'cancelled' | 'failed'): Promise<void>;
   /** 列出 project 下未 final 化的 checkpoint，用于启动时恢复。 */
   listInterrupted(projectId: string): Promise<RunCheckpoint[]>;
+  /** 列出所有有 checkpoint 数据的 project（含已 finalized；调用方决定是否扫盘点）。
+   *  实现对空目录返回 []。 */
+  listProjects(): Promise<string[]>;
 }
 
 /**

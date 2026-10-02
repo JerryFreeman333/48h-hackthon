@@ -50,6 +50,7 @@ import { createDiagnostics } from './diagnostics.js';
 import { hashInputObject } from './hash.js';
 import type {
   AcceptedDimensionOverrides,
+  CheckpointMetadata,
   CheckpointStore,
   CRunStore,
   RetryBudget,
@@ -370,19 +371,33 @@ async function loadCheckpoint(ctx: PipelineContext): Promise<RunCheckpoint | nul
 
 async function appendCheckpoint(
   ctx: PipelineContext,
-  _ckpt: RunCheckpoint | null,
+  ckpt: RunCheckpoint | null,
   stage: string,
   output: unknown,
   input: PipelineInput,
 ): Promise<void> {
   if (ctx.checkpoint === undefined) return;
-  // 首次 append 时把 runId / reportId / version / ruleVersion / promptVersion 写入
-  // （通过 ckpt 已有值；若 ckpt 为 null则使用 input options 推断）
+  // 首次 appendStage 前初始化 metadata + storedInputs（用于启动时续跑）
+  if (ckpt === null) {
+    const metadata: CheckpointMetadata = {
+      reportId: input.options.reportId,
+      version: input.options.version ?? 1,
+      ruleVersion: input.options.ruleVersion ?? P5_RULE_VERSION,
+      promptVersion: input.options.promptVersion ?? P5_PROMPT_VERSION,
+      inputHashes: {
+        profile: hashInputObject('profile', input.profile),
+        intent: hashInputObject('intent', input.intentContext),
+        bundle: hashInputObject('bundle', input.bundle),
+      },
+      storedInputs: {
+        profile: input.profile,
+        intentContext: input.intentContext,
+        bundle: input.bundle,
+      },
+    };
+    await ctx.checkpoint.init(ctx.projectId, ctx.runId, metadata);
+  }
   await ctx.checkpoint.appendStage(ctx.projectId, ctx.runId, stage, output);
-  // 之后还需要把元数据写入 checkpoint —— 但当前 CheckpointStore.appendStage 不存元数据
-  // 简化处理：第一次 append 时通过 stage 'validated_inputs' 携带元数据
-  // （详见 _ensureMeta 模式；这里仅简化：第一次 append 单独塞入元数据）
-  void input;
 }
 
 async function checkCancel(ctx: PipelineContext, atStage: string): Promise<void> {
