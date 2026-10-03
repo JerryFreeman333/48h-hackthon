@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "profileId": "62a41d80-65b7-44a2-8f50-b1f368921a11",
+  "profileId": "966cebca-86c6-4c48-b47b-08cfe320ab37",
   "revision": 1,
-  "projectId": "d0e18946-c105-41a5-9802-d18c9f1dbb8c",
+  "projectId": "9bdf3e85-4219-475a-935f-c2819956b1a5",
   "mode": "demo",
-  "confirmedAt": "2026-10-02T15:51:16.883Z",
+  "confirmedAt": "2026-10-02T17:15:27.267Z",
   "assessment": {
     "instrumentId": "not-administered",
     "version": "1",
@@ -27,8 +27,7 @@
     "experiences": []
   },
   "goals": [
-    "寻找第一份全职工作",
-    "当前求职阶段：应届求职"
+    "寻找第一份全职工作"
   ],
   "preferences": [
     {
