@@ -1,6 +1,10 @@
 node_modules/
 .next/
-.data/
+.data/*
+!.data/company-database/
+.data/company-database/*
+!.data/company-database/xray-v3-20261003.sqlite
+!.data/company-database/manifest.json
 *.tsbuildinfo
 .env*
 !.env.example

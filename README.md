@@ -55,6 +55,15 @@ npm run build
 模块独立开发与 A→B→C 整体联调是不同验收等级。接入方式、责任登记和联调清单见 `docs/ARCHITECTURE.md`。合成测试不证明真实公司准确率。
 
 
-本地数据库接入（2026-10-03）：A确认侧写后/research读取本机.data/company-database/xray-v3-20261003.sqlite，选择候选即可生成C报告。需本机Node 24运行时（本轮已用v24.19.0编译运行）；数据库文件不入Git，下载接口继续关闭。接入范围、证据处理和验收见docs/PRODUCT_CONTINUATION_2026-10-03.md最新记录。
+本地数据库接入（2026-10-03）：A确认侧写后/research读取本机.data/company-database/xray-v3-20261003.sqlite，选择候选即可生成C报告。需本机Node 24运行时（本轮已用v24.19.0编译运行）；用户已授权通过 Git LFS 同步此企业数据库副本及 manifest，前端整库下载接口继续关闭。接入范围、证据处理和验收见docs/PRODUCT_CONTINUATION_2026-10-03.md最新记录。
 
-GitHub 与本机数据同步情况见 [上传诊断](docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md)。`.data` 未随代码提交；只克隆仓库不能得到真实数据库、个人侧写或历史报告。
+GitHub 与本机数据同步情况见 [上传诊断](docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md)。`.data` 只跟踪指定企业 SQLite 副本及导入清单，个人侧写、报告、截图、日志和 SQLite 运行期文件仍被忽略。
+
+安装 Git LFS 后，克隆时会下载企业数据库；若克隆时跳过了 LFS 下载，请在项目根目录运行：
+
+```powershell
+git lfs install --local
+git lfs pull --include=".data/company-database/xray-v3-20261003.sqlite"
+```
+
+数据库应为 142,249,984 字节，而非几行 LFS 指针；SHA256 应与 `.data/company-database/manifest.json` 一致。清单中 `policy` 保留原始导入时的本地策略记录，本次企业数据库共享由用户另行明确授权；不包含个人使用记录，也不启动采集。

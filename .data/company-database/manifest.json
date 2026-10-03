@@ -1,0 +1,14 @@
+{
+  "sourceName": "企业分析数据库_v3_20261003",
+  "snapshotName": "xray-v3-20261003.sqlite",
+  "sha256": "db95430eda6f47a9fc1626490ac7d231e1aa2b1896b7402973ff1d025e1ab476",
+  "counts": {
+    "companies": 471,
+    "company_jobs": 95,
+    "evidence": 135535,
+    "facts": 90795,
+    "coverage": 968
+  },
+  "policy": "local-only; original unchanged; no crawl",
+  "importedAt": "2026-10-03T06:15:08.755Z"
+}
