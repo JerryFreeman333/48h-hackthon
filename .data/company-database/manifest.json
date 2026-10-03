@@ -1,14 +1,35 @@
 {
   "sourceName": "企业分析数据库_v3_20261003",
   "snapshotName": "xray-v3-20261003.sqlite",
-  "sha256": "db95430eda6f47a9fc1626490ac7d231e1aa2b1896b7402973ff1d025e1ab476",
+  "sha256": "2482d4ca2e78da3e149cdb71b1f150ef849b0dcdf7c392ef8ed184aae4f3753d",
   "counts": {
     "companies": 471,
     "company_jobs": 95,
-    "evidence": 135535,
-    "facts": 90795,
-    "coverage": 968
+    "evidence": 135925,
+    "facts": 266419,
+    "coverage": 1308,
+    "gaps": 213,
+    "crawl_tasks": 41
   },
-  "policy": "local-only; original unchanged; no crawl",
-  "importedAt": "2026-10-03T06:15:08.755Z"
+  "policy": "local-only; updated 2026-10-03 with shard-a re-crawl per CRAWL-STANDARD v1.0; legacy retracted facts preserved for traceability",
+  "importedAt": "2026-10-03T17:43:51.447Z",
+  "revisions": [
+    {
+      "revision": "r1-shard-a-recrawl-20261003",
+      "date": "2026-10-03T17:43:51.447Z",
+      "summary": "按 CRAWL-STANDARD v1.0 重采整合：P1必采池6家+P2补齐11家+P3上市公司/重点企业24家（共41家，shard-a）。新增 ev-a-* 证据179条、ft-a-* 事实723条；清理crawl-v1噪音证据与假阳性文化事实（标is_stale/contradicted保留可追溯）；identity_status: 16家ambiguous(主体消歧)+14家resolved + Rokid等",
+      "evidenceAdded": 179,
+      "factsAdded": 723,
+      "companiesReCrawled": 41,
+      "previousSha256": "db95430eda6f47a9fc1626490ac7d231e1aa2b1896b7402973ff1d025e1ab476",
+      "previousCounts": {
+        "companies": 471,
+        "company_jobs": 95,
+        "evidence": 135535,
+        "facts": 90795,
+        "coverage": 968
+      },
+      "previousImportedAt": "2026-10-03T06:15:08.755Z"
+    }
+  ]
 }
