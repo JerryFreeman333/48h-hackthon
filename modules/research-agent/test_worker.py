@@ -35,4 +35,13 @@ class SourceBoundaries(unittest.TestCase):
         conn.execute("INSERT INTO agent_evidence VALUES ('franklin2-old',450,'benefits','2000-01-01T00:00:00+00:00')")
         self.assertEqual(worker.materials(conn,450,['benefits'])['evidence'],[])
 
+class CompanySearchIdentity(unittest.TestCase):
+    def test_stock_code_is_read_from_business_without_guessing(self):
+        conn=sqlite3.connect(':memory:');conn.row_factory=sqlite3.Row
+        conn.execute('CREATE TABLE companies(id INTEGER,name TEXT,full_name TEXT,known_listing TEXT)')
+        conn.execute('CREATE TABLE company_business(company_id INTEGER,stock_code TEXT)')
+        conn.execute("INSERT INTO companies VALUES(335,'杭州银行 BANK OF HANGZHOU','杭州银行股份有限公司','上交所')")
+        conn.execute("INSERT INTO company_business VALUES(335,'600926')")
+        self.assertEqual(worker.company_row(conn,335)['stock_code'],'600926')
+
 if __name__=='__main__':unittest.main()

@@ -70,19 +70,34 @@ export function databaseBundle(input:Row,recordIds:number[]){
  const db=database();try{return assembleBundle(db,input,recordIds,found);}finally{db.close();}
 }
 
+export function relatedCompanyRecords(db:DatabaseSync,row:Row){
+ const legal=text(row.full_name),code=text(row.credit_code_collab)??text((db.prepare('SELECT credit_code FROM company_business WHERE company_id=?').get(row.company_id) as Row|undefined)?.credit_code);
+ if(!legal)return [row.company_id];
+ const records=(db.prepare('SELECT c.id,c.credit_code_collab,b.credit_code FROM companies c LEFT JOIN company_business b ON b.company_id=c.id WHERE c.full_name=?').all(legal) as Row[]);
+ if(!code&&new Set(records.map(c=>text(c.credit_code_collab)??text(c.credit_code)).filter(Boolean)).size>1)return [row.company_id];
+ return records.filter(c=>{const other=text(c.credit_code_collab)??text(c.credit_code);return c.id===row.company_id||!code||!other||code===other;}).map(c=>c.id);
+}
+export function relevantCompanyExcerpt(e:Row,legal:string,brand:string){
+ const body=String(e.excerpt??''),title=String(e.title??'');
+ if(!body.trim()||/杭州不得不去|上有天堂，下有苏杭|西湖.*美景/.test(body)||/无法提供.{0,10}(描述|摘要)|已支持 IPV6/.test(body)||/网银.*(登录|欢迎|客户端)|景点|走进杭州/.test(title))return false;
+ const alias=brand.match(/[\u4e00-\u9fff]{2,}/)?.[0]??brand;
+ return String(e.raw_meta??'').includes('coll_companyId')||['official','eastmoney','etnet','qcc','tianyancha'].includes(e.source_type)||(title+' '+body).includes(legal)||(title+' '+body).includes(alias);
+}
+
 function assembleBundle(db:DatabaseSync,input:Row,recordIds:number[],found:ReturnType<typeof shortlist>){
   const stamp=new Date().toISOString(),prefix='db-'+found.sourceFingerprint.slice(0,12),inputIntent=input.SearchIntent;
   const sourceDates:Row[]=[],factRecords:Row[]=[],companyRecords:Row[]=[],coverageRecords:Row[]=[];
   const bundle:CandidateBundle={schemaVersion:'1.0.0',bundleId:'bundle-'+randomUUID(),projectId:inputIntent.projectId,intentId:inputIntent.intentId,intentRevision:inputIntent.revision,mode:inputIntent.mode,retrievedAt:stamp,companies:[],jobs:[],evidence:[],facts:[],coverage:[],usage:[]};
   for(const id of recordIds){
    const row=db.prepare('SELECT j.*,c.name company_name,c.full_name,c.domain,c.credit_code_collab,c.identity_status_collab,c.notes company_notes FROM company_jobs j JOIN companies c ON c.id=j.company_id WHERE j.id=?').get(id) as Row;
+   const linkedIds=relatedCompanyRecords(db,row);
    const companyId=prefix+'-company-'+row.company_id,jobId=prefix+'-job-'+id,jobEvidence=prefix+'-jd-'+id;
    // The database's company bucket may combine a group, brand and subsidiary. It does not prove this job's signing entity.
    const business=db.prepare('SELECT * FROM company_business WHERE company_id=?').get(row.company_id) as Row|undefined;
    if(!bundle.companies.some(c=>c.companyId===companyId)){
     const legalName=text(business?.legal_name)??text(row.full_name),creditCode=text(business?.credit_code)??text(row.credit_code_collab);
     bundle.companies.push({companyId,legalName:legalName??row.company_name,brandName:row.company_name,creditCode,identityStatus:legalName||creditCode?'ambiguous':'unresolved'});
-    companyRecords.push({companyId,legalNameRaw:legalName,creditCodeRaw:creditCode,identityOriginal:row.identity_status_collab,notesRaw:row.company_notes,policy:'本地登记线索；尚无岗位签约关系及独立核验来源，不是已确认主体'});
+    companyRecords.push({companyId,linkedRecordIds:linkedIds,association:'全称相同且已知信用代码无冲突，仅关联公司层面资料，不确认岗位签约主体',legalNameRaw:legalName,creditCodeRaw:creditCode,identityOriginal:row.identity_status_collab,notesRaw:row.company_notes,policy:'本地登记线索；尚无岗位签约关系及独立核验来源，不是已确认主体'});
     if(business?.is_listed===1&&business?.listing_market==='未上市'){
      const evidenceId=prefix+'-identity-fields-'+row.company_id;
      bundle.evidence.push({evidenceId,companyId,jobId:null,scope:'company',sourceType:'local_database_field_comparison',title:'主体资料字段不一致（原始来源待核）',url:null,publishedAt:null,retrievedAt:retrieved(business.retrieved_at),excerpt:'同一公司记录的上市标记为「是」，上市市场却记为「未上市」。该桶可能混合品牌、法人及上市集团，需要核对各字段对应主体。',mode:bundle.mode,verification:'disputed'});
@@ -98,34 +113,41 @@ function assembleBundle(db:DatabaseSync,input:Row,recordIds:number[],found:Retur
    sourceDates.push({evidenceId:jobEvidence,jobId,publishedAtRaw:row.published_at,retrievedAtRaw:row.retrieved_at,timezone:'not_recorded',salaryRaw:{min:row.salary_min,max:row.salary_max,period:row.salary_period,basis:row.salary_basis,taxBasis:row.salary_tax_basis,months:row.salary_months}});
    // Select only bounded, relevant company material. Search noise and sentiment labels never become company/job facts.
    const addEvidence=(e:Row)=>{
+    if(!relevantCompanyExcerpt(e,text(row.full_name)??row.company_name,row.company_name))return null;
+    const duplicate=bundle.evidence.find(x=>x.companyId===companyId&&x.excerpt===String(e.excerpt)&&x.title.endsWith(text(e.title)??'公司资料摘录')&&x.url===url(e.url));if(duplicate)return duplicate.evidenceId;
     const evidenceId=prefix+'-ev-'+e.id;if(bundle.evidence.some(x=>x.evidenceId===evidenceId))return evidenceId;
     const group=/上市公司集团|归母净利|集团年报/.test(e.excerpt),review=/员工评价/.test(e.title??'');
-    bundle.evidence.push({evidenceId,companyId,jobId:e.job_id===id?jobId:null,scope:e.scope,sourceType:text(e.source_type)??'database_material',title:(group?'公司或集团报道线索 · ':review?'公司员工评价线索 · ':'')+(text(e.title)??'公司资料摘录'),url:url(e.url),publishedAt:date(e.published_at),retrievedAt:retrieved(e.retrieved_at),excerpt:String(e.excerpt),mode:bundle.mode,verification:e.verification==='disputed'?'disputed':'unverified'});
-    sourceDates.push({evidenceId,publishedAtRaw:e.published_at,retrievedAtRaw:e.retrieved_at,verificationOriginal:e.verification,isStaleOriginal:e.is_stale,staleReasonOriginal:e.stale_reason,scopeOriginal:e.scope,jobRecordIdOriginal:e.job_id});return evidenceId;
+    bundle.evidence.push({evidenceId,companyId,jobId:e.job_id===id?jobId:null,scope:/支行|分行/.test(e.title??'')&&e.job_id===null?'business':e.scope,sourceType:text(e.source_type)??'database_material',title:(group?'公司或集团报道线索 · ':review?'公司员工评价线索 · ':'')+(text(e.title)??'公司资料摘录'),url:url(e.url),publishedAt:date(e.published_at),retrievedAt:retrieved(e.retrieved_at),excerpt:String(e.excerpt),mode:bundle.mode,verification:e.verification==='disputed'?'disputed':'unverified'});
+    sourceDates.push({evidenceId,companyRecordIdOriginal:e.company_id,linkedBy:linkedIds.includes(e.company_id)&&e.company_id!==row.company_id?'same_legal_name_no_known_credit_conflict':null,publishedAtRaw:e.published_at,retrievedAtRaw:e.retrieved_at,verificationOriginal:e.verification,isStaleOriginal:e.is_stale,staleReasonOriginal:e.stale_reason,scopeOriginal:e.scope,jobRecordIdOriginal:e.job_id});return evidenceId;
    };
    const eligible="company_id=? AND ((job_id IS NULL AND scope IN ('company','business','team')) OR (job_id=? AND scope='job')) AND length(trim(excerpt))>0";
-   const trustedPool="(raw_meta LIKE '%coll_companyId%' OR source_type IN ('official','eastmoney','etnet','qcc','tianyancha') OR title LIKE ?)";
-   const companyToken=String(row.company_name).split(/\s*[/／]\s*/)[0];
-   const material=db.prepare(`SELECT * FROM evidence WHERE ${eligible} AND ${trustedPool} ORDER BY id LIMIT 24`).all(row.company_id,id,'%'+companyToken+'%') as Row[];
-   material.forEach(addEvidence);
-   // Retrieve each selected question separately, so a late training/insurance
-   // passage cannot disappear behind a generic first-N company excerpt cap.
+   // Correlate company passages only; never borrow another record's jobs.
+   const materials=linkedIds.flatMap(cid=>db.prepare(`SELECT * FROM evidence WHERE ${eligible} ORDER BY id`).all(cid,cid===row.company_id?id:-1) as Row[])
+    .filter(e=>relevantCompanyExcerpt(e,text(row.full_name)??row.company_name,row.company_name));
    const selectedDetails=input.JobNeedsSnapshot.topics.flatMap((t:Row)=>(t.verificationItemIds as string[]).map(detail=>t.topicId+'.'+detail)) as string[];
-   for(const detail of selectedDetails){
-    const signals=needSignals[detail];if(!signals)continue;
-    const matches=db.prepare(`SELECT * FROM evidence WHERE ${eligible} AND ${trustedPool} AND (${signals.map(()=>"excerpt LIKE ?").join(' OR ')}) ORDER BY id LIMIT 4`).all(row.company_id,id,'%'+companyToken+'%',...signals.map(s=>'%'+s+'%')) as Row[];
-    matches.forEach(addEvidence);
-   }
-   const companyFacts=db.prepare("SELECT * FROM facts WHERE company_id=? AND (job_id IS NULL OR job_id=?) AND (fact_key LIKE 'company.%' OR fact_key LIKE 'needs.%' OR (job_id=? AND fact_key LIKE 'job.%')) ORDER BY id").all(row.company_id,id,id) as Row[];
+   const unique=new Map<string,Row>();for(const e of materials)unique.set(JSON.stringify([e.title,e.excerpt,e.url]),e);
+   const passages=[...unique.values()];passages.slice(0,24).forEach(addEvidence);
+   for(const detail of selectedDetails){const signals=needSignals[detail];if(signals)passages.filter(e=>signals.some(signal=>String(e.excerpt).includes(signal))).slice(0,4).forEach(addEvidence);}
+   const companyFacts=linkedIds.flatMap(cid=>db.prepare("SELECT * FROM facts WHERE company_id=? AND (job_id IS NULL OR job_id=?) AND (fact_key LIKE 'company.%' OR fact_key LIKE 'needs.%' OR (job_id=? AND fact_key LIKE 'job.%')) ORDER BY id").all(cid,cid===row.company_id?id:-1,cid===row.company_id?id:-1) as Row[]);
    for(const f of companyFacts){
     const factId=prefix+'-fact-'+f.id;if(bundle.facts.some(x=>x.factId===factId))continue;
     let ids:string[]=[];try{const parsed=JSON.parse(f.evidence_ids);if(Array.isArray(parsed))ids=parsed.filter((x:unknown)=>typeof x==='string');}catch{ids=[];}
     const evidenceIds:string[]=[];
-    for(const eid of ids){const e=db.prepare(`SELECT * FROM evidence WHERE ${eligible} AND evidence_id=?`).get(row.company_id,f.job_id??-1,eid) as Row|undefined;if(!e||!text(e.excerpt)||e.job_id!==f.job_id)continue;evidenceIds.push(addEvidence(e));}
+    for(const eid of ids){const e=db.prepare(`SELECT * FROM evidence WHERE ${eligible} AND evidence_id=?`).get(f.company_id,f.company_id===row.company_id?(f.job_id??-1):-1,eid) as Row|undefined;if(!e||!text(e.excerpt)||e.job_id!==f.job_id)continue;const ref=addEvidence(e);if(ref)evidenceIds.push(ref);}
     const included=ids.length>0&&evidenceIds.length===ids.length&&!!text(f.fact_value);
-    factRecords.push({factId,originalFactId:f.fact_id,key:f.fact_key,statusOriginal:f.status,nVerifiedOriginal:f.n_verified,asOfRaw:f.as_of,included,missingEvidenceIds:ids.filter(eid=>!db.prepare('SELECT id FROM evidence WHERE evidence_id=?').get(eid)),note:included?'保留采集值及同范围引用，未独立核验。':'原记录缺少完整同范围引用，不作为判断事实；不为它补造证据。'});
+    factRecords.push({factId,originalFactId:f.fact_id,companyRecordIdOriginal:f.company_id,valueRaw:f.fact_value,key:f.fact_key,statusOriginal:f.status,nVerifiedOriginal:f.n_verified,asOfRaw:f.as_of,included,missingEvidenceIds:ids.filter(eid=>!db.prepare('SELECT id FROM evidence WHERE evidence_id=?').get(eid)),note:included?'保留采集值及同范围引用，未独立核验。':'原记录缺少完整同范围引用，不作为判断事实；不为它补造证据。'});
     if(!included)continue;
     bundle.facts.push({factId,companyId,jobId:f.job_id===id?jobId:null,key:f.fact_key,value:text(f.fact_value),status:f.status==='conflicting'?'conflicting':'unknown',evidenceIds,asOf:date(f.as_of)});
+   }
+   for(const cid of linkedIds){
+    const legacy=db.prepare("SELECT * FROM facts WHERE company_id=? AND job_id IS NULL AND fact_key GLOB 'B[1-9].*'").all(cid) as Row[];
+    for(const f of legacy){let refs:string[]=[];try{refs=JSON.parse(f.evidence_ids);}catch{}if(!Array.isArray(refs))continue;
+     for(const ref of refs){const e=db.prepare(`SELECT * FROM evidence WHERE ${eligible} AND evidence_id=?`).get(cid,-1,ref) as Row|undefined;
+      if(!e||!relevantCompanyExcerpt(e,text(row.full_name)??row.company_name,row.company_name))continue;
+      // All seven themes are reconstructed by extractNeedLeads using literal source passages.
+      if(Object.values(needSignals).some(signals=>signals.some(signal=>String(e.excerpt).includes(signal))))addEvidence(e);
+     }
+    }
    }
    const sourceCoverage=db.prepare('SELECT * FROM coverage WHERE company_id=? AND (job_id IS NULL OR job_id=?)').all(row.company_id,id) as Row[];
    coverageRecords.push(...sourceCoverage.map(c=>({companyId,jobId:c.job_id,topic:c.topic,status:c.status,reason:c.reason,checkedAtRaw:c.checked_at})));

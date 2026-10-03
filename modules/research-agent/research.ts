@@ -23,7 +23,7 @@ export async function enrichWithAgent(bundle:CandidateBundle,source:Record<strin
  const progress=(p:AgentProgress)=>{try{onProgress(p);}catch{/* Progress storage is optional; it must not discard acquired evidence. */}};
  const now=deps.now??Date.now,start=now(),model=deps.model??callMiniMax,tool=deps.tool??runPythonTool;
  const requested=topicIds.filter(id=>input.JobNeedsSnapshot.topics.some((t:any)=>t.topicId===id&&(t.priority!=='unknown'||t.verificationItemIds.length)));
- const investigation:AgentInvestigation={version:'franklin-minimax-3',status:'completed',model:config.model,companies:[],usage:[],notes:[]};
+ const investigation:AgentInvestigation={version:'franklin-minimax-4',status:'completed',model:config.model,companies:[],usage:[],notes:[]};
  source.agentInvestigation=investigation;
  if(!config.key){investigation.status='not_configured';investigation.notes.push('未配置 MiniMax 密钥，本报告仅依据已有资料。');return;}
  const targets:Target[]=bundle.companies.map(c=>({recordId:Number(c.companyId.split('-company-').at(-1)),companyId:c.companyId,name:c.brandName??c.legalName}));
@@ -37,7 +37,7 @@ export async function enrichWithAgent(bundle:CandidateBundle,source:Record<strin
    if(now()-start>=config.deadlineMs)throw Error('本次调查达到时间上限，尚未调查的候选保留已有资料');
    if(existsSync(cachePath)){
     try{const cached=JSON.parse(readFileSync(cachePath,'utf8'));const rows=(cached.results as unknown[]).map(r=>toolResultSchema.parse(r));
-     const ttl=rows.some(r=>r.evidence.length)?config.cacheMs:300000;
+     const ttl=rows.some(r=>r.evidence.length)?config.cacheMs:0;
      if(now()-cached.savedAt<ttl&&now()>=cached.savedAt&&rows.every(r=>r.company_id===target.recordId&&r.topics.every(t=>requested.includes(t)))){results.push(...rows);requested.forEach(t=>attempted.add(t));item.cached=true;progress({stage:'cache',message:'正在复用 '+target.name+' 的近期调查资料'});}
     }catch{/* An invalid cache never becomes evidence or blocks a fresh attempt. */}
    }
@@ -70,7 +70,7 @@ export async function enrichWithAgent(bundle:CandidateBundle,source:Record<strin
       messages.push({role:'tool',tool_call_id:call.id,content:JSON.stringify({company_id:result.company_id,topics:result.topics,evidenceCount:result.evidence.length,attemptedSources:result.attempted_sources,emptyOrFailedSources:result.empty_or_failed_sources,materials:result.evidence.slice(0,7).map(e=>({title:e.title,scope:'company',excerpt:e.excerpt.slice(0,240)}))})});
      }
     }
-    if(requested.every(t=>attempted.has(t)))cacheWrite(cachePath,{savedAt:now(),results});
+    if(results.some(r=>r.evidence.length)&&requested.every(t=>attempted.has(t)))cacheWrite(cachePath,{savedAt:now(),results});
    }
    item.status=requested.every(t=>attempted.has(t))?'completed':'partial';
    if(item.status==='partial')item.notes.push('未完成全部主题的补查，未调查或缺少资料的事项继续待确认。');
@@ -80,10 +80,14 @@ export async function enrichWithAgent(bundle:CandidateBundle,source:Record<strin
   item.attemptedTopics=[...attempted].map(t=>labels[t]);
   const requests=results.reduce((n,r)=>n+(r.attempted_sources??0),0),failed=results.reduce((n,r)=>n+(r.empty_or_failed_sources??0),0);
   if(requests)item.notes.push('公开检索尝试 '+requests+' 次来源请求，其中 '+failed+' 次没有返回资料或未完成。其余摘要仍需核验原文及岗位适用范围。');
+  for(const result of results){if(result.search_name)item.notes.push('检索公司名：'+result.search_name+(result.stock_code_used?'；股票代码：'+result.stock_code_used:''));if(result.rejected_hits){const labels:Record<string,string>={missing_excerpt:'无有效摘要',unrelated_company:'公司不相关',unrelated_topic:'主题不相关',missing_url:'缺少来源链接'};item.notes.push('结果未接纳原因：'+Object.entries(result.rejected_hits).map(([key,n])=>(labels[key]??key)+' '+n+' 条').join('；')+'。');}}
+  if(!item.evidenceCount){item.status='partial';item.notes.push('主题检索尝试已结束，但未取得新资料；再次分析将重新尝试，不复用零结果。');}
   if(!item.evidenceCount)item.notes.push('本次没有取得可引用的新资料；不代表公司或岗位没有这些安排。');
   if(item.status!=='completed')investigation.status='partial';
  }
- extractNeedLeads(bundle);candidateBundleSchema.parse(bundle);
+ extractNeedLeads(bundle);
+ if(source.agentTransfer)source.agentTransfer.withContentTopics=bundle.evidence.filter(e=>e.sourceType.startsWith('franklin_')&&e.topicLinks?.length).length;
+ candidateBundleSchema.parse(bundle);
  if(validateBundleReferences(bundle).length)throw Error('Agent 材料引用校验失败');
  progress({stage:'analyzing',message:'正在按你的需求生成七板块报告'});
 }
@@ -91,17 +95,22 @@ export async function enrichWithAgent(bundle:CandidateBundle,source:Record<strin
 export function mergeAgentMaterials(bundle:CandidateBundle,source:Record<string,any>,target:Target,result:ToolResult){
  if(result.company_id!==target.recordId)throw Error('公司范围不一致');
  const refs=new Map<string,string>();
+ const transfer=source.agentTransfer??={received:0,accepted:0,reused:0,rejected:0};
  for(const e of result.evidence){
-  if(e.company_id!==target.recordId)continue;
-  const stamp=Date.parse(e.collected_at);if(!Number.isFinite(stamp)||!/(Z|[+-]\d\d:\d\d)$/.test(e.collected_at))continue;
-  if(!e.url||!/^https?:\/\//.test(e.url)||!e.excerpt.trim())continue;
-  const id='agent-'+e.id;
+  transfer.received++;
+  if(e.company_id!==target.recordId){transfer.rejected++;continue;}
+  const stamp=Date.parse(e.collected_at);if(!Number.isFinite(stamp)||!/(Z|[+-]\d\d:\d\d)$/.test(e.collected_at)){transfer.rejected++;continue;}
+  if(!e.url||!/^https?:\/\//.test(e.url)||!e.excerpt.trim()){transfer.rejected++;continue;}
+  const existing=bundle.evidence.find(x=>x.companyId===target.companyId&&x.jobId===null&&x.sourceType.startsWith('franklin_')&&x.url===e.url&&x.excerpt===e.excerpt);
+  const id=existing?.evidenceId??'agent-'+e.id;
   refs.set(e.id,id);
-  if(bundle.evidence.some(x=>x.evidenceId===id))continue;
-  bundle.evidence.push({evidenceId:id,companyId:target.companyId,jobId:null,scope:'company',sourceType:'franklin_'+e.source_type,title:'Agent 公司资料线索 · '+e.title,url:e.url,publishedAt:e.published_at,retrievedAt:e.collected_at,excerpt:e.excerpt,mode:bundle.mode,verification:'unverified'});
+  const prior=bundle.evidence.find(x=>x.evidenceId===id);
+  if(prior){transfer.reused++;prior.searchTopics=[...new Set([...(prior.searchTopics??[]),e.topic])];continue;}
+  transfer.accepted++;
+  bundle.evidence.push({evidenceId:id,companyId:target.companyId,jobId:null,scope:'company',sourceType:'franklin_'+e.source_type,title:'Agent 公司资料线索 · '+e.title,url:e.url,publishedAt:e.published_at,retrievedAt:e.collected_at,excerpt:e.excerpt,searchTopics:[e.topic],mode:bundle.mode,verification:'unverified'});
   const coverageSignals:Record<string,RegExp>={business:/主营|业务|营收|经营/,business_financials:/财报|年报|净利|营收|亏损/,credit_legal:/信用代码|登记|监管|处罚|诉讼/,work_conditions:/工时|打卡|加班|双休|社保|五险|六险|补贴/,team_growth:/内部培训|带教|晋升|轮岗|团队/};
   for(const coverage of bundle.coverage){if(coverage.companyId===target.companyId&&coverage.jobId===null&&coverageSignals[coverage.topic]?.test(e.excerpt)){coverage.status='available';coverage.reason='已有可引用的公开资料线索，尚未独立核验；岗位适用性及是否满足需求仍待确认。';coverage.checkedAt=e.collected_at;}}
-  source.sourceDates??=[];source.sourceDates.push({evidenceId:id,publishedAtRaw:e.published_at,retrievedAtRaw:e.collected_at,verificationOriginal:e.verification_original,scopeOriginal:'company',jobRecordIdOriginal:null,collectedBy:'franklin_minimax'});
+  source.sourceDates??=[];source.sourceDates.push({evidenceId:id,publishedAtRaw:e.published_at,retrievedAtRaw:e.collected_at,verificationOriginal:e.verification_original,scopeOriginal:'company',jobRecordIdOriginal:null,collectedBy:'franklin_minimax',searchTopic:e.topic,originalAgentEvidenceId:e.id});
  }
  for(const f of result.facts){
   const id=refs.get(f.evidence_id);

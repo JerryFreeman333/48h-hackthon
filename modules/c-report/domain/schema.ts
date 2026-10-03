@@ -147,6 +147,9 @@ export const evidenceSchema = z.strictObject({
   publishedAt: z.union([isoDatetime, z.null()]),
   retrievedAt: isoDatetime,
   excerpt: nonEmptyString,
+  searchTopics:z.array(z.enum(['growth','pay','hours','benefits','culture','position','company'])).optional(),
+  topicClassifierVersion:nonEmptyString.optional(),
+  topicLinks:z.array(z.strictObject({topicId:z.enum(['growth','pay','hours','benefits','culture','position','company']),detailIds:z.array(nonEmptyString),quotes:z.array(nonEmptyString)})).optional(),
   mode: modeSchema,
   verification: z.enum(['verified', 'unverified', 'disputed']),
 });

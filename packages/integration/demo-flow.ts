@@ -29,7 +29,10 @@ function databaseFieldNotes(inputs:Record<string,any>):string{
   if(!job||job.salary.min!==null)return [];
   return ['<p><strong>'+escapeHtml(job.title)+'：</strong>数据库待遇栏记为 '+escapeHtml(String(s.salaryRaw.min))+'–'+escapeHtml(String(s.salaryRaw.max??'未记载'))+'；但这份岗位摘录未能支持同一薪资口径。不能将它当成固定月薪，也不能用其他岗位或公司平均替代。需招聘方提供固定部分、浮动部分、发放周期及税前税后的书面说明。</p>'];
  });
- return warnings.length?'<section class="card"><h3>岗位待遇字段的核对结果</h3>'+warnings.join('')+'</section>':'';
+ const missing=(inputs.databaseSource.factRecords??[]).filter((f:any)=>!f.included&&String(f.key).startsWith('company.')&&f.valueRaw&&!/identity_status/.test(f.key));
+ const associations=(inputs.databaseSource.companyRecords??[]).filter((c:any)=>c.linkedRecordIds?.length>1);
+ const supplemental=associations.length||missing.length?'<details><summary>公司资料关联与未核验汇总线索</summary>'+associations.map((c:any)=>'<p>已关联公司全称相同且已知信用代码无冲突的 '+c.linkedRecordIds.length+' 份公司记录；仅借助公司层面线索，不确认这份岗位的签约主体。</p>').join('')+(missing.length?'<p>以下为数据库汇总记录，缺少完整同范围来源引用，未进入七板块结论。它们不等于已核实事实，需补充原始文件或链接：</p>':'')+missing.slice(0,20).map((f:any)=>'<p>'+escapeHtml(String(f.valueRaw))+'</p>').join('')+'</details>':'';
+ return supplemental+(warnings.length?'<section class="card"><h3>岗位待遇字段的核对结果</h3>'+warnings.join('')+'</section>':'');
 }
 
 export function createDemoFlow(options?: { dataDir?: string }) {
@@ -68,6 +71,7 @@ export function createDemoFlow(options?: { dataDir?: string }) {
       const sourceDeclarations:SourceDeclaration[]=structuredClone((run as any)?.sourceDeclarations??previous?.inputs.sourceDeclarations??[]);
     const inputs = structuredClone({ databaseSource, sourceDeclarations, materialChanges, verificationNotes, feedbackPreviousReportId, actions, changes, aExport: input, researchRun: run, bundle, needsResponse });
     const sectorAnalysis=analysisFromInputs(inputs,report);
+    if(inputs.databaseSource?.agentTransfer)inputs.databaseSource.agentTransfer.usedInSectors=new Set(sectorAnalysis.candidates.flatMap(c=>c.sectors.flatMap(s=>s.materials.map(m=>m.evidenceId))).filter(id=>inputs.bundle.evidence.some((e:any)=>e.evidenceId===id&&e.sourceType.startsWith('franklin_')))).size;
     const exportUrl = new URL("http://127.0.0.1/api/c/reports/" + reportId + "/export?format=md");
     const md = await handleExportReport(u.ctx, requestFor(u.token, exportUrl.pathname + exportUrl.search), reportId, exportUrl);
     exportUrl.searchParams.set("format", "json");

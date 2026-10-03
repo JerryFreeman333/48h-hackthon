@@ -1,3 +1,4 @@
+import {evidenceTopicLinks} from './evidence-topics';
 import { escapeForMarkdown } from "../../modules/c-report/application/markdown";
 import { z } from "zod";
 import { topics } from "../../modules/a-profile/src/needs/catalog.mjs";
@@ -60,6 +61,9 @@ export function respondToJobNeeds(raw: unknown, bundle: CandidateBundle, metadat
         const verifiedForNeed = sameRange && dateUsable && sources.every(e => e.verification === "verified");
         return [{ fact, sources, verifiedForNeed, dateUsable }];
       });
+      const eligibleEvidence=bundle.evidence.filter(e=>e.companyId===job.companyId&&e.mode===bundle.mode&&(e.jobId===null?e.scope!=='job':e.jobId===job.jobId&&e.scope==='job'));
+      const related=eligibleEvidence.map(e=>({e,link:evidenceTopicLinks(e).find(link=>link.topicId===item.topicId)})).filter(x=>x.link);
+      const direct=related.filter(({e,link})=>(item.itemId==='clarify'||link!.detailIds.includes(item.itemId))&&!cited.some(c=>c.sources.some(source=>source.evidenceId===e.evidenceId)));
       const supported = cited.filter(c => c.verifiedForNeed && c.fact.status === "supported");
       const booleanClaims = new Map<string, Set<boolean>>();
       for (const {fact} of supported) {
@@ -68,25 +72,26 @@ export function respondToJobNeeds(raw: unknown, bundle: CandidateBundle, metadat
         const values = booleanClaims.get(key) ?? new Set<boolean>();
         values.add(fact.value); booleanClaims.set(key, values);
       }
-      const conflicting = cited.some(c => c.fact.status === "conflicting" || c.fact.status === "contradicted" || c.sources.some(e => e.verification === "disputed")) || [...booleanClaims.values()].some(values => values.size > 1);
+      const conflicting = direct.some(({e})=>e.verification==="disputed") || cited.some(c => c.fact.status === "conflicting" || c.fact.status === "contradicted" || c.sources.some(e => e.verification === "disputed")) || [...booleanClaims.values()].some(values => values.size > 1);
       // Different text excerpts may complement each other, even when verified.
-      const status = conflicting ? "conflicting" as const : supported.length ? "available" as const : cited.length ? "lead" as const : "unknown" as const;
-      const materials = cited.map(({ fact, sources, verifiedForNeed }) => ({ factId: fact.factId, value: fact.value, status: fact.status, asOf: fact.asOf, jobId: fact.jobId, verifiedForNeed, sources: sources.map(e => sourceFor(e, metadata)) }));
-      const hasCompanyMaterial = cited.some(c => c.fact.jobId === null);
+      const status = conflicting ? "conflicting" as const : supported.length ? "available" as const : cited.length||direct.length ? "lead" as const : "unknown" as const;
+      const materials = cited.map(({ fact, sources, verifiedForNeed }) => ({ factId: fact.factId as string|null, value: fact.value, status: fact.status, asOf: fact.asOf, jobId: fact.jobId, verifiedForNeed, sources: sources.map(e => sourceFor(e, metadata)) }));
+      materials.push(...direct.map(({e,link})=>({factId:null,value:link!.quotes.join(' '),status:e.verification==='disputed'?'conflicting' as const:'unknown' as const,asOf:e.publishedAt,jobId:e.jobId,verifiedForNeed:false,sources:[sourceFor(e,metadata)]})));
+      const hasCompanyMaterial = materials.some(m => m.jobId === null);
       const gaps: string[] = [];
       if (item.itemId === "clarify") gaps.push("还需明确该主题中最在意的具体安排，才能定向调查。");
-      else if (!cited.length) gaps.push(matching.length ? "相关记录缺少可核对的内容或完整引用，暂不能作为可用材料。" : "尚未找到能够回应这一具体问题的资料。");
+      else if (!materials.length) gaps.push(matching.length ? "相关记录缺少可核对的内容或完整引用，暂不能作为可用材料。" : "尚未找到能够回应这一具体问题的资料。");
       if (hasCompanyMaterial && item.scope === "job") gaps.push("公司、集团或员工层面的记录尚不能证明这份岗位执行相同安排，需要岗位对应的书面说明。");
       if (hasCompanyMaterial && company?.identityStatus !== "confirmed") gaps.push("已有资料所属主体与这份岗位的签约主体尚未对应。");
-      if (cited.some(c => c.sources.some(e => e.scope === "team"))) gaps.push("评价或团队资料是否来自该岗位的实际团队尚未确认。");
-      if (cited.some(c => c.sources.some(e => e.verification !== "verified"))) gaps.push("现有线索尚未完成独立核验，不能当作招聘方的已确认承诺。");
+      if (materials.some(c => c.sources.some(e => e.scope === "team"))) gaps.push("评价或团队资料是否来自该岗位的实际团队尚未确认。");
+      if (materials.some(c => c.sources.some(e => e.verification !== "verified"))) gaps.push("现有线索尚未完成独立核验，不能当作招聘方的已确认承诺。");
       if (cited.some(c => !c.dateUsable)) gaps.push("部分资料的记录日期无效或晚于本次接入时间，不能据此判断当前安排。");
       if (status === "lead" && !gaps.length) gaps.push("资料已被引用，但该事项的核验结论或适用范围尚未确认。");
       if (materials.some(m => m.sources.some(s => !s.publishedAt))) gaps.push("部分来源未记录发布或更新日期，当前有效性仍需确认。");
       if (conflicting) gaps.unshift("资料存在不同记载或争议，需要核对原文、时间及适用范围，不能任选一条。");
-      const explanation = status === "available" ? "已有对应范围的核验材料，可以了解这项安排；有材料仍不等于符合你的预期。" : status === "conflicting" ? "已有相关资料，但存在不同记载或争议，暂不能据此确认这项安排。" : status === "lead" ? "已有资料涉及你选择的这一问题，可作为继续调查的线索；核验或岗位适用范围尚未明确。" : item.itemId === "clarify" ? "你将这一主题列为重点，但尚未选择要调查的具体项目。" : "目前没有可引用的资料回应你选择的这一问题，不能据此推断有或没有这项安排。";
+      const explanation = (!materials.length&&related.length?"该主题已有一般线索，但尚不能回应这一具体项目。":"") + (status === "available" ? "已有对应范围的核验材料，可以了解这项安排；有材料仍不等于符合你的预期。" : status === "conflicting" ? "已有相关资料，但存在不同记载或争议，暂不能据此确认这项安排。" : status === "lead" ? "已有资料涉及你选择的这一问题，可作为继续调查的线索；核验或岗位适用范围尚未明确。" : item.itemId === "clarify" ? "你将这一主题列为重点，但尚未选择要调查的具体项目。" : "目前没有可引用的资料回应你选择的这一问题，不能据此推断有或没有这项安排。");
       const question = item.itemId === "clarify" ? "关于" + item.topicTitle + "，先确认你最在意什么，再向招聘方核实。" : "请说明“" + item.label + "”，并提供" + (item.scope === "job" ? "这份岗位" : "与这份岗位签约主体对应") + "的可核实材料。" + (hasCompanyMaterial && item.scope === "job" ? "现有公司或员工资料提及相关安排，这份岗位是否同样适用？" : "");
-      return { ...item, status, factIds: cited.map(c => c.fact.factId), evidenceIds: [...new Set(cited.flatMap(c => c.fact.evidenceIds))], materials, explanation, gaps, question, requiresAction: status !== "available" && item.mustVerify };
+      return { ...item, status, factIds: cited.map(c => c.fact.factId), evidenceIds: [...new Set([...cited.flatMap(c => c.fact.evidenceIds),...direct.map(({e})=>e.evidenceId)])], materials, explanation, gaps, question, requiresAction: status !== "available" && item.mustVerify };
     });
     return { jobId: job.jobId, actionGate: items.some(i => i.requiresAction) ? "verify_first" as const : "no_additional_gate" as const, items };
   }) };

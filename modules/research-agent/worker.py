@@ -44,7 +44,7 @@ def working_database(source: Path, target: Path):
 def company_row(conn, company_id):
     if not isinstance(company_id, int) or isinstance(company_id, bool):
         raise ValueError('Invalid company ID')
-    row = conn.execute('SELECT id,name,full_name,known_listing FROM companies WHERE id=?', (company_id,)).fetchone()
+    row = conn.execute('SELECT c.id,c.name,c.full_name,c.known_listing,b.stock_code FROM companies c LEFT JOIN company_business b ON b.company_id=c.id WHERE c.id=?', (company_id,)).fetchone()
     if not row:
         raise ValueError('Company not found')
     return dict(row)
@@ -81,11 +81,15 @@ def collect(conn, company, topics):
             raise ValueError('Source response too large')
         return body.decode('utf-8', 'ignore')
     crawler._fetch = bounded_fetch
-    name = re.split(r'\s*[/／]\s*', company['name'])[0].strip()
+    name = company.get('full_name') or re.split(r'\s*[/／]\s*', company['name'])[0].strip()
+    chinese = re.match(r'[\u4e00-\u9fff]+', company['name'])
+    if chinese:
+        name = chinese.group(0)
     aliases = [name, company.get('full_name') or '', *re.findall(r'[A-Za-z][A-Za-z0-9_-]{2,}|[\u4e00-\u9fff]{2,}', name)]
     calls = [(fn, name+' '+TOPICS[t][0], t) for t in topics for fn in (crawler.fetch_bing_cn, crawler.fetch_360, crawler.fetch_sogou_wechat)]
     # Existing code is a clue only; never guess a new stock code or alter identity.
-    listing = company.get('known_listing') or ''
+    code = None
+    listing = ' '.join(str(company.get(k) or '') for k in ('known_listing','stock_code'))
     if 'company' in topics:
         code = crawler.guess_a_code(listing)
         hk = crawler.HK_CODE_RE.search(listing)
@@ -97,27 +101,34 @@ def collect(conn, company, topics):
     attempted = len(calls)
     failures = 0
     accepted = 0
+    rejected = {'missing_excerpt': 0, 'unrelated_company': 0, 'unrelated_topic': 0, 'missing_url': 0}
+    source_results = []
     def fetch_one(call):
         fn, query, topic = call
         try:
-            return topic, fn(query), None
+            return topic, fn(query), None, fn.__name__
         except Exception:
-            return topic, [], 'source_failed'
+            return topic, [], 'source_failed', fn.__name__
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
-        for topic, hits, error in pool.map(fetch_one, calls):
+        for topic, hits, error, provider in pool.map(fetch_one, calls):
+            source_results.append({'topic': topic, 'provider': provider, 'hits': len(hits), 'failed': bool(error), 'empty': not hits})
             if error or not hits or all(h.title == '(fetch-failed)' for h in hits):
                 failures += 1
             for hit in hits[:10]:
                 if not hit.title or hit.title == '(fetch-failed)' or not hit.snippet:
+                    rejected['missing_excerpt'] += 1
                     continue
                 text = hit.title+' '+hit.snippet
                 if not any(alias and alias.casefold() in text.casefold() for alias in aliases):
+                    rejected['unrelated_company'] += 1
                     continue
                 # Search snippets may contain instructions or other jobs; keep company scope.
                 if not re.search(TOPICS[topic][1], text):
+                    rejected['unrelated_topic'] += 1
                     continue
                 url = hit.url if re.match(r'^https?://', hit.url or '') else None
                 if not url:
+                    rejected['missing_url'] += 1
                     continue
                 ident = 'franklin2-'+hashlib.sha256(f"{company['id']}|{topic}|{url}|{hit.snippet}|{now}".encode()).hexdigest()[:32]
                 conn.execute('INSERT OR IGNORE INTO agent_evidence VALUES (?,?,?,?,?,?,?,?,?,?)', (ident, company['id'], topic, hit.title[:240], hit.snippet[:1200], url, hit.platform, hit.published_at, now, 'source_claimed_official' if hit.is_official else 'unverified'))
@@ -130,7 +141,7 @@ def collect(conn, company, topics):
                     fact_id = ident+'-'+hashlib.sha256((candidate.dimension+candidate.text_match).encode()).hexdigest()[:12]
                     conn.execute('INSERT OR IGNORE INTO agent_facts VALUES (?,?,?,?,?)', (fact_id, ident, company['id'], 'agent.raw.'+candidate.dimension, candidate.text_match[:500]))
     conn.commit()
-    return {**materials(conn, company['id'], topics), 'attempted_sources': attempted, 'empty_or_failed_sources': failures, 'accepted_hits': accepted, 'collected_at': now}
+    return {**materials(conn, company['id'], topics), 'attempted_sources': attempted, 'empty_or_failed_sources': failures, 'accepted_hits': accepted, 'rejected_hits': rejected, 'source_results': source_results, 'search_name': name, 'stock_code_used': code if 'company' in topics else None, 'collected_at': now}
 
 def handle(request):
     topics = request.get('topics')

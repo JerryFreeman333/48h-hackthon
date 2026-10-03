@@ -53,7 +53,7 @@ test("company and employee material remains a cited lead without becoming a job 
  e.verification="verified" as any;b.facts.at(-1)!.status="supported";
  assert.equal(respondToJobNeeds(s,b).candidates[0].items.find(i=>i.itemId==="learning")!.status,"lead");
 });
-test("missing references, other jobs and mixed ranges cannot satisfy selected needs",()=>{
+test("invalid fact references cannot confirm needs; independently scoped source text remains a lead",()=>{
  const s=snapshot(),b=demoSample().bundle,j=b.jobs[0];
  const base={factId:"missing-f",companyId:j.companyId,jobId:null,key:"needs.benefits.coverage",value:"六险一金",status:"unknown" as const,evidenceIds:[] as string[],asOf:null};
  b.facts.push(base);
@@ -64,7 +64,7 @@ test("missing references, other jobs and mixed ranges cannot satisfy selected ne
  assert.equal(get().status,"unknown");assert.equal(get().materials.length,0);
  b.evidence.push({...b.evidence[0],evidenceId:"mixed-e",companyId:j.companyId,jobId:j.jobId,scope:"job",verification:"verified",excerpt:"六险一金"});
  b.facts[0]={...base,factId:"mixed-f",evidenceIds:["mixed-e"]};
- assert.equal(get().status,"unknown");
+ assert.equal(get().status,"lead");assert.deepEqual(get().factIds,[]);assert.deepEqual(get().evidenceIds,["mixed-e"]);
 });
 test("company inquiry needs a confirmed subject for verified availability; disputes are retained",()=>{
  const s=snapshot(),b=demoSample().bundle,j=b.jobs[0],company=b.companies.find(c=>c.companyId===j.companyId)!;

@@ -106,7 +106,11 @@ export interface Job {
   salary: JobSalary;
 }
 
+export type EvidenceTopic='growth'|'pay'|'hours'|'benefits'|'culture'|'position'|'company';
 export interface Evidence {
+  searchTopics?: EvidenceTopic[];
+  topicClassifierVersion?: string;
+  topicLinks?: {topicId:EvidenceTopic;detailIds:string[];quotes:string[]}[];
   evidenceId: string;
   companyId: string | null;
   jobId: string | null;

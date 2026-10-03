@@ -154,6 +154,7 @@ function softPreferenceExplanation(input: DimensionBuildInput): { text: string; 
   const details: string[] = [];
   const factIds: string[] = [];
   for (const preference of collectNonHardPreferences(input.profile)) {
+    if(preference.value===null)continue;
     const label = PREFERENCE_LABELS[preference.key] ?? '其他个人偏好';
     const qualifier = preference.strength === 'soft' ? '软偏好' : '尚未确认为硬条件的偏好';
     if (preference.key === 'city') {

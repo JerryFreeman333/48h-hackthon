@@ -75,3 +75,9 @@ test('pay compares only source-backed same-job fixed monthly amounts with person
  inputs.bundle.evidence.forEach((e:any)=>{e.jobId=null;e.scope='company';});
  assert.match(pay().conclusion,/薪资高低待确认/);
 });
+test('founding years cannot become 996 hours and half-year disclosure remains a financial lead',async()=>{
+ const {saved}=await fixture('公司成立于1996年9月，2026年半年度报告全文。');
+ const sectors=analysisFromInputs(saved.inputs,saved.report).candidates[0].sectors;
+ assert.equal(sectors.find(s=>s.id==='hours')!.status,'missing');
+ assert.equal(sectors.find(s=>s.id==='company')!.status,'lead');
+});
