@@ -39,6 +39,7 @@ test('new report freezes compact model, legacy report remains legacy, feedback r
  assert.equal(saved.inputs.sectorAnalysis.candidates[0].sectors.length,7);
  const html=await (await flow.read(owner,created.reportId)).text();
  assert.match(html,/七板块对照/);assert.match(html,/用户需求摘要/);assert.match(html,/综合结论与下一步/);
+ assert.doesNotMatch(html,/补充核验回复|href="\/feedback\//);
  assert.ok(!html.includes('五维判断'));assert.match(html,/<details><summary>查看具体关注事项/);
  assert.ok(saved.inputs.sectorAnalysis.candidates[0].keyQuestions.length<=3);
  const q=flow.feedbackContext(owner,created.reportId).questions[0];

@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { describeRevision, renderRevisionHtml, revisionMarkdown } from "./report-revisions";
 import { productActions, applyProductActions, productActionMarkdown } from "./product-action";
 import { mergeComparison } from "./compare-reports";
-import {feedbackQuestions,createVerificationNote,feedbackHtml,feedbackMarkdown,type VerificationNote} from "./verification-feedback";
+import {feedbackQuestions,createVerificationNote,feedbackMarkdown,type VerificationNote} from "./verification-feedback";
 import { ReportArchive } from "./report-archive";
 import { ResearchService } from "../../modules/b-research/research-service";
 import { userProfileSchema, searchIntentSchema } from "../contracts";
@@ -203,7 +203,7 @@ export function createDemoFlow(options?: { dataDir?: string }) {
         const originalMaterial='<details><summary>查看岗位原文与考核说明</summary>'+inputs.bundle.jobs.map((j:any)=>'<h3>'+escapeHtml(j.title)+'</h3><blockquote>'+escapeHtml(j.rawJd)+'</blockquote><p>'+escapeHtml(report.results.find(r=>r.jobId===j.jobId)?.dimensions.find(d=>d.key==='role_clarity')?.summary??'')+'</p>').join('')+'</details><details><summary>主体线索与口径核对</summary>'+report.results.map(r=>'<p>'+escapeHtml(r.dimensions.find(d=>d.key==='identity_credit')?.summary??'')+'</p>').join('')+'</details>';
         const agent=inputs.databaseSource?.agentInvestigation;
         const agentNotes=agent?'<details><summary>本次补充调查范围与结果</summary><p>MiniMax 安排公开资料调查；取得的公司线索尚未独立核验，也不等于这份岗位的承诺。</p>'+agent.companies.map((c:any)=>'<h3>'+escapeHtml(c.name)+'</h3><p>已尝试主题：'+escapeHtml(c.attemptedTopics.join('、')||'未完成')+'；取得 '+c.evidenceCount+' 条可引用资料'+(c.cached?'（近期缓存）':'')+'。</p>'+c.notes.map((n:string)=>'<p>'+escapeHtml(n)+'</p>').join('')).join('')+agent.notes.map((n:string)=>'<p>'+escapeHtml(n)+'</p>').join('')+'</details>':'';
-        const extras=agentNotes+originalMaterial+'<details><summary>查看具体关注事项与原始调查明细</summary>'+renderNeedsHtml(inputs.needsResponse,report,inputs.bundle).replace('href="/profile"','href="/revise/'+reportId+'"')+'</details>'+(inputs.changes?renderRevisionHtml(inputs.changes):'')+(inputs.materialChanges?materialUpdateHtml(inputs.materialChanges,report.ruleVersion):'')+feedbackHtml(inputs.verificationNotes??[],inputs.feedbackPreviousReportId)+(manual&&!inputs.databaseSource&&inputs.bundle.jobs.length===1?'<p><a href="/materials/'+reportId+'">更新这份岗位JD →</a></p>':'');
+      const extras=agentNotes+originalMaterial+'<details><summary>查看具体关注事项与原始调查明细</summary>'+renderNeedsHtml(inputs.needsResponse,report,inputs.bundle).replace('href="/profile"','href="/revise/'+reportId+'"')+'</details>'+(inputs.changes?renderRevisionHtml(inputs.changes):'')+(inputs.materialChanges?materialUpdateHtml(inputs.materialChanges,report.ruleVersion):'')+(manual&&!inputs.databaseSource&&inputs.bundle.jobs.length===1?'<p><a href="/materials/'+reportId+'">更新这份岗位JD →</a></p>':'');
         return new Response(renderSectorReport(inputs.sectorAnalysis,report,dataStatus,{salaryNotes:databaseFieldNotes(inputs),extras}),{headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
       }
       const baseVm=buildReportViewModel({ report, snapshot, comparisonAngle: angle ?? null });
@@ -215,7 +215,7 @@ export function createDemoFlow(options?: { dataDir?: string }) {
         angleUrlPattern: `/flow/reports/${reportId}?angle={key}`,
         footerNote: (inputs.databaseSource?"本地数据库摘录已接入；页面保留原始发布及采集日期；缺少时区时不补造，接入时间不代表重新爬取或独立核验。":"")+"七主题回应与需求行动门槛独立保留，原始规则结论及证据快照不被改写。未完成独立企业核验；未知保留。"
       });
-      return new Response(html.replace('<a href="#comparison">', '<a href="#your-needs">你的关注事项</a>\n<a href="#comparison">').replace('<h2 id="coverage">', (inputs.changes ? renderRevisionHtml(inputs.changes) : '') + (inputs.materialChanges?materialUpdateHtml(inputs.materialChanges,report.ruleVersion):'') + (manual&&!inputs.databaseSource&&inputs.bundle.jobs.length===1?'<p><a href="/materials/'+reportId+'">更新这份岗位JD →</a></p>':'') + '<p><a href="/revise/' + reportId + '">修改需求后重新分析此岗位 →</a> · <a href="/feedback/' + reportId + '">补充核验回复 →</a> · <a href="/history">我的报告</a></p>' + databaseFieldNotes(inputs) + renderNeedsHtml(inputs.needsResponse, report,inputs.bundle).replace('href="/profile"','href="/revise/'+reportId+'"') + feedbackHtml(inputs.verificationNotes??[],inputs.feedbackPreviousReportId) + '<h2 id="coverage">'), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+      return new Response(html.replace('<a href="#comparison">', '<a href="#your-needs">你的关注事项</a>\n<a href="#comparison">').replace('<h2 id="coverage">', (inputs.changes ? renderRevisionHtml(inputs.changes) : '') + (inputs.materialChanges?materialUpdateHtml(inputs.materialChanges,report.ruleVersion):'') + (manual&&!inputs.databaseSource&&inputs.bundle.jobs.length===1?'<p><a href="/materials/'+reportId+'">更新这份岗位JD →</a></p>':'') + '<p><a href="/revise/' + reportId + '">修改需求后重新分析此岗位 →</a> · <a href="/history">我的报告</a></p>' + databaseFieldNotes(inputs) + renderNeedsHtml(inputs.needsResponse, report,inputs.bundle).replace('href="/profile"','href="/revise/'+reportId+'"') + '<h2 id="coverage">'), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
     }
   };
 }

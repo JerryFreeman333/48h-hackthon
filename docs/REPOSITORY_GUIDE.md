@@ -27,7 +27,7 @@ demo-flow.ts 和 /flow/reports 的名称来自早期集成，现在也承载真�
 | B | modules/b-research/profile-workspace.tsx、workspace.css |
 | 真实新 C 七板块页面 | packages/integration/sector-report.ts |
 | C 原渲染和旧报告兼容 | modules/c-report/ui/render-html.ts |
-| 历史、比较、修改及回复 | app/history/、app/compare/、app/revise/、app/feedback/ |
+| 历史、比较及修改 | app/history/、app/compare/、app/revise/ |
 
 样式目前分布在多个位置。后续统一要覆盖真实 ABC，不只改演示页；保留 A 的题目顺序、答案键和归档结构。本次仅整理定位，未实施美化。
 

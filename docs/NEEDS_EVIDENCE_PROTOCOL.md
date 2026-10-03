@@ -59,7 +59,7 @@ A确认的JobNeedsSnapshot生成调查计划；B提供同一项目、模式及�
 
 ## 用户补充回复
 
-/feedback/:reportId让用户选择报告中的问题，提交回复及可选链接。verificationNotes固定为user_provided_unverified，按岗位问题绑定；新报告另存，旧报告不可变。回复不写入C facts/evidence，不解除unknown或硬条件限制。后续可实现人工审核或授权数据核验器，将经核验的材料另行转为事实快照再生成报告。当前没有该审核器。
+“补充核验回复”的 /feedback/:reportId 页面及对应 GET/POST 接口已删除。旧归档中的 verificationNotes 保留，固定为 user_provided_unverified，按岗位问题绑定；旧报告不可变。历史回复不写入 C facts/evidence，不解除 unknown 或硬条件限制。当前没有人工审核或授权材料核验器。
 
 ## 事实生产与核验边界
 
