@@ -284,3 +284,12 @@
 - 已先备份整个.data，再移出可明确识别的5条测试需求及23份关联测试报告；保留其余19条需求和既有浏览器会话绑定，不清除含义不明确的记录。备份：C:/Users/Sophie/AppData/Local/Temp/xray-history-cleanup-20261003-1791006322398，cleanup.json可追溯。备份与数据不上传GitHub。
 - a_session改为一年有效期，并在bootstrap续期，原会话身份不变；JD草稿改存localStorage且兼容原sessionStorage。关闭浏览器后可继续找回，用户主动清除站点数据仍会影响本地绑定。
 - 用户授权上传GitHub且明确不用再测试。本轮不运行测试，仅编译用于更新本地服务。合并origin/main b1e3164的队友工作机会/确认方向更新，保留统一首页、历史step/createdAt、无杭州扩展与关闭导出。
+
+
+## 用户要求删除手动JD页面，A侧写直接接B（2026-10-03）
+
+- 删除app/analyze/page.tsx，不再让用户在A确认后重新输入岗位、公司或JD。旧/analyze URL兼容重定向/research并保留sessionId/revision，历史报告与草稿数据不删除。
+- A保存后的按钮改为继续调查公司与岗位，准确携带已选侧写版本到B；首页、侧写页脚、历史及报告中的相关入口同步调整。A七主题、现实条件与已认可UI不重做，改善选项本轮不改。
+- /research接收A已确认侧写，由/api/integration/research校验本机会话及需求所有权，读取冻结版本并调用B ResearchService的未接入provider路径。显示行业、岗位、现实条件与七主题调查重点；不提供JSON、演示模式或JD输入表单。
+- 正式数据库仍待后续接入；当前B如实显示not_connected，未执行外部检索、不回退演示数据、不生成无候选的C报告。此轮完成的是A到B的需求传递，不能宣称真实检索或ABC数据源已接通。
+- 未删除B原始开发工作台(/demo/b)、内部手工资料服务或历史版本/材料更新功能。遵循用户不用再测试的要求，仅生产编译后更新本地服务与GitHub。

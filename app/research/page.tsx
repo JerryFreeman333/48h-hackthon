@@ -1,3 +1,3 @@
-import { ResearchWorkspace } from "@/modules/b-research/workspace";
+import { ProfileResearchWorkspace } from "@/modules/b-research/profile-workspace";
 
-export default function ResearchPage() { return <ResearchWorkspace initialMode="manual" />; }
+export default function ResearchPage() { return <ProfileResearchWorkspace />; }
