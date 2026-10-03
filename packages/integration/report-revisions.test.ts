@@ -1,3 +1,4 @@
+import {createSelectedNeeds} from './test-needs-fixture';
 import test from "node:test";
 import assert from "node:assert/strict";
 import {mkdtempSync} from "node:fs";
@@ -7,7 +8,7 @@ import {createAHost} from "./a-host";
 import {createDemoFlow} from "./demo-flow";
 test("new confirmed needs re-evaluate the original evidence after restart, explain changes and preserve old reports",async()=>{
  const dir=mkdtempSync(join(tmpdir(),"xray-revisions-")),a=createAHost(join(dir,"a")),owner="version-owner";
- let s=a.service.create(owner,{mode:"demo"}),d=structuredClone(s.data);
+ let s=createSelectedNeeds(a.service,owner,{mode:"demo"}),d=structuredClone(s.data);
  d.conditions.find((c:any)=>c.key==="accept_sales_kpi").value=false;d.conditions.find((c:any)=>c.key==="accept_sales_kpi").strength="hard";
  d.answers["growth.priority"]="priority";d.answers["growth.details"]=["learning"];d.answers["growth.policy"]="verify_first";
  s=a.service.update(owner,s.id,{expectedRevision:s.revision,questionnaireVersion:s.questionnaireVersion,step:8,data:d});
@@ -32,6 +33,6 @@ test("new confirmed needs re-evaluate the original evidence after restart, expla
  assert.match(await(await flow.read(owner,next.reportId)).text(),/与上份报告相比/);
  await assert.rejects(flow.reanalyze("other-owner",r.reportId,second.export),/无该报告/);
  await assert.rejects(flow.reanalyze(owner,next.reportId,first.export),/更新确认版本/);
- const another=a.service.create(owner,{mode:"demo"});const other=a.service.confirm(owner,another.id,{expectedRevision:another.revision,confirmed:true});
+ const another=createSelectedNeeds(a.service,owner,{mode:"demo"});const other=a.service.confirm(owner,another.id,{expectedRevision:another.revision,confirmed:true});
  await assert.rejects(flow.reanalyze(owner,r.reportId,other.export),/更新确认版本/);
 });

@@ -1,3 +1,4 @@
+import {createSelectedNeeds} from './test-needs-fixture';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtempSync,readFileSync,writeFileSync} from 'node:fs';
@@ -8,7 +9,7 @@ import {createDemoFlow} from './demo-flow';
 
 test('withdrawn location drafts remain stored; ordinary needs can resume and confirm without extra fields',()=>{
  const dir=mkdtempSync(join(tmpdir(),'xray-rollback-a-')),owner='rollback-owner';
- let a=createAHost(dir);const session=a.service.create(owner,{mode:'manual'});
+ let a=createAHost(dir);const session=createSelectedNeeds(a.service,owner,{mode:'manual'});
  const first=a.service.confirm(owner,session.id,{expectedRevision:session.revision,confirmed:true}).export;
  const file=join(dir,'state.json'),state=JSON.parse(readFileSync(file,'utf8'));
  state.needs.sessions[session.id].data.location={areas:['滨江区'],strength:'hard',origin:'虚构出发点',maxMinutes:45,transport:'public',relocation:'no'};
@@ -24,7 +25,7 @@ test('withdrawn location drafts remain stored; ordinary needs can resume and con
 
 test('original report UI remains and public download links are removed; location overlays cannot continue deciding new reports',async()=>{
  const dir=mkdtempSync(join(tmpdir(),'xray-rollback-flow-')),owner='rollback-owner',a=createAHost(join(dir,'a'));
- const session=a.service.create(owner,{mode:'manual'}),input=a.service.confirm(owner,session.id,{expectedRevision:session.revision,confirmed:true}).export;
+ const session=createSelectedNeeds(a.service,owner,{mode:'manual'}),input=a.service.confirm(owner,session.id,{expectedRevision:session.revision,confirmed:true}).export;
  const flow=createDemoFlow({dataDir:join(dir,'reports')}),tail='这是超过400字之后保留的原始材料结尾',rawJd='回退测试。'+('原文材料'.repeat(150))+tail+'。无销售KPI，无陌生客户开发。';
  const result=await flow.runManual(owner,input,{title:'回退测试岗位',city:'成都',rawJd});
  assert.ok(!("handoffUrl" in result));

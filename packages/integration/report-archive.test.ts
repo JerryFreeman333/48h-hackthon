@@ -1,3 +1,4 @@
+import {createSelectedNeeds} from './test-needs-fixture';
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -8,7 +9,7 @@ import { createAHost } from "./a-host";
 import { createDemoFlow } from "./demo-flow";
 test("reports survive service restart with immutable needs, all exports and owner isolation",async()=>{
  const dir=mkdtempSync(join(tmpdir(),"xray-archive-")), a=createAHost(join(dir,"a")), owner="owner-a";
- const session=a.service.create(owner,{mode:"manual"});
+ const session=createSelectedNeeds(a.service,owner,{mode:"manual"});
  const confirmed=a.service.confirm(owner,session.id,{expectedRevision:session.revision,confirmed:true});
  let flow=createDemoFlow({dataDir:join(dir,"reports")});
  const r=await flow.runManual(owner,confirmed.export,{title:"归档岗位",rawJd:"实际岗位待核验"});

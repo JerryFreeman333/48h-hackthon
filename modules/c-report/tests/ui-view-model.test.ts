@@ -71,7 +71,7 @@ describe('P3 首屏（动作/≤3 理由/首要问题/覆盖摘要）', () => {
     assert.strictEqual(financials?.statusLabel, '未接入');
     // 不把 partial 说成完整。
     assert.strictEqual(vm.meta.completeness, 'partial');
-    assert.match(vm.summary.coverage.completenessLabel, /partial/);
+    assert.strictEqual(vm.summary.coverage.completenessLabel, '部分资料');
   });
 });
 
@@ -90,11 +90,13 @@ describe('P3 五维与未知（unknown 不画绿、双通道）', () => {
   it('unknown 维度保留 unknown 且标签为「未知」，不产生绿色语义', () => {
     const { vm } = demoViewModel();
     const unknowns = (vm.candidates[0]?.dimensions ?? []).filter((d) => d.status === 'unknown');
-    assert.strictEqual(unknowns.length, 4);
+    assert.strictEqual(unknowns.length, 3);
     for (const dimension of unknowns) {
       assert.strictEqual(dimension.statusLabel, '未知');
     }
-    assert.ok(!vm.candidates[0]?.dimensions.some((d) => d.status === 'supported'));
+    const role = vm.candidates[0]?.dimensions.find((d) => d.key === 'role_clarity');
+    assert.strictEqual(role?.status, 'supported');
+    assert.ok(role?.summary.includes('不等于满足个人需求'));
   });
 
   it('关键未知清单来自结构化数据（约束/维度/覆盖），逐项有来源', () => {

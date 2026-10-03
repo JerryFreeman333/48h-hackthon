@@ -11,6 +11,7 @@ import type { ConstraintEvaluation } from './constraints.js';
 import type { MatchReportResultReason, MatchReportResultDimension, Recommendation } from './contract.js';
 import type { Fact, Job } from './contract.js';
 import type { JobFactIndex } from './constraints.js';
+import { PREFERENCE_LABELS } from './dimensions.js';
 
 export const ACTION_PRIORITY: readonly Recommendation[] = [
   'insufficient',
@@ -56,11 +57,11 @@ export function decideActionForJob(input: ActionInput): ActionDecision {
   const triggeredBy: string[] = [];
 
   // --- 事实类原因（引用已协调 Fact） ---
-  const salesFacts = factIndex.factsForJob(job.jobId, 'job.sales_kpi').filter((f) => f.status === 'supported');
+  const salesFacts = factIndex.factsForJob(job.jobId, 'job.sales_kpi').filter((f) => f.status === 'supported' && typeof f.value === 'boolean');
   for (const fact of salesFacts) {
     reasons.push(
       reason(
-        `岗位事实：${fact.key}=${String(fact.value)}（supported，事实 ${fact.factId}）。`,
+        `岗位资料明确声明${fact.value === true ? '存在销售签单考核' : '没有销售签单考核'}；这项记载不证明实际执行或本人能力。`,
         'fact',
         [fact.factId],
       ),
@@ -76,10 +77,10 @@ export function decideActionForJob(input: ActionInput): ActionDecision {
   );
 
   for (const fail of fails) {
-    const factText = fail.factIds.length > 0 ? `（岗位侧事实：${fail.factIds.join('、')}）` : '';
+    const factText = fail.factIds.length > 0 ? '（有对应岗位资料）' : '';
     reasons.push(
       reason(
-        `已确认硬约束 ${fail.key} 判定为 fail${factText}：确定性规则得出，软偏好不能抵消。`,
+        `已确认硬条件「${PREFERENCE_LABELS[fail.key] ?? '其他条件'}」与岗位资料冲突${factText}，软偏好不能抵消。`,
         'inference',
         fail.factIds,
       ),
@@ -89,10 +90,10 @@ export function decideActionForJob(input: ActionInput): ActionDecision {
   for (const pass of passes) {
     if (pass.trace.basis === 'fact') {
       reasons.push(
-        reason(`已确认硬约束 ${pass.key} 通过（岗位侧材料支持）。`, 'inference', pass.factIds),
+        reason(`已确认硬条件「${PREFERENCE_LABELS[pass.key] ?? '其他条件'}」通过（岗位资料支持这项条件）。`, 'inference', pass.factIds),
       );
     } else if (pass.trace.basis === 'user_only') {
-      reasons.push(reason(`已确认硬约束 ${pass.key} 通过（本人接受，不代表能力判断）。`, 'inference', []));
+      reasons.push(reason(`本人接受「${PREFERENCE_LABELS[pass.key] ?? '其他条件'}」，这项条件不构成排除理由；不代表能力判断。`, 'inference', []));
     }
   }
 
@@ -100,7 +101,7 @@ export function decideActionForJob(input: ActionInput): ActionDecision {
   for (const unknown of materialUnknowns) {
     reasons.push(
       reason(
-        `已确认硬约束 ${unknown.key} 无法判定（${unknown.trace.diagnostics.join('、')}）：用户关键条件未核验，需先解决。`,
+        `已确认硬条件「${PREFERENCE_LABELS[unknown.key] ?? '其他条件'}」尚缺可用或一致的岗位资料，需先核实。`,
         'unknown',
         [],
       ),
@@ -109,7 +110,7 @@ export function decideActionForJob(input: ActionInput): ActionDecision {
   }
   if (job.salary.basis !== 'fixed') {
     reasons.push(
-      reason('固定月薪口径未知（声明为 total/unknown）：不比较固定收入，total 不能冒充底薪。', 'unknown', []),
+      reason('该岗位固定月薪未明确：需区分底薪、绩效、发放周期与税前税后，综合收入不能代替固定底薪。', 'unknown', []),
     );
   }
   if (job.vacancyStatus === 'unknown') {
@@ -118,20 +119,20 @@ export function decideActionForJob(input: ActionInput): ActionDecision {
   const financialsUnknown =
     input.dimensions.find((d) => d.key === 'business')?.status === 'unknown';
   if (financialsUnknown) {
-    reasons.push(reason('经营证据覆盖不足：财务/稳定性未知，未知不等于安全。', 'unknown', []));
+    reasons.push(reason('经营状况尚无法判断：已有线索须核对范围与来源；财务及当前稳定性未知，未知不等于安全。', 'unknown', []));
   }
 
   // --- 主体状态 ---
   if (company && company.identityStatus !== 'confirmed') {
     reasons.push(
-      reason(`招聘主体 identityStatus=${company.identityStatus}：主体未确认，需先核验再做决定。`, 'unknown', []),
+      reason(`已有公司资料线索，但当前岗位签约主体未确认：需核对「${company.identityStatus === 'ambiguous' ? '品牌、集团、法人及岗位的对应关系' : '招聘、签约、发薪和社保主体'}」后再做决定。`, 'unknown', []),
     );
     triggeredBy.push('company:identity_unconfirmed');
   }
   if (!company) {
     // job.companyId=null 是合法输入，但主体未定位的结论受限，不能自动绑定第一个公司（§5）。
     reasons.push(
-      reason('岗位未关联公司主体（job.companyId 为 null）：主体未定位，结论受限，需先确认招聘主体。', 'unknown', []),
+      reason('当前岗位主体未定位，尚不能确定招聘与签约公司；需先确认具体主体。', 'unknown', []),
     );
     triggeredBy.push('company:missing');
   }
@@ -161,10 +162,8 @@ export function decideActionForJob(input: ActionInput): ActionDecision {
     return { recommendation: 'verify_first', reasons, triggeredBy };
   }
 
-  // explore：有正向依据且没有阻断。P1 模板的"正向依据"= 存在事实支持的 pass 约束
-  // 或任一维度 supported。没有正向依据时不轻易 explore，转 verify_first（C-10 本地预案）。
-  const hasPositiveBasis =
-    passes.some((p) => p.trace.basis === 'fact') || dimensions.some((d) => d.status === 'supported');
+  // 资料支持公司或职责命题不等于个人需求得到满足；本人表示接受也不是岗位侧适配依据。
+  const hasPositiveBasis = passes.some((p) => p.trace.basis === 'fact');
   if (hasPositiveBasis) {
     return { recommendation: 'explore', reasons, triggeredBy: ['positive_basis'] };
   }

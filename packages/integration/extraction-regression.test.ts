@@ -1,3 +1,4 @@
+import {createSelectedNeeds} from './test-needs-fixture';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {ResearchService,demoSample} from '../../modules/b-research/research-service';
@@ -12,4 +13,4 @@ test('常见否定表达得到false，疑问、条件句、不完整否定与正
  for(const text of ['是否有销售KPI？','如果无销售KPI，可以考虑。','无销售KPI经验要求。','并非无销售KPI。','不保证无销售KPI。'])assert.equal(facts(text).length,0,text);
  const conflict=facts('销售KPI：有。销售KPI：无。')[0];assert.equal(conflict.value,null);assert.equal(conflict.status,'conflicting');assert.equal(facts('承担销售KPI。')[0].value,true);
 });
-test('false事实的职责说明不再声称缺失事实，仍保留实际考核待核实',async()=>{const dir=mkdtempSync(join(tmpdir(),'xray-negation-')),a=createAHost(join(dir,'a')),flow=createDemoFlow({dataDir:join(dir,'reports')}),s=a.service.create('u',{mode:'manual'}),input=a.service.confirm('u',s.id,{expectedRevision:s.revision,confirmed:true}).export,r=await flow.runManual('u',input,{title:'否定回归岗位',rawJd:'无销售KPI，无陌生客户开发。负责产品运营。'}),snapshot=await (await flow.read('u',r.reportId,'handoff')).json(),dimension=snapshot.report.results[0].dimensions.find((d:any)=>d.key==='role_clarity');assert.match(dimension.summary,/声明无销售KPI/);assert(!dimension.summary.includes('没有已协调'));assert.equal(dimension.status,'unknown');});
+test('false事实的职责说明不再声称缺失事实，仍保留实际考核待核实',async()=>{const dir=mkdtempSync(join(tmpdir(),'xray-negation-')),a=createAHost(join(dir,'a')),flow=createDemoFlow({dataDir:join(dir,'reports')}),s=createSelectedNeeds(a.service,'u',{mode:'manual'}),input=a.service.confirm('u',s.id,{expectedRevision:s.revision,confirmed:true}).export,r=await flow.runManual('u',input,{title:'否定回归岗位',rawJd:'无销售KPI，无陌生客户开发。负责产品运营。'}),snapshot=await (await flow.read('u',r.reportId,'handoff')).json(),dimension=snapshot.report.results[0].dimensions.find((d:any)=>d.key==='role_clarity');assert.match(dimension.summary,/声明无销售KPI/);assert(!dimension.summary.includes('没有已协调'));assert.equal(dimension.status,'unknown');});

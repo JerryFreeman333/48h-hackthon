@@ -65,7 +65,7 @@ export async function runOne(
         reportId,
         generatedAt: ctx.now(),
         version: nextVersion,
-        ruleVersion: ckpt.ruleVersion.length > 0 ? ckpt.ruleVersion : 'c-rules-1.0.0-product-20261003',
+        ruleVersion: ckpt.ruleVersion.length > 0 ? ckpt.ruleVersion : 'c-rules-1.0.0-abc-material-20261003',
         promptVersion: ckpt.promptVersion.length > 0 ? ckpt.promptVersion : 'template-no-model-p1.0.0',
       },
     }, {

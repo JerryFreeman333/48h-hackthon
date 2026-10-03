@@ -53,3 +53,6 @@ npm run build
 产品结果、你下一步的工作与实际边界见 `docs/PRODUCT_HANDOFF_2026-10-03.md`。当前产品方向和实际进度见 `docs/PRODUCT_PLAN_2026-10-03.md`，演示步骤见 `docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md`。开工分析、前端逻辑问题与建议顺序见 `docs/PROJECT_ANALYSIS_2026-10-03.md`；简易 HTML 逐项审计见 `docs/frontend-analysis-2026-10-03.md`。
 
 模块独立开发与 A→B→C 整体联调是不同验收等级。接入方式、责任登记和联调清单见 `docs/ARCHITECTURE.md`。合成测试不证明真实公司准确率。
+
+
+本地数据库接入（2026-10-03）：A确认侧写后/research读取本机.data/company-database/xray-v3-20261003.sqlite，选择候选即可生成C报告。需本机Node 24运行时（本轮已用v24.19.0编译运行）；数据库文件不入Git，下载接口继续关闭。接入范围、证据处理和验收见docs/PRODUCT_CONTINUATION_2026-10-03.md最新记录。

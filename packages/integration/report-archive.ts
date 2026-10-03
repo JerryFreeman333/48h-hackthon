@@ -43,7 +43,7 @@ export class ReportArchive {
   list(owner: string) {
     const folder=this.folder(owner);
     const ids=folder ? existsSync(folder) ? readdirSync(folder).filter(n=>n.endsWith(".json")).map(n=>n.slice(0,-5)) : [] : [...this.memory.keys()].filter(k=>k.startsWith(digest(owner)+":")).map(k=>k.slice(k.indexOf(":")+1));
-    const labels:Record<string,string>={needs_revision:"修改需求",verification_feedback:"补充核验记录",manual_jd_update:"更新岗位材料",candidate_comparison:"候选比较",initial_analysis:"首次分析"};
+    const labels:Record<string,string>={local_database:"本地数据库岗位分析",needs_revision:"修改需求",verification_feedback:"补充核验记录",manual_jd_update:"更新岗位材料",candidate_comparison:"候选比较",initial_analysis:"首次分析"};
     return ids.map(id=>this.read(owner,id)).filter((v):v is ArchivedReport=>!!v).map(v=>{const kind=v.inputs.researchRun?.kind??"initial_analysis",jobs=v.inputs.bundle.jobs;return {dataStatus:reportDataStatus(v),reportId:v.report.reportId,generatedAt:v.report.generatedAt,mode:v.report.mode,projectId:v.report.projectId,profileId:v.report.profileId,profileRevision:v.report.profileRevision,jobTitles:jobs.map((j:any)=>j.title),jobIds:jobs.map((j:any)=>j.jobId),candidateSignatures:jobs.map((j:any)=>digest(JSON.stringify([j.title,j.rawJd,j.city,j.sourceUrl,v.inputs.bundle.companies.find((c:any)=>c.companyId===j.companyId)?.legalName??null]))),kind,kindLabel:labels[kind]??"归档分析",previousReportId:v.inputs.researchRun?.previousReportId??v.inputs.changes?.previousReportId??null,reportUrl:"/flow/reports/"+v.report.reportId};}).sort((a,b)=>b.generatedAt.localeCompare(a.generatedAt)||b.reportId.localeCompare(a.reportId));
   }
 }

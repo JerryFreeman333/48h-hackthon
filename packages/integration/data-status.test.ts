@@ -1,3 +1,4 @@
+import {createSelectedNeeds} from './test-needs-fixture';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtempSync} from 'node:fs';
@@ -22,7 +23,7 @@ test('recording method does not assert authenticity; presentation requires decla
 
 test('source labels survive restart and needs revisions; changed materials need a new actual-material declaration',async()=>{
  const dir=mkdtempSync(join(tmpdir(),'xray-labels-')),a=createAHost(join(dir,'a')),owner='label-owner';
- const s=a.service.create(owner,{mode:'manual'}),input=a.service.confirm(owner,s.id,{expectedRevision:s.revision,confirmed:true}).export;
+ const s=createSelectedNeeds(a.service,owner,{mode:'manual'}),input=a.service.confirm(owner,s.id,{expectedRevision:s.revision,confirmed:true}).export;
  let flow=createDemoFlow({dataDir:join(dir,'reports')});
  // This is a deliberately synthetic test fixture. The flag tests a user declaration, not real-world truth.
  const first=await flow.runManual(owner,input,{title:'合成测试：来源声明验收',rawJd:'虚构单元测试资料，无销售KPI。',sourceUrl:'https://example.com/source'},{kind:'user_provided',actualMaterialConfirmed:true});

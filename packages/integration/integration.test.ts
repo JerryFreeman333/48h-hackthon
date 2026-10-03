@@ -1,3 +1,4 @@
+import {createSelectedNeeds} from './test-needs-fixture';
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mkdtempSync } from "node:fs";
@@ -12,7 +13,7 @@ test("A choices reach B/C; revisions, seven topics and exports stay bound to the
   const boot = await a.handle(new Request("http://127.0.0.1/api/a/needs/bootstrap"));
   const cookie = boot.headers.get("set-cookie")!.split(";")[0];
   const owner = a.owner(new Request("http://127.0.0.1/api/integration/demo", { headers: { cookie } }));
-  let session = a.service.create(owner, { mode: "demo" });
+  let session = createSelectedNeeds(a.service,owner, { mode: "demo" });
   const data = structuredClone(session.data);
   data.conditions.find((x: any) => x.key === "city").value = ["上海"];
   data.conditions.find((x: any) => x.key === "city").strength = "hard";
@@ -50,7 +51,7 @@ test("A choices reach B/C; revisions, seven topics and exports stay bound to the
   assert.match(revisedMd,/实际工作地点/);
   assert.notEqual(revised.report.results[0].recommendation, "deprioritize");
   assert.deepEqual(await (await flow.read(owner, result.reportId, "handoff")).json(), frozen);
-  const manual = a.service.create(owner, { mode: "manual" });
+  const manual = createSelectedNeeds(a.service,owner, { mode: "manual" });
   const confirmedManual = a.service.confirm(owner, manual.id, { expectedRevision: manual.revision, confirmed: true });
   await assert.rejects(flow.run(owner, confirmedManual.export), /真实需求不会转换/);
   const empty = structuredClone(second.export);
@@ -79,7 +80,7 @@ test("mounted A API rejects cross-site, missing ownership, invalid JSON and stal
 test("direct manual JD analysis preserves a selected job despite search city conflict", async () => {
   const a = createAHost(mkdtempSync(join(tmpdir(), "xray-manual-")));
   const owner = "manual-test-owner";
-  let session = a.service.create(owner, { mode: "manual" });
+  let session = createSelectedNeeds(a.service,owner, { mode: "manual" });
   const data = structuredClone(session.data);
   data.conditions.find((x: any) => x.key === "city").value = ["上海"];
   data.conditions.find((x: any) => x.key === "city").strength = "hard";
@@ -96,7 +97,7 @@ test("direct manual JD analysis preserves a selected job despite search city con
   assert.equal(handoff.report.results[0].recommendation, "verify_first");
   assert.equal((await flow.read("other-owner", result.reportId)).status, 404);
   const html = await (await flow.read(owner, result.reportId)).text();
-  assert.match(html, /用户提交 JD/);
+  assert.match(html, /用户提供资料.*未独立核验/);
   assert.doesNotMatch(html, /公司和岗位均为合成样例/);
   await assert.rejects(flow.runManual(owner, { ...confirmed.export, UserProfile: { ...confirmed.export.UserProfile, mode: "demo" } }, { title: "无效", rawJd: "无效" }), /人工需求版本/);
 });

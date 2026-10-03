@@ -58,7 +58,9 @@ export function buildQuestionsForJob(
   // 主体：声明非 confirmed（或无主体）→ must；已声明 confirmed（demo 模拟）→ optional 复核。
   if (!company || company.identityStatus !== 'confirmed') {
     questions.push({
-      text: '招聘主体公司的全称与统一社会信用代码是什么？',
+      text: company?.creditCode
+        ? `资料记载「${company.legalName}」及信用代码「${company.creditCode}」。这与「${job.title}」的招聘、劳动合同、发薪和社保主体分别是什么关系？请确认当前岗位的签约公司。`
+        : `「${job.title}」的招聘、劳动合同、发薪和社保主体分别是谁？请提供签约公司全称及统一社会信用代码，并说明与公司或集团资料的关系。`,
       priority: 'must',
       resolves: ['company.legalName', 'company.creditCode', 'company.identityStatus'].filter(isQuestionTarget),
     });

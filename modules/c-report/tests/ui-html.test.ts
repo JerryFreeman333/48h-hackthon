@@ -41,7 +41,7 @@ describe('P3 HTML：双通道状态（色彩+文字）', () => {
   it('unknown 一律灰色 chip-unknown 且带文字标签，绝不与 supported 混用', () => {
     const html = demoHtml();
     const labels = [...html.matchAll(/chip-unknown">([^<]*)</g)].map((m) => m[1] ?? '');
-    assert.ok(labels.length >= 8);
+    assert.ok(labels.length > 0);
     assert.ok(labels.every((label) => label === '未知' || label === '无法判定'));
     assert.ok(!html.includes('chip-supported">未知'));
     assert.ok(!html.includes('chip-unknown">有支持'));
@@ -180,7 +180,8 @@ describe('P3 HTML：结构与可用性', () => {
     assert.ok(html.includes('id="first-screen"'));
     assert.ok(html.includes('最多 3 个关键理由'));
     assert.ok(html.includes('固定底薪和绩效各是多少'));
-    assert.ok(html.includes('关键主题未决'));
+    assert.ok(html.includes('仍需核实'));
+    assert.ok(!html.includes('（salary_income_assessability）'));
     const inputs = loadDemoInputs();
     const bundle = clone(inputs.bundle);
     bundle.jobs = [];

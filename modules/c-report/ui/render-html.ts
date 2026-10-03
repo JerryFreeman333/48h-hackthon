@@ -35,7 +35,7 @@ function safeHref(url: string | null): string | null {
   return /^https?:\/\//i.test(url) ? url : null;
 }
 
-const CSS = `
+export const CSS = `
 :root {
   --ink: #1f2430; --muted: #5b6472; --line: #d9dee7; --bg: #f6f7fa; --card: #ffffff;
   --ok: #1a7f37; --ok-bg: #e6f4ea; --bad: #b3261e; --bad-bg: #fce8e6;
@@ -149,6 +149,7 @@ interface RenderOptions {
   footerNote?: string | null;
   /** Product host can collapse coverage detail while preserving visible critical gaps. */
   compactCoverage?: boolean;
+  sourceDates?: ReadonlyArray<Record<string,unknown>>;
 }
 
 function chip(statusClass: string, label: string): string {
@@ -190,20 +191,24 @@ function evidenceHref(url: string | null, hiddenReason: string | null, sourceTyp
   if (href !== null) {
     return `<p class="ev-attr">链接：<a href="${escapeHtml(href)}" rel="noopener noreferrer nofollow">${escapeHtml(href)}</a></p>`;
   }
-  const reason = hiddenReason ?? `无链接（提供方式：${sourceType}）`;
+  const sourceLabels:Record<string,string>={local_database_job_summary:'本地岗位摘录',local_database_field_comparison:'本地资料字段核对',database_material:'本地公司资料',manual_jd:'用户提供的岗位资料'};
+  const reason = hiddenReason ?? `无链接（提供方式：${sourceLabels[sourceType]??sourceType}）`;
   return `<p class="ev-attr">链接：${escapeHtml(reason)}</p>`;
 }
 
-function renderEvidenceBody(candidate: CandidateVm): string {
+function renderEvidenceBody(candidate: CandidateVm, options:RenderOptions): string {
   if (candidate.evidence.length === 0) {
     return '<div class="evidence-body"><p>本候选没有关联证据记录。</p></div>';
   }
   const items = candidate.evidence.map((item) => {
     const published = item.publishedAt === null ? '未提供' : escapeHtml(item.publishedAt);
+    const original=options.sourceDates?.find(s=>s.evidenceId===item.evidenceId);
+    const collected=original?typeof original.retrievedAtRaw==='string'&&original.retrievedAtRaw.trim()?original.retrievedAtRaw:'未记录':item.retrievedAt;
+    const dateNote=original?'；本次读入不代表重新采集或独立核验'+(!/(?:Z|[+-]\d{2}:\d{2})$/.test(collected)?'，原始时间未记载时区':''):'';
     return `<div class="evidence-item">
   <p><strong>${escapeHtml(item.title)}</strong>（${escapeHtml(item.evidenceId)}）</p>
-  <p class="ev-attr">主体范围：${escapeHtml(item.scopeLabel)}（${escapeHtml(item.subject)}）｜核验状态：${verificationChip(item.verification, item.verificationLabel)}｜数据模式：${escapeHtml(item.modeLabel)}</p>
-  <p class="ev-attr">出处类型：${escapeHtml(item.sourceType)}｜发布：${published}｜采集：${escapeHtml(item.retrievedAt)}</p>
+  <p class="ev-attr">资料范围：${escapeHtml(item.scopeLabel)}（${escapeHtml(item.subject)}）｜核验状态：${verificationChip(item.verification, item.verificationLabel)}</p>
+  <p class="ev-attr">发布：${published}｜原始采集：${escapeHtml(collected)}${escapeHtml(dateNote)}</p>
   <blockquote class="ev-excerpt">${escapeHtml(item.excerpt)}</blockquote>
   ${evidenceHref(item.url, item.urlHiddenReason, item.sourceType)}
 </div>`;
@@ -226,7 +231,7 @@ function renderComparison(vm: ReportViewModel, options: RenderOptions): string {
       }</p>`
     : '';
   const head = comparison.columns
-    .map((column) => `<th scope="col">${escapeHtml(column.title ?? '')}<br><span class="ref">${escapeHtml(column.jobId)}</span></th>`)
+    .map((column) => `<th scope="col">${escapeHtml(column.title ?? '')}</th>`)
     .join('\n');
   const rows = comparison.rows
     .map(
@@ -256,11 +261,11 @@ ${rows}
 </div>`;
 }
 
-function renderCandidate(candidate: CandidateVm): string {
+function renderCandidate(candidate: CandidateVm,options:RenderOptions): string {
   const dimensions = candidate.dimensions
     .map(
       (dimension) => `<div class="dim-block">
-  <h4>${escapeHtml(dimension.label)}（${escapeHtml(dimension.key)}）${statusChip(dimension.status, dimension.statusLabel)}</h4>
+  <h4>${escapeHtml(dimension.label)} ${statusChip(dimension.status, dimension.statusLabel)}</h4>
   <p class="dim-summary">${escapeHtml(dimension.summary)}</p>
   ${dimension.factIds.length > 0 ? `<p class="ref">引用事实：${escapeHtml(dimension.factIds.join('、'))}</p>` : ''}
 </div>`,
@@ -274,9 +279,9 @@ function renderCandidate(candidate: CandidateVm): string {
 <tbody>
 ${candidate.constraints
   .map(
-    (constraint) => `<tr><td>${escapeHtml(constraint.keyLabel)}<br><span class="ref">${escapeHtml(constraint.key)}</span></td>
+    (constraint) => `<tr><td>${escapeHtml(constraint.keyLabel)}</td>
 <td>${statusChip(constraint.result, constraint.resultLabel)}</td>
-<td>${constraint.factIds.length > 0 ? escapeHtml(constraint.factIds.join('、')) : '无（保持 unknown，不硬塞引用）'}</td></tr>`,
+<td>${constraint.factIds.length > 0 ? escapeHtml(constraint.factIds.join('、')) : '尚无对应岗位资料；个人接受意愿本身不证明岗位条件。'}</td></tr>`,
   )
   .join('\n')}
 </tbody>
@@ -286,14 +291,14 @@ ${candidate.constraints
       ? '<p>本候选没有已登记的关键未知。</p>'
       : `<ul class="unknown-list">
 ${candidate.unknowns
-  .map((item) => `<li><strong>${escapeHtml(item.label)}</strong><span class="ref">（${escapeHtml(item.source)}：${escapeHtml(item.key)}）</span>—— ${escapeHtml(item.detail)}</li>`)
+  .map((item) => `<li><strong>${escapeHtml(item.label)}</strong>—— ${escapeHtml(item.detail)}</li>`)
   .join('\n')}
 </ul>`;
   const questions = `<ul class="q-list">
 ${candidate.questions
   .map(
     (question) =>
-      `<li><span class="kind-tag">${escapeHtml(question.priorityLabel)}</span>${escapeHtml(question.text)}<br><span class="ref">对应目标：${escapeHtml(question.resolves.join('、'))}</span></li>`,
+      `<li><span class="kind-tag">${escapeHtml(question.priorityLabel)}</span>${escapeHtml(question.text)}</li>`,
   )
   .join('\n')}
 </ul>`;
@@ -308,10 +313,10 @@ ${candidate.reasons
   .join('\n')}
 </ul>`;
   const companyLine = candidate.company
-    ? `<p class="ev-attr">招聘主体：${escapeHtml(candidate.company.legalName)}${
+    ? `<p class="ev-attr">公司主体线索：${escapeHtml(candidate.company.legalName)}${
         candidate.company.brandName ? `（品牌：${escapeHtml(candidate.company.brandName)}）` : ''
       }｜主体状态：${escapeHtml(candidate.company.identityStatusLabel)}</p>`
-    : '<p class="ev-attr">招聘主体：未关联（job.companyId=null）——主体未定位，结论受限。</p>';
+    : '<p class="ev-attr">未提供公司主体线索，岗位签约主体待确认。</p>';
   const jobLine = `<p class="ev-attr">城市：${candidate.city === null ? '未披露' : escapeHtml(candidate.city)}｜在招状态：${vacancyChip(candidate.vacancyStatus, candidate.vacancyStatusLabel)}｜声明薪资：${escapeHtml(candidate.salaryText)}</p>`;
   const sourceLine =
     candidate.sourceUrl !== null
@@ -320,7 +325,7 @@ ${candidate.reasons
         ? '<p class="ev-attr">岗位来源：无链接（原值协议受限已隐藏，仅允许 http/https）</p>'
         : '';
   return `<section class="card" id="${escapeHtml(candidate.slug)}" aria-labelledby="${escapeHtml(candidate.slug)}-h">
-<h2 id="${escapeHtml(candidate.slug)}-h">${escapeHtml(candidate.title ?? '未命名岗位')}<span class="ref">（${escapeHtml(candidate.jobId)}）</span></h2>
+<h2 id="${escapeHtml(candidate.slug)}-h">${escapeHtml(candidate.title ?? '未命名岗位')}</h2>
 <p class="action-line">建议动作：${actionChip(candidate.recommendation, candidate.actionLabel)}</p>
 <p class="action-note">${escapeHtml(candidate.actionNote)}</p>
 ${companyLine}
@@ -330,7 +335,7 @@ ${sourceLine}
 ${reasons}
 <h3>硬约束结果</h3>
 ${constraints}
-<h3>五维结果（状态不是好坏分；未知不画绿）</h3>
+<h3>五项判断（资料状态不代表公司好坏）</h3>
 ${dimensions}
 <h3>关键未知</h3>
 ${unknowns}
@@ -338,7 +343,7 @@ ${unknowns}
 ${questions}
 <details class="evidence">
 <summary>证据抽屉（${String(candidate.evidence.length)} 条；原片段、出处、日期、主体、核验状态）</summary>
-${renderEvidenceBody(candidate)}
+${renderEvidenceBody(candidate,options)}
 </details>
 </section>`;
 }
@@ -356,7 +361,7 @@ export function renderReportHtml(vm: ReportViewModel, options: RenderOptions = {
   const firstScreen = summary.hasResults && summary.action !== null
     ? `<div class="card card-primary">
   <h2 id="first-screen" style="border-bottom:none;margin-top:0">首屏结论</h2>
-  <p class="action-line">建议动作：${actionChip(summary.action.recommendation, summary.action.actionLabel)}<span class="ref">（${escapeHtml(summary.action.title ?? '')} ${escapeHtml(summary.action.jobId)}）</span></p>
+  <p class="action-line">建议动作：${actionChip(summary.action.recommendation, summary.action.actionLabel)}<span class="ref">（${escapeHtml(summary.action.title ?? '')}）</span></p>
   <p class="action-note">${escapeHtml(summary.action.actionNote)}</p>
   <h3>最多 3 个关键理由</h3>
   <ul class="reason-list">
@@ -371,14 +376,14 @@ export function renderReportHtml(vm: ReportViewModel, options: RenderOptions = {
   </ul>
   ${summary.moreReasonCount > 0 ? `<p class="ref">另有 ${String(summary.moreReasonCount)} 条次级原因见该候选详情。</p>` : ''}
   <h3>最重要的核验问题</h3>
-  ${summary.primaryQuestion === null ? '<p>无（本候选没有登记核验问题）。</p>' : `<p><strong>${escapeHtml(summary.primaryQuestion.text)}</strong><br><span class="ref">对应目标：${escapeHtml(summary.primaryQuestion.resolves.join('、'))}</span></p>`}
+  ${summary.primaryQuestion === null ? '<p>本候选没有登记核验问题。</p>' : `<p><strong>${escapeHtml(summary.primaryQuestion.text)}</strong></p>`}
 </div>`
     : `<div class="empty-note" role="status">${escapeHtml(summary.emptyNote ?? '没有候选岗位。')}</div>`;
 
   const coverage = `<ul class="meta-list">
 <li>完成度：${escapeHtml(summary.coverage.completenessLabel)}</li>
 ${summary.coverage.keyTopicGaps
-  .map((gap) => `<li>关键主题未决：<strong>${escapeHtml(gap.topicLabel)}</strong><span class="ref">（${escapeHtml(gap.topic)}）</span>——未知不等于安全</li>`)
+  .map((gap) => `<li>仍需核实：<strong>${escapeHtml(gap.topicLabel)}</strong></li>`)
   .join('\n')}
 ${summary.coverage.insufficientNote ? `<li>${escapeHtml(summary.coverage.insufficientNote)}</li>` : ''}
 </ul>
@@ -387,7 +392,7 @@ ${options.compactCoverage ? '<details><summary>查看各类资料覆盖明细</s
 <thead><tr><th scope="col">覆盖主题</th><th scope="col">状态</th><th scope="col">说明</th></tr></thead>
 <tbody>
 ${summary.coverage.rows
-  .map((row) => `<tr><td>${escapeHtml(row.topicLabel)}<br><span class="ref">${escapeHtml(row.topic)}</span></td><td>${escapeHtml(row.statusLabel)}</td><td>${escapeHtml(row.reason)}</td></tr>`)
+  .map((row) => `<tr><td>${escapeHtml(row.topicLabel)}</td><td>${escapeHtml(row.statusLabel)}</td><td>${escapeHtml(row.reason)}</td></tr>`)
   .join('\n')}
 </tbody>
 </table>
@@ -397,28 +402,28 @@ ${options.compactCoverage ? '</details>' : ''}`;
     ? ''
     : `<section class="card" aria-labelledby="profile-h">
 <h2 id="profile-h" style="margin-top:0">画像摘要</h2>
-<p>画像 ${escapeHtml(vm.profile.profileId)}（revision ${String(vm.profile.revision)}）</p>
+<p>侧写版本 ${String(vm.profile.revision)}</p>
 <p>目标：${vm.profile.goals.length > 0 ? escapeHtml(vm.profile.goals.join('；')) : '未填写'}</p>
 <p>已确认硬约束：${
       vm.profile.hardPrefs.length > 0
         ? vm.profile.hardPrefs.map((p) => `${escapeHtml(p.keyLabel)} = ${escapeHtml(p.valueText)}`).join('；')
         : '无'
     }</p>
-<p>已确认经历：${
+<p>${
       vm.profile.confirmedExperiences.length > 0
-        ? vm.profile.confirmedExperiences.map((e) => escapeHtml(`「${e.text}」`)).join('、')
-        : '无'
-    }（自报且本人确认，不等于外部能力证明）</p>
+        ? '已确认经历：' + vm.profile.confirmedExperiences.map((e) => escapeHtml(`「${e.text}」`)).join('、') + '（自报且本人确认，不等于外部能力证明）'
+        : '本流程未采集经历，不能据此推断你没有经历。'
+    }</p>
 </section>`;
 
-  const candidateSections = vm.candidates.map(renderCandidate).join('\n');
+  const candidateSections = vm.candidates.map(c=>renderCandidate(c,options)).join('\n');
 
-  const globalFacts = `<h2 id="facts">事实快照（只读，B 原始事实未被本模块改写）</h2>
+  const globalFacts = `<h2 id="facts">本次分析引用的资料记载</h2><p>这里保留材料中的具体记载和状态；有支持只表示资料支持这项记载，不等于满足需求或公司安全。</p>
 <ul class="snapshot-list">
 ${vm.globalSnapshots.facts
   .map(
     (fact) =>
-      `<li>${escapeHtml(fact.factId)}｜${escapeHtml(fact.key)}=${escapeHtml(fact.valueText)}｜${statusChip(fact.status, fact.statusLabel)}${fact.asOf ? `｜asOf：${escapeHtml(fact.asOf)}` : ''}</li>`,
+      `<li>${escapeHtml(fact.valueText)}｜${statusChip(fact.status, fact.statusLabel)}${fact.asOf ? `｜记录日期：${escapeHtml(fact.asOf)}` : ''}<small class="ref">（资料编号：${escapeHtml(fact.factId)}）</small></li>`,
   )
   .join('\n')}
 </ul>`;
@@ -442,8 +447,8 @@ ${options.demoBadge ? `<p class="badge-demo" role="note">${escapeHtml(options.de
 ${options.dataLabels ? '<p role="note" aria-label="资料来源与核验状态"><span class="badge">资料来源：'+escapeHtml(options.dataLabels.sourceLabel)+'</span> · '+escapeHtml(options.dataLabels.authenticityLabel)+' · <span class="badge">核验状态：'+escapeHtml(options.dataLabels.verificationLabel)+'</span></p>' : ''}
 <ul class="meta-list">
 <li>报告 ${escapeHtml(vm.meta.reportId)}（版本 ${String(vm.meta.version)}）｜生成时间 ${escapeHtml(vm.meta.generatedAt)}</li>
-<li>${options.dataLabels?"录入方式：":"数据模式："}${escapeHtml(options.dataLabels?(vm.meta.mode==='demo'?'开发合成样例':'用户录入（不代表资料真实）'):vm.meta.modeLabel)}｜完成度：${escapeHtml(vm.meta.completenessLabel)}</li>
-<li>规则 ${escapeHtml(vm.meta.ruleVersion)}｜模板 ${escapeHtml(vm.meta.promptVersion)}——${escapeHtml(vm.meta.modelNote)}</li>
+<li>${options.dataLabels?"资料接入：":"数据模式："}${escapeHtml(options.dataLabels?(options.dataLabels.sourceLabel==='本地爬虫数据库'?'本地爬虫数据库':vm.meta.mode==='demo'?'开发合成样例':'用户录入（不代表资料真实）'):vm.meta.modeLabel)}｜完成度：${escapeHtml(vm.meta.completenessLabel)}</li>
+<li>本报告根据材料、适用范围和你的需求逐项判断；核验状态不代表公司好坏。</li>
 </ul>
 ${exportBar}
 </header>

@@ -45,7 +45,9 @@ describe('公共合成样例契约（C_EXPECTED_BEHAVIOR.demo.v1.json）', () =>
     const byKey = new Map(dimensions.map((d) => [d.key, d]));
     assert.strictEqual(byKey.get('identity_credit')?.status, 'unknown');
     assert.strictEqual(byKey.get('business')?.status, 'unknown');
-    assert.strictEqual(byKey.get('role_clarity')?.status, 'unknown');
+    assert.strictEqual(byKey.get('role_clarity')?.status, 'supported');
+    assert.deepStrictEqual(byKey.get('role_clarity')?.factIds, ['fact-demo-1']);
+    assert.ok(byKey.get('role_clarity')?.summary.includes('不能证明职责完整'));
     assert.strictEqual(byKey.get('career_value')?.status, 'unknown');
     assert.strictEqual(byKey.get('personal_fit')?.status, 'contradicted');
     assert.deepStrictEqual(byKey.get('personal_fit')?.factIds, ['fact-demo-1']);
@@ -57,7 +59,7 @@ describe('公共合成样例契约（C_EXPECTED_BEHAVIOR.demo.v1.json）', () =>
     const first = result.report.results[0];
     assert.strictEqual(first?.reasons.some((r) => r.kind === 'unknown' && r.text.includes('固定月薪')), true);
     assert.strictEqual(first?.reasons.some((r) => r.kind === 'unknown' && r.text.includes('在招状态未知')), true);
-    assert.ok(first?.dimensions.find((d) => d.key === 'business')?.summary.includes('not_connected'));
+    assert.ok(first?.dimensions.find((d) => d.key === 'business')?.summary.includes('缺少可引用的经营或财务资料'));
     // 没有为薪资/城市发明 hard 约束条目。
     assert.strictEqual(first?.constraints.some((c) => c.key === 'min_fixed_monthly_salary'), false);
     assert.strictEqual(first?.constraints.some((c) => c.key === 'city'), false);
@@ -79,7 +81,7 @@ describe('公共合成样例契约（C_EXPECTED_BEHAVIOR.demo.v1.json）', () =>
     }
     const career = first?.dimensions.find((d) => d.key === 'career_value');
     assert.deepStrictEqual(career?.factIds, []);
-    assert.ok((career?.summary).includes('不声称'));
+    assert.ok((career?.summary).includes('培训的存在也不保证成长结果'));
     const identity = first?.dimensions.find((d) => d.key === 'identity_credit');
     assert.strictEqual(identity?.status, 'unknown');
   });
@@ -115,7 +117,7 @@ describe('公共合成样例契约（C_EXPECTED_BEHAVIOR.demo.v1.json）', () =>
   it('版本标记非空且明确未运行模型；输入哈希稳定可复现', () => {
     const result = run();
     if (!result.ok) throw new Error('pipeline failed');
-    assert.strictEqual(result.report.ruleVersion, 'c-rules-1.0.0-product-20261003');
+    assert.strictEqual(result.report.ruleVersion, 'c-rules-1.0.0-abc-material-20261003');
     assert.ok((result.report.promptVersion).includes('no-model'));
     const result2 = run();
     if (!result2.ok) throw new Error('pipeline failed');

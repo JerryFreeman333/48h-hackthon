@@ -62,7 +62,7 @@ import { refineReportWithModel } from './model/refine.js';
 import { InMemoryRetryBudget, RetryingModelPort } from './retry-policy.js';
 import type { PipelineInput, PipelineResult, ReportSnapshot } from './pipeline.js';
 
-export const P5_RULE_VERSION = 'c-rules-1.0.0-p5-product-20261003';
+export const P5_RULE_VERSION = 'c-rules-1.0.0-p5-abc-material-20261003';
 export const P5_PROMPT_VERSION = 'template-no-model-p1.0.0';
 
 /** checkpoint 边界阶段名。resume 跳过已存在的阶段。 */

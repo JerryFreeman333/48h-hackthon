@@ -1,20 +1,70 @@
+import {createSelectedNeeds} from './test-needs-fixture';
 import test from "node:test";
 import assert from "node:assert/strict";
-import {mkdtempSync} from "node:fs";
+import {mkdtempSync,readFileSync} from "node:fs";
+import {createHash} from "node:crypto";
 import {tmpdir} from "node:os";
 import {join} from "node:path";
 import {createAHost} from "./a-host";
 import {createDemoFlow} from "./demo-flow";
+import {ReportArchive} from './report-archive';
+import {extractNeedLeads} from './database-investigation';
+import {respondToJobNeeds} from './job-needs';
+import {runMatchPipeline} from '../../modules/c-report/application/pipeline';
 test("user replies create durable new reports without verifying facts, changing evidence or rewriting old exports",async()=>{
- const dir=mkdtempSync(join(tmpdir(),"xray-feedback-")),owner="feedback-owner",a=createAHost(join(dir,"a")),s=a.service.create(owner,{mode:"manual"}),input=a.service.confirm(owner,s.id,{expectedRevision:s.revision,confirmed:true}).export;
- let flow=createDemoFlow({dataDir:join(dir,"reports")});const initial=await flow.runManual(owner,input,{title:"反馈验证岗位",rawJd:"需要核验岗位待遇",companyName:"反馈验证公司"});
+ const dir=mkdtempSync(join(tmpdir(),"xray-feedback-")),owner="feedback-owner",a=createAHost(join(dir,"a")),s=createSelectedNeeds(a.service,owner,{mode:"manual"}),input=a.service.confirm(owner,s.id,{expectedRevision:s.revision,confirmed:true}).export;
+ let flow=createDemoFlow({dataDir:join(dir,"reports")});const initial=await flow.runManual(owner,input,{title:"反馈验证岗位",rawJd:"需要核验岗位待遇",companyName:"反馈验证公司",sourceUrl:'https://example.com/synthetic-feedback'},{kind:'synthetic'});
  const original=await(await flow.read(owner,initial.reportId,"handoff")).json(),oldMd=await(await flow.read(owner,initial.reportId,"md")).text(),question=flow.feedbackContext(owner,initial.reportId).questions[0];assert.ok(question);
  const result=await flow.addFeedback(owner,initial.reportId,{questionId:question.id,answer:'招聘方说固定底薪9000元 <script>alert(1)</script>',sourceUrl:"https://example.com/user-provided",verification:"verified"});
  flow=createDemoFlow({dataDir:join(dir,"reports")});const next=await(await flow.read(owner,result.reportId,"handoff")).json();
  assert.equal(next.verificationNotes[0].verification,"user_provided_unverified");assert.equal(next.feedbackPreviousReportId,initial.reportId);assert.deepEqual(next.report.results,original.report.results);assert.deepEqual(next.bundle.evidence,original.bundle.evidence);assert.deepEqual(next.bundle.facts,original.bundle.facts);assert.equal(next.bundle.retrievedAt,original.bundle.retrievedAt);assert.deepEqual(next.needsResponse,original.needsResponse);
+ assert.deepEqual(next.sourceDeclarations,original.sourceDeclarations);assert.equal(flow.list(owner).find(r=>r.reportId===result.reportId)!.dataStatus.sourceLabel,'合成测试样例');
  assert.equal(await(await flow.read(owner,initial.reportId,"md")).text(),oldMd);assert.deepEqual(await(await flow.read(owner,initial.reportId,"handoff")).json(),original);
  const html=await(await flow.read(owner,result.reportId)).text();assert.match(html,/补充的核验记录/);assert.match(html,/用户提供，待核验/);assert.ok(!html.includes('<script>alert(1)</script>'));assert.match(await(await flow.read(owner,result.reportId,"md")).text(),/尚未独立核验/);
  assert.throws(()=>flow.feedbackContext("other-owner",result.reportId),/无该报告/);await assert.rejects(flow.addFeedback("other-owner",result.reportId,{questionId:question.id,answer:"test"}),/无该报告/);
  await assert.rejects(flow.addFeedback(owner,result.reportId,{questionId:"other-job|city",answer:"test"}),/不属于此报告/);await assert.rejects(flow.addFeedback(owner,result.reportId,{questionId:question.id,answer:"test",sourceUrl:"javascript:alert(1)"}),/http或https/);await assert.rejects(flow.addFeedback(owner,result.reportId,{questionId:question.id,answer:" "}),/填写/);
  const third=await flow.addFeedback(owner,result.reportId,{questionId:question.id,answer:"第二次补充：仍须提供书面证明"});assert.equal(flow.feedbackContext(owner,third.reportId).notes.length,2);
+ const thirdData=await(await flow.read(owner,third.reportId,'handoff')).json();assert.deepEqual(thirdData.sourceDeclarations,original.sourceDeclarations);assert.equal(flow.list(owner).find(r=>r.reportId===third.reportId)!.dataStatus.sourceLabel,'合成测试样例');
+});
+
+test('database-origin metadata survives restarted and repeated feedback without altering archived material',async()=>{
+ const dir=mkdtempSync(join(tmpdir(),'xray-feedback-source-')),owner='feedback-source-owner',a=createAHost(join(dir,'a'));
+ let session=createSelectedNeeds(a.service,owner,{mode:'manual'});
+ const data=structuredClone(session.data);data.answers['growth.priority']='priority';data.answers['growth.details']=['learning'];data.answers['growth.policy']='verify_first';
+ session=a.service.update(owner,session.id,{expectedRevision:session.revision,questionnaireVersion:session.questionnaireVersion,step:8,data});
+ const input=a.service.confirm(owner,session.id,{expectedRevision:session.revision,confirmed:true}).export;
+ const originalDir=join(dir,'original-reports'),copiedDir=join(dir,'copied-reports');
+ const sourceFlow=createDemoFlow({dataDir:originalDir});
+ const initial=await sourceFlow.runManual(owner,input,{title:'合成测试：来源元数据岗位',rawJd:'虚构测试资料：内部培训安排尚待核实，固定月薪未记录。',sourceUrl:'https://example.com/source-metadata-fixture'});
+ const originalArchive=new ReportArchive(originalDir),seed=originalArchive.read(owner,initial.reportId)!;
+ const ownerFolder=createHash('sha256').update(owner).digest('hex');
+ const originalFile=join(originalDir,ownerFolder,initial.reportId+'.json'),originalBytes=readFileSync(originalFile);
+ // Simulate a database-origin archive entirely in two temporary directories. No private SQLite or real history is read.
+ extractNeedLeads(seed.inputs.bundle);
+ const rebuilt=runMatchPipeline({profile:seed.inputs.aExport.UserProfile,intentContext:seed.inputs.aExport.SearchIntent,bundle:seed.inputs.bundle,options:{reportId:seed.report.reportId,generatedAt:seed.report.generatedAt,version:seed.report.version}});
+ assert.equal(rebuilt.ok,true);if(!rebuilt.ok)throw Error('Synthetic archive seed failed');
+ seed.report=rebuilt.report;seed.snapshot.report=structuredClone(rebuilt.report);seed.snapshot.snapshot=rebuilt.snapshot;
+ const evidence=seed.inputs.bundle.evidence[0],job=seed.inputs.bundle.jobs[0];
+ seed.inputs.databaseSource={name:'合成测试数据库元数据',fingerprint:'synthetic-test-only',recordIds:[95],sourceDates:[{evidenceId:evidence.evidenceId,jobId:job.jobId,publishedAtRaw:'2025-04',retrievedAtRaw:'2026-10-02 12:20:00',timezone:'not_recorded',salaryRaw:{min:9000,max:12000,period:'month',basis:'unknown',taxBasis:'unknown',months:null}}],importedFromLocal:true};
+ seed.inputs.needsResponse=respondToJobNeeds(seed.inputs.aExport.JobNeedsSnapshot,seed.inputs.bundle,{sourceDates:seed.inputs.databaseSource.sourceDates});
+ const copiedArchive=new ReportArchive(copiedDir);copiedArchive.save(seed);
+ const copiedFile=join(copiedDir,ownerFolder,initial.reportId+'.json'),copiedBytes=readFileSync(copiedFile);
+ let flow=createDemoFlow({dataDir:copiedDir});
+ const question=flow.feedbackContext(owner,initial.reportId).questions[0];
+ const first=await flow.addFeedback(owner,initial.reportId,{questionId:question.id,answer:'虚构测试回复：招聘方口头说有培训，仍无书面材料',verification:'verified'});
+ async function unchangedSource(reportId:string,count:number){
+  const next=await(await flow.read(owner,reportId,'handoff')).json();
+  assert.deepEqual(next.databaseSource,seed.inputs.databaseSource);assert.deepEqual(next.sourceDeclarations,seed.inputs.sourceDeclarations);
+  assert.deepEqual(next.needsResponse,seed.inputs.needsResponse);assert.deepEqual(next.report.results,seed.report.results);
+  assert.deepEqual(next.bundle.evidence,seed.inputs.bundle.evidence);assert.deepEqual(next.bundle.facts,seed.inputs.bundle.facts);assert.equal(next.bundle.retrievedAt,seed.inputs.bundle.retrievedAt);
+  const learning=next.needsResponse.candidates[0].items.find((item:any)=>item.itemId==='learning');
+  assert.equal(learning.status,'lead');assert.equal(learning.materials[0].sources[0].collectedAt,'2026-10-02 12:20:00');assert.equal(learning.materials[0].sources[0].publishedAt,'2025-04');
+  assert.equal(next.verificationNotes.length,count);assert.ok(next.verificationNotes.every((note:any)=>note.verification==='user_provided_unverified'));
+  assert.equal(flow.list(owner).find(r=>r.reportId===reportId)!.dataStatus.sourceLabel,'本地爬虫数据库');
+  const html=await(await flow.read(owner,reportId)).text();assert.match(html,/本地爬虫数据库/);assert.match(html,/2026-10-02 12:20:00/);assert.match(html,/2025-04/);assert.match(html,/数据库待遇栏记为 9000–12000/);assert.match(html,/不能将它当成固定月薪/);
+  assert.deepEqual(readFileSync(originalFile),originalBytes);assert.deepEqual(readFileSync(copiedFile),copiedBytes);
+ }
+ flow=createDemoFlow({dataDir:copiedDir});await unchangedSource(first.reportId,1);
+ const second=await flow.addFeedback(owner,first.reportId,{questionId:question.id,answer:'第二次虚构测试回复：仍需核对岗位书面待遇和培训安排'});
+ flow=createDemoFlow({dataDir:copiedDir});await unchangedSource(second.reportId,2);
 });

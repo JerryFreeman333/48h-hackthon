@@ -78,14 +78,13 @@ describe('动作优先级（规格 §8）', () => {
     assert.strictEqual(result.report.results[0]?.reasons.some((r) => r.text.includes('主体未定位')), true);
   });
 
-  it('正向依据存在且无阻断 → explore', () => {
-    // 用户接受销售KPI（pass，fact 支持）→ 正向依据 → 无阻断 → explore。
+  it('本人接受一项条件，不等于存在岗位侧正向适配依据', () => {
     const result = runWith(({ profile }) => {
       profile.preferences[0]!.value = true;
     });
     assert.strictEqual(result.ok, true);
     if (!result.ok) return;
-    assert.strictEqual(result.report.results[0]?.recommendation, 'explore');
+    assert.strictEqual(result.report.results[0]?.recommendation, 'verify_first');
   });
 
   it('有材料但无正向依据 → verify_first（不轻易 explore，C-10 本地预案）', () => {

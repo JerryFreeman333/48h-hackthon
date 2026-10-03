@@ -1,3 +1,4 @@
+import {createSelectedNeeds} from './test-needs-fixture';
 import test from "node:test";
 import assert from "node:assert/strict";
 import {mkdtempSync} from "node:fs";
@@ -6,7 +7,7 @@ import {join} from "node:path";
 import {createAHost} from "./a-host";
 import {createDemoFlow} from "./demo-flow";
 test("material updates keep job lineage and old snapshots while rebuilding only the new unverified JD",async()=>{
- const dir=mkdtempSync(join(tmpdir(),"xray-material-")),owner="material-owner",a=createAHost(join(dir,"a")),initial=a.service.create(owner,{mode:"manual"});
+ const dir=mkdtempSync(join(tmpdir(),"xray-material-")),owner="material-owner",a=createAHost(join(dir,"a")),initial=createSelectedNeeds(a.service,owner,{mode:"manual"});
  const data=structuredClone(initial.data);data.conditions.find((c:any)=>c.key==="accept_sales_kpi").value=false;data.conditions.find((c:any)=>c.key==="accept_sales_kpi").strength="hard";
  const session=a.service.update(owner,initial.id,{expectedRevision:initial.revision,questionnaireVersion:initial.questionnaireVersion,step:8,data}),input=a.service.confirm(owner,session.id,{expectedRevision:session.revision,confirmed:true}).export;
  let flow=createDemoFlow({dataDir:join(dir,"reports")});const first=await flow.runManual(owner,input,{title:"人工岗位原版",companyName:"原主体线索",rawJd:"人工测试。销售KPI：有。",sourceUrl:"https://example.com/old"}),old=await (await flow.read(owner,first.reportId,"handoff")).json(),oldMd=await (await flow.read(owner,first.reportId,"md")).text();

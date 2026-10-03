@@ -1,3 +1,4 @@
+import {createSelectedNeeds,requiredNeedsData} from './test-needs-fixture';
 import {GET as materialGet,POST as materialPost} from "../../app/api/integration/reports/[id]/materials/route";
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -23,7 +24,7 @@ test("mounted product routes enforce owner/origin/JSON boundaries before mutatin
  assert.equal((await manual("{broken")).status,422);assert.equal((await manual({job})).status,422);
  assert.equal(a.service.bootstrap(owner).sessions.length,0);
  assert.equal((await manual({job:{title:"",rawJd:""},confirmUnknownNeeds:true})).status,422);assert.equal(a.service.bootstrap(owner).sessions.length,0);
- const session=a.service.create(owner,{mode:"manual"}),confirmed=a.service.confirm(owner,session.id,{expectedRevision:session.revision,confirmed:true});
+ const session=createSelectedNeeds(a.service,owner,{mode:"manual"}),confirmed=a.service.confirm(owner,session.id,{expectedRevision:session.revision,confirmed:true});
  const r1=await manual({job,sessionId:session.id,revision:1});assert.equal(r1.status,200);const first=await r1.json();assert.deepEqual(first.needsSession,{sessionId:session.id,revision:1});const context={params:Promise.resolve({id:first.reportId})};
  const r2=await manual({job:{title:"路由测试乙",rawJd:"人工路由验证岗位乙"},sessionId:session.id,revision:1});assert.equal(r2.status,200);const second=await r2.json();
  const get=(path:string,c=cookie)=>new Request("http://127.0.0.1"+path,{headers:{cookie:c}});
@@ -47,8 +48,17 @@ test("mounted product routes enforce owner/origin/JSON boundaries before mutatin
  assert.equal(flow.list(owner).length,4);
  assert.equal((await materialPost(post("/api/integration/reports/id/materials",{...job,sameJobConfirmed:true}),context)).status,409);
  assert.equal((await materialPost(post("/api/integration/reports/id/materials",{sameJobConfirmed:true,title:"路由测试甲",rawJd:"新人工路由验证岗位甲：销售KPI：无。"}),context)).status,200);
- const unknownResponse=await manual({job:{title:"暂未填写需求的甲",rawJd:"本地测试甲"},confirmUnknownNeeds:true});assert.equal(unknownResponse.status,200);const unknown=await unknownResponse.json();
- const reusedResponse=await manual({job:{title:"暂未填写需求的乙",rawJd:"本地测试乙"},...unknown.needsSession});assert.equal(reusedResponse.status,200);const reused=await reusedResponse.json();assert.deepEqual(reused.needsSession,unknown.needsSession);assert.equal(a.service.bootstrap(owner).sessions.length,2);
- assert.equal((await comparePost(post("/api/integration/compare",{reportIds:[unknown.reportId,reused.reportId]}))).status,200);
+ const reportsBeforeUnknown=flow.list(owner).length;
+ const unknownResponse=await manual({job:{title:"暂未填写需求的甲",rawJd:"本地测试甲"},confirmUnknownNeeds:true});
+ assert.equal(unknownResponse.status,422);assert.match((await unknownResponse.json()).error.message,/请选择本次主要寻找的工作机会/);
+ assert.equal(flow.list(owner).length,reportsBeforeUnknown);
+ const drafts=a.service.bootstrap(owner).sessions;assert.equal(drafts.length,2);
+ const unconfirmed=drafts.find((draft:any)=>draft.id!==session.id)!;assert.deepEqual(unconfirmed.confirmedRevisions,[]);
+ const incomplete=a.service.get(owner,unconfirmed.id);assert.deepEqual(incomplete.data.goalIds,[]);assert.deepEqual(incomplete.data.industryTags,[]);assert.deepEqual(incomplete.data.roleTypes,[]);
+ const filled=a.service.update(owner,incomplete.id,{expectedRevision:incomplete.revision,questionnaireVersion:incomplete.questionnaireVersion,step:8,data:requiredNeedsData(incomplete.data)});
+ const selected=a.service.confirm(owner,filled.id,{expectedRevision:filled.revision,confirmed:true});
+ const firstSelected=await manual({job:{title:"已确认需求的甲",rawJd:"本地测试甲"},sessionId:filled.id,revision:selected.export.UserProfile.revision});assert.equal(firstSelected.status,200);const selectedReport=await firstSelected.json();
+ const reusedResponse=await manual({job:{title:"已确认需求的乙",rawJd:"本地测试乙"},...selectedReport.needsSession});assert.equal(reusedResponse.status,200);const reused=await reusedResponse.json();assert.deepEqual(reused.needsSession,selectedReport.needsSession);assert.equal(a.service.bootstrap(owner).sessions.length,2);
+ assert.equal((await comparePost(post("/api/integration/compare",{reportIds:[selectedReport.reportId,reused.reportId]}))).status,200);
  }finally{globals.__xrayAHost=oldA;globals.__xrayDemoFlow=oldFlow;}
 });

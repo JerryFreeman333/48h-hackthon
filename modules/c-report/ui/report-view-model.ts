@@ -122,6 +122,7 @@ const TOPIC_LABELS: Record<string, string> = {
   company_identity: '公司主体核验',
   current_real_vacancy: '真实在招状态',
   salary_income_assessability: '收入可判定性',
+  'job.sales_kpi': '销售签单考核',
 };
 
 export function topicLabel(topic: string): string {
@@ -351,9 +352,9 @@ const VACANCY_LABELS: Record<Job['vacancyStatus'], string> = {
 };
 
 const IDENTITY_LABELS: Record<Company['identityStatus'], string> = {
-  confirmed: 'B 声明已确认（非现实核验结果）',
-  ambiguous: '模糊',
-  unresolved: '未解决',
+  confirmed: '资料中已对应主体，仍需核对岗位签约关系',
+  ambiguous: '已有主体线索，品牌、法人或集团对应关系待确认',
+  unresolved: '主体信息尚不足',
 };
 
 function toReasonVm(reason: MatchReportResult['reasons'][number]): ReasonVm {
@@ -414,7 +415,7 @@ function buildUnknowns(result: MatchReportResult, coverage: Coverage[]): Unknown
         source: 'constraint',
         key: constraint.key,
         label: constraintKeyLabel(constraint.key),
-        detail: '已确认硬约束无法判定：岗位侧材料不足或未经核验，保持 unknown（未知不等于安全）。',
+        detail: '已确认硬条件尚无法判定：对应岗位资料不足或未经核验，未知不等于安全。',
       });
     }
   }
@@ -532,7 +533,7 @@ function buildComparison(
   }));
   return {
     focusedKey,
-    note: '本表按同一维度横向比较；候选保持材料原始顺序，unknown 不计为 0、不参与排序，本表不产生排名、冠军或综合分。',
+    note: '本表逐项比较资料；候选保持原有顺序。未知保留为未知，资料状态不代表公司好坏。本表不产生排名、冠军或综合分。',
     columns,
     rows,
   };
@@ -612,7 +613,7 @@ export function buildReportViewModel(input: ViewModelInput): ReportViewModel {
     mode: report.mode,
     modeLabel: MODE_LABELS[report.mode],
     completeness: report.completeness,
-    completenessLabel: report.completeness === 'complete_for_scope' ? '声明范围内完整' : '部分资料（partial）',
+    completenessLabel: report.completeness === 'complete_for_scope' ? '声明范围内完整' : '部分资料',
     ruleVersion: report.ruleVersion,
     promptVersion: report.promptVersion,
     modelNote: '本报告由确定性规则模板生成，未运行任何模型。',

@@ -4,6 +4,7 @@ import {mkdtempSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {createAHost} from './a-host';
+import {requiredNeedsData} from './test-needs-fixture';
 import {GET as bExport} from '../../app/api/b/bundles/[id]/export/route';
 import {GET as cExport} from '../../app/api/c/reports/[id]/export/route';
 import {GET as cSnapshot} from '../../app/api/c/reports/[id]/snapshot/route';
@@ -33,7 +34,9 @@ test('saved needs stay readable by their owner without returning an export packa
  const boot=await a.handle(new Request('http://127.0.0.1/api/a/needs/bootstrap'));
  const cookie=boot.headers.get('set-cookie')!.split(';')[0];
  const request=(p:string,body?:unknown)=>new Request('http://127.0.0.1/api/a/needs'+p,{method:body?'POST':'GET',headers:{cookie,'content-type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
- const created=await (await a.handle(request('/sessions',{mode:'manual'}))).json();
+ const draft=await (await a.handle(request('/sessions',{mode:'manual'}))).json();
+ const update=await a.handle(new Request('http://127.0.0.1/api/a/needs/sessions/'+draft.id,{method:'PATCH',headers:{cookie,'content-type':'application/json'},body:JSON.stringify({expectedRevision:draft.revision,questionnaireVersion:draft.questionnaireVersion,step:8,data:requiredNeedsData(draft.data)})}));
+ assert.equal(update.status,200);const created=await update.json();
  const response=await a.handle(request('/sessions/'+created.id+'/confirm',{expectedRevision:created.revision,confirmed:true}));
  assert.equal(response.status,200);const confirmation=await response.json();
  assert.ok(!('export' in confirmation));assert.ok(confirmation.view.JobNeedsSnapshot.topics.length===7);
