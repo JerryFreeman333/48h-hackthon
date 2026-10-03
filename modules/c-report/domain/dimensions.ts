@@ -68,9 +68,9 @@ function buildBusiness(input: DimensionBuildInput): MatchReportResultDimension {
 
 function buildRoleClarity(input: DimensionBuildInput): MatchReportResultDimension {
   const { job, factIndex } = input;
-  const salesFact = supportedSalesFact(job, factIndex);
+  const salesFact = salesFactsForJob(job, factIndex).find(f=>f.status==='supported'&&typeof f.value==='boolean');
   const salesText = salesFact
-    ? `考核方面：job.sales_kpi=supported（事实 ${salesFact.factId}，来源证据片段）明确销售签单指标存在。`
+    ? `考核方面：来源材料${salesFact.value?'声明存在销售签单指标':'声明无销售KPI'}（事实 ${salesFact.factId}）。这是材料中的声明；实际执行与其他考核仍待核实。`
     : '考核方面：没有已协调的 supported 销售KPI事实，是否存在其他考核未知。';
   const summary =
     `【证据】岗位名称「${job.title}」，JD 原文列出的任务需以原文为准（evidenceSnapshot 中可查）；${salesText}` +
@@ -95,8 +95,8 @@ function buildCareerValue(input: DimensionBuildInput): MatchReportResultDimensio
     .join('、');
   const summary =
     `【证据】${goalsText}已确认经历：${experiencesText || '无'}。` +
-    `【推断】目标与 JD 中「收集产品反馈」等任务存在表面关联线索，但自报经历与问卷兴趣不证明实际能力；` +
-    `本报告不声称该岗位已被证明能带来产品设计或产品交付成长。` +
+    `【推断】本人目标与岗位「${job.title}」的具体职责是否相关尚未核验；自报经历与问卷兴趣不证明实际能力。` +
+    `本报告不声称该岗位已被证明能带来目标技能的成长。` +
     `【缺口】成长价值未经真实材料验证；能否积累目标技能需通过面试核验（见 questions）。` +
     `${salesFact ? `注意：岗位考核含销售签单指标（事实 ${salesFact.factId}），时间分配会影响目标技能的积累空间。` : ''}`;
   return { key: 'career_value', summary, status: 'unknown', factIds: [] };
@@ -127,7 +127,7 @@ function buildPersonalFit(input: DimensionBuildInput): MatchReportResultDimensio
       `【证据】全部可判定的已确认硬约束通过（${passKeys}）。` +
       `【缺口】${unknownText}${softText}已确认硬约束通过不等于整体适合，也不证明能力匹配。` +
       `【推断】经历对具体任务的支持需有相应已确认材料；问卷兴趣不作为能力依据。`;
-    return { key: 'personal_fit', summary, status: 'supported', factIds: [...new Set(passes.flatMap((c) => c.factIds))] };
+    return { key: 'personal_fit', summary, status: unknowns.length > 0 ? 'unknown' : 'supported', factIds: [...new Set(passes.flatMap((c) => c.factIds))] };
   }
 
   const summary =

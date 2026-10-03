@@ -23,10 +23,12 @@ export function extractJobFacts(items: Evidence[]): Fact[] {
     // Anonymous and company-level material never becomes a job/company assertion.
     if (source.scope !== "job" || !source.jobId || !["user_submitted_jd", "interview_feedback", "user_material"].includes(source.sourceType)) continue;
     const values = new Set<boolean>();
-    for (const sentence of source.excerpt.split(/[。；;\n]/u).map(part => part.trim()).filter(Boolean)) {
-      // Deliberately narrow grammar. Unsupported paraphrases stay unknown.
-      if (/^(?:销售KPI|销售指标)\s*[:：]\s*(?:无|不考核|否)$/iu.test(sentence) || /^(?:本岗位)?(?:不承担|不考核)销售(?:KPI|指标)$/iu.test(sentence)) values.add(false);
-      if (/^(?:销售KPI|销售指标)\s*[:：]\s*(?:有|考核|是)$/iu.test(sentence) || /^(?:本岗位)?(?:承担|考核)销售(?:KPI|指标)$/iu.test(sentence) || /^(?:负责客户拓展[，,]\s*)?完成签单指标(?:[，,]收集产品反馈)?$/u.test(sentence)) values.add(true);
+    for (const sentence of source.excerpt.split(/[。；;\n，,]/u).map(part => part.trim()).filter(Boolean)) {
+      // Only explicit bounded claims; negated, conditional and contradictory statements never imply true.
+      const claim=sentence.replace(/^(?:黑箱虚构资料[：:]\s*|修订[：:]\s*)/u,'');
+      if (/^(?:销售KPI|销售指标)\s*[:：]\s*(?:无|不考核|否)$/iu.test(claim) || /^(?:本岗位)?(?:不承担|不考核)销售(?:KPI|指标)$/iu.test(claim)) values.add(false);
+      if(/^(?:本岗位|岗位)?(?:无|没有|不设|不设置)销售(?:KPI|指标)(?:考核)?$/iu.test(claim))values.add(false);
+      if (/^(?:销售KPI|销售指标)\s*[:：]\s*(?:有|考核|是)$/iu.test(claim) || /^(?:本岗位)?(?:承担|考核)销售(?:KPI|指标)$/iu.test(claim) || /^(?:负责客户拓展[，,]\s*)?完成签单指标(?:[，,]收集产品反馈)?$/u.test(claim)) values.add(true);
     }
     if (!values.size) continue;
     const key = JSON.stringify([source.companyId, source.jobId]);

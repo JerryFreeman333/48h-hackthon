@@ -1,0 +1,20 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {mkdtempSync} from "node:fs";
+import {tmpdir} from "node:os";
+import {join} from "node:path";
+import {createAHost} from "./a-host";
+import {createDemoFlow} from "./demo-flow";
+test("user replies create durable new reports without verifying facts, changing evidence or rewriting old exports",async()=>{
+ const dir=mkdtempSync(join(tmpdir(),"xray-feedback-")),owner="feedback-owner",a=createAHost(join(dir,"a")),s=a.service.create(owner,{mode:"manual"}),input=a.service.confirm(owner,s.id,{expectedRevision:s.revision,confirmed:true}).export;
+ let flow=createDemoFlow({dataDir:join(dir,"reports")});const initial=await flow.runManual(owner,input,{title:"反馈验证岗位",rawJd:"需要核验岗位待遇",companyName:"反馈验证公司"});
+ const original=await(await flow.read(owner,initial.reportId,"handoff")).json(),oldMd=await(await flow.read(owner,initial.reportId,"md")).text(),question=flow.feedbackContext(owner,initial.reportId).questions[0];assert.ok(question);
+ const result=await flow.addFeedback(owner,initial.reportId,{questionId:question.id,answer:'招聘方说固定底薪9000元 <script>alert(1)</script>',sourceUrl:"https://example.com/user-provided",verification:"verified"});
+ flow=createDemoFlow({dataDir:join(dir,"reports")});const next=await(await flow.read(owner,result.reportId,"handoff")).json();
+ assert.equal(next.verificationNotes[0].verification,"user_provided_unverified");assert.equal(next.feedbackPreviousReportId,initial.reportId);assert.deepEqual(next.report.results,original.report.results);assert.deepEqual(next.bundle.evidence,original.bundle.evidence);assert.deepEqual(next.bundle.facts,original.bundle.facts);assert.equal(next.bundle.retrievedAt,original.bundle.retrievedAt);assert.deepEqual(next.needsResponse,original.needsResponse);
+ assert.equal(await(await flow.read(owner,initial.reportId,"md")).text(),oldMd);assert.deepEqual(await(await flow.read(owner,initial.reportId,"handoff")).json(),original);
+ const html=await(await flow.read(owner,result.reportId)).text();assert.match(html,/补充的核验记录/);assert.match(html,/用户提供，待核验/);assert.ok(!html.includes('<script>alert(1)</script>'));assert.match(await(await flow.read(owner,result.reportId,"md")).text(),/尚未独立核验/);
+ assert.throws(()=>flow.feedbackContext("other-owner",result.reportId),/无该报告/);await assert.rejects(flow.addFeedback("other-owner",result.reportId,{questionId:question.id,answer:"test"}),/无该报告/);
+ await assert.rejects(flow.addFeedback(owner,result.reportId,{questionId:"other-job|city",answer:"test"}),/不属于此报告/);await assert.rejects(flow.addFeedback(owner,result.reportId,{questionId:question.id,answer:"test",sourceUrl:"javascript:alert(1)"}),/http或https/);await assert.rejects(flow.addFeedback(owner,result.reportId,{questionId:question.id,answer:" "}),/填写/);
+ const third=await flow.addFeedback(owner,result.reportId,{questionId:question.id,answer:"第二次补充：仍须提供书面证明"});assert.equal(flow.feedbackContext(owner,third.reportId).notes.length,2);
+});

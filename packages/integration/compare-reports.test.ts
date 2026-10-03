@@ -1,0 +1,31 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {mkdtempSync} from "node:fs";
+import {tmpdir} from "node:os";
+import {join} from "node:path";
+import {createAHost} from "./a-host";
+import {createDemoFlow} from "./demo-flow";
+import {buildReportViewModel} from "../../modules/c-report/ui/report-view-model";
+test("comparison uses the same confirmed needs and preserves all original scopes without ranking",async()=>{
+ const dir=mkdtempSync(join(tmpdir(),"xray-compare-")),a=createAHost(join(dir,"a")),owner="compare-owner",s=a.service.create(owner,{mode:"manual"}),input=a.service.confirm(owner,s.id,{expectedRevision:s.revision,confirmed:true}).export;
+ let flow=createDemoFlow({dataDir:join(dir,"reports")});
+ const r1=await flow.runManual(owner,input,{title:"岗位甲",rawJd:"甲岗位的实际描述",companyName:"甲公司"});
+ const r2=await flow.runManual(owner,input,{title:"岗位乙",rawJd:"乙岗位的实际描述",companyName:"乙公司"});
+ const first=await(await flow.read(owner,r1.reportId,"handoff")).json();
+ flow=createDemoFlow({dataDir:join(dir,"reports")});
+ const result=await flow.compare(owner,[r1.reportId,r2.reportId]),combined=await(await flow.read(owner,result.reportId,"handoff")).json();
+ assert.equal(combined.bundle.jobs.length,2);assert.equal(combined.report.results.length,2);assert.equal(combined.bundle.companies.length,2);assert.equal(combined.bundle.evidence.length,2);assert.deepEqual(combined.bundle.jobs[0],first.bundle.jobs[0]);assert.equal(combined.bundle.retrievedAt,first.bundle.retrievedAt);
+ const exported=await(await flow.read(owner,result.reportId,"json")).json();
+ const vm=buildReportViewModel({report:combined.report,snapshot:{snapshot:exported} as any});
+ for(const candidate of vm.candidates){assert.ok(candidate.company);assert.equal(candidate.unknowns.filter(i=>i.source==="coverage").length,combined.bundle.coverage.filter((row:any)=>row.status!=="available"&&(row.jobId===candidate.jobId||(row.jobId===null&&row.companyId!==null&&row.companyId===candidate.company?.companyId))).length);}
+ assert.deepEqual(combined.researchRun.sourceReportIds,[r1.reportId,r2.reportId]);
+ assert.deepEqual(await(await flow.read(owner,r1.reportId,"handoff")).json(),first);
+ assert.match(await(await flow.read(owner,result.reportId)).text(),/不产生排名、冠军或综合分/);
+ await assert.rejects(flow.compare("other-owner",[r1.reportId,r2.reportId]),/无所选报告/);
+ await assert.rejects(flow.compare(owner,[r1.reportId,r1.reportId]),/不同的岗位报告/);
+ const other=a.service.create(owner,{mode:"manual"}),different=a.service.confirm(owner,other.id,{expectedRevision:other.revision,confirmed:true}).export;
+ const r3=await flow.runManual(owner,different,{title:"其他记录",rawJd:"不同需求记录的岗位"});
+ await assert.rejects(flow.compare(owner,[r1.reportId,r3.reportId]),/同一需求记录/);
+ const duplicate=await flow.runManual(owner,input,{title:"岗位甲",rawJd:"甲岗位的实际描述",companyName:"甲公司"});
+ await assert.rejects(flow.compare(owner,[r1.reportId,duplicate.reportId]),/重复报告/);
+});

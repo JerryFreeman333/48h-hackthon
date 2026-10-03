@@ -1,50 +1,24 @@
 /**
- * /reports —— C 模块正式报告页面（C §6.2 根挂载：P3 集成片段，完整实现版）。
- *
- * 与 /demo/c 区别：演示入口 vs 正式入口。
- * - /demo/c：fake runtime + 公共合成 fixtures（演示用，非生产）
- * - /reports：正式报告页（生产前需替换 ctx 为公共 runtime adapter）
- *
- * URL 参数：
- * - reportId=<id>：必需；指定要查看的报告
- * - angle=<dimensionKey>：可选；比较视图查看角度
- *
- * 数据流：HTTP fetch 同进程的 C API 路由
- * 1. GET /api/c/reports/:id —— 公共 MatchReport + diagnostics
- * 2. GET /api/c/reports/:id/snapshot —— C 私有 snapshot（含 bundle）
- * 3. buildReportViewModel → renderReportHtml（纯函数）
- *
- * 边界：
- * - 当前 Next.js self-fetch 在 SSR 阶段走同进程 in-memory fetch，
- *   由 app/api/c/<id>/route.ts（C 路由薄封装）直接调真实 handler（不真实 HTTP）。
- * - 生产部署前：维护人需替换 ctx 为公共 runtime adapter（持久 + 真实鉴权）。
+ * C 报告演示宿主：同进程共享内存，不依赖 HTTP self-fetch 或监听端口。
+ * 当前只读固定 demo 用户的 demo 报告；生产需实际账户与持久化。
  */
+import React from "react";
+import { handleGetReport, handleGetReportSnapshot } from "@/modules/c-report/application/api/handlers";
+import { createSharedCApiContext } from "@/modules/c-report/adapters/memory/context";
+import type { MatchReport } from "@/modules/c-report/domain/contract";
+import type { StoredReportSnapshot } from "@/modules/c-report/application/ports";
 import { buildReportViewModel } from "@/modules/c-report/ui/report-view-model";
 import { renderReportHtml } from "@/modules/c-report/ui/render-html";
 
 export const dynamic = "force-dynamic";
 
-interface ReportApiResponse {
-  report: Parameters<typeof buildReportViewModel>[0]["report"];
-  diagnostics: unknown;
-}
+const DEMO_TOKEN = "Bearer token-user-demo-1";
 
-interface SnapshotApiResponse {
-  snapshot: Parameters<typeof buildReportViewModel>[0]["snapshot"];
-}
-
-async function fetchC<T>(path: string): Promise<T> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
-  const resp = await fetch(`${baseUrl}${path}`, {
-    headers: {
-      "content-type": "application/json",
-      authorization: "Bearer token-user-demo-1",
-    },
-  });
-  if (!resp.ok) {
-    throw new Error(`C API ${path} -> ${String(resp.status)} ${await resp.text().catch(() => "")}`);
+async function readResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    throw new Error(`C 报告读取失败：${String(response.status)} ${await response.text()}`);
   }
-  return (await resp.json()) as T;
+  return await response.json() as T;
 }
 
 export default async function ReportsPage({
@@ -56,33 +30,46 @@ export default async function ReportsPage({
   if (!reportId) {
     return (
       <main className="reports-page">
-        <h1>C 报告页面</h1>
-        <p>请通过 ?reportId=&lt;id&gt; 指定报告。例如 <code>/reports?reportId=report-demo-1</code>。</p>
-        <p>演示入口：<a href="/demo/c">/demo/c</a></p>
+        <h1>C 报告演示页面</h1>
+        <p>请通过 ?reportId=&lt;id&gt; 指定在当前演示进程创建的报告。</p>
+        <p>当前使用本地内存和固定演示用户，服务重启后报告会丢失。</p>
+        <p>独立演示入口：<a href="/demo/c">/demo/c</a></p>
       </main>
     );
   }
 
   try {
+    const context = createSharedCApiContext();
+    // Request 仅供框架无关 handler 鉴权；不会发起网络请求。
+    const request = new Request(`http://c-demo.invalid/api/c/reports/${encodeURIComponent(reportId)}`, {
+      headers: { authorization: DEMO_TOKEN },
+    });
     const [reportResp, snapshotResp] = await Promise.all([
-      fetchC<ReportApiResponse>(`/api/c/reports/${encodeURIComponent(reportId)}`),
-      fetchC<SnapshotApiResponse>(`/api/c/reports/${encodeURIComponent(reportId)}/snapshot`),
+      handleGetReport(context, request, reportId).then(readResponse<{ report: MatchReport }>),
+      handleGetReportSnapshot(context, request, reportId).then(readResponse<{ snapshot: StoredReportSnapshot["snapshot"] }>),
     ]);
+    if (reportResp.report.mode !== "demo" || snapshotResp.snapshot.report.mode !== "demo") {
+      throw new Error("当前演示宿主只支持 mode=demo 的报告。");
+    }
+    // snapshot API 返回内层 artifact；ViewModel 需要外层 StoredReportSnapshot。
+    // handler 已完成归属检查，读取该不可变版本，避免误用 artifact 形状。
+    const report = snapshotResp.snapshot.report;
+    const snapshot = await context.stores.reportSnapshots.read(report.projectId, `${report.reportId}:v${report.version}`);
+    if (snapshot === null) {
+      throw new Error("报告的不可变快照已不可用，请重新生成演示报告。");
+    }
 
     const html = renderReportHtml(
       buildReportViewModel({
-        report: reportResp.report,
-        snapshot: snapshotResp.snapshot,
+        report,
+        snapshot,
         comparisonAngle: angle ?? null,
       }),
       {
-        title: "求职 X-Ray | C 匹配报告",
-        exportLinks: {
-          md: `/api/c/reports/${encodeURIComponent(reportId)}/export?format=md`,
-          json: `/api/c/reports/${encodeURIComponent(reportId)}/export?format=json`,
-        },
+        title: "求职 X-Ray | C 匹配报告（演示）",
+        demoBadge: "当前是演示报告宿主：固定演示用户、本地内存；不代表真实鉴权或生产服务。",
         angleUrlPattern: `/reports?reportId=${encodeURIComponent(reportId)}&angle={key}`,
-        footerNote: "C 模块正式报告页（demo runtime 接入；生产前需替换 ctx 为公共 runtime adapter）。",
+        footerNote: "报告使用同一进程中的演示存储和不可变快照；服务重启后需要重新生成。",
       },
     );
     return <div dangerouslySetInnerHTML={{ __html: html }} />;
@@ -90,9 +77,9 @@ export default async function ReportsPage({
     const msg = err instanceof Error ? err.message : String(err);
     return (
       <main className="reports-page">
-        <h1>报告读取失败</h1>
+        <h1>演示报告读取失败</h1>
         <pre>{msg}</pre>
-        <p>演示入口：<a href="/demo/c">/demo/c</a></p>
+        <p>独立演示入口：<a href="/demo/c">/demo/c</a></p>
       </main>
     );
   }

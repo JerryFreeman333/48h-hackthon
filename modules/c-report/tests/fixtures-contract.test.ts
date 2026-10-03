@@ -115,7 +115,7 @@ describe('公共合成样例契约（C_EXPECTED_BEHAVIOR.demo.v1.json）', () =>
   it('版本标记非空且明确未运行模型；输入哈希稳定可复现', () => {
     const result = run();
     if (!result.ok) throw new Error('pipeline failed');
-    assert.strictEqual(result.report.ruleVersion, 'c-rules-1.0.0-p1');
+    assert.strictEqual(result.report.ruleVersion, 'c-rules-1.0.0-product-20261003');
     assert.ok((result.report.promptVersion).includes('no-model'));
     const result2 = run();
     if (!result2.ok) throw new Error('pipeline failed');

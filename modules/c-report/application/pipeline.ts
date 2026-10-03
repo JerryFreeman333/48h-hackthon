@@ -32,7 +32,7 @@ import type { RunDiagnostics, StageRecord } from './diagnostics.js';
 import { createDiagnostics } from './diagnostics.js';
 import { hashInputObject } from './hash.js';
 
-export const RULE_VERSION = 'c-rules-1.0.0-p1';
+export const RULE_VERSION = 'c-rules-1.0.0-product-20261003';
 /** 明确非空模板版本标记：P1 未运行任何模型（§11）。 */
 export const PROMPT_VERSION = 'template-no-model-p1.0.0';
 

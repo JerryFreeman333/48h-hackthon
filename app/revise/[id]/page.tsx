@@ -1,0 +1,12 @@
+"use client";
+import {useEffect,useState,use} from "react";
+import {PageHeader} from "@/packages/ui";
+type Choice={sessionId:string;revision:number};
+type Context={profileRevision:number;sessionId:string|null;jobTitles:string[];choices:Choice[]};
+export default function RevisePage({params}:{params:Promise<{id:string}>}){
+ const {id}=use(params),[context,setContext]=useState<Context|null>(null),[selection,setSelection]=useState(""),[error,setError]=useState(""),[busy,setBusy]=useState(false),[result,setResult]=useState<{reportUrl:string;warnings:string[]}|null>(null);
+ async function refresh(){setError("");setResult(null);setSelection("");setContext(null);try{const response=await fetch("/api/integration/reports/"+id+"/revisions",{cache:"no-store"});const data=await response.json();if(!response.ok)throw Error(data.error?.message??"读取失败");setContext(data);setSelection(data.choices.length?JSON.stringify(data.choices.at(-1)):"");}catch(e){setError(e instanceof Error?e.message:"读取失败");}}
+ useEffect(()=>{void refresh();},[id]);
+ async function reanalyze(){setBusy(true);setError("");setResult(null);try{const response=await fetch("/api/integration/reports/"+id+"/revisions",{method:"POST",headers:{"content-type":"application/json"},body:selection});const data=await response.json();if(!response.ok)throw Error(data.error?.message??"重新分析失败");setResult(data);}catch(e){setError(e instanceof Error?e.message:"重新分析失败");}finally{setBusy(false);}}
+ return <main><PageHeader title="需求变了，重新看这份工作"><p>复用上次岗位和证据，生成新报告并解释需求变化。原报告保持不变。</p></PageHeader>{context&&<section className="panel"><h2>{context.jobTitles.join("、")||"暂无候选岗位"}</h2><p>上份报告使用需求版本 {context.profileRevision}。本次不重新调查，也不更新资料日期。</p>{context.sessionId&&<p><a href={"/profile?sessionId="+context.sessionId+"&returnTo=/revise/"+id}>打开这份需求，修改并确认新版本 →</a></p>}<button onClick={refresh} disabled={busy}>刷新已确认版本</button>{context.choices.length?<label>更新的需求版本<select value={selection} disabled={busy} onChange={e=>{setSelection(e.target.value);setResult(null);setError("");}}>{context.choices.map(c=><option key={c.revision} value={JSON.stringify(c)}>需求版本 {c.revision}</option>)}</select></label>:<p>还没有更新的确认版本。请先修改并确认需求，再返回这里刷新。</p>}<button disabled={!selection||busy} onClick={reanalyze}>{busy?"重新分析中…":"用新需求生成报告"}</button></section>}{error&&<p role="alert">{error}</p>}{result&&<section className="panel"><h2>新报告已保存</h2>{result.warnings.map(w=><p key={w}>{w}</p>)}<a href={result.reportUrl}>查看新报告与变化 →</a></section>}<p><a href={"/flow/reports/"+id}>回到原始报告</a> · <a href="/history">我的报告</a></p></main>;
+}

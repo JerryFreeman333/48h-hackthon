@@ -204,14 +204,24 @@ export async function refineReportWithModel(
         continue;
       }
       callIndex += 1;
-      const repair = await callModel(
-        port,
-        budget,
-        { system: SYSTEM_PROMPT, prompt: buildRepairPrompt(prompt, text, verdict.errors) },
-        config,
-        callIndex,
-        modelUsage,
-      );
+      let repair: Awaited<ReturnType<typeof callModel>>;
+      try {
+        repair = await callModel(
+          port,
+          budget,
+          { system: SYSTEM_PROMPT, prompt: buildRepairPrompt(prompt, text, verdict.errors) },
+          config,
+          callIndex,
+          modelUsage,
+        );
+      } catch (error) {
+        if (error instanceof ModelBudgetError) {
+          notes.push(`jobId=${result.jobId}：修复轮${error.message}；剩余候选全部保持模板文本。`);
+          diagnostics.stages.push({ stage: 'model_refine', status: 'skipped', detail: `${error.code}: 修复轮 ${error.message}` } satisfies StageRecord);
+          break;
+        }
+        throw error;
+      }
       if (repair.ok) {
         verdict = validateRefineOutput(repair.text, ctx);
       } else {

@@ -5,6 +5,7 @@ import { createResearchApi } from "./api";
 import { validateBundleReferences } from "./contract";
 import { manualJobSchema } from "./inputs";
 import { candidateBundleSchema, searchIntentSchema } from "./contract";
+import { addManualJob as addLocalJob, companyCandidates as localCandidates, selectIdentity as selectLocalIdentity } from "./service";
 const createService = () => new ResearchService(() => new Date("2026-10-02T12:00:00Z"));
 const intent = (projectId = "p1") => ({ ...demoSample().intent, projectId, mode: "manual" as const, cities: [], roleTypes: [] });
 const jd = (projectId = "p1") => ({ projectId, title: "测试岗位", rawJd: "销售KPI：有", companyName: "测试同名公司" });
@@ -149,4 +150,40 @@ test("module API fails closed without shared authentication; checks all object r
   const read = await api(request(`bundles/${run.bundleId}?projectId=p1`));
   const exported = await api(request(`bundles/${run.bundleId}/export?projectId=p1`));
   assert.deepEqual(await read.json(), await exported.json()); assert.equal(exported.headers.get("cache-control"), "no-store");
+});
+
+test("legacy local candidate lookup and identity selection keep project boundaries", () => {
+  const previousMode = process.env.XRAY_B_LOCAL_MODE;
+  const previousProject = process.env.XRAY_B_LOCAL_PROJECT;
+  const previousEnvironment = process.env.NODE_ENV;
+  const projectId = "b-local-boundary-test";
+  try {
+    Reflect.set(process.env, "NODE_ENV", "development");
+    process.env.XRAY_B_LOCAL_MODE = "1";
+    process.env.XRAY_B_LOCAL_PROJECT = projectId;
+    const first = addLocalJob({ ...jd(projectId), title: "本地岗位一" });
+    const second = addLocalJob({ ...jd(projectId), title: "本地岗位二" });
+    const candidates = localCandidates("测试同名", projectId).candidates;
+    assert.equal(candidates.length, 2);
+    assert.ok(candidates.some(company => company.companyId === first.job.companyId));
+    const selected = selectLocalIdentity(second.job.companyId!, jd().companyName, projectId, first.job.jobId);
+    assert.equal(selected.status, "user_selected_unverified");
+    assert.equal(selected.identityStatus, "unresolved");
+    // Duplicate submission returns the same stored job, including its selected entity.
+    assert.equal(addLocalJob({ ...jd(projectId), title: "本地岗位一" }).job.companyId, second.job.companyId);
+    assert.throws(() => localCandidates("测试同名", "another-project"), { code: "FORBIDDEN" });
+    assert.throws(() => selectLocalIdentity(second.job.companyId!, jd().companyName, "another-project"), { code: "FORBIDDEN" });
+    process.env.XRAY_B_LOCAL_MODE = "0";
+    assert.throws(() => localCandidates("测试同名", projectId), { code: "NOT_CONFIGURED" });
+    assert.throws(() => selectLocalIdentity(second.job.companyId!, jd().companyName, projectId), { code: "NOT_CONFIGURED" });
+    process.env.XRAY_B_LOCAL_MODE = "1";
+    Reflect.set(process.env, "NODE_ENV", "production");
+    assert.throws(() => localCandidates("测试同名", projectId), { code: "NOT_CONFIGURED" });
+    assert.throws(() => selectLocalIdentity(second.job.companyId!, jd().companyName, projectId), { code: "NOT_CONFIGURED" });
+  } finally {
+    for (const [key, value] of [["XRAY_B_LOCAL_MODE", previousMode], ["XRAY_B_LOCAL_PROJECT", previousProject], ["NODE_ENV", previousEnvironment]]) {
+      if (value === undefined) delete process.env[key!];
+      else process.env[key!] = value;
+    }
+  }
 });

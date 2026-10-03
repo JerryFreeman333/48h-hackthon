@@ -144,3 +144,29 @@ describe('同一事实对不同用户解释不同，但事实本身不变（产�
     assert.deepStrictEqual(accepting.report.evidenceSnapshot, rejecting.report.evidenceSnapshot);
   });
 });
+
+describe('岗位模板使用当前材料，不携带演示岗位职责', () => {
+  it('仓储岗位与物流目标不会产生产品反馈职责或产品成长声称', () => {
+    const result = runWith(({ profile, bundle }) => {
+      profile.goals = ['积累仓储与物流管理技能'];
+      profile.background.experiences = [];
+      bundle.jobs[0]!.title = '仓库管理员';
+      bundle.jobs[0]!.rawJd = '负责入库、盘点、出库及库存记录。';
+      bundle.evidence[0]!.excerpt = '负责入库、盘点、出库及库存记录。';
+      bundle.facts = [];
+    });
+    assert.strictEqual(result.ok, true);
+    if (!result.ok) return;
+    const first = result.report.results[0]!;
+    const career = first.dimensions.find((dimension) => dimension.key === 'career_value')!;
+    assert.strictEqual(career.status, 'unknown');
+    assert.ok(career.summary.includes('积累仓储与物流管理技能'));
+    assert.ok(career.summary.includes('仓库管理员'));
+    assert.ok(career.summary.includes('尚未核验'));
+    assert.ok(!career.summary.includes('产品反馈'));
+    assert.ok(!career.summary.includes('产品设计'));
+    assert.ok(!career.summary.includes('产品交付'));
+    assert.ok(first.questions.some((question) => question.text.includes('仓库管理员')));
+    assert.ok(first.questions.every((question) => !question.text.includes('产品反馈')));
+  });
+});

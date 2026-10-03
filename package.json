@@ -8,8 +8,10 @@
     "start": "next start",
     "test": "tsx --test packages/contracts/contracts.test.ts packages/runtime/runtime.test.ts",
     "test:b": "tsx --test modules/b-research/service.test.ts",
+    "test:a": "npm --prefix modules/a-profile test",
+    "test:integration": "tsx --test packages/integration/*.test.ts app/reports/reports.test.ts",
     "typecheck": "tsc --noEmit",
-    "test:c": "npx tsx --test modules/c-report/tests/constraints.test.ts modules/c-report/tests/fixtures-contract.test.ts modules/c-report/tests/hash.test.ts modules/c-report/tests/immutability-trace.test.ts modules/c-report/tests/intent-context.test.ts modules/c-report/tests/recommendation.test.ts modules/c-report/tests/validation.test.ts modules/c-report/tests/api-flows.test.ts modules/c-report/tests/api-ownership-idempotency.test.ts modules/c-report/tests/api-update-export.test.ts modules/c-report/tests/ui-view-model.test.ts modules/c-report/tests/ui-html.test.ts modules/c-report/tests/api-export-json.test.ts modules/c-report/tests/model-validate-output.test.ts modules/c-report/tests/model-refine.test.ts modules/c-report/tests/retry-policy.test.ts modules/c-report/tests/checkpoint.test.ts modules/c-report/tests/cancel-pipeline.test.ts modules/c-report/tests/api-cancel.test.ts modules/c-report/tests/startup-resume.test.ts modules/c-report/tests/api-snapshot.test.ts"
+    "test:c": "tsx --test modules/c-report/tests/*.test.ts"
   },
   "dependencies": {
     "next": "^15.5.0",

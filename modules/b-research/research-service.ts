@@ -80,8 +80,9 @@ export class ResearchService {
     project.selections.set(company.companyId, input.selectedLegalName);
     return { companyId: company.companyId, selectedLegalName: input.selectedLegalName, status: "user_selected_unverified", identityStatus: company.identityStatus };
   }
-  createResearchRun(raw: unknown) {
+  createResearchRun(raw: unknown, options?: { selectedJobIds: string[] }) {
     const intent = searchIntentSchema.parse(raw); const project = this.project(intent.projectId);
+    if (options && (intent.mode !== "manual" || !options.selectedJobIds.length || options.selectedJobIds.some(jobId => !project.jobs.some(row => row.job.jobId === jobId)))) throw new RuntimeError("INVALID_SELECTION", "直接分析只能选择本项目的人工岗位", 422);
     if (project.runs.size >= 100) throw new RuntimeError("CAPACITY_REACHED", "本地项目达到 100 个快照上限；请导出备份", 429);
     const now = this.clock().toISOString();
     const bundle: CandidateBundle = { schemaVersion: "1.0.0", bundleId: id("bundle"), projectId: intent.projectId, intentId: intent.intentId, intentRevision: intent.revision, mode: intent.mode, retrievedAt: now, companies: [], jobs: [], evidence: [], facts: [], coverage: [], usage: [] };
@@ -94,7 +95,7 @@ export class ResearchService {
       const rows: StoredJob[] = intent.mode === "demo" ? demo.jobs.map(job => ({ job, evidence: demo.evidence.find(e => e.jobId === job.jobId)!, signature: job.jobId, industryTags: demoIntent.industryTags, industryCodes: demoIntent.industryCodes, roleTypes: demoIntent.roleTypes, createdAt: demo.retrievedAt })) : project.jobs;
       const selected: StoredJob[] = [];
       for (const row of [...rows].sort((a, b) => b.createdAt.localeCompare(a.createdAt) || a.job.jobId.localeCompare(b.job.jobId))) {
-        const decision = evaluateCandidate(row, intent);
+        const decision = options ? { jobId: row.job.jobId, included: options.selectedJobIds.includes(row.job.jobId), reasons: [options.selectedJobIds.includes(row.job.jobId) ? "用户指定分析此岗位；城市、职位关闭和其他冲突保留给报告判断，不执行检索筛选" : "未选择此岗位"] } : evaluateCandidate(row, intent);
         if (decision.included && selected.length >= intent.maxCandidates) { decision.included = false; decision.reasons.push("达到数量上限，按采集时间排序；非适配评分"); }
         if (decision.included) selected.push(row); decisions.push(decision);
       }
@@ -115,7 +116,7 @@ export class ResearchService {
       const materials = project.materials.filter(item => item.jobId ? jobIds.has(item.jobId) && bundle.jobs.find(job => job.jobId === item.jobId)?.companyId === item.companyId : item.companyId && exportedCompanies.has(item.companyId));
       bundle.evidence = deduplicateEvidence(clone([...selected.map(row => row.evidence), ...(intent.mode === "demo" ? [] : materials)]));
       bundle.facts = intent.mode === "demo" ? clone(demo.facts.filter(fact => !fact.jobId || jobIds.has(fact.jobId))) : extractJobFacts(bundle.evidence);
-      cover("job_search", selected.length ? "available" : "no_result", intent.mode === "demo" ? "仅检索明确标注的合成演示样例。" : `仅检索本项目人工池（${rows.length} 条），不代表全市场；未知条件保留。`);
+      cover("job_search", selected.length ? "available" : "no_result", options ? "用户指定 JD 的直接分析；未进行市场检索。" : intent.mode === "demo" ? "仅检索明确标注的合成演示样例。" : `仅检索本项目人工池（${rows.length} 条），不代表全市场；未知条件保留。`);
       if (intent.filters.length) warnings.push("个性化硬/软偏好交由 C 判断；B 不以销售偏好或薪资目标隐藏候选。");
       for (const job of bundle.jobs) cover("job_description", "available", "已保存原始 JD，人工材料未经独立核验。", job.companyId, job.jobId);
       for (const company of bundle.companies) for (const topic of topicList) cover(topic, topic === "company_identity" ? "unavailable" : "not_connected", topic === "company_identity" ? (intent.mode === "demo" ? "合成身份仅用于演示。" : `${project.selections.has(company.companyId) ? "用户已选择候选；" : ""}名称仅为线索，法人/品牌/招聘及签约关系未核验，暂停公司事实汇总。`) : "未连接授权主题数据源；人工片段仅作材料，未知不等于安全。", company.companyId);

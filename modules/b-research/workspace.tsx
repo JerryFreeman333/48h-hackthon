@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import type { CandidateBundle, SearchIntent } from "./contract";
 import { searchIntentSchema, candidateBundleSchema, validateBundleReferences } from "./contract";
 import type { ResearchRun } from "./research-service";
+import {validationMessage} from '../../packages/integration/validation-message';
 import { requestJson, formPayload } from "./client-api";
 import { InvestigationDetails } from "./details";
 import demoIntent from "./fixtures/search-intent.json";
@@ -44,7 +45,7 @@ export function ResearchWorkspace({ initialMode }: Props) {
       if (file.size > 200000) throw new Error("意向文件超过 200KB");
       const intent = searchIntentSchema.parse(JSON.parse(await file.text()));
       changeMode(intent.mode); setIntentText(JSON.stringify(intent, null, 2));
-    } catch (e) { setError(e instanceof Error ? e.message : "意向 JSON 无效"); }
+    } catch (e) { setError(validationMessage(e)); }
     event.target.value = "";
   }
 
@@ -60,7 +61,7 @@ export function ResearchWorkspace({ initialMode }: Props) {
     event?.preventDefault(); setBusy(true); setError("");
     try {
       await loadResearch(searchIntentSchema.parse(JSON.parse(intentText)));
-    } catch (e) { setError(e instanceof Error ? e.message : "请输入有效的 SearchIntent JSON"); }
+    } catch (e) { setError(validationMessage(e)); }
     finally { setBusy(false); }
   }
 
@@ -73,15 +74,8 @@ export function ResearchWorkspace({ initialMode }: Props) {
       const pool = await requestJson<{ jobs: unknown[] }>("/api/b/jobs"); setJobCount(pool.jobs.length);
       setShowJobForm(false); setMode("manual"); setIntentText(JSON.stringify(intent, null, 2));
       await loadResearch(intent);
-    } catch (e) { setError(e instanceof Error ? e.message : "提交 JD 失败"); }
+    } catch (e) { setError(validationMessage(e)); }
     finally { setBusy(false); }
-  }
-
-  async function exportBundle() {
-    if (!run) { setError("请先运行检索，再导出快照"); return; }
-    const response = await fetch(`/api/b/bundles/${bundle.bundleId}/export`);
-    if (!response.ok) { setError("请先运行检索，再导出 CandidateBundle。"); return; }
-    const blob = await response.blob(); const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = `candidate-bundle-${bundle.bundleId}.json`; link.click(); URL.revokeObjectURL(url);
   }
 
   const notJobCompanies = bundle.companies.filter((company) => !bundle.jobs.some((job) => job.companyId === company.companyId));
@@ -110,7 +104,7 @@ export function ResearchWorkspace({ initialMode }: Props) {
         </aside>
         <section className="results">
           <div className="panel">
-            <div className="toolbar"><div className="toolbar-left"><strong className="count">职位 <span>{bundle.jobs.length}</span></strong><span className="tag">{runStatus}</span></div><div className="toolbar-actions"><button className="button" onClick={() => void exportBundle()}>↓ 导出 JSON</button><button className="button" onClick={() => setShowJobForm(true)}>＋ 提交 JD</button></div></div>
+            <div className="toolbar"><div className="toolbar-left"><strong className="count">职位 <span>{bundle.jobs.length}</span></strong><span className="tag">{runStatus}</span></div><div className="toolbar-actions"><button className="button" onClick={() => setShowJobForm(true)}>＋ 提交 JD</button></div></div>
             {bundle.jobs.length === 0 ? <div className="empty"><h3>{mode === "live" ? "没有连接外部检索源" : "当前条件下没有职位"}</h3><p>{mode === "live" ? "coverage 已记录为 not_connected；可切换至人工模式提交 JD。" : "可调整岗位、城市或添加真实 JD；没有候选不代表没有相关公司。"}</p><button className="button primary" onClick={() => setShowJobForm(true)}>提交 JD</button></div> : bundle.jobs.map((job) => {
               const company = job.companyId ? companyById.get(job.companyId) : undefined;
               const evidence = bundle.evidence.find((item) => item.jobId === job.jobId);

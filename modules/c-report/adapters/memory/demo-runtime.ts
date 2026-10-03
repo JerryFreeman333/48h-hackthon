@@ -141,10 +141,6 @@ export async function renderDemoReportHtml(options?: { angle?: string | null }):
   return renderReportHtml(vm, {
     title: '求职 X-Ray｜C 匹配报告（演示）',
     demoBadge: DEMO_BADGE,
-    exportLinks: {
-      md: `/demo/c/export?format=md&report=${encodeURIComponent(reportId)}`,
-      json: `/demo/c/export?format=json&report=${encodeURIComponent(reportId)}`,
-    },
     angleUrlPattern: '/demo/c?angle={key}',
     footerNote: DEMO_FOOTER,
   });

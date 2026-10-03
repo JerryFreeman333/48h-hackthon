@@ -111,6 +111,13 @@ export function constraintKeyLabel(key: string): string {
 }
 
 const TOPIC_LABELS: Record<string, string> = {
+  job_search: '岗位查找',
+  job_description: '岗位描述',
+  business: '经营资料',
+  credit_legal: '信用与司法资料',
+  work_conditions: '工作条件',
+  team_growth: '团队与成长',
+  vacancy_freshness: '招聘状态时效',
   business_financials: '经营/财务信息',
   company_identity: '公司主体核验',
   current_real_vacancy: '真实在招状态',
@@ -488,7 +495,7 @@ function buildCandidate(
       summary: dimension.summary,
       factIds: [...dimension.factIds],
     })),
-    unknowns: buildUnknowns(result, coverage),
+    unknowns: buildUnknowns(result, coverage.filter(row => row.jobId === result.jobId || (row.jobId === null && row.companyId !== null && row.companyId === job?.companyId))),
     questions: result.questions.map(toQuestionVm),
     evidence,
   };
@@ -658,7 +665,7 @@ export function buildReportViewModel(input: ViewModelInput): ReportViewModel {
     },
     notes: [
       meta.modelNote,
-      '报告与导出读取同一不可变快照；画像或候选材料变更将产生新版本，本页内容不会随之改变。',
+      '报告读取已保存的不可变快照；画像或候选材料变更将产生新版本，本页内容不会随之改变。',
       '状态标签表示命题核验状态，不是好坏分；未知不是安全，没有查到负面不等于没有风险。',
     ],
   };

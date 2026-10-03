@@ -190,6 +190,27 @@ describe('P4 降级规则：一次修复后仍失败 → 回退模板', () => {
 });
 
 describe('P4 预算与故障（§13/§14）', () => {
+  it('预算只够首轮且输出非法 JSON → 不调用修复，报告回退模板', async () => {
+    const base = deterministic();
+    if (!base.ok) throw new Error('pipeline failed');
+    const port = new ScriptedFakeModelPort(() => '不是 JSON 的输出');
+    const inputs = loadDemoInputs();
+    const budget = new ModelBudget(1, 0);
+    const result = await runMatchPipelineWithModel({
+      profile: clone(inputs.profile),
+      intentContext: clone(inputs.intent),
+      bundle: clone(inputs.bundle),
+      options: { reportId: FIXED_REPORT_ID, generatedAt: FIXED_GENERATED_AT },
+    }, withModel(port, budget));
+    assert.ok(result.ok);
+    if (!result.ok) return;
+    assert.strictEqual(port.callCount, 1);
+    assert.strictEqual(budget.callsUsed, 1);
+    assert.deepStrictEqual(result.report, base.report);
+    assert.ok(result.snapshot.diagnostics.stages.some((stage) =>
+      stage.stage === 'model_refine' && stage.status === 'skipped' && stage.detail?.includes('MODEL_BUDGET_EXHAUSTED')));
+  });
+
   it('付费且无费用上界 → MODEL_COST_UNKNOWN，零调用，降级为模板', async () => {
     const base = deterministic();
     if (!base.ok) throw new Error('pipeline failed');

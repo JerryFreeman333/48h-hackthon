@@ -38,5 +38,8 @@ export function listManualJobs() {
   if (process.env.XRAY_B_LOCAL_MODE !== "1" || process.env.NODE_ENV === "production") return [];
   return service.listManualJobs(localProject());
 }
-export function selectIdentity(companyId: string, selectedLegalName: string) { return service.selectIdentity({ projectId: localProject(), companyId, selectedLegalName }); }
+export function companyCandidates(name = "", requestedProjectId?: string) { return service.companyCandidates(localProject(requestedProjectId), name); }
+export function selectIdentity(companyId: string, selectedLegalName: string, requestedProjectId?: string, jobId?: string) {
+  return service.selectIdentity({ projectId: localProject(requestedProjectId), companyId, selectedLegalName, jobId });
+}
 export function currentDemoBundle() { return demoSample().bundle; }

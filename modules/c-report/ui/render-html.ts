@@ -110,6 +110,10 @@ details.evidence[open] > summary { border-bottom: 1px solid var(--line); }
 .constraint-table { border-collapse: collapse; width: 100%; background: var(--card); font-size: 14px; }
 .constraint-table th, .constraint-table td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
 .constraint-table thead th { background: var(--bg); }
+.page,.card,.evidence-body { min-width:0; overflow-wrap:anywhere; }
+.constraint-table { table-layout:fixed; }
+.constraint-table th,.constraint-table td { overflow-wrap:anywhere; word-break:break-word; }
+.table-wrap { max-width:100%; }
 .export-bar { margin: 10px 0 4px; }
 .export-bar a { display: inline-block; margin-right: 12px; padding: 6px 14px; border: 1px solid #0b57d0;
   border-radius: 6px; text-decoration: none; font-weight: 600; background: var(--card); }
@@ -136,12 +140,15 @@ interface RenderOptions {
   title?: string;
   /** 导出链接（host 提供）；不提供则不渲染导出区。 */
   exportLinks?: { md?: string; json?: string } | null;
+  dataLabels?:{sourceLabel:string;authenticityLabel:string;verificationLabel:string};
   /** 查看角度切换链接模板，如 "/demo/c?angle={key}"；不提供则不渲染角度切换。 */
   angleUrlPattern?: string | null;
   /** 演示入口显式标识（§15：/demo/c 为明确合成/人工演示入口）。 */
   demoBadge?: string | null;
   /** host 页脚说明。 */
   footerNote?: string | null;
+  /** Product host can collapse coverage detail while preserving visible critical gaps. */
+  compactCoverage?: boolean;
 }
 
 function chip(statusClass: string, label: string): string {
@@ -375,6 +382,7 @@ ${summary.coverage.keyTopicGaps
   .join('\n')}
 ${summary.coverage.insufficientNote ? `<li>${escapeHtml(summary.coverage.insufficientNote)}</li>` : ''}
 </ul>
+${options.compactCoverage ? '<details><summary>查看各类资料覆盖明细</summary>' : ''}
 <table class="constraint-table">
 <thead><tr><th scope="col">覆盖主题</th><th scope="col">状态</th><th scope="col">说明</th></tr></thead>
 <tbody>
@@ -382,7 +390,8 @@ ${summary.coverage.rows
   .map((row) => `<tr><td>${escapeHtml(row.topicLabel)}<br><span class="ref">${escapeHtml(row.topic)}</span></td><td>${escapeHtml(row.statusLabel)}</td><td>${escapeHtml(row.reason)}</td></tr>`)
   .join('\n')}
 </tbody>
-</table>`;
+</table>
+${options.compactCoverage ? '</details>' : ''}`;
 
   const profile = vm.profile === null
     ? ''
@@ -430,9 +439,10 @@ ${CSS}
 ${options.demoBadge ? `<p class="badge-demo" role="note">${escapeHtml(options.demoBadge)}</p>` : ''}
 <header class="masthead">
 <h1>${escapeHtml(title)}</h1>
+${options.dataLabels ? '<p role="note" aria-label="资料来源与核验状态"><span class="badge">资料来源：'+escapeHtml(options.dataLabels.sourceLabel)+'</span> · '+escapeHtml(options.dataLabels.authenticityLabel)+' · <span class="badge">核验状态：'+escapeHtml(options.dataLabels.verificationLabel)+'</span></p>' : ''}
 <ul class="meta-list">
 <li>报告 ${escapeHtml(vm.meta.reportId)}（版本 ${String(vm.meta.version)}）｜生成时间 ${escapeHtml(vm.meta.generatedAt)}</li>
-<li>数据模式：${escapeHtml(vm.meta.modeLabel)}｜完成度：${escapeHtml(vm.meta.completenessLabel)}</li>
+<li>${options.dataLabels?"录入方式：":"数据模式："}${escapeHtml(options.dataLabels?(vm.meta.mode==='demo'?'开发合成样例':'用户录入（不代表资料真实）'):vm.meta.modeLabel)}｜完成度：${escapeHtml(vm.meta.completenessLabel)}</li>
 <li>规则 ${escapeHtml(vm.meta.ruleVersion)}｜模板 ${escapeHtml(vm.meta.promptVersion)}——${escapeHtml(vm.meta.modelNote)}</li>
 </ul>
 ${exportBar}

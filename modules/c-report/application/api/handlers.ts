@@ -14,7 +14,7 @@
  */
 import type { MatchReport } from '../../domain/contract.js';
 import { cError, type CError } from '../../domain/errors.js';
-import { runMatchPipeline, type PipelineResult } from '../pipeline.js';
+import { runMatchPipeline, RULE_VERSION, type PipelineResult } from '../pipeline.js';
 import { runMatchPipelineWithModel } from '../pipeline-model.js';
 import type { ModelRuntimeConfig } from '../model/refine.js';
 import { canonicalize } from '../hash.js';
@@ -76,7 +76,6 @@ interface ReportRequestBody {
 
 const CREATE_OPERATION = 'c.create_match';
 const UPDATE_OPERATION = 'c.update_report';
-const RULE_VERSION = 'c-rules-1.0.0-p1';
 const PROMPT_VERSION = 'template-no-model-p1.0.0';
 
 function jsonResponse(status: number, body: unknown, requestId: string): Response {

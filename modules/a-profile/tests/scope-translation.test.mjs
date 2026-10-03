@@ -14,9 +14,17 @@ import {createServer} from '../src/server.mjs';
 import {buildReport} from '../src/report/template.mjs';
 import {fit} from '../src/occupation-fit/index.mjs';
 
-test('original 50 items and both v0.3 scoring files are byte-identical to submitted Git blobs',()=>{
+test('original 50 items and v0.3 scoring files match submitted Git blobs after checkout line-ending normalization',()=>{
  const original={'src/instruments/battery.mjs':'b940bca7c3f1186c4967948e9a72c06008de97bb','src/instruments/scoring.mjs':'d63a6934d099e5cb1df5473f66cc8d96ff0dfef9','src/instruments/onet-mini-ip.json':'f040f8a33fcffbe925eb9cba6fd8a3fd1bb2c44c','src/instruments/mini-ipip.json':'dadbc2b8bec9402785021aeb4d3289d1efbdc96e'};
- for(const [path,sha] of Object.entries(original)){const b=readFileSync(path);assert.equal(createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${b.length}\0`),b])).digest('hex'),sha,path);}
+ const moduleRoot=new URL('../',import.meta.url);
+ // Submitted .mjs blobs use LF; the two submitted JSON blobs already use CRLF.
+ // Canonicalize checkout line endings, then restore each original blob's line-ending convention.
+ const originalLineEndings={'src/instruments/battery.mjs':'\n','src/instruments/scoring.mjs':'\n','src/instruments/onet-mini-ip.json':'\r\n','src/instruments/mini-ipip.json':'\r\n'};
+ for(const [path,sha] of Object.entries(original)){
+  const canonicalLF=readFileSync(new URL(path,moduleRoot),'utf8').replace(/\r\n/g,'\n');
+  const originalBlobBytes=Buffer.from(originalLineEndings[path]==='\r\n'?canonicalLF.replace(/\n/g,'\r\n'):canonicalLF,'utf8');
+  assert.equal(createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${originalBlobBytes.length}\0`),originalBlobBytes])).digest('hex'),sha,path);
+ }
 });
 test('20 Chinese items retain identity, source, five options and reverse key; difficulty differs from dislike',()=>{
  const t=tools['mini-ipip'],z=miniIpipChinese;assert.equal(z.items.length,20);assert.equal(z.officialChineseVersion,false);

@@ -93,10 +93,10 @@ export function buildQuestionsForJob(
     });
   }
 
-  // 目标关联证据：用户有目标但无事实支持成长声称 → optional，向招聘方要实例。
+  // 职责核验：无事实支持具体成长声称 → optional，向招聘方要该岗位的工作实例。
   // resolves 指向 JD 职责原文：问题的答案将更新对 JD 职责构成的解释。
   questions.push({
-    text: '能否举一个该岗位近期基于产品反馈推动改进的具体例子？',
+    text: `能否举一个「${job.title}」近期实际完成的工作实例，并说明日常职责、考核方式及可积累的技能？`,
     priority: 'optional',
     resolves: ['job.rawJd'],
   });
