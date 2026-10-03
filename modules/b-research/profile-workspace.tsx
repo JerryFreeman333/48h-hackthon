@@ -9,7 +9,9 @@ export function ProfileResearchWorkspace(){
  const [selected,setSelected]=useState<number[]>([]),[busy,setBusy]=useState(false),[report,setReport]=useState<{reportUrl:string;warnings:string[]}|null>(null);
  async function analyze(){if(!value)return;setBusy(true);setError('');setReport(null);try{
   const response=await fetch('/api/integration/research',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sessionId:value.sessionId,revision:value.revision,recordIds:selected})}),body=await response.json();
-  if(!response.ok)throw Error(body.error?.message??'分析失败，请重试');setReport(body);
+  if(!response.ok)throw Error(body.error?.message??'分析失败，请重试');
+  if(typeof body.reportUrl!=='string'||!body.reportUrl.startsWith('/flow/reports/'))throw Error('报告入口未返回，请重试');
+  setReport(body);window.location.assign(body.reportUrl);
  }catch(e){setError(e instanceof Error?e.message:'分析失败');}finally{setBusy(false);}}
  useEffect(()=>{let active=true;(async()=>{
   const boot=await read('/api/a/needs/bootstrap'),url=new URL(location.href),requested=url.searchParams.get('sessionId');
@@ -32,7 +34,7 @@ export function ProfileResearchWorkspace(){
      {value.database.candidates.map(c=><article className="company-block" key={c.recordId}><h3><label><input type="checkbox" checked={selected.includes(c.recordId)} disabled={busy||(!selected.includes(c.recordId)&&selected.length>=3)} onChange={()=>{setSelected(xs=>xs.includes(c.recordId)?xs.filter(id=>id!==c.recordId):[...xs,c.recordId]);setReport(null);}}/> {c.title}</label></h3><p>{c.companyName} · {c.city??'工作城市待确认'}</p><p className="job-desc">{c.excerpt}</p><p className="source-line">{c.sourceType} · 在招状态待核实 · 签约主体待确认</p>{c.notes.map(n=><p className="notice" key={n}>{n}</p>)}{c.sourceUrl&&<a className="link-button" href={c.sourceUrl} target="_blank" rel="noreferrer">查看来源 →</a>}
       {c.investigation&&<details><summary>按你的需求调查到什么：{c.investigation.filter(i=>i.status!=='unknown').length} 项有线索或材料，共 {c.investigation.length} 项待比较</summary><p>以下逐项对应你在 A 选择的问题。公司评价和集团报道只提供核验方向，不能代替这份岗位的书面承诺。</p>{c.investigation.map(i=><div key={i.topic+i.label}><h4>{i.topic} · {i.label}</h4><p>{i.explanation}</p>{i.materials.map((m,index)=><div key={index}><p className="job-desc">资料节选：{m.text}</p>{m.sources.map((s,n)=><p className="source-line" key={n}>{s.title} · {s.scope==='job'?'这份岗位':s.scope==='team'?'团队层面':s.scope==='business'?'业务层面':'公司或集团层面'} · 来源日期：{s.publishedAt??'未记载'} · 采集：{s.collectedAt??'未记载'}{s.dateNote&&<> · {s.dateNote}</>}{s.url&&<> · <a href={s.url} target="_blank" rel="noreferrer">查看来源</a></>}</p>)}</div>)}{i.gaps.map(g=><p className="notice" key={g}>{g}</p>)}<p>下一步：{i.question}</p></div>)}</details>}
      </article>)}
-     {value.database.candidates.length>0&&<button className="button primary" disabled={busy||!selected.length} onClick={analyze}>{busy?'正在生成 C 分析…':'用我的侧写分析所选岗位'}</button>}
+     {value.database.candidates.length>0&&<><p role="status">{busy?'正在生成报告，完成后将自动进入 C。':selected.length?'已选择 '+selected.length+' 个岗位，点击下方按钮进入 C 分析。':'请先勾选上方一至三个岗位，再进行分析。'}</p><button className="button primary" disabled={busy||!selected.length} onClick={analyze}>{busy?'正在生成 C 分析…':'用我的侧写分析所选岗位'}</button></>}
     </section>
     {value.database.references.length>0&&<section className="panel"><details><summary>另有 {value.database.referenceCount} 条薪资统计参考（不当作在招岗位）</summary>{value.database.references.map(c=><div key={c.recordId}><h3>{c.companyName} · {c.title}</h3><p>{c.excerpt}</p>{c.sourceUrl&&<a href={c.sourceUrl} target="_blank" rel="noreferrer">查看统计来源 →</a>}</div>)}</details></section>}
     {report&&<section className="panel"><h2>C 分析已生成</h2>{report.warnings.map(w=><p key={w}>{w}</p>)}<a className="button primary" href={report.reportUrl}>查看分析报告 →</a></section>}
