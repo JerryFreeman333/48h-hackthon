@@ -2,11 +2,12 @@ import type {CandidateBundle, MatchReport, UserProfile} from '../contracts';
 import {CSS, escapeHtml} from '../../modules/c-report/ui/render-html';
 import type {NeedsResponse, NeedsSourceMetadata} from './job-needs';
 import {respondToJobNeeds} from './job-needs';
+import {compareFixedMonthlySalary} from '../../modules/c-report/domain/constraints';
 
-export const SECTOR_REPORT_VERSION = 'c-sector-report-20261003-1';
+export const SECTOR_REPORT_VERSION = 'c-sector-report-20261003-2';
 const definitions = [
   {id:'growth', title:'晋升与成长', signal:/晋升|升职|职级|内部培训|员工培训|带教|导师|系统学习与实操/},
-  {id:'pay', title:'薪酬透明', signal:/底薪|固定工资|固定月薪|月薪|提成|绩效工资|发薪|发放工资|税前|税后/},
+  {id:'pay', title:'薪资高低', signal:/薪资|薪酬|工资|底薪|固定月薪|月薪|日薪|年薪|提成|发薪|税前|税后/},
   {id:'hours', title:'工时与休息', signal:/工时|工作时间|上下班|不打卡|加班|调休|双休|单休|大小周|996|995|轮班|下班后/},
   {id:'benefits', title:'五险一金', signal:/五险|六险|社保|公积金|入职即缴|缴纳基数/},
   {id:'culture', title:'团队文化与工作方式', signal:/团队氛围|管理支持|同事关系|沟通方式|任务分配|尊重员工|辱骂|个人边界|绩效评价|申诉/},
@@ -46,6 +47,7 @@ export function buildSectorAnalysis(profile:UserProfile, bundle:CandidateBundle,
       if(d.id==='hours')need+='。本流程未采集每天可接受的最大小时数，不推断八小时上限';
       const salary=conditions.find(p=>p.key==='min_fixed_monthly_salary');
       if(d.id==='pay'&&salary)need+='；固定月薪期望 '+salary.value+' 元（'+(salary.strength==='hard'?'必须满足':'偏好')+'）';
+      if(d.id==='pay')need+='。高低以你的收入期望为参照，不代表市场排名';
       const outsource=conditions.find(p=>p.key==='accept_outsourcing');
       if(d.id==='position'&&outsource)need+='；'+outsource.value+'外包（'+(outsource.strength==='hard'?'必须满足':'偏好')+'）';
       const conflict=items.some(i=>i.status==='conflicting')||usable.some(e=>e.verification==='disputed');
@@ -55,6 +57,21 @@ export function buildSectorAnalysis(profile:UserProfile, bundle:CandidateBundle,
       const status:Sector['status']=hardFail?'difference':conflict?'conflict':verified?'material':materials.length?'lead':'missing';
       let conclusion=status==='difference'?'岗位资料与已确认的必须满足条件有差异，需优先核对。':status==='conflict'?'相关资料存在冲突或争议，不能任选一条作结论。':status==='material'?'已有对应范围资料回应部分需求；是否满足具体预期仍需对照。':status==='lead'?'已有相关记载，可用于继续考虑；尚未独立核验。': '现有资料不足以判断本板块，不据此认定好或坏。';
       if(status==='lead'&&usable.some(e=>e.jobId===null))conclusion+='公司层面的记载是否适用于这份岗位仍待确认。';
+      if(d.id==='pay'){
+        const threshold=profile.preferences.find(p=>p.key==='min_fixed_monthly_salary'&&p.confirmed&&typeof p.value==='number');
+        const ownSalaryEvidence=usable.filter(e=>e.jobId===job.jobId&&e.scope==='job');
+        // A structured amount alone has no provenance. Require the same job's
+        // source to explicitly record the amount and comparable salary basis.
+        const backed=ownSalaryEvidence.some(e=>/税前/.test(e.excerpt)&&/固定月薪|月固定工资|每月固定工资/.test(e.excerpt)&&[job.salary.min,job.salary.max].filter(n=>n!==null).every(n=>new RegExp('(?<![\\d.])'+n+'(?![\\d.])').test(e.excerpt)))&&(job.salary.min!==null||job.salary.max!==null);
+        if(status==='conflict')conclusion+='薪资高低也需先解决同岗位资料的冲突。';
+        else if(threshold&&backed){
+          const comparison=compareFixedMonthlySalary(job.salary,threshold.value as number);
+          const label=threshold.strength==='hard'?'必须满足的最低固定月薪':'固定月薪偏好';
+          if(comparison.result==='pass')conclusion+='按该岗位资料记载的税前固定月薪区间，不低于你的'+label+'；这是资料对照，实际报价与兑现仍待确认。';
+          else if(comparison.result==='fail')conclusion+='按该岗位资料记载的税前固定月薪区间，低于你的'+label+(threshold.strength==='soft'?'；属于软偏好差异，不自动排除。':'；属于必须满足条件的差异，应优先核实。');
+          else conclusion+='薪资区间跨越期望或口径不可比，不能确定高低是否符合你的期望。';
+        }else conclusion+=threshold?'尚无可与期望比较的同岗位税前固定月薪资料；薪资高低待确认。':'你未确认收入期望，暂不把岗位薪资评为高或低。';
+      }
       if(d.id==='benefits'&&materials.length&&status==='lead')conclusion+='资料提及保障安排，可回应你对保障的关注，仍需核对执行情况。';
       if(d.id==='growth'&&materials.length&&!materials.some(m=>/晋升|升职|职级/.test(m.text)))conclusion+='已有培训线索，晋升难易及是否存在晋升通道仍缺资料。';
       if(d.id==='hours'&&materials.some(m=>/不打卡/.test(m.text))&&!materials.some(m=>/\d+\s*小时|双休|单休|996|995/.test(m.text)))conclusion+='不打卡不能推出工时短或每周双休。';

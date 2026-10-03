@@ -59,3 +59,18 @@ test('same-sector dispute is explicit and customer teaching is not employee grow
  assert.equal(analysis.candidates[0].sectors.find(s=>s.id==='hours')!.status,'conflict');
  assert.match(analysis.candidates[0].sectors.find(s=>s.id==='hours')!.conclusion,/不能任选/);
 });
+
+test('pay compares only source-backed same-job fixed monthly amounts with personal expectations',async()=>{
+ const {saved}=await fixture('税前固定月薪 12000–15000 元。'),inputs=structuredClone(saved.inputs);
+ const job=inputs.bundle.jobs[0];
+ job.salary={currency:'CNY',min:12000,max:15000,period:'month',basis:'fixed',taxBasis:'pre_tax',months:null};
+ inputs.aExport.UserProfile.preferences.push({key:'min_fixed_monthly_salary',value:10000,strength:'soft',confirmed:true});
+ const pay=()=>analysisFromInputs(inputs,saved.report).candidates[0].sectors.find(s=>s.id==='pay')!;
+ assert.equal(pay().title,'薪资高低');assert.match(pay().conclusion,/不低于你的固定月薪偏好/);
+ inputs.aExport.UserProfile.preferences.at(-1).value=16000;
+ assert.match(pay().conclusion,/低于你的固定月薪偏好.*软偏好差异，不自动排除/);
+ inputs.aExport.UserProfile.preferences.at(-1).value=13000;
+ assert.match(pay().conclusion,/区间跨越期望/);
+ inputs.bundle.evidence.forEach((e:any)=>{e.jobId=null;e.scope='company';});
+ assert.match(pay().conclusion,/薪资高低待确认/);
+});
