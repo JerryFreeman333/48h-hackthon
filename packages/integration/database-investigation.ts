@@ -23,7 +23,7 @@ export const needSignals: Record<string, string[]> = {
  'culture.respect':['不同意见','个人边界','辱骂','尊重员工','容错'],
  'culture.evaluation':['绩效评价','考核标准','绩效考核','申诉'],
  'culture.collaboration':['团队协作','团队氛围','管理支持','同事关系'],
- 'company.business':['主营','营收','业务变化','经营','产品线'],
+ 'company.business':['主营','营收','业务变化','业务板块','业务覆盖','直播电商业务','经营','产品线'],
  'company.public_finance':['年报','净利','财报','财务披露','营收','亏损'],
  'company.continuity':['重组','业务收缩','扩张','裁员','并购','收购','四连亏'],
  'company.payment_record':['欠薪','拖欠工资','欠付工资'],

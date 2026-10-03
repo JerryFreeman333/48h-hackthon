@@ -1,0 +1,5 @@
+# Layer 1 deterministic Chinese text analysis.
+# 不引入 LLM / 不引入 model client（项目 packages/runtime 边界）。
+jieba>=0.42
+cnsenti>=1.0.0
+macropodus>=0.3.7

@@ -1,5 +1,6 @@
 import {parseSourceDeclaration,reportDataStatus,type SourceDeclaration} from './data-status';
 import {databaseBundle} from './local-database';
+import {enrichWithAgent,type AgentProgress} from '../../modules/research-agent/research';
 import {manualMaterialContext,parseMaterialUpdate,bindUpdatedMaterial,describeMaterialUpdate,materialUpdateHtml,materialUpdateMarkdown} from "./material-revisions";
 import { randomUUID } from "node:crypto";
 import { join } from "node:path";
@@ -79,11 +80,19 @@ export function createDemoFlow(options?: { dataDir?: string }) {
     archive.save({ archiveVersion: 1, ownerId: owner, report, snapshot, inputs:{...inputs,sectorAnalysis}, markdown: materialUpdateMarkdown(materialChanges,report.ruleVersion) + productActionMarkdown(actions) + feedbackMarkdown(verificationNotes) + revisionMarkdown(changes) + needsMarkdown(inputs.needsResponse,bundle) + renderReportMarkdown(displayReport,snapshot), jsonExport: { ...await json.json(), sectorAnalysis, productMaterialRevision:materialChanges, productNeeds: inputs.needsResponse, productRevision: changes, productActions: actions, verificationNotes } });
   }
   return {
-    async runDatabase(owner:string,input:Record<string,any>,recordIds:number[]){
+    async runDatabase(owner:string,input:Record<string,any>,recordIds:number[],options?:{onProgress?:(p:AgentProgress)=>void}){
       const profile=userProfileSchema.parse(input.UserProfile),intent=searchIntentSchema.parse(input.SearchIntent);
       if(profile.mode!=='manual'||intent.mode!==profile.mode||!profile.confirmedAt||profile.projectId!==intent.projectId||profile.profileId!==intent.profileId||profile.revision!==intent.profileRevision)throw Error('请使用同一已确认的用户侧写版本');
       if(input.JobNeedsSnapshot?.profileId!==profile.profileId||input.JobNeedsSnapshot?.profileRevision!==profile.revision)throw Error('七主题侧写与用户版本不一致');
       const {bundle,databaseSource}=databaseBundle(input,recordIds),u=user(owner);
+      const original=structuredClone(bundle),originalSource=structuredClone(databaseSource);
+      try{await enrichWithAgent(bundle,databaseSource,input,options?.onProgress);}catch(error){
+        const message=error instanceof Error?error.message:'unknown';
+        console.error('Agent integration fallback:',message.replaceAll(process.env.MINIMAX_API_KEY||'\0','[redacted]').slice(0,300));
+        Object.assign(bundle,original);
+        Object.assign(databaseSource,originalSource);
+        (databaseSource as Record<string,any>).agentInvestigation={status:'partial',companies:[],notes:['补充调查未能可靠完成，本报告沿用已有数据库资料。']};
+      }
       u.projects.set(profile.projectId,{projectId:profile.projectId,ownerId:owner,mode:profile.mode});
       const created=await handleCreateMatch(u.ctx,requestFor(u.token,'/api/c/matches',{profile,intentContext:intent,bundle,idempotencyKey:bundle.bundleId}));
       const result=await created.json();if(!created.ok)throw Object.assign(Error(result.error?.message??'数据库岗位报告生成失败'),{status:created.status});
@@ -192,7 +201,9 @@ export function createDemoFlow(options?: { dataDir?: string }) {
       const manual = inputs.bundle.mode === "manual",dataStatus=reportDataStatus(saved);
       if(inputs.sectorAnalysis){
         const originalMaterial='<details><summary>查看岗位原文与考核说明</summary>'+inputs.bundle.jobs.map((j:any)=>'<h3>'+escapeHtml(j.title)+'</h3><blockquote>'+escapeHtml(j.rawJd)+'</blockquote><p>'+escapeHtml(report.results.find(r=>r.jobId===j.jobId)?.dimensions.find(d=>d.key==='role_clarity')?.summary??'')+'</p>').join('')+'</details><details><summary>主体线索与口径核对</summary>'+report.results.map(r=>'<p>'+escapeHtml(r.dimensions.find(d=>d.key==='identity_credit')?.summary??'')+'</p>').join('')+'</details>';
-        const extras=originalMaterial+'<details><summary>查看具体关注事项与原始调查明细</summary>'+renderNeedsHtml(inputs.needsResponse,report,inputs.bundle).replace('href="/profile"','href="/revise/'+reportId+'"')+'</details>'+(inputs.changes?renderRevisionHtml(inputs.changes):'')+(inputs.materialChanges?materialUpdateHtml(inputs.materialChanges,report.ruleVersion):'')+feedbackHtml(inputs.verificationNotes??[],inputs.feedbackPreviousReportId)+(manual&&!inputs.databaseSource&&inputs.bundle.jobs.length===1?'<p><a href="/materials/'+reportId+'">更新这份岗位JD →</a></p>':'');
+        const agent=inputs.databaseSource?.agentInvestigation;
+        const agentNotes=agent?'<details><summary>本次补充调查范围与结果</summary><p>MiniMax 安排公开资料调查；取得的公司线索尚未独立核验，也不等于这份岗位的承诺。</p>'+agent.companies.map((c:any)=>'<h3>'+escapeHtml(c.name)+'</h3><p>已尝试主题：'+escapeHtml(c.attemptedTopics.join('、')||'未完成')+'；取得 '+c.evidenceCount+' 条可引用资料'+(c.cached?'（近期缓存）':'')+'。</p>'+c.notes.map((n:string)=>'<p>'+escapeHtml(n)+'</p>').join('')).join('')+agent.notes.map((n:string)=>'<p>'+escapeHtml(n)+'</p>').join('')+'</details>':'';
+        const extras=agentNotes+originalMaterial+'<details><summary>查看具体关注事项与原始调查明细</summary>'+renderNeedsHtml(inputs.needsResponse,report,inputs.bundle).replace('href="/profile"','href="/revise/'+reportId+'"')+'</details>'+(inputs.changes?renderRevisionHtml(inputs.changes):'')+(inputs.materialChanges?materialUpdateHtml(inputs.materialChanges,report.ruleVersion):'')+feedbackHtml(inputs.verificationNotes??[],inputs.feedbackPreviousReportId)+(manual&&!inputs.databaseSource&&inputs.bundle.jobs.length===1?'<p><a href="/materials/'+reportId+'">更新这份岗位JD →</a></p>':'');
         return new Response(renderSectorReport(inputs.sectorAnalysis,report,dataStatus,{salaryNotes:databaseFieldNotes(inputs),extras}),{headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
       }
       const baseVm=buildReportViewModel({ report, snapshot, comparisonAngle: angle ?? null });

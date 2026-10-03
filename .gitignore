@@ -6,5 +6,8 @@ node_modules/
 !.data/company-database/xray-v3-20261003.sqlite
 !.data/company-database/manifest.json
 *.tsbuildinfo
+.venv/
+__pycache__/
+*.pyc
 .env*
 !.env.example

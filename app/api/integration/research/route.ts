@@ -1,6 +1,8 @@
 import {assertLocalRequest,getAHost,integrationError,readJson} from '@/packages/integration/a-host';
 import {findDatabaseCandidates} from '@/packages/integration/local-database';
 import {getDemoFlow} from '@/packages/integration/demo-flow';
+import {getResearchJobs} from '@/packages/integration/research-jobs';
+import {agentConfiguration} from '@/modules/research-agent/config';
 import {describe} from '@/modules/a-profile/src/needs/service.mjs';
 import {conditionLabels,conditionText} from '@/modules/a-profile/src/profile/selections.mjs';
 import {industries,roles} from '@/modules/a-profile/src/taxonomy.mjs';
@@ -17,7 +19,7 @@ export async function GET(request:Request){
    industries:input.SearchIntent.industryTags.map((id:string)=>industries.find((x:any)=>x.id===id)?.name??id),
    roles:input.SearchIntent.roleTypes.map((id:string)=>roles.find((x:any)=>x.id===id)?.name??id),
    conditions:input.UserProfile.preferences.map((c:any)=>({label:conditionLabels[c.key as keyof typeof conditionLabels],text:conditionText(c),strength:c.strength})),
-   topics:describe(input.JobNeedsSnapshot),database
+   topics:describe(input.JobNeedsSnapshot),database,agent:{enabled:agentConfiguration().enabled,configured:!!agentConfiguration().key}
   },{headers:{'cache-control':'no-store'}});
  }catch(error){return integrationError(error);}
 }
@@ -26,6 +28,7 @@ export async function POST(request:Request){
   assertLocalRequest(request);const body=await readJson(request),a=getAHost(),owner=a.owner(request);
   if(typeof body.sessionId!=='string'||!Number.isInteger(body.revision)||Number(body.revision)<1)throw Error('请选择已确认的用户侧写版本');
   const input=a.service.export(owner,body.sessionId,body.revision);
+  if(agentConfiguration().enabled)return Response.json(getResearchJobs().start(owner,input,body.recordIds as number[]),{status:202,headers:{'cache-control':'no-store'}});
   return Response.json(await getDemoFlow().runDatabase(owner,input,body.recordIds as number[]),{headers:{'cache-control':'no-store'}});
  }catch(error){return integrationError(error);}
 }

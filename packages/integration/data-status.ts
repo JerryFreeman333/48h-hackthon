@@ -15,7 +15,7 @@ export function reportDataStatus(saved:{inputs:Record<string,any>}){
  const synthetic=bundle.mode==='demo'||matched.some(d=>d?.kind==='synthetic');
  const allDeclared=jobs.length>0&&matched.every(d=>d?.kind==='user_provided'&&d.actualMaterialConfirmed===true&&!!d.sourceUrl);
  return {
-  sourceLabel:synthetic?(bundle.mode==='demo'||matched.every(d=>d?.kind==='synthetic')?'合成测试样例':'混合资料（含合成测试样例）'):saved.inputs.databaseSource?'本地爬虫数据库':'用户提供资料',
+  sourceLabel:synthetic?(bundle.mode==='demo'||matched.every(d=>d?.kind==='synthetic')?'合成测试样例':'混合资料（含合成测试样例）'):saved.inputs.databaseSource?(bundle.evidence.some((e:any)=>e.sourceType.startsWith('franklin_'))?'本地爬虫数据库及公开资料补查':'本地爬虫数据库'):'用户提供资料',
   authenticityLabel:synthetic?'虚构资料，仅供开发测试':saved.inputs.databaseSource?'爬虫数据库记录，适用范围待核验':allDeclared?'用户声明为实际岗位资料':'真实性未声明',
   verificationLabel:synthetic?'不用于真实公司判断':'未独立核验',
   presentationEligible:!synthetic&&allDeclared,

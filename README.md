@@ -48,7 +48,7 @@ npm run build
 
 ## 尚未接入
 
-共享 PostgreSQL、正式账户、持久 worker、真实模型与企业/招聘 provider 尚未接入。A需求和本机集成报告已有文件持久化，B/C运行适配器仍使用内存。七主题事实生产器和独立材料审核器尚未接入。`.env.example` 记录配置占位；公共 runtime 接口不是实际数据库或调度器。真实数据和多人上线仍需落实这些基础能力。
+共享 PostgreSQL、正式账户和生产级持久队列尚未接入。A需求和本机报告已有文件持久化；本地企业数据库及可选 MiniMax + Franklin 补充调查已接入，启用方法见 [Agent 接入说明](modules/research-agent/README.md)。独立材料核验及多人上线仍需继续落实，公开检索线索不等于已确认事实。
 
 产品结果、你下一步的工作与实际边界见 `docs/PRODUCT_HANDOFF_2026-10-03.md`。当前产品方向和实际进度见 `docs/PRODUCT_PLAN_2026-10-03.md`，演示步骤见 `docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md`。开工分析、前端逻辑问题与建议顺序见 `docs/PROJECT_ANALYSIS_2026-10-03.md`；简易 HTML 逐项审计见 `docs/frontend-analysis-2026-10-03.md`。
 
@@ -66,4 +66,4 @@ git lfs install --local
 git lfs pull --include=".data/company-database/xray-v3-20261003.sqlite"
 ```
 
-数据库应为 142,249,984 字节，而非几行 LFS 指针；SHA256 应与 `.data/company-database/manifest.json` 一致。清单中 `policy` 保留原始导入时的本地策略记录，本次企业数据库共享由用户另行明确授权；不包含个人使用记录，也不启动采集。
+数据库应为 142,249,984 字节，而非几行 LFS 指针；SHA256 应与 `.data/company-database/manifest.json` 一致。清单中 `policy` 保留原始导入时的本地策略记录，本次企业数据库共享由用户另行明确授权；不包含个人使用记录。下载数据库不会启动采集；后续授权的 Agent 补查在独立、忽略的工作库中运行。
