@@ -21,7 +21,10 @@ const date=(x:unknown)=>text(x);
 // the same evidence ID different content and break same-company comparisons.
 const retrieved=(x:unknown)=>{const s=text(x);if(s&&/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$/.test(s)&&Number.isFinite(Date.parse(s)))return s;const imported=text(manifest().importedAt);if(!imported||!Number.isFinite(Date.parse(imported)))throw Error('数据库导入时间缺失，请核对导入清单');return imported;};
 const rolePatterns:Record<string,RegExp>={engineering:/工程师|开发|架构|运维|技术岗|技术类|Java|C\+\+|Linux/i,research:/算法|研究|科研|研发|AGI|LLM/i,product_design:/产品经理|产品岗|产品负责人|产品设计|产品开发|策划|设计/,product_operations:/运营|内容|剪辑|主播|营销/,sales_business:/销售|商务|客户经理|BD|大区经理|地区经理/i,customer_delivery:/交付|实施|支持|服务工程师|培训/,production_quality:/质量|测试|检测|生产|工艺|工业工程/,functions:/财务|人力|行政|组织发展|信息披露/,professional:/咨询|顾问|投行|法律/};
-const industryPatterns:Record<string,RegExp>={software_it:/互联网|电商|云|AI|人工智能|软件|网络|信息服务|金融科技|SaaS|IoT|视频剪辑|直播|游戏|物流科技/i,manufacturing:/制造|硬件|能源|汽车|机器人|电器|厨电|物联|医疗器械|脑机/,healthcare:/医疗|医药|医学|生物|医院|药/,education:/教育|培训|教学/,professional_services:/科研|咨询|专业服务|商务服务/,commerce:/消费|食品|饮料|商贸|零售|母婴|美妆|电商/};
+const industryPatterns:Record<string,RegExp>={software_it:/互联网|电商|云|AI|人工智能|软件|网络|信息服务|金融科技|SaaS|IoT|视频剪辑|直播|游戏|物流科技/i,manufacturing:/制造|硬件|能源|汽车|机器人|电器|厨电|物联|医疗器械|脑机/,healthcare:/医疗|医药|医学|生物|医院|药/,education:/教育|培训|教学/,professional_services:/科研|咨询|专业服务|商务服务/,commerce:/消费|食品|饮料|商贸|零售|母婴|美妆|电商/,finance:/金融|银行|城商行|农商行|保险|证券|基金|信托|资产管理|资管/};
+export function matchesDatabaseIndustry(tags:string[],domain:string|null){
+ return !domain||!tags.length||tags.some(id=>industryPatterns[id]?.test(domain));
+}
 function documentedSalary(row:Row){
  const raw=String(row.raw_jd),min=row.salary_min,max=row.salary_max;
  const amounts=[...raw.matchAll(/(\d+(?:\.\d+)?)\s*[-~至]\s*(\d+(?:\.\d+)?)\s*([Kk千万元]?)/g)].map(m=>{const factor=/[Kk千]/.test(m[3])?1000:m[3]==='万'?10000:1;return [Number(m[1])*factor,Number(m[2])*factor];});
@@ -45,7 +48,7 @@ function shortlist(input:Row){
    if(chosenCities.length&&!knownCities.length)notes.push('实际工作城市待确认');
    if(knownCities.length>1)notes.push('资料提到多个工作城市，具体岗位地点待确认');
    const domain=text(row.domain),title=row.title as string;
-   if(domain&&intent.industryTags.length&&!intent.industryTags.some((id:string)=>industryPatterns[id]?.test(domain))){excluded.industry++;continue;}
+   if(!matchesDatabaseIndustry(intent.industryTags,domain)){excluded.industry++;continue;}
    if(!domain)notes.push('行业未明确，待核验');
    if(intent.roleTypes.length&&!intent.roleTypes.some((id:string)=>rolePatterns[id]?.test(title))){excluded.role++;continue;}
    if(goals.includes('find_internship')&&!/实习/.test(title+' '+row.raw_jd)&&/社招|资深|高级|专家|负责人|总监|经理|[3-9]-[5-9]年/.test(title+' '+row.raw_jd)){excluded.opportunity++;continue;}
