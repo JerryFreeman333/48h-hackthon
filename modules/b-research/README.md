@@ -1,3 +1,5 @@
+> 当前集成说明（2026-10-03）：下文是 B 的独立原型与开发 API 说明；真实产品使用 /research，本地数据库与 Agent 经集成层接入。旧工作台的 JD / JSON / 导出能力不作为真实需求入口。集成运行要求 Node.js 24；请先看[根 README](../../README.md)与[当前状态](../../docs/CURRENT_STATE.md)。
+
 # 求职 X-Ray：B 公司与岗位调查（独立分支原型）
 
 基于 main 公共架构，升级分支为 `codex/b-research-upgrade`。B 复用 `packages/contracts` 的 1.0.0 契约，模块仅增加服务端最多 3 个候选的校验，不修改 A、C 或公共契约。

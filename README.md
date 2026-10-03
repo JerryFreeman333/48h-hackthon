@@ -1,18 +1,64 @@
 # 求职 X-Ray
 
-契约版本 `1.0.0`。main 已包含 A、B、C；本机集成入口串联 A 确认需求、B 候选检索、C 规则报告。
+根据真实求职需求，筛选并调查公司与岗位，再解释资料与用户需求之间的关系。
 
-2026-10-03最新状态：按用户新确认，首页直接进入原有求职需求界面，仅保留“开始新的判断”“继续上次的判断”两个主按钮。移除开始模式及导入文件入口；历史页可恢复草稿、已确认需求和报告。下载按钮和HTTP导出接口关闭，内部保存、版本和ABC整合保留；杭州扩展未恢复，数据库未接入。此前回退记录保留为历史，当前范围以[续做记录](docs/PRODUCT_CONTINUATION_2026-10-03.md)末节为准。
+**当前 main 已包含可运行的 ABC、本地数据库和可选 MiniMax + Franklin 补充调查。** A 确认侧写 → B 勾选候选与调查 → C 七板块报告，无需重填公司、岗位或 JD。前端使用 Next.js / React 及挂载的 A 页面，服务端负责数据库读取、调查和报告归档。
 
-最新补充：已增加首页小展示入口与报告顶部资料来源/核验状态标签；展示仅使用有来源和实际资料声明的本会话案例，目前没有实际案例，不填充合成样例。
+## 先看哪里
 
-## 启动和检查
+| 目的 | 文档 |
+| --- | --- |
+| 当前功能、保留决定及限制 | [当前状态](docs/CURRENT_STATE.md) |
+| 找代码、改前端、确认上传范围 | [仓库地图](docs/REPOSITORY_GUIDE.md) |
+| 找专题文档和历史记录 | [文档索引](docs/README.md) |
+| 接手修改、核对撤回与最新决定 | [续做记录](docs/PRODUCT_CONTINUATION_2026-10-03.md)，按后续章节核对 |
+| 配置 MiniMax 与 Agent | [Agent 接入说明](modules/research-agent/README.md) |
 
-当前本地 SQLite 接入需要 Node.js 24（本机 24.19.0）。安装根依赖，并准备指定数据库副本及 manifest 后启动集成入口：
+## 本地启动
+
+需要 **Node.js 24、npm、Git LFS**。普通 ABC 使用本地 SQLite；Python 和模型密钥仅在启用 Agent 时需要。
+
+在仓库根目录执行：
 
 ```powershell
+git lfs install --local
+git lfs pull --include=".data/company-database/xray-v3-20261003.sqlite"
 npm ci
-npm run dev
+npm run dev -- --hostname 127.0.0.1 --port 3000
+```
+
+打开 [首页](http://127.0.0.1:3000)。首次使用从首页确认需求；已有侧写可进入 [B 调查](http://127.0.0.1:3000/research) 或 [历史](http://127.0.0.1:3000/history)。保持相同浏览器和主机地址，避免 localhost 与 127.0.0.1 的会话隔离。端口占用时先检查已有服务，或将端口改为 3001。
+
+生产构建运行：
+
+```powershell
+npm run build
+npm start -- --hostname 127.0.0.1 --port 3000
+```
+
+数据库应为 **142,249,984 字节**，不是几行 LFS 指针；SHA256 应与 [导入清单](.data/company-database/manifest.json) 一致。清单记录原导入信息，不代表新调查已核验。
+
+Agent 默认关闭。需要时在忽略的 .env.local 配置，安装独立 Python 依赖并重启服务；详见 Agent 说明。实际密钥不能写进 .env.example。
+
+## 主要页面
+
+| 页面 | 用途 |
+| --- | --- |
+| / | 开始新判断、继续上次判断、展示案例入口 |
+| /profile | A：需求选择与侧写确认 |
+| /research | B：候选选择、资料调查与进度 |
+| /flow/reports/:id | C：七板块报告；沿用旧集成路径，可承载真实资料 |
+| /history | 找回侧写和历史报告 |
+| /revise/:id、/feedback/:id | 修改需求、补充核验回复，另存报告 |
+| /compare | 同一侧写版本的岗位比较，不生成排名 |
+
+/flow 和 /demo/* 是开发演示入口。真实需求流程不使用合成公司；用户下载、导出与整库数据包保持关闭。展示入口等待指定的真实记录。
+
+## 检查
+
+按改动选择检查；文档整理无需重跑全部业务测试。
+
+```powershell
 npm run typecheck
 npm test
 npm run test:a
@@ -22,48 +68,12 @@ npm run test:integration
 npm run build
 ```
 
-默认地址 http://localhost:3000。端口占用时使用 `npm run dev -- --port 3001`。
+Agent 专项检查见接入说明。开发样例及测试通过不证明真实企业资料准确或岗位仍在招。
 
-首页保留“开始新的判断”和“继续上次的判断”。A 确认需求后直接进入 /research，由 B 从本地数据库筛选岗位，勾选后进入 C 七板块报告，不重填公司、岗位或 JD。新 C 薪资板块为“薪资高低”，相对于用户收入期望解释，缺少可靠资料时保留待确认，不生成匹配分。
+## 数据与协作
 
-报告支持补充核验回复（保持用户提供、待核验）、修改需求后新版本、更新同一岗位JD材料以及同一需求版本2–3岗位比较。/history可找回所有历史版本，/compare每岗位显示最近生成报告，避免将修订/回复当多个候选。资料和需求更新均另存报告，旧归档与旧导出不覆盖。
+Git 跟踪代码、文档、测试样例，以及指定企业数据库 LFS 副本和清单。**密钥、个人侧写、历史报告、采集工作库、截图和日志留在本地。** Agent 新资料写入独立工作库，已上传数据库保持只读。
 
-/profile与/demo/a在Next内挂载A中文界面；Next需求数据另存.data/integration-a/state.json。报告完整输入、证据、MD/JSON保存在.data/integration-reports，按本地会话隔离，可跨服务重启恢复；清除浏览器会话后不能当作正式账户恢复。B/C运行时仍为内存适配器，文件归档不是生产数据库。
+保留会话、原侧写和旧报告，修改产生新快照。开发前检查 git status；明确路径暂存并检查提交内容，保留队友未提交文件，不用整仓 reset 整理。
 
-/flow保留ABC合成联调，方便开发检查。演示公司和岗位不代表现实调查；真实人工需求不会转换成合成结果。报告路径/flow/reports/:id沿用原联调命名，人工报告有明确资料标识。核验回复不能自动成为已核实事实；新JD录入时间不证明招聘仍有效。
-
-## 分支与目录
-
-- `main`：公共配置和契约，以及 A/B/C 业务实现与集成入口。
-- `work/b-research`：公共基线 + `modules/b-research` 和 B 的路由绑定。
-- A/B/C 的历史分支保留；继续开发时从当前 main 建立工作分支。
-
-只通过契约和 API 交换数据；模块不得直接读取其他模块内部数据库。路由绑定放 `app`，业务实现放 `modules`。
-
-## 公共能力
-
-`packages/contracts` 提供四个 schema 和 TypeScript 类型，以及引用/项目/版本/模式边界检查。公共样例在 `packages/contracts/fixtures`。UserProfile、SearchIntent、CandidateBundle 从附件直接提取；MatchReport 是合成期望输出，不是 C 规则实现。
-
-`packages/runtime` 提供错误格式、默认拒绝的项目所有权校验、调用预算代码、成本汇总和统一身份/快照/持久任务接口。`packages/ui` 提供基础页头、状态标签和样式。
-
-## 尚未接入
-
-共享 PostgreSQL、正式账户和生产级持久队列尚未接入。A需求和本机报告已有文件持久化；本地企业数据库及可选 MiniMax + Franklin 补充调查已接入，启用方法见 [Agent 接入说明](modules/research-agent/README.md)。独立材料核验及多人上线仍需继续落实，公开检索线索不等于已确认事实。
-
-产品结果、你下一步的工作与实际边界见 `docs/PRODUCT_HANDOFF_2026-10-03.md`。当前产品方向和实际进度见 `docs/PRODUCT_PLAN_2026-10-03.md`，演示步骤见 `docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md`。开工分析、前端逻辑问题与建议顺序见 `docs/PROJECT_ANALYSIS_2026-10-03.md`；简易 HTML 逐项审计见 `docs/frontend-analysis-2026-10-03.md`。
-
-模块独立开发与 A→B→C 整体联调是不同验收等级。接入方式、责任登记和联调清单见 `docs/ARCHITECTURE.md`。合成测试不证明真实公司准确率。
-
-
-本地数据库接入（2026-10-03）：A确认侧写后/research读取本机.data/company-database/xray-v3-20261003.sqlite，选择候选即可生成C报告。需本机Node 24运行时（本轮已用v24.19.0编译运行）；用户已授权通过 Git LFS 同步此企业数据库副本及 manifest，前端整库下载接口继续关闭。接入范围、证据处理和验收见docs/PRODUCT_CONTINUATION_2026-10-03.md最新记录。
-
-GitHub 与本机数据同步情况见 [上传诊断](docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md)。`.data` 只跟踪指定企业 SQLite 副本及导入清单，个人侧写、报告、截图、日志和 SQLite 运行期文件仍被忽略。
-
-安装 Git LFS 后，克隆时会下载企业数据库；若克隆时跳过了 LFS 下载，请在项目根目录运行：
-
-```powershell
-git lfs install --local
-git lfs pull --include=".data/company-database/xray-v3-20261003.sqlite"
-```
-
-数据库应为 142,249,984 字节，而非几行 LFS 指针；SHA256 应与 `.data/company-database/manifest.json` 一致。清单中 `policy` 保留原始导入时的本地策略记录，本次企业数据库共享由用户另行明确授权；不包含个人使用记录。下载数据库不会启动采集；后续授权的 Agent 补查在独立、忽略的工作库中运行。
+当前用于本机持续运行的服务；正式账户、多人生产隔离及持久队列仍未完成。公开摘要、员工评价和集团资料按原范围解释，不能直接认定符合岗位需求。
