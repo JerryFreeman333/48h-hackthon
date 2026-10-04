@@ -191,7 +191,7 @@ function evidenceHref(url: string | null, hiddenReason: string | null, sourceTyp
   if (href !== null) {
     return `<p class="ev-attr">链接：<a href="${escapeHtml(href)}" rel="noopener noreferrer nofollow">${escapeHtml(href)}</a></p>`;
   }
-  const sourceLabels:Record<string,string>={local_database_job_summary:'本地岗位摘录',local_database_field_comparison:'本地资料字段核对',database_material:'本地公司资料',manual_jd:'用户提供的岗位资料'};
+  const sourceLabels:Record<string,string>={local_database_job_summary:'本地岗位摘录',local_database_salary_reference:'本地薪资统计参考',local_database_field_comparison:'本地资料字段核对',database_material:'本地公司资料',manual_jd:'用户提供的岗位资料'};
   const reason = hiddenReason ?? `无链接（提供方式：${sourceLabels[sourceType]??sourceType}）`;
   return `<p class="ev-attr">链接：${escapeHtml(reason)}</p>`;
 }

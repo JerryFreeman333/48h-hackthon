@@ -66,7 +66,8 @@ function shortlist(input:Row){
 }
 export function databaseBundle(input:Row,recordIds:number[]){
  const found=shortlist(input);
- if(!Array.isArray(recordIds)||recordIds.length<1||recordIds.length>3||new Set(recordIds).size!==recordIds.length||recordIds.some(id=>!Number.isInteger(id)||!found.candidates.some((c:Row)=>c.recordId===id)))throw Error('请选择当前侧写下的一至三个候选岗位');
+ const selectable=[...found.candidates,...found.references];
+ if(!Array.isArray(recordIds)||recordIds.length<1||recordIds.length>3||new Set(recordIds).size!==recordIds.length||recordIds.some(id=>!Number.isInteger(id)||!selectable.some((c:Row)=>c.recordId===id)))throw Error('请选择当前侧写下的一至三条候选或薪资统计参考');
  const db=database();try{return assembleBundle(db,input,recordIds,found);}finally{db.close();}
 }
 
@@ -86,12 +87,14 @@ export function relevantCompanyExcerpt(e:Row,legal:string,brand:string){
 
 function assembleBundle(db:DatabaseSync,input:Row,recordIds:number[],found:ReturnType<typeof shortlist>){
   const stamp=new Date().toISOString(),prefix='db-'+found.sourceFingerprint.slice(0,12),inputIntent=input.SearchIntent;
-  const sourceDates:Row[]=[],factRecords:Row[]=[],companyRecords:Row[]=[],coverageRecords:Row[]=[];
+  const sourceDates:Row[]=[],factRecords:Row[]=[],companyRecords:Row[]=[],coverageRecords:Row[]=[],selectionRecords:Row[]=[],withdrawnEvidenceRecords:Row[]=[];
   const bundle:CandidateBundle={schemaVersion:'1.0.0',bundleId:'bundle-'+randomUUID(),projectId:inputIntent.projectId,intentId:inputIntent.intentId,intentRevision:inputIntent.revision,mode:inputIntent.mode,retrievedAt:stamp,companies:[],jobs:[],evidence:[],facts:[],coverage:[],usage:[]};
   for(const id of recordIds){
    const row=db.prepare('SELECT j.*,c.name company_name,c.full_name,c.domain,c.credit_code_collab,c.identity_status_collab,c.notes company_notes FROM company_jobs j JOIN companies c ON c.id=j.company_id WHERE j.id=?').get(id) as Row;
+   const salaryReference=reference(row),recordKind=salaryReference?'salary_reference':'job_lead';
    const linkedIds=relatedCompanyRecords(db,row);
    const companyId=prefix+'-company-'+row.company_id,jobId=prefix+'-job-'+id,jobEvidence=prefix+'-jd-'+id;
+   selectionRecords.push({jobId,recordId:id,recordKind});
    // The database's company bucket may combine a group, brand and subsidiary. It does not prove this job's signing entity.
    const business=db.prepare('SELECT * FROM company_business WHERE company_id=?').get(row.company_id) as Row|undefined;
    if(!bundle.companies.some(c=>c.companyId===companyId)){
@@ -106,13 +109,18 @@ function assembleBundle(db:DatabaseSync,input:Row,recordIds:number[],found:Retur
     }
    }
    const cs=cities(row);
-   bundle.jobs.push({jobId,companyId,title:row.title,rawJd:row.raw_jd,city:cs.length===1?cs[0]:null,sourceUrl:url(row.source_url),publishedAt:date(row.published_at),vacancyStatus:'unknown',salary:documentedSalary(row)});
-   bundle.evidence.push({evidenceId:jobEvidence,companyId,jobId,scope:'job',sourceType:'local_database_job_summary',title:(text(row.source_type)??'数据库')+' · 岗位摘录',url:url(row.source_url),publishedAt:date(row.published_at),retrievedAt:retrieved(row.retrieved_at),excerpt:row.raw_jd,mode:bundle.mode,verification:'unverified'});
-   bundle.facts.push({factId:jobEvidence+'-description',companyId,jobId,key:'job.description',value:row.raw_jd,status:'unknown',evidenceIds:[jobEvidence],asOf:date(row.published_at)});
-   if(cs.length===1&&String(row.raw_jd).includes(cs[0]))bundle.facts.push({factId:jobEvidence+'-city',companyId,jobId,key:'job.city',value:cs[0],status:'unknown',evidenceIds:[jobEvidence],asOf:date(row.published_at)});
-   sourceDates.push({evidenceId:jobEvidence,jobId,publishedAtRaw:row.published_at,retrievedAtRaw:row.retrieved_at,timezone:'not_recorded',salaryRaw:{min:row.salary_min,max:row.salary_max,period:row.salary_period,basis:row.salary_basis,taxBasis:row.salary_tax_basis,months:row.salary_months}});
+   // A neutral job-shaped context satisfies the report contract without turning a statistics record into a vacancy.
+   bundle.jobs.push({jobId,companyId,title:salaryReference?'薪资统计参考 · '+row.title:row.title,rawJd:salaryReference?'用于公司层面调查的薪资统计参考；不是岗位 JD，不说明实际工作城市、在招状态或该岗位薪酬。原始统计摘录保留在公司范围资料中。':row.raw_jd,city:salaryReference?null:cs.length===1?cs[0]:null,sourceUrl:url(row.source_url),publishedAt:date(row.published_at),vacancyStatus:'unknown',salary:salaryReference?{currency:text(row.salary_currency)??'CNY',min:null,max:null,period:'unknown',basis:'unknown',taxBasis:'unknown',months:null}:documentedSalary(row)});
+   bundle.evidence.push({evidenceId:jobEvidence,companyId,jobId:salaryReference?null:jobId,scope:salaryReference?'company':'job',sourceType:salaryReference?'local_database_salary_reference':'local_database_job_summary',title:(text(row.source_type)??'数据库')+(salaryReference?' · 公司薪资统计参考':' · 岗位摘录'),url:url(row.source_url),publishedAt:date(row.published_at),retrievedAt:retrieved(row.retrieved_at),excerpt:row.raw_jd,mode:bundle.mode,verification:'unverified'});
+   if(!salaryReference){
+    bundle.facts.push({factId:jobEvidence+'-description',companyId,jobId,key:'job.description',value:row.raw_jd,status:'unknown',evidenceIds:[jobEvidence],asOf:date(row.published_at)});
+    if(cs.length===1&&String(row.raw_jd).includes(cs[0]))bundle.facts.push({factId:jobEvidence+'-city',companyId,jobId,key:'job.city',value:cs[0],status:'unknown',evidenceIds:[jobEvidence],asOf:date(row.published_at)});
+   }
+   sourceDates.push({evidenceId:jobEvidence,jobId:salaryReference?null:jobId,recordId:id,recordKind,scopeOriginal:salaryReference?'company':'job',publishedAtRaw:row.published_at,retrievedAtRaw:row.retrieved_at,timezone:'not_recorded',salaryRaw:{min:row.salary_min,max:row.salary_max,period:row.salary_period,basis:row.salary_basis,taxBasis:row.salary_tax_basis,months:row.salary_months}});
    // Select only bounded, relevant company material. Search noise and sentiment labels never become company/job facts.
    const addEvidence=(e:Row)=>{
+    if(Number(e.is_stale)===1||e.verification==='contradicted')return null;
+    if(salaryReference&&(e.job_id!==null||e.scope==='job'))return null;
     if(!relevantCompanyExcerpt(e,text(row.full_name)??row.company_name,row.company_name))return null;
     const duplicate=bundle.evidence.find(x=>x.companyId===companyId&&x.excerpt===String(e.excerpt)&&x.title.endsWith(text(e.title)??'公司资料摘录')&&x.url===url(e.url));if(duplicate)return duplicate.evidenceId;
     const evidenceId=prefix+'-ev-'+e.id;if(bundle.evidence.some(x=>x.evidenceId===evidenceId))return evidenceId;
@@ -120,7 +128,13 @@ function assembleBundle(db:DatabaseSync,input:Row,recordIds:number[],found:Retur
     bundle.evidence.push({evidenceId,companyId,jobId:e.job_id===id?jobId:null,scope:/支行|分行/.test(e.title??'')&&e.job_id===null?'business':e.scope,sourceType:text(e.source_type)??'database_material',title:(group?'公司或集团报道线索 · ':review?'公司员工评价线索 · ':'')+(text(e.title)??'公司资料摘录'),url:url(e.url),publishedAt:date(e.published_at),retrievedAt:retrieved(e.retrieved_at),excerpt:String(e.excerpt),mode:bundle.mode,verification:e.verification==='disputed'?'disputed':'unverified'});
     sourceDates.push({evidenceId,companyRecordIdOriginal:e.company_id,linkedBy:linkedIds.includes(e.company_id)&&e.company_id!==row.company_id?'same_legal_name_no_known_credit_conflict':null,publishedAtRaw:e.published_at,retrievedAtRaw:e.retrieved_at,verificationOriginal:e.verification,isStaleOriginal:e.is_stale,staleReasonOriginal:e.stale_reason,scopeOriginal:e.scope,jobRecordIdOriginal:e.job_id});return evidenceId;
    };
-   const eligible="company_id=? AND ((job_id IS NULL AND scope IN ('company','business','team')) OR (job_id=? AND scope='job')) AND length(trim(excerpt))>0";
+   const eligibleScope="company_id=? AND ((job_id IS NULL AND scope IN ('company','business','team')) OR (job_id=? AND scope='job' AND "+(salaryReference?'0':'1')+")) AND length(trim(excerpt))>0";
+   // Upstream withdrawals are retained as provenance only, never fed to needs extraction or report facts.
+   const eligible=eligibleScope+" AND COALESCE(is_stale,0)<>1 AND COALESCE(verification,'')<>'contradicted'";
+   for(const cid of linkedIds){
+    const withdrawn=db.prepare(`SELECT * FROM evidence WHERE ${eligibleScope} AND (COALESCE(is_stale,0)=1 OR verification='contradicted') ORDER BY id`).all(cid,cid===row.company_id?id:-1) as Row[];
+    for(const e of withdrawn)if(!withdrawnEvidenceRecords.some(r=>r.recordId===e.id))withdrawnEvidenceRecords.push({recordId:e.id,originalEvidenceId:e.evidence_id,companyRecordIdOriginal:e.company_id,jobRecordIdOriginal:e.job_id,isStaleOriginal:e.is_stale,staleReasonOriginal:e.stale_reason,verificationOriginal:e.verification,reason:'上游已标记撤销或失效，仅保留撤销标记，不纳入分析证据。'});
+   }
    // Correlate company passages only; never borrow another record's jobs.
    const materials=linkedIds.flatMap(cid=>db.prepare(`SELECT * FROM evidence WHERE ${eligible} ORDER BY id`).all(cid,cid===row.company_id?id:-1) as Row[])
     .filter(e=>relevantCompanyExcerpt(e,text(row.full_name)??row.company_name,row.company_name));
@@ -130,17 +144,18 @@ function assembleBundle(db:DatabaseSync,input:Row,recordIds:number[],found:Retur
    for(const detail of selectedDetails){const signals=needSignals[detail];if(signals)passages.filter(e=>signals.some(signal=>String(e.excerpt).includes(signal))).slice(0,4).forEach(addEvidence);}
    const companyFacts=linkedIds.flatMap(cid=>db.prepare("SELECT * FROM facts WHERE company_id=? AND (job_id IS NULL OR job_id=?) AND (fact_key LIKE 'company.%' OR fact_key LIKE 'needs.%' OR (job_id=? AND fact_key LIKE 'job.%')) ORDER BY id").all(cid,cid===row.company_id?id:-1,cid===row.company_id?id:-1) as Row[]);
    for(const f of companyFacts){
+    if(salaryReference&&(f.job_id!==null||String(f.fact_key).startsWith('job.')))continue;
     const factId=prefix+'-fact-'+f.id;if(bundle.facts.some(x=>x.factId===factId))continue;
     let ids:string[]=[];try{const parsed=JSON.parse(f.evidence_ids);if(Array.isArray(parsed))ids=parsed.filter((x:unknown)=>typeof x==='string');}catch{ids=[];}
-    const evidenceIds:string[]=[];
-    for(const eid of ids){const e=db.prepare(`SELECT * FROM evidence WHERE ${eligible} AND evidence_id=?`).get(f.company_id,f.company_id===row.company_id?(f.job_id??-1):-1,eid) as Row|undefined;if(!e||!text(e.excerpt)||e.job_id!==f.job_id)continue;const ref=addEvidence(e);if(ref)evidenceIds.push(ref);}
-    const included=ids.length>0&&evidenceIds.length===ids.length&&!!text(f.fact_value);
-    factRecords.push({factId,originalFactId:f.fact_id,companyRecordIdOriginal:f.company_id,valueRaw:f.fact_value,key:f.fact_key,statusOriginal:f.status,nVerifiedOriginal:f.n_verified,asOfRaw:f.as_of,included,missingEvidenceIds:ids.filter(eid=>!db.prepare('SELECT id FROM evidence WHERE evidence_id=?').get(eid)),note:included?'保留采集值及同范围引用，未独立核验。':'原记录缺少完整同范围引用，不作为判断事实；不为它补造证据。'});
+    const evidenceIds:string[]=[],withdrawnFact=f.status==='contradicted';
+    for(const eid of withdrawnFact?[]:ids){const e=db.prepare(`SELECT * FROM evidence WHERE ${eligible} AND evidence_id=?`).get(f.company_id,f.company_id===row.company_id?(f.job_id??-1):-1,eid) as Row|undefined;if(!e||!text(e.excerpt)||e.job_id!==f.job_id)continue;const ref=addEvidence(e);if(ref)evidenceIds.push(ref);}
+    const included=!withdrawnFact&&ids.length>0&&evidenceIds.length===ids.length&&!!text(f.fact_value);
+    factRecords.push({factId,originalFactId:f.fact_id,companyRecordIdOriginal:f.company_id,valueRaw:f.fact_value,key:f.fact_key,statusOriginal:f.status,nVerifiedOriginal:f.n_verified,asOfRaw:f.as_of,included,missingEvidenceIds:ids.filter(eid=>!db.prepare('SELECT id FROM evidence WHERE evidence_id=?').get(eid)),withdrawnEvidenceIds:ids.filter(eid=>withdrawnEvidenceRecords.some(e=>e.originalEvidenceId===eid)),note:withdrawnFact?'上游事实已标记否定或撤销，不作为判断事实。':included?'保留采集值及同范围引用，未独立核验。':'原记录缺少完整有效的同范围引用，不作为判断事实；不为它补造证据。'});
     if(!included)continue;
     bundle.facts.push({factId,companyId,jobId:f.job_id===id?jobId:null,key:f.fact_key,value:text(f.fact_value),status:f.status==='conflicting'?'conflicting':'unknown',evidenceIds,asOf:date(f.as_of)});
    }
    for(const cid of linkedIds){
-    const legacy=db.prepare("SELECT * FROM facts WHERE company_id=? AND job_id IS NULL AND fact_key GLOB 'B[1-9].*'").all(cid) as Row[];
+    const legacy=db.prepare("SELECT * FROM facts WHERE company_id=? AND job_id IS NULL AND fact_key GLOB 'B[1-9].*' AND COALESCE(status,'')<>'contradicted'").all(cid) as Row[];
     for(const f of legacy){let refs:string[]=[];try{refs=JSON.parse(f.evidence_ids);}catch{}if(!Array.isArray(refs))continue;
      for(const ref of refs){const e=db.prepare(`SELECT * FROM evidence WHERE ${eligible} AND evidence_id=?`).get(cid,-1,ref) as Row|undefined;
       if(!e||!relevantCompanyExcerpt(e,text(row.full_name)??row.company_name,row.company_name))continue;
@@ -149,17 +164,17 @@ function assembleBundle(db:DatabaseSync,input:Row,recordIds:number[],found:Retur
      }
     }
    }
-   const sourceCoverage=db.prepare('SELECT * FROM coverage WHERE company_id=? AND (job_id IS NULL OR job_id=?)').all(row.company_id,id) as Row[];
+   const sourceCoverage=db.prepare('SELECT * FROM coverage WHERE company_id=? AND (job_id IS NULL OR job_id=?)').all(row.company_id,salaryReference?-1:id) as Row[];
    coverageRecords.push(...sourceCoverage.map(c=>({companyId,jobId:c.job_id,topic:c.topic,status:c.status,reason:c.reason,checkedAtRaw:c.checked_at})));
    const topicSignals:Record<string,RegExp>={business:/主营|业务|营收|经营/,business_financials:/财报|年报|净利|营收|亏损/,credit_legal:/信用代码|登记|监管|处罚|诉讼/,work_conditions:/工时|打卡|加班|双休|社保|五险|六险|补贴/,team_growth:/内部培训|带教|晋升|轮岗|团队/};
    for(const topic of ['job_description','company_identity','business','business_financials','credit_legal','work_conditions','team_growth']){
-    const has=topic==='job_description'||(topic==='company_identity'?!!text(row.full_name)||!!text(row.credit_code_collab):bundle.evidence.some(e=>e.companyId===companyId&&(!e.jobId||e.jobId===jobId)&&topicSignals[topic]?.test(e.excerpt)));
-    bundle.coverage.push({companyId,jobId:topic==='job_description'?jobId:null,topic,status:has?'available':'unavailable',reason:topic==='job_description'?'已有岗位摘录；原文完整性、来源和当前在招仍待核验。':has?'已有与本问题相关的本地资料线索；其主体、岗位适用性和真实性仍待确认，不代表需求已满足。':'本次未找到具有明确引用且范围可对齐的相关资料；主体待确认并非抹去其他公司线索的理由。',checkedAt:stamp});
+    const has=topic==='job_description'?!salaryReference:(topic==='company_identity'?!!text(row.full_name)||!!text(row.credit_code_collab):bundle.evidence.some(e=>e.companyId===companyId&&(salaryReference?e.jobId===null:!e.jobId||e.jobId===jobId)&&topicSignals[topic]?.test(e.excerpt)));
+    bundle.coverage.push({companyId,jobId:topic==='job_description'?jobId:null,topic,status:has?'available':'unavailable',reason:topic==='job_description'?salaryReference?'所选记录为公司薪资统计参考，不是招聘 JD；具体岗位、工作城市、薪酬约定和是否在招均未提供。':'已有岗位摘录；原文完整性、来源和当前在招仍待核验。':has?'已有与本问题相关的本地资料线索；其主体、岗位适用性和真实性仍待确认，不代表需求已满足。':'本次未找到具有明确引用且范围可对齐的相关资料；主体待确认并非抹去其他公司线索的理由。',checkedAt:stamp});
    }
   }
   extractNeedLeads(bundle);
   candidateBundleSchema.parse(bundle);if(validateBundleReferences(bundle).length)throw Error('数据库资料引用关系不一致');
-  return {bundle,databaseSource:{name,fingerprint:found.sourceFingerprint,recordIds,sourceDates,factRecords,companyRecords,coverageRecords,importedFromLocal:true,policy:'question-driven-local-leads; preserve-scope-date-and-unverified-status; no-unbound-job-or-sentiment-facts'}};
+  return {bundle,databaseSource:{name,fingerprint:found.sourceFingerprint,recordIds,selectionRecords,sourceDates,factRecords,companyRecords,coverageRecords,withdrawnEvidenceRecords,importedFromLocal:true,policy:'question-driven-local-leads; preserve-scope-date-and-unverified-status; no-unbound-job-or-sentiment-facts; salary-references-are-company-statistics-not-vacancies; exclude-withdrawn-or-stale-evidence-and-contradicted-facts'}};
 }
 
 export function findDatabaseCandidates(input:Row){

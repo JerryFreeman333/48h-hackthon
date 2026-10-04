@@ -38,6 +38,10 @@ export function ProfileResearchWorkspace(){
    if(stored?.id){setSelected(Array.isArray(stored.selected)?stored.selected:[]);setBusy(true);void followRun(next,stored.id).catch(e=>{if(mounted.current){remember(next,null);setError(e.message);}}).finally(()=>{if(mounted.current)setBusy(false);});}
   }
  })().catch(e=>{if(active)setError(e.message);}).finally(()=>{if(active)setLoading(false);});return()=>{active=false;mounted.current=false;};},[]);
+ function toggleRecord(recordId:number){setSelected(xs=>xs.includes(recordId)?xs.filter(id=>id!==recordId):xs.length<3?[...xs,recordId]:xs);setReport(null);}
+ const referenceSelected=value?.database.references.filter(c=>selected.includes(c.recordId)).length??0;
+ const jobSelected=selected.length-referenceSelected;
+ const selectionText=[jobSelected?jobSelected+' 条岗位线索':'',referenceSelected?referenceSelected+' 条薪资统计参考':''].filter(Boolean).join('、');
  return <div className="shell b-workspace b-profile-workspace">
   <header className="topbar"><a className="brand" href="/">求职 X-Ray</a><nav className="nav"><a href="/history">继续上次的判断</a></nav><span className="b-stage">B · 公司与岗位调查</span></header>
   <main className="main">
@@ -56,7 +60,7 @@ export function ProfileResearchWorkspace(){
      <section className="panel b-topics"><details><summary>你的七主题调查重点</summary><p className="sub">沿用 A 已确认版本，不需要重新填写。</p>{value.topics.map(t=><div className="b-topic" key={t.title}><h3>{t.title.replaceAll('薪酬透明','薪资高低')} <span className="b-detail-label">{t.priority}</span></h3><p>{t.details.join('；')}</p><p className="notice">{t.policy}</p></div>)}</details></section>
      <section className="panel b-candidates">
       <div className="b-section-heading"><h2>候选公司与岗位</h2><span className="b-count">{value.database.candidateCount} 条岗位线索</span></div>
-      <p className="sub">选择一至三个岗位，结合你的需求生成判断报告。</p>
+      <p className="sub">选择岗位线索或下方薪资统计参考，合计一至三条，结合你的需求生成判断报告。</p>
       <p className="b-boundary">线索不等于正在招聘，也不代表已满足全部需求；在招状态和签约主体仍需核实。</p>
       {!value.database.candidates.length&&<div className="empty"><h3>本批资料中暂无符合方向的岗位线索</h3><p>不会自动放宽你确认的必须满足条件；可以继续补充数据库，或回 A 修改需求。</p></div>}
       <div className="b-candidate-list">{value.database.candidates.map(c=><article className={'company-block b-candidate'+(selected.includes(c.recordId)?' is-selected':'')} key={c.recordId}>
@@ -68,9 +72,12 @@ export function ProfileResearchWorkspace(){
       </article>)}</div>
       <details className="b-database-note"><summary>资料来源与范围</summary><p className="source-line">本地爬虫数据库 · 已接入 {value.database.counts.companies} 家公司、{value.database.counts.company_jobs} 条岗位记录 · 未独立核验</p><p className="source-line">按 A 的城市、行业与岗位方向找到候选，七主题资料用于后续逐项对照。</p></details>
      </section>
-     {value.database.references.length>0&&<section className="panel b-references"><details><summary>另有 {value.database.referenceCount} 条薪资统计参考（不当作在招岗位）</summary>{value.database.references.map(c=><div className="b-topic" key={c.recordId}><h3>{c.companyName} · {c.title}</h3><p>{c.excerpt}</p>{c.sourceUrl&&<a href={c.sourceUrl} target="_blank" rel="noreferrer">查看统计来源 →</a>}</div>)}</details></section>}
-     {value.database.candidates.length>0&&<section className="panel b-analysis-actions" aria-label="分析所选岗位">
-      <div className="b-action-heading"><div><strong>{busy?'调查与分析进行中':selected.length?'已选择 '+selected.length+' 个岗位':'还未选择岗位'}</strong><p className="sub" role="status" aria-live="polite">{busy?(progress||'正在安排补充调查，完成后自动进入 C。'):selected.length?'结合你的侧写，逐项分析这些岗位。':'请勾选上方一至三个岗位。'}</p></div><button className="button primary" disabled={busy||!selected.length} onClick={analyze}>{busy?'正在调查与分析…':'用我的侧写分析所选岗位'}</button></div>
+     {value.database.references.length>0&&<section className="panel b-references"><details open><summary>另有 {value.database.referenceCount} 条薪资统计参考 · 可选择分析</summary><p className="sub">可以单独选择，也可以和岗位一起分析。统计反映公司薪资分布，不作为在招岗位或个人报价。</p><div className="b-candidate-list">{value.database.references.map(c=><article className={'company-block b-candidate'+(selected.includes(c.recordId)?' is-selected':'')} key={c.recordId}>
+      <div className="b-candidate-heading"><label className="b-candidate-choice"><input type="checkbox" checked={selected.includes(c.recordId)} disabled={busy||(!selected.includes(c.recordId)&&selected.length>=3)} onChange={()=>toggleRecord(c.recordId)}/><span><strong className="b-job-title">{c.companyName} · {c.title}</strong><span className="b-company-meta">薪资统计参考 · 公司层面资料</span></span></label>{selected.includes(c.recordId)&&<span className="b-selected-label">已选择</span>}</div>
+      <p className="job-desc">{c.excerpt}</p><p className="source-line">{c.sourceType}{c.sourceUrl&&<> · <a href={c.sourceUrl} target="_blank" rel="noreferrer">查看统计来源 →</a></>}</p>
+     </article>)}</div></details></section>}
+     {(value.database.candidates.length>0||value.database.references.length>0)&&<section className="panel b-analysis-actions" aria-label="分析所选资料">
+      <div className="b-action-heading"><div><strong>{busy?'调查与分析进行中':selected.length?'已选择 '+selectionText:'还未选择资料'}</strong><p className="sub" role="status" aria-live="polite">{busy?(progress||'正在安排补充调查，完成后自动进入 C。'):selected.length?'结合你的侧写，逐项分析所选资料。':'请勾选岗位线索或薪资统计参考，合计一至三条。'}</p></div><button className="button primary" disabled={busy||!selected.length} onClick={analyze}>{busy?'正在调查与分析…':'用我的侧写分析所选资料'}</button></div>
       {value.agent?.enabled&&<p className="notice">点击分析后，将补充调查所选公司的七主题资料。新资料作为待核验线索；调查失败或超时仍使用已有资料生成报告。</p>}{error&&<p className="b-error" role="alert">{error}</p>}
      </section>}
      {report&&<section className="panel b-message"><h2>C 分析已生成</h2>{report.warnings.map(w=><p key={w}>{w}</p>)}<a className="button primary" href={report.reportUrl}>查看分析报告 →</a></section>}

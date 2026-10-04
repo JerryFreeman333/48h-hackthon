@@ -81,3 +81,24 @@ test('founding years cannot become 996 hours and half-year disclosure remains a 
  assert.equal(sectors.find(s=>s.id==='hours')!.status,'missing');
  assert.equal(sectors.find(s=>s.id==='company')!.status,'lead');
 });
+
+test('salary reference keeps its type through the frozen report and never claims a job quote or vacancy',async()=>{
+ const {saved}=await fixture('公司薪资统计：平均月薪 15000 元。'),inputs=structuredClone(saved.inputs);
+ const job=inputs.bundle.jobs[0];
+ job.title='薪资统计参考 · 公司工资分布';
+ job.city=null;
+ job.salary={currency:'CNY',min:null,max:null,period:'unknown',basis:'unknown',taxBasis:'unknown',months:null};
+ inputs.bundle.evidence.forEach((e:any)=>{e.jobId=null;e.scope='company';e.sourceType='local_database_salary_reference';});
+ inputs.databaseSource={selectionRecords:[{jobId:job.jobId,recordId:1,recordKind:'salary_reference'}]};
+ inputs.needsResponse=respondToJobNeeds(inputs.aExport.JobNeedsSnapshot,inputs.bundle);
+ inputs.aExport.UserProfile.preferences.push({key:'min_fixed_monthly_salary',value:10000,strength:'hard',confirmed:true});
+ const analysis=analysisFromInputs(inputs,saved.report),candidate=analysis.candidates[0];
+ assert.equal(candidate.recordKind,'salary_reference');
+ assert.match(candidate.summary,/没有选定具体招聘岗位/);
+ const pay=candidate.sectors.find(s=>s.id==='pay')!;
+ assert.match(pay.conclusion,/统计均值.*不等于.*固定月薪/);
+ assert.doesNotMatch(pay.conclusion,/不低于你的|低于你的.*必须满足/);
+ const html=renderSectorReport(analysis,saved.report,{sourceLabel:'测试数据库',authenticityLabel:'测试资料',verificationLabel:'未核验'});
+ assert.match(html,/薪资统计参考 · 公司层面资料；未选择具体招聘岗位/);
+ assert.doesNotMatch(html,/当前在招状态仍待核实/);
+});

@@ -24,15 +24,17 @@ import {analysisFromInputs,renderSectorReport} from './sector-report';
 function databaseFieldNotes(inputs:Record<string,any>):string{
  if(!inputs.databaseSource)return '';
  const warnings=(inputs.databaseSource.sourceDates??[]).flatMap((s:any)=>{
+  if(s.recordKind==='salary_reference'||inputs.databaseSource.selectionRecords?.some((r:any)=>r.jobId===s.jobId&&r.recordKind==='salary_reference'))return [];
   if(!s.salaryRaw||s.salaryRaw.min===null)return [];
   const job=inputs.bundle.jobs.find((j:any)=>j.jobId===s.jobId||s.evidenceId.endsWith('-jd-'+j.jobId.split('-job-').at(-1)));
   if(!job||job.salary.min!==null)return [];
   return ['<p><strong>'+escapeHtml(job.title)+'：</strong>数据库待遇栏记为 '+escapeHtml(String(s.salaryRaw.min))+'–'+escapeHtml(String(s.salaryRaw.max??'未记载'))+'；但这份岗位摘录未能支持同一薪资口径。不能将它当成固定月薪，也不能用其他岗位或公司平均替代。需招聘方提供固定部分、浮动部分、发放周期及税前税后的书面说明。</p>'];
  });
- const missing=(inputs.databaseSource.factRecords??[]).filter((f:any)=>!f.included&&String(f.key).startsWith('company.')&&f.valueRaw&&!/identity_status/.test(f.key));
+ const missing=(inputs.databaseSource.factRecords??[]).filter((f:any)=>!f.included&&f.statusOriginal!=='contradicted'&&!f.withdrawnEvidenceIds?.length&&String(f.key).startsWith('company.')&&f.valueRaw&&!/identity_status/.test(f.key));
  const associations=(inputs.databaseSource.companyRecords??[]).filter((c:any)=>c.linkedRecordIds?.length>1);
  const supplemental=associations.length||missing.length?'<details><summary>公司资料关联与未核验汇总线索</summary>'+associations.map((c:any)=>'<p>已关联公司全称相同且已知信用代码无冲突的 '+c.linkedRecordIds.length+' 份公司记录；仅借助公司层面线索，不确认这份岗位的签约主体。</p>').join('')+(missing.length?'<p>以下为数据库汇总记录，缺少完整同范围来源引用，未进入七板块结论。它们不等于已核实事实，需补充原始文件或链接：</p>':'')+missing.slice(0,20).map((f:any)=>'<p>'+escapeHtml(String(f.valueRaw))+'</p>').join('')+'</details>':'';
- return supplemental+(warnings.length?'<section class="card"><h3>岗位待遇字段的核对结果</h3>'+warnings.join('')+'</section>':'');
+ const statistical=inputs.databaseSource.selectionRecords?.some((r:any)=>r.recordKind==='salary_reference');
+ return (statistical?'<p class="muted">已选薪资统计参考：以下对照使用公司统计及相关公司资料。统计值不代表在招岗位、个人报价或税前固定月薪，不能替代具体岗位的招聘与薪酬确认。</p>':'')+supplemental+(warnings.length?'<section class="card"><h3>岗位待遇字段的核对结果</h3>'+warnings.join('')+'</section>':'');
 }
 
 export function createDemoFlow(options?: { dataDir?: string }) {
@@ -101,7 +103,7 @@ export function createDemoFlow(options?: { dataDir?: string }) {
       const created=await handleCreateMatch(u.ctx,requestFor(u.token,'/api/c/matches',{profile,intentContext:intent,bundle,idempotencyKey:bundle.bundleId}));
       const result=await created.json();if(!created.ok)throw Object.assign(Error(result.error?.message??'数据库岗位报告生成失败'),{status:created.status});
       await freeze(owner,result.reportId,input,{kind:'local_database',databaseSource},bundle,u);
-      return {...result,reportUrl:'/flow/reports/'+result.reportId,warnings:['沿用 A 已确认侧写，分析本地数据库中的所选岗位资料。','岗位原文完整性、当前在招状态与签约主体仍需核验；数据库记录不等于已确认适合你。']};
+      return {...result,reportUrl:'/flow/reports/'+result.reportId,warnings:['沿用 A 已确认侧写，分析本地数据库中的所选资料。','薪资统计是公司层面的参考；具体岗位报价、在招状态与签约主体仍需核验。']};
     },
     list(owner: string) { return archive.list(owner); },
     feedbackContext(owner:string,reportId:string){const saved=archive.read(owner,reportId);if(!saved)throw Object.assign(Error("本会话无该报告"),{status:404});return {reportId,mode:saved.report.mode,questions:feedbackQuestions(saved),notes:saved.inputs.verificationNotes??[]};},
