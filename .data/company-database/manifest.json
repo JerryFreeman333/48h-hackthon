@@ -1,18 +1,18 @@
 {
   "sourceName": "企业分析数据库_v3_20261003",
   "snapshotName": "xray-v3-20261003.sqlite",
-  "sha256": "7635593478c7a981b9ea2153bfbf56df6fbb7c835acb0c436f79c30ee0d75220",
+  "sha256": "af1b52d1839c6ca2a98fe2620258900a2da1e2a3498a71c4c419b56af714b1f8",
   "counts": {
     "companies": 471,
     "company_jobs": 95,
-    "evidence": 138597,
-    "facts": 269165,
-    "coverage": 4539,
-    "gaps": 1950,
-    "crawl_tasks": 1115
+    "evidence": 139052,
+    "facts": 269261,
+    "coverage": 4614,
+    "gaps": 2032,
+    "crawl_tasks": 1245
   },
-  "policy": "local-only; r4 2026-10-03: shard-b/c 回传合并入库（b 134 partial+23 pending / c 151 partial+5 pending；新增 ev-b/c 2,296 证据、ft-b/c 949 事实）；shard-a 撤销标注传播到主库（39,185 证据 stale、87,685 事实 contradicted）；crawl-v1 遗留噪音事实整类撤销（ft_ana 263,869、无源孤儿 1,305、悬空引用聚合 36）；gaps 去重对齐；B 域口碑仍以 unknown 为主——未知≠通过",
-  "importedAt": "2026-10-04T01:34:35.000Z",
+  "policy": "local-only; r5 2026-10-03 晚: shard-b/c 低产出补齐（pending 28→3；b 2 家 complete）；新增 ev-b/c 455 证据、96 事实；恢复被低产出重采清掉的 71 条既有行；剩余 3 家 pending（品牌名无对应主体）+ 4 家 failed（主体未确认），gaps 如实；B 域口碑仍以 unknown 为主——未知≠通过",
+  "importedAt": "2026-10-04T03:07:27.000Z",
   "revisions": [
     {
       "revision": "r1-shard-a-recrawl-20261003",
@@ -85,6 +85,25 @@
         "crawl_tasks": 159
       },
       "previousImportedAt": "2026-10-04T00:27:07.000Z"
+    },
+    {
+      "revision": "r5-shard-bc-backfill-20261003",
+      "date": "2026-10-04T03:07:27.000Z",
+      "summary": "shard-b/c 补齐回填：pending 28→3（b 清零：DeepSeek/杭齿前进/云丛智能 命中；c 剩华东医药商业/顺丰杭州/全速生思 品牌名无主体，gaps 如实记录）；b 首现 2 家 complete（网易杭州/农夫山泉）；新增 ev-b/c 455 条证据、96 条事实；恢复被低产出重采清掉的 71 条既有 curated 行（主库副本回补分片）；coverage/gaps 追加；对账通过",
+      "evidenceAdded": 455,
+      "factsAdded": 96,
+      "companiesReCrawled": 59,
+      "previousSha256": "7635593478c7a981b9ea2153bfbf56df6fbb7c835acb0c436f79c30ee0d75220",
+      "previousCounts": {
+        "companies": 471,
+        "company_jobs": 95,
+        "evidence": 138597,
+        "facts": 269165,
+        "coverage": 4539,
+        "gaps": 1950,
+        "crawl_tasks": 1115
+      },
+      "previousImportedAt": "2026-10-04T01:34:35.000Z"
     }
   ]
 }
