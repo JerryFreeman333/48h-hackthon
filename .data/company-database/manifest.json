@@ -1,18 +1,18 @@
 {
   "sourceName": "企业分析数据库_v3_20261003",
   "snapshotName": "xray-v3-20261003.sqlite",
-  "sha256": "91d3b8b303eb58822414170d4ac189135e84c2f9ee026a4a527ef5a80edf3b19",
+  "sha256": "3d94d7d7b717914c431877023dfa77a68df8097daff803f49fe9ed4f90aa1161",
   "counts": {
     "companies": 471,
     "company_jobs": 95,
-    "evidence": 135996,
-    "facts": 266877,
-    "coverage": 1508,
-    "gaps": 336,
-    "crawl_tasks": 66
+    "evidence": 136301,
+    "facts": 268216,
+    "coverage": 2031,
+    "gaps": 781,
+    "crawl_tasks": 159
   },
-  "policy": "local-only; r2 2026-10-03: shard-a P3 batch2 25 listed companies merged; legacy retracted facts preserved for traceability",
-  "importedAt": "2026-10-03T18:58:04.579Z",
+  "policy": "local-only; r3 2026-10-03: shard-a completed 158/158 (92 newly crawled: listed 11 + unlisted 35 + placeholder 42); crawl-v1 noise evidence/facts retracted for traceability; collab legacy facts on shard-a retracted in main",
+  "importedAt": "2026-10-04T00:27:07.000Z",
   "revisions": [
     {
       "revision": "r1-shard-a-recrawl-20261003",
@@ -47,6 +47,24 @@
         "coverage": 1308,
         "gaps": 213,
         "crawl_tasks": 41
+      }
+    },
+    {
+      "revision": "r3-shard-a-complete-20261003",
+      "date": "2026-10-04T00:27:07.000Z",
+      "summary": "shard-a采集完成158/158：本批新采92家（上市11家：A股F10×2/港股etnet×7/美股×2；未上市知名35家；占位42家，其中4家主体未确认记failed）。重点：01060阿里影业已更名大麦娱乐、杭汽轮被吸收合并注销、品钛更名JF、达达私有化退市、康基医疗私有化中、生意宝/东方电缆/南方泵业/优全生活/康基医疗实为上市主体（csv_correction）；重大风险：宸帆税务处罚6555万、白鹭时代失信2594万、西奥被执行标签、同盾收缩（参保117）、海伦司纯利-72.7%。清理：crawl-v1噪音证据/事实整批stale/contradicted；主库fact_collab遗留462条撤销；coverage/gaps按分片全量对齐。B域（口碑）0条一手数据，全部unknown——未知≠通过",
+      "evidenceAdded": 305,
+      "factsAdded": 1339,
+      "companiesReCrawled": 92,
+      "previousSha256": "91d3b8b303eb58822414170d4ac189135e84c2f9ee026a4a527ef5a80edf3b19",
+      "previousCounts": {
+        "companies": 471,
+        "company_jobs": 95,
+        "evidence": 135996,
+        "facts": 266877,
+        "coverage": 1508,
+        "gaps": 336,
+        "crawl_tasks": 66
       }
     }
   ]
