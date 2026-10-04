@@ -1,18 +1,18 @@
 {
   "sourceName": "企业分析数据库_v3_20261003",
   "snapshotName": "xray-v3-20261003.sqlite",
-  "sha256": "af1b52d1839c6ca2a98fe2620258900a2da1e2a3498a71c4c419b56af714b1f8",
+  "sha256": "81fb91c41495c7d0f53dc549d79e16eb63c995f003ca0fc1d8371da2e118a0f4",
   "counts": {
     "companies": 471,
     "company_jobs": 95,
-    "evidence": 139052,
-    "facts": 269261,
-    "coverage": 4614,
-    "gaps": 2032,
-    "crawl_tasks": 1245
+    "evidence": 139065,
+    "facts": 269265,
+    "coverage": 4617,
+    "gaps": 2038,
+    "crawl_tasks": 1254
   },
-  "policy": "local-only; r5 2026-10-03 晚: shard-b/c 低产出补齐（pending 28→3；b 2 家 complete）；新增 ev-b/c 455 证据、96 事实；恢复被低产出重采清掉的 71 条既有行；剩余 3 家 pending（品牌名无对应主体）+ 4 家 failed（主体未确认），gaps 如实；B 域口碑仍以 unknown 为主——未知≠通过",
-  "importedAt": "2026-10-04T03:07:27.000Z",
+  "policy": "local-only; r6 2026-10-03 深夜: shard-b/c 补齐收口，pending 清零（464/471 家有调查数据：2 complete + 462 partial）；4 家 failed 为主体未确认占位（谷雨/科强智能/天则通信/跃真生物）；B 域口碑仍以 unknown 为主——未知≠通过",
+  "importedAt": "2026-10-04T03:33:21.000Z",
   "revisions": [
     {
       "revision": "r1-shard-a-recrawl-20261003",
@@ -104,6 +104,25 @@
         "crawl_tasks": 1115
       },
       "previousImportedAt": "2026-10-04T01:34:35.000Z"
+    },
+    {
+      "revision": "r6-shard-bc-final-20261003",
+      "date": "2026-10-04T03:33:21.000Z",
+      "summary": "补齐收口：c 最后 3 家（华东医药商业/顺丰杭州/全速生思）补到数据，全名录 pending 清零；现存 464 家有数据（2 complete + 462 partial），4 家 failed（shard-a 主体未确认）；新增 ev-c 13 条、事实 4 条；对账通过",
+      "evidenceAdded": 13,
+      "factsAdded": 4,
+      "companiesReCrawled": 3,
+      "previousSha256": "af1b52d1839c6ca2a98fe2620258900a2da1e2a3498a71c4c419b56af714b1f8",
+      "previousCounts": {
+        "companies": 471,
+        "company_jobs": 95,
+        "evidence": 139052,
+        "facts": 269261,
+        "coverage": 4614,
+        "gaps": 2032,
+        "crawl_tasks": 1245
+      },
+      "previousImportedAt": "2026-10-04T03:07:27.000Z"
     }
   ]
 }
