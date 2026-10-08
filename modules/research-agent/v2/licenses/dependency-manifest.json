@@ -1,0 +1,219 @@
+[
+  {
+    "package": "beautifulsoup4",
+    "version": "4.14.3",
+    "installed_path": "beautifulsoup4-4.14.3.dist-info/licenses/AUTHORS",
+    "local_path": "v2/licenses/dependencies/beautifulsoup4/licenses/AUTHORS",
+    "sha256": "b989238918e1fdac1e46717cb405b63e92497a272413af0d989c1df6c8abcb6f"
+  },
+  {
+    "package": "beautifulsoup4",
+    "version": "4.14.3",
+    "installed_path": "beautifulsoup4-4.14.3.dist-info/licenses/LICENSE",
+    "local_path": "v2/licenses/dependencies/beautifulsoup4/licenses/LICENSE",
+    "sha256": "55b4d8d4b1e5bc86d10efac91b74c87bcb77526b0f5b9edaf8b9cd2adc7397b2"
+  },
+  {
+    "package": "pdfplumber",
+    "version": "0.11.9",
+    "installed_path": "pdfplumber-0.11.9.dist-info/licenses/LICENSE.txt",
+    "local_path": "v2/licenses/dependencies/pdfplumber/licenses/LICENSE.txt",
+    "sha256": "0d48994da4d1321e395b5e64a724ed4dec63fb96b88ac5b88fc014771e690821"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/LICENSES/Apache-2.0.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/LICENSES/Apache-2.0.txt",
+    "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/LICENSES/BSD-3-Clause.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/LICENSES/BSD-3-Clause.txt",
+    "sha256": "ad9a9e823df025f42389c1812eae28019f657d1ed7b3a4ebfd5010b0736a0da4"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/LICENSES/CC-BY-4.0.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/LICENSES/CC-BY-4.0.txt",
+    "sha256": "f1b1748301cd4274f46733c218d510929661b4990855de5fc645dacd69c4371c"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/abseil.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/abseil.txt",
+    "sha256": "f54fff0b905df5b3464527c652a30e903b172d6dcab4d89b5e6f105d5e4a4603"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt",
+    "sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/fast_float.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/fast_float.txt",
+    "sha256": "bf1b57355feca8fce77ee95f48002f8d4789fb71b30ec7599c06cda4901fbb2b"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+    "sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/icu.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/icu.txt",
+    "sha256": "93679f4389d53b6835d89843f251844fb9bc455b35bab036d3c8e7abe497a47a"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt",
+    "sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.ijg",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.ijg",
+    "sha256": "db16a04128171879c60708d171b88d97345a2dd20f9bfc173680a4497c73f704"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+    "sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
+    "sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/libpng.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libpng.txt",
+    "sha256": "452390433ba0f88aa3e2b122c647741b72a0c117cd6ed7a329b49785aecb5511"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/llvm-libc.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/llvm-libc.txt",
+    "sha256": "3b6226c32e168c83b891d8d6f0d3c29c2116dc3ef93dc93c307b54f279ecf383"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/pdfium-binaries.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium-binaries.txt",
+    "sha256": "8854f4388f1ca13b3ad9baa42e95f5546b4c0b17109c159256d3eca7be39b09b"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt",
+    "sha256": "961eacd9633fff6d051db7208b755e9210e30efac7adec3e6a6d52798f0ccf0e"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/simdutf.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/simdutf.txt",
+    "sha256": "c172a0ba936ff31230febb5dad869e25cb7c1a07480c7a381be8cf011bb52719"
+  },
+  {
+    "package": "pypdfium2",
+    "version": "5.14.0",
+    "installed_path": "pypdfium2-5.14.0.dist-info/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt",
+    "local_path": "v2/licenses/dependencies/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt",
+    "sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe"
+  },
+  {
+    "package": "soupsieve",
+    "version": "2.10",
+    "installed_path": "soupsieve-2.10.dist-info/licenses/LICENSE.md",
+    "local_path": "v2/licenses/dependencies/soupsieve/licenses/LICENSE.md",
+    "sha256": "76a0acdb98c3a63681e20b6f096699ef8cad5fb35d56eef8387e0fa71d797a9a"
+  },
+  {
+    "package": "typing_extensions",
+    "version": "4.16.0",
+    "installed_path": "typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+    "local_path": "v2/licenses/dependencies/typing_extensions/licenses/LICENSE",
+    "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+  },
+  {
+    "package": "pdfminer.six",
+    "version": "20251230",
+    "installed_path": "pdfminer_six-20251230.dist-info/licenses/LICENSE",
+    "local_path": "v2/licenses/dependencies/pdfminer.six/licenses/LICENSE",
+    "sha256": "f01e5d699a33766b5caf4a5099f2856aba4f3f75ea1df05dc0572b34b4bea8f2"
+  },
+  {
+    "package": "Pillow",
+    "version": "12.3.0",
+    "installed_path": "pillow-12.3.0.dist-info/licenses/LICENSE",
+    "local_path": "v2/licenses/dependencies/Pillow/licenses/LICENSE",
+    "sha256": "4f7866a74802c6326f81faff59a56546b6aec2b10b91973e0e9308de95e79857"
+  },
+  {
+    "package": "charset-normalizer",
+    "version": "3.5.2",
+    "installed_path": "charset_normalizer-3.5.2.dist-info/licenses/LICENSE",
+    "local_path": "v2/licenses/dependencies/charset-normalizer/licenses/LICENSE",
+    "sha256": "18577485d3704f1a479ded8e573c0976cfed315fd2fd17983fa988da4c2f70d1"
+  },
+  {
+    "package": "cryptography",
+    "version": "50.0.2",
+    "installed_path": "cryptography-50.0.2.dist-info/licenses/LICENSE",
+    "local_path": "v2/licenses/dependencies/cryptography/licenses/LICENSE",
+    "sha256": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb"
+  },
+  {
+    "package": "cryptography",
+    "version": "50.0.2",
+    "installed_path": "cryptography-50.0.2.dist-info/licenses/LICENSE.APACHE",
+    "local_path": "v2/licenses/dependencies/cryptography/licenses/LICENSE.APACHE",
+    "sha256": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe"
+  },
+  {
+    "package": "cryptography",
+    "version": "50.0.2",
+    "installed_path": "cryptography-50.0.2.dist-info/licenses/LICENSE.BSD",
+    "local_path": "v2/licenses/dependencies/cryptography/licenses/LICENSE.BSD",
+    "sha256": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb"
+  },
+  {
+    "package": "cffi",
+    "version": "2.1.1",
+    "installed_path": "cffi-2.1.1.dist-info/licenses/LICENSE",
+    "local_path": "v2/licenses/dependencies/cffi/licenses/LICENSE",
+    "sha256": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63"
+  },
+  {
+    "package": "pycparser",
+    "version": "3.0",
+    "installed_path": "pycparser-3.0.dist-info/licenses/LICENSE",
+    "local_path": "v2/licenses/dependencies/pycparser/licenses/LICENSE",
+    "sha256": "0c846399369ea76ddd7b5c44fe6d16497415fcf015f5cbb508c24bf98b81c5b1"
+  }
+]

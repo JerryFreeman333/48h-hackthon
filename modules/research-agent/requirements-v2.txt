@@ -1,0 +1,4 @@
+# Direct v2 dependencies; no model server or OCR model download.
+beautifulsoup4==4.14.3
+pdfplumber==0.11.9
+pypdfium2==5.14.0

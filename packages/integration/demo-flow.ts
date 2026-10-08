@@ -1,6 +1,7 @@
 import {parseSourceDeclaration,reportDataStatus,type SourceDeclaration} from './data-status';
 import {databaseBundle} from './local-database';
 import {enrichWithAgent,type AgentProgress} from '../../modules/research-agent/research';
+import {renderV2Report} from '../../modules/research-agent/v2-report';
 import {manualMaterialContext,parseMaterialUpdate,bindUpdatedMaterial,describeMaterialUpdate,materialUpdateHtml,materialUpdateMarkdown} from "./material-revisions";
 import { randomUUID } from "node:crypto";
 import { join } from "node:path";
@@ -210,7 +211,7 @@ export function createDemoFlow(options?: { dataDir?: string }) {
         const agent=inputs.databaseSource?.agentInvestigation;
         const agentNotes=agent?'<details><summary>本次补充调查范围与结果</summary><p>MiniMax 安排公开资料调查；取得的公司线索尚未独立核验，也不等于这份岗位的承诺。</p>'+agent.companies.map((c:any)=>'<h3>'+escapeHtml(c.name)+'</h3><p>已尝试主题：'+escapeHtml(c.attemptedTopics.join('、')||'未完成')+'；取得 '+c.evidenceCount+' 条可引用资料'+(c.cached?'（近期缓存）':'')+'。</p>'+c.notes.map((n:string)=>'<p>'+escapeHtml(n)+'</p>').join('')).join('')+agent.notes.map((n:string)=>'<p>'+escapeHtml(n)+'</p>').join('')+'</details>':'';
       const extras=agentNotes+originalMaterial+'<details><summary>查看具体关注事项与原始调查明细</summary>'+renderNeedsHtml(inputs.needsResponse,report,inputs.bundle).replace('href="/profile"','href="/revise/'+reportId+'"')+'</details>'+(inputs.changes?renderRevisionHtml(inputs.changes):'')+(inputs.materialChanges?materialUpdateHtml(inputs.materialChanges,report.ruleVersion):'')+(manual&&!inputs.databaseSource&&inputs.bundle.jobs.length===1?'<p><a href="/materials/'+reportId+'">更新这份岗位JD →</a></p>':'');
-        return new Response(renderSectorReport(inputs.sectorAnalysis,report,dataStatus,{salaryNotes:databaseFieldNotes(inputs),extras}),{headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
+        return new Response(renderSectorReport(inputs.sectorAnalysis,report,dataStatus,{salaryNotes:databaseFieldNotes(inputs),extras:renderV2Report(inputs.databaseSource?.agentV2)+extras}),{headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
       }
       const baseVm=buildReportViewModel({ report, snapshot, comparisonAngle: angle ?? null });
       const html = renderReportHtml(inputs.actions ? applyProductActions(baseVm,productActions(report,inputs.needsResponse),inputs.needsResponse) : baseVm, {

@@ -1,14 +1,14 @@
 import type {CandidateBundle} from '../contracts';
-export const EVIDENCE_TOPIC_VERSION='evidence-topics-1';
+export const EVIDENCE_TOPIC_VERSION='evidence-topics-2';
 type Evidence=CandidateBundle['evidence'][number];
 export const topicSignals={
  growth:/晋升|升职|职级|内部培训|员工培训|带教|导师|系统学习与实操|轮岗|培养计划/,
  pay:/薪资|薪酬|工资|底薪|固定月薪|月薪|日薪|年薪|提成|发薪|税前|税后/,
  hours:/工时|工作时间|上下班|不打卡|加班|调休|双休|单休|大小周|(?<!\d)996(?!\d)|(?<!\d)995(?!\d)|轮班|下班后/,
  benefits:/五险|六险|社保|公积金|入职即缴|缴纳基数/,
- culture:/团队氛围|管理支持|同事关系|会议较多|注重实效|注重业绩|沟通方式|任务分配|尊重员工|辱骂|个人边界|绩效评价|申诉/,
+ culture:/团队氛围|管理支持|同事关系|会议较多|注重实效|注重业绩|沟通方式|任务分配|尊重员工|辱骂|个人边界|绩效评价|申诉|工作自主|自主权|不同意见|工作边界|管理压力/,
  position:/裁员|短期项目|替补|新增岗位|劳动合同|签约主体|外包|劳务派遣|岗位调整|团队变动|转正考核/,
- company:/营收|净利|亏损|财报|年报|半年度报告|年度报告|融资|业务收缩|重组|欠薪|经营情况/
+ company:/营收|营业收入|净利|亏损|财报|年报|半年度报告|年度报告|融资|业务收缩|重组|欠薪|经营情况|资产总计|总资产|负债合计|货币资金|经营活动产生|短期借款|长期借款/
 } as const;
 export const needSignals: Record<string, string[]> = {
  'growth.promotion':['晋升','升职','职级','评审'],

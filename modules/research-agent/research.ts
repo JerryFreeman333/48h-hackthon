@@ -7,6 +7,7 @@ import {extractNeedLeads} from '../../packages/integration/database-investigatio
 import {agentConfiguration} from './config';
 import {callMiniMax,type ModelReply,type ModelMessage} from './minimax';
 import {runPythonTool,toolArguments,toolResultSchema,topicIds,type ToolResult} from './python-tool';
+import {enrichWithV2} from './v2-research';
 
 export type AgentProgress={stage:string;message:string};
 type Target={recordId:number;companyId:string;name:string};
@@ -20,6 +21,7 @@ function cacheWrite(path:string,value:unknown){const temp=path+'.tmp';writeFileS
 /** LLM chooses bounded tools. It cannot add facts, confirm identities or rewrite job salary. */
 export async function enrichWithAgent(bundle:CandidateBundle,source:Record<string,any>,input:Record<string,any>,onProgress:(p:AgentProgress)=>void=()=>{},deps:Dependencies={}){
  const config=deps.config??agentConfiguration();if(!config.enabled)return;
+ if(config.v2Enabled)return enrichWithV2(bundle,source,input,onProgress);
  const progress=(p:AgentProgress)=>{try{onProgress(p);}catch{/* Progress storage is optional; it must not discard acquired evidence. */}};
  const now=deps.now??Date.now,start=now(),model=deps.model??callMiniMax,tool=deps.tool??runPythonTool;
  const requested=topicIds.filter(id=>input.JobNeedsSnapshot.topics.some((t:any)=>t.topicId===id&&(t.priority!=='unknown'||t.verificationItemIds.length)));

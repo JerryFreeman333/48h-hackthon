@@ -7,11 +7,21 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - run: npm run test:agent
+      - run: npm run test:integration
+      - run: npm run test:c
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: modules/research-agent/requirements-v2-lock.txt
+      - run: python -m pip install -r modules/research-agent/requirements-v2-lock.txt
+      - run: npm run test:agent:python
       - name: B tests if present
         run: |
           if [ -f modules/b-research/service.test.ts ]; then npm run test:b; fi

@@ -1,1 +1,2 @@
 .data/company-database/xray-v3-20261003.sqlite filter=lfs diff=lfs merge=lfs -text
+modules/research-agent/v2/licenses/** -text

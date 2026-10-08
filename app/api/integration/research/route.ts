@@ -19,7 +19,7 @@ export async function GET(request:Request){
    industries:input.SearchIntent.industryTags.map((id:string)=>industries.find((x:any)=>x.id===id)?.name??id),
    roles:input.SearchIntent.roleTypes.map((id:string)=>roles.find((x:any)=>x.id===id)?.name??id),
    conditions:input.UserProfile.preferences.map((c:any)=>({label:conditionLabels[c.key as keyof typeof conditionLabels],text:conditionText(c),strength:c.strength})),
-   topics:describe(input.JobNeedsSnapshot),database,agent:{enabled:agentConfiguration().enabled,configured:!!agentConfiguration().key}
+   topics:describe(input.JobNeedsSnapshot),database,agent:{enabled:agentConfiguration().enabled,configured:agentConfiguration().v2Enabled||!!agentConfiguration().key}
   },{headers:{'cache-control':'no-store'}});
  }catch(error){return integrationError(error);}
 }
