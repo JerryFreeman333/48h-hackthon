@@ -17,7 +17,7 @@ SIGNALS = {
     'hours.overtime':r'加班|调休', 'hours.schedule':r'双休|单休|工作时间|工时|值班|出差',
     'pay.bonus':r'年终奖|奖金|绩效工资', 'pay.total':r'年薪|薪资|薪酬|工资|底薪',
     'benefits.coverage':r'五险|社保|公积金|社会保险',
-    'mental_space.autonomy':r'自主|尊重员工|个人边界|表达意见|不同意见|辱骂|管理压力|申诉',
+    'mental_space.autonomy':r'自主权|自主安排(?:任务|工作)|工作自主|任务自主|尊重员工|个人边界|表达意见|不同意见|辱骂|管理压力|申诉',
     'culture.collaboration':r'团队氛围|团队协作|沟通方式|管理支持|同事关系',
     'growth.promotion':r'晋升|升职|职级|培训|带教',
     'position.contract':r'劳动合同|签约主体|外包|派遣|短期项目|岗位调整',
@@ -29,6 +29,27 @@ METRIC_LABELS={'revenue':'营业收入','total_revenue':'营业总收入','net_p
     'operating_cashflow':'经营活动现金流量净额','cash':'货币资金','total_assets':'资产总额','total_liabilities':'负债总额',
     'current_liabilities':'流动负债','short_term_borrowings':'短期借款','long_term_borrowings':'长期借款','employees':'员工数量'}
 TOPIC_LABELS={'company':'企业经营','growth':'晋升与成长','pay':'薪资透明','hours':'劳动时长','benefits':'五险一金','culture':'企业文化','position':'职位稳定','mental_space':'精神空间'}
+
+
+def substantive_claim(key,text):
+    """A topic label, question, navigation menu or technology slogan is not a claim."""
+    text=re.sub(r'\s+','',text)
+    if re.search(r'为您提供.{0,160}(?:多维度|详细信息|信息查询)|怎么样[」?？]|(?:工资待遇|薪资待遇|加班情况).{0,6}(?:怎么样|如何)',text):
+        return False
+    if key=='company.risk_event':
+        event=r'(?:行政处罚|被执行|诉讼|仲裁|拖欠工资|破产|重整)'
+        return bool(re.search(r'(?:收到|受到|遭到|不存在|未发生|未受到|未涉及|没有|无重大|涉及|发生|正在|尚未|不涉及|立案|裁定).{0,24}'+event+r'|'+event+r'.{0,35}(?:判决|金额|罚款|未决|审理中|人民币|\d+万元)',text))
+    if key=='company.audit':
+        return bool(re.search(r'出具.{0,35}(?:意见|报告)|(?:标准无保留|保留|无法表示|否定)意见.{0,16}(?:报告|结论)|(?:存在|不存在|未发现).{0,25}重大不确定',text))
+    if key=='pay.total':
+        return bool(re.search(r'(?:年薪|薪资|薪酬|工资|底薪).{0,20}(?:\d|未明确|未知|不透明|发放|发薪|拖欠|税前|税后|扣除|降低|增长)|\d.{0,15}(?:年薪|月薪|底薪)',text))
+    if key=='pay.bonus':
+        return bool(re.search(r'(?:没有|暂无|不提供|提供|无).{0,6}(?:年终奖|奖金)|(?:年终奖|奖金|绩效工资).{0,25}(?:\d|业绩|考核|发放|条件|包含|另计|未知|未明确)|含(?:年终奖|奖金)',text))
+    if key=='hours.overtime':
+        return bool(re.search(r'(?:不|无|经常|需要|要求|频繁|强制|自愿).{0,3}加班|加班.{0,20}(?:调休|补偿|工资|费|小时|严重|较多|频繁)|调休.{0,12}(?:安排|补偿|可用|不能|可以)',text))
+    if key=='mental_space.autonomy' and not re.search(r'辱骂|个人边界|管理压力|申诉',text):
+        return bool(re.search(r'员工|团队|工作|任务|主管|领导|经理',text))
+    return True
 
 
 def number(value):
@@ -81,8 +102,9 @@ def financial_facts(doc):
         context=table.get('context','')
         header=' '.join(context.splitlines()[-12:])+' '+' '.join(' '.join(r) for r in rows[:3])
         unit_match=list(re.finditer(r'单位\s*[:：]?\s*(人民币)?\s*(亿元|万元|元|人)',header))
-        unit=unit_match[-1][2] if unit_match else None
-        currency='CNY' if '人民币' in header else 'HKD' if '港元' in header or '港币' in header else None
+        unit=unit_match[-1][2] if unit_match and len({m[2] for m in unit_match})==1 else None
+        currencies=({'CNY'} if '人民币' in header else set()) | ({'HKD'} if '港元' in header or '港币' in header else set())
+        currency=next(iter(currencies)) if len(currencies)==1 else None
         scope_matches=list(re.finditer(r'(合并|母公司)(?:资产负债表|利润表|现金流量表|财务报表)',context))
         scope=scope_matches[-1][1] if scope_matches else 'unknown'
         def periods(row):
@@ -129,7 +151,7 @@ def source_claims(doc):
         pieces=[(part,{'paragraph':p['paragraph']}) for p in doc.get('paragraphs',[]) for part in re.split(r'(?<=[。；！？])',p['text']) if 2<len(part.strip())<=600]
     for text,locator in pieces:
         for key,pattern in SIGNALS.items():
-            if not re.search(pattern,text): continue
+            if not re.search(pattern,text) or not substantive_claim(key,text): continue
             # Preserve the complete statement: negative/conditional language is never reduced to a keyword.
             polarity='negative' if re.search(r'不加班|无加班|没有|暂无|不提供|未提供|未缴|无年终奖|不予',text) else 'positive' if re.search(r'需要加班|经常加班|提供年终奖|提供晋升通道|缴纳社保',text) else 'unspecified'
             conditional=bool(re.search(r'视.{0,20}(业绩|考核)|根据.{0,20}(业绩|考核)|若|如.{0,12}则|达到|满足.{0,12}条件|以.{0,20}为准',text))
@@ -155,9 +177,13 @@ def procurement_fields(doc):
     buyer=re.search(r'(?:采购人|采购单位|招标人)\s*[:：]\s*([^\n。；]{2,100})',text)
     beneficiary=re.search(r'(?:服务对象|保障对象|受益对象)\s*[:：]\s*([^\n。；]{2,100})',text)
     amount=re.search(r'(?:预算金额|中标金额|成交金额|合同金额)\s*[:：]\s*([\d,.]+\s*(?:万元|元))',text)
-    return {'stage':stage,'buyer':buyer[1] if buyer else None,'beneficiary':beneficiary[1] if beneficiary else None,
+    buyer_name=re.split(r'\s*[一二三四五六七八九十]+[、．]',buyer[1])[0].strip() if buyer else None
+    buyer_matches=buyer_name==doc['company_name'] if buyer_name else None
+    limitation='采购阶段线索不证明福利已交付，采购金额不等于人均福利。'
+    if buyer_matches is False: limitation+='这里的采购主体与目标公司不同，目标公司可能只是供货方或页面提及对象；不可用于推断目标公司员工福利。'
+    return {'stage':stage,'buyer':buyer_name,'buyer_matches_company':buyer_matches,'beneficiary':beneficiary[1] if beneficiary else None,
         'amount_quote':amount[0] if amount else None,'benefit_delivered':None,'per_employee_value':None,
-        'limitation':'采购阶段线索不证明福利已交付，采购金额不等于人均福利。'}
+        'limitation':limitation}
 
 
 def review_claims(claims, documents):

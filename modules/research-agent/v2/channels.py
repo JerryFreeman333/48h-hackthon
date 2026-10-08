@@ -96,8 +96,15 @@ class SearchAdapter:
 def channel_queries(identity):
     name=identity.get('legal_name') or identity['brand']
     brand=identity['brand']
+    stock=identity.get('stock') or {}
+    disclosure_target='"'+name+'" '+(stock.get('code') or '')
+    disclosures=[f'{disclosure_target.strip()} 年度报告 财务报告 filetype:pdf']
+    if stock.get('market') in ('SH','SZ','BJ'):
+        disclosures.insert(0,f'{disclosure_target.strip()} 年度报告 site:static.cninfo.com.cn')
+    elif stock.get('market')=='HK':
+        disclosures.insert(0,f'{disclosure_target.strip()} 年報 site:hkexnews.hk')
     return {
-        'disclosure':[f'"{name}" 年度报告 财务报告 filetype:pdf'],
+        'disclosure':disclosures,
         'credit':[f'"{name}" 统一社会信用代码 行政处罚'],
         'recruitment_procurement':[f'"{name}" 招聘 工资 工作时间',f'"{name}" 员工 食堂 采购 公告'],
         'community':[PLATFORM_ADAPTERS['zhihu'].query({'brand':brand},'员工 工作 体验'),PLATFORM_ADAPTERS['maimai'].query({'brand':brand},'工作 体验')],

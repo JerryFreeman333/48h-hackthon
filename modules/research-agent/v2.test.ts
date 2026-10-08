@@ -96,6 +96,12 @@ test("invalid source IDs, subject, quote/hash and translation citations are reje
     (r: ReturnType<typeof result>) => {
       r.excerpts[0].url = "https://another.example/wrong";
     },
+    (r: ReturnType<typeof result>) => {
+      r.facts.find(f => f.kind === 'normalized_fact')!.value = '999999';
+    },
+    (r: ReturnType<typeof result>) => {
+      r.translations[0].locator = {physical_page: 999};
+    },
   ]) {
     const data = result();
     mutate(data);

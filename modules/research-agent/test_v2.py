@@ -13,7 +13,7 @@ from v2.pipeline import make_document, research, compact_result
 from v2.provenance import validate_snapshot
 from v2.store import EvidenceStore
 from v2.transport import canonical_url, public_addresses, SourceError, FetchResult, PublicFetcher
-from v2.channels import parse_search
+from v2.channels import parse_search,channel_queries
 
 IDENTITY={'company_id':900001,'legal_name':'晨光示例科技有限公司','brand':'晨光示例','aliases':['晨光示例科技有限公司','晨光示例'],
     'credit_code':None,'stock':None,'relationship':'unknown','match_status':'record_clue','candidates':[],'job_scope':'unconfirmed'}
@@ -40,6 +40,10 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(stock_identity('688777'),{'market':'SH','code':'688777'})
         self.assertIsNone(stock_identity('公司收入688777万元'))
         self.assertIsNone(stock_identity('SZ688777'))
+        query=channel_queries({**IDENTITY,'stock':{'market':'SH','code':'688777'}})['disclosure'][0]
+        self.assertIn('688777',query);self.assertIn('site:static.cninfo.com.cn',query)
+        query=channel_queries({**IDENTITY,'stock':{'market':'HK','code':'00700'}})['disclosure'][0]
+        self.assertIn('00700',query);self.assertIn('site:hkexnews.hk',query)
 
     def test_ambiguous_company_and_wrong_issuer_rejected(self):
         self.assertEqual(match_document({**IDENTITY,'match_status':'ambiguous'},'晨光示例','晨光示例科技有限公司'),'ambiguous')
@@ -82,6 +86,8 @@ class ExtractionTests(unittest.TestCase):
     def test_missing_unit_and_snippet_never_produce_financial_numbers(self):
         doc=financial_document(); doc['tables'][0]['context']='合并资产负债表'
         self.assertFalse(any(f['metric']=='total_assets' for f in financial_facts(doc)))
+        doc['tables'][0]['context']='合并资产负债表 单位：元 币种：人民币和港币'
+        self.assertFalse(any(f['metric']=='total_assets' for f in financial_facts(doc)))
         doc['access_mode']='index_snippet'; self.assertEqual(financial_facts(doc),[])
 
     def test_negation_bonus_conditions_and_no_fixed_monthly_inference(self):
@@ -98,6 +104,14 @@ class ExtractionTests(unittest.TestCase):
         self.assertTrue(any('mental_space' in c['dimensions'] for c in claims))
         self.assertFalse(any(c['metric'].startswith('growth') for c in claims))
 
+    def test_search_category_list_and_technical_autonomy_are_not_employee_claims(self):
+        listing=document('企查查为您提供晨光示例科技有限公司的最新工商信息、招聘信息、财务信息、法律诉讼等多维度详细信息。','credit')
+        self.assertEqual(source_claims(listing),[])
+        recruitment=document('晨光示例科技有限公司提供最新招聘信息、公司地址、电话、工资待遇与加班情况。')
+        self.assertEqual(source_claims(recruitment),[])
+        technology=document('晨光示例科技有限公司自主研发技术，拥有自主知识产权及自主创新平台。','disclosure')
+        self.assertEqual(source_claims(technology),[])
+
     def test_registration_and_losses_do_not_become_job_stability(self):
         self.assertEqual(financial_facts(document('晨光示例科技有限公司注册资本100亿元，现金余额未公开。')),[])
         doc=financial_document(); facts=financial_facts(doc)
@@ -110,6 +124,9 @@ class ExtractionTests(unittest.TestCase):
         fields=procurement_fields(doc)
         self.assertEqual(fields['stage'],'planned');self.assertIsNone(fields['benefit_delivered']);self.assertIsNone(fields['per_employee_value'])
         doc['title']='晨光示例科技有限公司食堂中标公告';self.assertEqual(procurement_fields(doc)['stage'],'awarded')
+        doc['text']='采购人：其他科技有限公司 八、采购代理机构：另一家代理有限公司。'
+        other=procurement_fields(doc);self.assertEqual(other['buyer'],'其他科技有限公司');self.assertFalse(other['buyer_matches_company'])
+        self.assertIn('不可用于推断目标公司员工福利',other['limitation'])
 
     def test_period_and_scope_difference_not_conflict(self):
         first=document(channel='community'); second=document('晨光示例科技有限公司新招聘说明双休。',url='https://example.com/new')

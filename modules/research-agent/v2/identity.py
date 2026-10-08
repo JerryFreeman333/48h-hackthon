@@ -34,6 +34,8 @@ def company_identity(source: Path, company_id: int) -> dict:
         c, b = dict(company), dict(business or {})
         legal = (b.get('legal_name') or c.get('full_name') or '').strip()
         brand = re.split(r'[/／]', c['name'])[0].strip()
+        bilingual=re.match(r'^([\u4e00-\u9fff]{2,})\s+[A-Za-z]',brand)
+        if bilingual: brand=bilingual[1]
         code = b.get('credit_code') or c.get('credit_code_collab') or None
         candidates = db.execute('SELECT id,full_name,credit_code_collab FROM companies WHERE full_name=?', (legal,)).fetchall() if legal else []
         other_codes = {r['credit_code_collab'] for r in candidates if r['credit_code_collab']}

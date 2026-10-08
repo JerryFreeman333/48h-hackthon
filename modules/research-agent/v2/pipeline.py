@@ -54,6 +54,7 @@ def make_document(identity, parsed, hit, channel, mode, raw_path=None, raw_hash=
     digest=content_hash(parsed['text'])
     period=re.search(r'(20\d{2})\s*年\s*(?:年度|半年度)报告',parsed['title'])
     doc={**parsed,'id':stable_id('evidence',identity_key(identity),digest,mode), 'company_id':identity['company_id'],
+        'title':parsed['title'][:1000],
         'company_name':identity.get('legal_name') or identity['brand'],'job_id':None,'scope':'company',
         'channel':channel,'channels':[channel],'platform':hit.get('platform') or platform_for(hit['url']),
         'provider':hit.get('provider','public_url'),'access_mode':mode,'url':canonical_url(hit['url']),
@@ -195,6 +196,7 @@ def research(identity, topics, store: EvidenceStore, raw_dir: Path, *, seeds=Non
         if not (channel=='disclosure' and any(d['access_mode']=='pdf' for d in current_documents.values())):
             for query in queries[channel]:
                 discover(query,channel)
+                if channel=='disclosure' and any(d['access_mode']=='pdf' for d in current_documents.values()): break
         added=set(current_documents)-before
         # Every accepted document is already committed. A killed process can resume from this stage.
         if added: store.checkpoint(run_id,channel,{'document_ids':sorted(added),'version':VERSION,'complete':channel not in failed_channels})
@@ -249,7 +251,8 @@ def compact_result(result):
     facts_by_id={f['id']:f for f in result['facts']}
     selected={fid for t in result['translations'] for fid in t['fact_ids']}
     # Include financial inputs needed to reproduce derived ratios.
-    selected.update(fid for ratio in result['ratios'] for fid in ratio['input_fact_ids'])
+    for ratio in result['ratios']:
+        if len(selected | set(ratio['input_fact_ids']))<=90: selected.update(ratio['input_fact_ids'])
     for fact in result['facts']:
         if fact['kind']=='normalized_fact' and len(selected)<90: selected.add(fact['id'])
     for review in result['reviews']:

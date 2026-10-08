@@ -1,7 +1,7 @@
 {
   "version": "agent-v2.1",
-  "rule_version": "xray-evidence-rules-2",
-  "run_id": "run-f89c6d1eb1734e394980a820f6202c4c",
+  "rule_version": "xray-evidence-rules-4",
+  "run_id": "run-225861a5d67d6aaf8d4a4e06635d4f48",
   "company_id": 900001,
   "identity": {
     "company_id": 900001,
@@ -47,7 +47,7 @@
       "raw_hash": "eb8a59d20d0eee671bcd5c6bdb52e44d456a3eb375d3aa00642aaf9dee4ca644",
       "raw_path": "eb8a59d20d0eee671bcd5c6bdb52e44d456a3eb375d3aa00642aaf9dee4ca644.html.gz",
       "entity_match": "legal_name_match",
-      "collected_at": "2026-10-08T13:32:38.641588+00:00",
+      "collected_at": "2026-10-08T13:52:20.000201+00:00",
       "report_period": "2025",
       "experience_period": null,
       "department": null,
@@ -89,7 +89,7 @@
       "raw_hash": "701f6122e6851b45db6c1d984bbe20e434ebc51a07549fbc4460c1349ddf5ff7",
       "raw_path": "701f6122e6851b45db6c1d984bbe20e434ebc51a07549fbc4460c1349ddf5ff7.html.gz",
       "entity_match": "legal_name_match",
-      "collected_at": "2026-10-08T13:32:38.654012+00:00",
+      "collected_at": "2026-10-08T13:52:20.010603+00:00",
       "report_period": null,
       "experience_period": null,
       "department": null,
@@ -129,7 +129,7 @@
       "raw_hash": "29f6fb569d9ae25c5656a973da722b896b23dacd14f5af6eabb472c77cfef539",
       "raw_path": "29f6fb569d9ae25c5656a973da722b896b23dacd14f5af6eabb472c77cfef539.html.gz",
       "entity_match": "legal_name_match",
-      "collected_at": "2026-10-08T13:32:38.660220+00:00",
+      "collected_at": "2026-10-08T13:52:20.014644+00:00",
       "report_period": null,
       "experience_period": null,
       "department": null,
@@ -174,7 +174,7 @@
       "raw_hash": "4858850765843b5f926579450d1dc28b54e36d6fcae469119aa949c800021031",
       "raw_path": "4858850765843b5f926579450d1dc28b54e36d6fcae469119aa949c800021031.html.gz",
       "entity_match": "legal_name_match",
-      "collected_at": "2026-10-08T13:32:38.668327+00:00",
+      "collected_at": "2026-10-08T13:52:20.021022+00:00",
       "report_period": null,
       "experience_period": null,
       "department": null,
@@ -187,6 +187,7 @@
       "procurement": {
         "stage": "planned",
         "buyer": "晨光示例科技有限公司",
+        "buyer_matches_company": true,
         "beneficiary": "杭州园区员工",
         "amount_quote": "预算金额：120万元",
         "benefit_delivered": null,
@@ -225,7 +226,7 @@
       "raw_hash": null,
       "raw_path": null,
       "entity_match": "alias_only",
-      "collected_at": "2026-10-08T13:32:38.676915+00:00",
+      "collected_at": "2026-10-08T13:52:20.024718+00:00",
       "report_period": null,
       "experience_period": null,
       "department": null,
@@ -243,33 +244,7 @@
   ],
   "facts": [
     {
-      "id": "claim-052d0858b65a0556b576c1f0176bfe57",
-      "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
-      "company_id": 900001,
-      "kind": "source_claim",
-      "metric": "hours.overtime",
-      "value": null,
-      "quote": "不加班。",
-      "locator": {
-        "paragraph": 2
-      },
-      "status": "source_claim",
-      "scope": "company",
-      "job_id": null,
-      "period": null,
-      "department": null,
-      "role": "软件工程师",
-      "polarity": "negative",
-      "conditional": false,
-      "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
-      "dimensions": [
-        "hours"
-      ],
-      "excerpt_id": "excerpt-e64216f6c1dd34d3c0db9eb02df19bca"
-    },
-    {
-      "id": "claim-46de0b07e357f28a4cc992eaf38a1010",
+      "id": "claim-36de4199d9e9f6f636c84aa4057e6020",
       "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
       "company_id": 900001,
       "kind": "source_claim",
@@ -288,118 +263,14 @@
       "polarity": "unspecified",
       "conditional": false,
       "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
+      "rule_version": "xray-evidence-rules-4",
       "dimensions": [
         "pay"
       ],
       "excerpt_id": "excerpt-eefb52451a6ca5129d9c268a066f61d7"
     },
     {
-      "id": "claim-8a1f26584b76ad4cfa91808d79a533fb",
-      "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
-      "company_id": 900001,
-      "kind": "source_claim",
-      "metric": "mental_space.autonomy",
-      "value": null,
-      "quote": "员工可表达不同意见。",
-      "locator": {
-        "paragraph": 2
-      },
-      "status": "source_claim",
-      "scope": "company",
-      "job_id": null,
-      "period": null,
-      "department": null,
-      "role": "软件工程师",
-      "polarity": "unspecified",
-      "conditional": false,
-      "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
-      "dimensions": [
-        "mental_space"
-      ],
-      "excerpt_id": "excerpt-3ef6a011a91286bdd7b683cc52e3f16f"
-    },
-    {
-      "id": "claim-a4c9e1c2baf1bd343a0ce58134e5d70e",
-      "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
-      "company_id": 900001,
-      "kind": "source_claim",
-      "metric": "benefits.coverage",
-      "value": null,
-      "quote": "提供五险一金。",
-      "locator": {
-        "paragraph": 2
-      },
-      "status": "source_claim",
-      "scope": "company",
-      "job_id": null,
-      "period": null,
-      "department": null,
-      "role": "软件工程师",
-      "polarity": "unspecified",
-      "conditional": false,
-      "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
-      "dimensions": [
-        "benefits"
-      ],
-      "excerpt_id": "excerpt-75f8c09ad1122dc34fb7dd3db18ebc61"
-    },
-    {
-      "id": "claim-a6374807be529663febd0b373631dbf2",
-      "evidence_id": "evidence-88a705f71093cb71a340ae87a5b981b6",
-      "company_id": 900001,
-      "kind": "source_claim",
-      "metric": "hours.overtime",
-      "value": null,
-      "quote": "晨光示例员工声称：2023年研发团队经常加班；",
-      "locator": {
-        "paragraph": 1
-      },
-      "status": "source_claim",
-      "scope": "company",
-      "job_id": null,
-      "period": null,
-      "department": null,
-      "role": null,
-      "polarity": "positive",
-      "conditional": false,
-      "confidence": "low",
-      "rule_version": "xray-evidence-rules-2",
-      "dimensions": [
-        "hours"
-      ],
-      "excerpt_id": "excerpt-7be8fd5811133e6892ae13305931620c"
-    },
-    {
-      "id": "claim-b19145dbf871967035f7d7436d73213c",
-      "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
-      "company_id": 900001,
-      "kind": "source_claim",
-      "metric": "pay.bonus",
-      "value": null,
-      "quote": "年薪20–30万元含奖金，固定月薪未明确。",
-      "locator": {
-        "paragraph": 2
-      },
-      "status": "source_claim",
-      "scope": "company",
-      "job_id": null,
-      "period": null,
-      "department": null,
-      "role": "软件工程师",
-      "polarity": "unspecified",
-      "conditional": false,
-      "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
-      "dimensions": [
-        "pay"
-      ],
-      "excerpt_id": "excerpt-eefb52451a6ca5129d9c268a066f61d7"
-    },
-    {
-      "id": "claim-d4def7b36c7d6c7de12530aa017963e4",
+      "id": "claim-724cb9b110d3cfb3971f254ab79a1d30",
       "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
       "company_id": 900001,
       "kind": "source_claim",
@@ -418,44 +289,144 @@
       "polarity": "unspecified",
       "conditional": true,
       "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
+      "rule_version": "xray-evidence-rules-4",
       "dimensions": [
         "pay"
       ],
       "excerpt_id": "excerpt-01dd2c00e381a43464fe30dc50ae2535"
     },
     {
-      "id": "fact-019303d7b7d4fffe0a5b01f8afc387c3",
-      "evidence_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
+      "id": "claim-8a8a1114cfefd8cb088e6fed4ed284b9",
+      "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
       "company_id": 900001,
-      "kind": "normalized_fact",
-      "metric": "total_liabilities",
-      "value": "50",
-      "normalized_value": "500000",
-      "unit": "万元",
-      "currency": "CNY",
-      "period": "2024年",
-      "reporting_scope": "合并",
-      "scope": "company",
-      "job_id": null,
-      "quote": "负债合计 | 80 | 50",
+      "kind": "source_claim",
+      "metric": "hours.overtime",
+      "value": null,
+      "quote": "不加班。",
       "locator": {
-        "physical_page": null,
-        "printed_page": null,
-        "table": 1,
-        "row": 3,
-        "column": 3
+        "paragraph": 2
       },
       "status": "source_claim",
+      "scope": "company",
+      "job_id": null,
+      "period": null,
+      "department": null,
+      "role": "软件工程师",
+      "polarity": "negative",
+      "conditional": false,
       "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
+      "rule_version": "xray-evidence-rules-4",
       "dimensions": [
-        "company"
+        "hours"
       ],
-      "excerpt_id": "excerpt-d54be10aa441506b0ee7e3187c06484c"
+      "excerpt_id": "excerpt-e64216f6c1dd34d3c0db9eb02df19bca"
     },
     {
-      "id": "fact-321ce9dfe45760228e45156d7727bb12",
+      "id": "claim-e6957a289db13f6969c9c143c2c8e72b",
+      "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
+      "company_id": 900001,
+      "kind": "source_claim",
+      "metric": "pay.bonus",
+      "value": null,
+      "quote": "年薪20–30万元含奖金，固定月薪未明确。",
+      "locator": {
+        "paragraph": 2
+      },
+      "status": "source_claim",
+      "scope": "company",
+      "job_id": null,
+      "period": null,
+      "department": null,
+      "role": "软件工程师",
+      "polarity": "unspecified",
+      "conditional": false,
+      "confidence": "medium",
+      "rule_version": "xray-evidence-rules-4",
+      "dimensions": [
+        "pay"
+      ],
+      "excerpt_id": "excerpt-eefb52451a6ca5129d9c268a066f61d7"
+    },
+    {
+      "id": "claim-f211968d1f283a6f8a7b90d150cfa34f",
+      "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
+      "company_id": 900001,
+      "kind": "source_claim",
+      "metric": "benefits.coverage",
+      "value": null,
+      "quote": "提供五险一金。",
+      "locator": {
+        "paragraph": 2
+      },
+      "status": "source_claim",
+      "scope": "company",
+      "job_id": null,
+      "period": null,
+      "department": null,
+      "role": "软件工程师",
+      "polarity": "unspecified",
+      "conditional": false,
+      "confidence": "medium",
+      "rule_version": "xray-evidence-rules-4",
+      "dimensions": [
+        "benefits"
+      ],
+      "excerpt_id": "excerpt-75f8c09ad1122dc34fb7dd3db18ebc61"
+    },
+    {
+      "id": "claim-f45bc87597a0b849cfd07f2b71e12bca",
+      "evidence_id": "evidence-88a705f71093cb71a340ae87a5b981b6",
+      "company_id": 900001,
+      "kind": "source_claim",
+      "metric": "hours.overtime",
+      "value": null,
+      "quote": "晨光示例员工声称：2023年研发团队经常加班；",
+      "locator": {
+        "paragraph": 1
+      },
+      "status": "source_claim",
+      "scope": "company",
+      "job_id": null,
+      "period": null,
+      "department": null,
+      "role": null,
+      "polarity": "positive",
+      "conditional": false,
+      "confidence": "low",
+      "rule_version": "xray-evidence-rules-4",
+      "dimensions": [
+        "hours"
+      ],
+      "excerpt_id": "excerpt-7be8fd5811133e6892ae13305931620c"
+    },
+    {
+      "id": "claim-f5b25bd405cd047ce954055c333d69e4",
+      "evidence_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
+      "company_id": 900001,
+      "kind": "source_claim",
+      "metric": "mental_space.autonomy",
+      "value": null,
+      "quote": "员工可表达不同意见。",
+      "locator": {
+        "paragraph": 2
+      },
+      "status": "source_claim",
+      "scope": "company",
+      "job_id": null,
+      "period": null,
+      "department": null,
+      "role": "软件工程师",
+      "polarity": "unspecified",
+      "conditional": false,
+      "confidence": "medium",
+      "rule_version": "xray-evidence-rules-4",
+      "dimensions": [
+        "mental_space"
+      ],
+      "excerpt_id": "excerpt-3ef6a011a91286bdd7b683cc52e3f16f"
+    },
+    {
+      "id": "fact-2464cf13f5a37fa9b48a4188d9213a62",
       "evidence_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
       "company_id": 900001,
       "kind": "normalized_fact",
@@ -478,23 +449,23 @@
       },
       "status": "source_claim",
       "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
+      "rule_version": "xray-evidence-rules-4",
       "dimensions": [
         "company"
       ],
       "excerpt_id": "excerpt-6802d4dcdb112d4fa249d24ca4006298"
     },
     {
-      "id": "fact-699edada78f066f777cff912fabb6288",
+      "id": "fact-2b88e1d21f177741539906f281ba88d3",
       "evidence_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
       "company_id": 900001,
       "kind": "normalized_fact",
       "metric": "total_liabilities",
-      "value": "80",
-      "normalized_value": "800000",
+      "value": "50",
+      "normalized_value": "500000",
       "unit": "万元",
       "currency": "CNY",
-      "period": "2025年",
+      "period": "2024年",
       "reporting_scope": "合并",
       "scope": "company",
       "job_id": null,
@@ -504,78 +475,18 @@
         "printed_page": null,
         "table": 1,
         "row": 3,
-        "column": 2
-      },
-      "status": "source_claim",
-      "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
-      "dimensions": [
-        "company"
-      ],
-      "excerpt_id": "excerpt-97b89040445c8bd945138a73bb3ff926"
-    },
-    {
-      "id": "fact-994cffbfeaa3117bdb8852bda864418f",
-      "evidence_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
-      "company_id": 900001,
-      "kind": "normalized_fact",
-      "metric": "total_assets",
-      "value": "100",
-      "normalized_value": "1000000",
-      "unit": "万元",
-      "currency": "CNY",
-      "period": "2024年",
-      "reporting_scope": "合并",
-      "scope": "company",
-      "job_id": null,
-      "quote": "资产总计 | 200 | 100",
-      "locator": {
-        "physical_page": null,
-        "printed_page": null,
-        "table": 1,
-        "row": 2,
         "column": 3
       },
       "status": "source_claim",
       "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
+      "rule_version": "xray-evidence-rules-4",
       "dimensions": [
         "company"
       ],
-      "excerpt_id": "excerpt-0d6cad0b8198352f8c6965c8e25034b7"
+      "excerpt_id": "excerpt-d54be10aa441506b0ee7e3187c06484c"
     },
     {
-      "id": "fact-a788356074987e5aec218e043d1b9f5b",
-      "evidence_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
-      "company_id": 900001,
-      "kind": "normalized_fact",
-      "metric": "cash",
-      "value": "30",
-      "normalized_value": "300000",
-      "unit": "万元",
-      "currency": "CNY",
-      "period": "2024年",
-      "reporting_scope": "合并",
-      "scope": "company",
-      "job_id": null,
-      "quote": "货币资金 | 20 | 30",
-      "locator": {
-        "physical_page": null,
-        "printed_page": null,
-        "table": 1,
-        "row": 4,
-        "column": 3
-      },
-      "status": "source_claim",
-      "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
-      "dimensions": [
-        "company"
-      ],
-      "excerpt_id": "excerpt-16dee328dab56e0d2484a964eec7c47a"
-    },
-    {
-      "id": "fact-ed56a3a7f2a58acef86341ed3cdd224a",
+      "id": "fact-356805cdeaa8c2dee327188299b8a66e",
       "evidence_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
       "company_id": 900001,
       "kind": "normalized_fact",
@@ -598,21 +509,111 @@
       },
       "status": "source_claim",
       "confidence": "medium",
-      "rule_version": "xray-evidence-rules-2",
+      "rule_version": "xray-evidence-rules-4",
       "dimensions": [
         "company"
       ],
       "excerpt_id": "excerpt-759b2ce8e277d52f52c33c0c094d931b"
+    },
+    {
+      "id": "fact-70bcf9f53844b74ccf0a72f1119cb98e",
+      "evidence_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
+      "company_id": 900001,
+      "kind": "normalized_fact",
+      "metric": "total_liabilities",
+      "value": "80",
+      "normalized_value": "800000",
+      "unit": "万元",
+      "currency": "CNY",
+      "period": "2025年",
+      "reporting_scope": "合并",
+      "scope": "company",
+      "job_id": null,
+      "quote": "负债合计 | 80 | 50",
+      "locator": {
+        "physical_page": null,
+        "printed_page": null,
+        "table": 1,
+        "row": 3,
+        "column": 2
+      },
+      "status": "source_claim",
+      "confidence": "medium",
+      "rule_version": "xray-evidence-rules-4",
+      "dimensions": [
+        "company"
+      ],
+      "excerpt_id": "excerpt-97b89040445c8bd945138a73bb3ff926"
+    },
+    {
+      "id": "fact-930c48cda1dee32d224f0b58e228868b",
+      "evidence_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
+      "company_id": 900001,
+      "kind": "normalized_fact",
+      "metric": "cash",
+      "value": "30",
+      "normalized_value": "300000",
+      "unit": "万元",
+      "currency": "CNY",
+      "period": "2024年",
+      "reporting_scope": "合并",
+      "scope": "company",
+      "job_id": null,
+      "quote": "货币资金 | 20 | 30",
+      "locator": {
+        "physical_page": null,
+        "printed_page": null,
+        "table": 1,
+        "row": 4,
+        "column": 3
+      },
+      "status": "source_claim",
+      "confidence": "medium",
+      "rule_version": "xray-evidence-rules-4",
+      "dimensions": [
+        "company"
+      ],
+      "excerpt_id": "excerpt-16dee328dab56e0d2484a964eec7c47a"
+    },
+    {
+      "id": "fact-ec08d3f40dd7c8ef3ef0dc375dfbffec",
+      "evidence_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
+      "company_id": 900001,
+      "kind": "normalized_fact",
+      "metric": "total_assets",
+      "value": "100",
+      "normalized_value": "1000000",
+      "unit": "万元",
+      "currency": "CNY",
+      "period": "2024年",
+      "reporting_scope": "合并",
+      "scope": "company",
+      "job_id": null,
+      "quote": "资产总计 | 200 | 100",
+      "locator": {
+        "physical_page": null,
+        "printed_page": null,
+        "table": 1,
+        "row": 2,
+        "column": 3
+      },
+      "status": "source_claim",
+      "confidence": "medium",
+      "rule_version": "xray-evidence-rules-4",
+      "dimensions": [
+        "company"
+      ],
+      "excerpt_id": "excerpt-0d6cad0b8198352f8c6965c8e25034b7"
     }
   ],
   "reviews": [
     {
       "claim_ids": [
-        "claim-052d0858b65a0556b576c1f0176bfe57",
-        "claim-a6374807be529663febd0b373631dbf2"
+        "claim-8a8a1114cfefd8cb088e6fed4ed284b9",
+        "claim-f45bc87597a0b849cfd07f2b71e12bca"
       ],
       "status": "unresolved",
-      "rule_version": "xray-evidence-rules-2",
+      "rule_version": "xray-evidence-rules-4",
       "kind": "not_comparable",
       "reason": "时间范围未知，不能判定直接矛盾。"
     }
@@ -623,8 +624,8 @@
       "value": "0.4",
       "formula": "total_liabilities / total_assets",
       "input_fact_ids": [
-        "fact-699edada78f066f777cff912fabb6288",
-        "fact-321ce9dfe45760228e45156d7727bb12"
+        "fact-70bcf9f53844b74ccf0a72f1119cb98e",
+        "fact-2464cf13f5a37fa9b48a4188d9213a62"
       ],
       "period": "2025年",
       "reporting_scope": "合并",
@@ -635,8 +636,8 @@
       "value": "0.5",
       "formula": "total_liabilities / total_assets",
       "input_fact_ids": [
-        "fact-019303d7b7d4fffe0a5b01f8afc387c3",
-        "fact-994cffbfeaa3117bdb8852bda864418f"
+        "fact-2b88e1d21f177741539906f281ba88d3",
+        "fact-ec08d3f40dd7c8ef3ef0dc375dfbffec"
       ],
       "period": "2024年",
       "reporting_scope": "合并",
@@ -645,9 +646,9 @@
   ],
   "translations": [
     {
-      "id": "translation-b5494987cc8645e4dcaab436ce90af1b",
+      "id": "translation-77a34b88d67b6ceff707f38935d2ff8b",
       "fact_ids": [
-        "fact-ed56a3a7f2a58acef86341ed3cdd224a"
+        "fact-356805cdeaa8c2dee327188299b8a66e"
       ],
       "evidence_ids": [
         "evidence-a77a8c42439a0ea6347a4b0c76537aac"
@@ -671,31 +672,9 @@
       "status": "unverified_source_interpretation"
     },
     {
-      "id": "translation-8224d89b9bac58d148a5f67d6dbc557f",
+      "id": "translation-d78d90349b828befd879ca34e01cb40b",
       "fact_ids": [
-        "claim-052d0858b65a0556b576c1f0176bfe57"
-      ],
-      "evidence_ids": [
-        "evidence-2c1977b2f0f8604b1e97ad995f6a9c61"
-      ],
-      "dimension": "hours",
-      "public_topic": "hours",
-      "finding": "不加班。",
-      "inference": "推断：若该安排适用于应聘团队和入职时间，可能影响工作体验；目前仅为来源声称。",
-      "relevance": "对应你已确认关注的劳动时长事项。",
-      "unknown": "岗位、城市、部门、经历时间及兑现条件未明确时保留未知。",
-      "question": "这条记载是否适用于我的岗位、城市和入职时间？能否提供当前书面制度或合同约定？",
-      "confidence": "medium",
-      "locator": {
-        "paragraph": 2
-      },
-      "quote": "不加班。",
-      "status": "unverified_source_interpretation"
-    },
-    {
-      "id": "translation-650790bc135098485fb6d1fba5f1d531",
-      "fact_ids": [
-        "claim-46de0b07e357f28a4cc992eaf38a1010"
+        "claim-36de4199d9e9f6f636c84aa4057e6020"
       ],
       "evidence_ids": [
         "evidence-2c1977b2f0f8604b1e97ad995f6a9c61"
@@ -715,31 +694,31 @@
       "status": "unverified_source_interpretation"
     },
     {
-      "id": "translation-3ad5257b541b998fc22fa60e4d0ffb17",
+      "id": "translation-e23ed2b751e59ae7a74c12348ea910e1",
       "fact_ids": [
-        "claim-8a1f26584b76ad4cfa91808d79a533fb"
+        "claim-8a8a1114cfefd8cb088e6fed4ed284b9"
       ],
       "evidence_ids": [
         "evidence-2c1977b2f0f8604b1e97ad995f6a9c61"
       ],
-      "dimension": "mental_space",
-      "public_topic": "culture",
-      "finding": "员工可表达不同意见。",
+      "dimension": "hours",
+      "public_topic": "hours",
+      "finding": "不加班。",
       "inference": "推断：若该安排适用于应聘团队和入职时间，可能影响工作体验；目前仅为来源声称。",
-      "relevance": "对应你已确认关注的企业文化事项。",
+      "relevance": "对应你已确认关注的劳动时长事项。",
       "unknown": "岗位、城市、部门、经历时间及兑现条件未明确时保留未知。",
-      "question": "团队如何处理不同意见、任务自主权和工作边界？是否有具体的沟通与申诉渠道？",
+      "question": "这条记载是否适用于我的岗位、城市和入职时间？能否提供当前书面制度或合同约定？",
       "confidence": "medium",
       "locator": {
         "paragraph": 2
       },
-      "quote": "员工可表达不同意见。",
+      "quote": "不加班。",
       "status": "unverified_source_interpretation"
     },
     {
-      "id": "translation-ce1f1d6bb3ea1017ecdbd91e5e7e4a08",
+      "id": "translation-c6954c51ea1bf2bb2d75b8b4926a71a3",
       "fact_ids": [
-        "claim-a4c9e1c2baf1bd343a0ce58134e5d70e"
+        "claim-f211968d1f283a6f8a7b90d150cfa34f"
       ],
       "evidence_ids": [
         "evidence-2c1977b2f0f8604b1e97ad995f6a9c61"
@@ -759,9 +738,31 @@
       "status": "unverified_source_interpretation"
     },
     {
-      "id": "translation-e9dc6fc290ea9930a37a4a871625dc09",
+      "id": "translation-23fd30c154340d44dab621afff731654",
       "fact_ids": [
-        "fact-321ce9dfe45760228e45156d7727bb12"
+        "claim-f5b25bd405cd047ce954055c333d69e4"
+      ],
+      "evidence_ids": [
+        "evidence-2c1977b2f0f8604b1e97ad995f6a9c61"
+      ],
+      "dimension": "mental_space",
+      "public_topic": "culture",
+      "finding": "员工可表达不同意见。",
+      "inference": "推断：若该安排适用于应聘团队和入职时间，可能影响工作体验；目前仅为来源声称。",
+      "relevance": "对应你已确认关注的企业文化事项。",
+      "unknown": "岗位、城市、部门、经历时间及兑现条件未明确时保留未知。",
+      "question": "团队如何处理不同意见、任务自主权和工作边界？是否有具体的沟通与申诉渠道？",
+      "confidence": "medium",
+      "locator": {
+        "paragraph": 2
+      },
+      "quote": "员工可表达不同意见。",
+      "status": "unverified_source_interpretation"
+    },
+    {
+      "id": "translation-42735d433eb9e5e56b996df3fdbe960d",
+      "fact_ids": [
+        "fact-2464cf13f5a37fa9b48a4188d9213a62"
       ],
       "evidence_ids": [
         "evidence-a77a8c42439a0ea6347a4b0c76537aac"
@@ -785,9 +786,31 @@
       "status": "unverified_source_interpretation"
     },
     {
-      "id": "translation-2d8275d09492878a73f0f4e110739293",
+      "id": "translation-ba095b7558365fdb5f19dd7c1e7e322f",
       "fact_ids": [
-        "claim-a6374807be529663febd0b373631dbf2"
+        "claim-724cb9b110d3cfb3971f254ab79a1d30"
+      ],
+      "evidence_ids": [
+        "evidence-2c1977b2f0f8604b1e97ad995f6a9c61"
+      ],
+      "dimension": "pay",
+      "public_topic": "pay",
+      "finding": "奖金根据业绩发放。",
+      "inference": "推断：若该安排适用于应聘团队和入职时间，可能影响工作体验；目前仅为来源声称。",
+      "relevance": "对应你已确认关注的薪资透明事项。",
+      "unknown": "岗位、城市、部门、经历时间及兑现条件未明确时保留未知。 年薪含奖金时，固定月薪、奖金条件和税前税后不能由总额推算。",
+      "question": "这条记载是否适用于我的岗位、城市和入职时间？能否提供当前书面制度或合同约定？",
+      "confidence": "medium",
+      "locator": {
+        "paragraph": 2
+      },
+      "quote": "奖金根据业绩发放。",
+      "status": "unverified_source_interpretation"
+    },
+    {
+      "id": "translation-ac9d81f7497a0f88a565a922ffab6bc5",
+      "fact_ids": [
+        "claim-f45bc87597a0b849cfd07f2b71e12bca"
       ],
       "evidence_ids": [
         "evidence-88a705f71093cb71a340ae87a5b981b6"
@@ -807,31 +830,9 @@
       "status": "unverified_source_interpretation"
     },
     {
-      "id": "translation-c3f02dde25ac246b60f320ce58a824d8",
+      "id": "translation-166686cbf027971a09186cf06a8b751c",
       "fact_ids": [
-        "claim-b19145dbf871967035f7d7436d73213c"
-      ],
-      "evidence_ids": [
-        "evidence-2c1977b2f0f8604b1e97ad995f6a9c61"
-      ],
-      "dimension": "pay",
-      "public_topic": "pay",
-      "finding": "年薪20–30万元含奖金，固定月薪未明确。",
-      "inference": "推断：若该安排适用于应聘团队和入职时间，可能影响工作体验；目前仅为来源声称。",
-      "relevance": "对应你已确认关注的薪资透明事项。",
-      "unknown": "岗位、城市、部门、经历时间及兑现条件未明确时保留未知。 年薪含奖金时，固定月薪、奖金条件和税前税后不能由总额推算。",
-      "question": "这条记载是否适用于我的岗位、城市和入职时间？能否提供当前书面制度或合同约定？",
-      "confidence": "medium",
-      "locator": {
-        "paragraph": 2
-      },
-      "quote": "年薪20–30万元含奖金，固定月薪未明确。",
-      "status": "unverified_source_interpretation"
-    },
-    {
-      "id": "translation-b67a728a574a28e20186ae554c3d5a56",
-      "fact_ids": [
-        "fact-699edada78f066f777cff912fabb6288"
+        "fact-70bcf9f53844b74ccf0a72f1119cb98e"
       ],
       "evidence_ids": [
         "evidence-a77a8c42439a0ea6347a4b0c76537aac"
@@ -855,16 +856,16 @@
       "status": "unverified_source_interpretation"
     },
     {
-      "id": "translation-c9734135d65857f92e55cb47e257cea3",
+      "id": "translation-bd76d87f59c9968d5456b358d36e6d84",
       "fact_ids": [
-        "claim-d4def7b36c7d6c7de12530aa017963e4"
+        "claim-e6957a289db13f6969c9c143c2c8e72b"
       ],
       "evidence_ids": [
         "evidence-2c1977b2f0f8604b1e97ad995f6a9c61"
       ],
       "dimension": "pay",
       "public_topic": "pay",
-      "finding": "奖金根据业绩发放。",
+      "finding": "年薪20–30万元含奖金，固定月薪未明确。",
       "inference": "推断：若该安排适用于应聘团队和入职时间，可能影响工作体验；目前仅为来源声称。",
       "relevance": "对应你已确认关注的薪资透明事项。",
       "unknown": "岗位、城市、部门、经历时间及兑现条件未明确时保留未知。 年薪含奖金时，固定月薪、奖金条件和税前税后不能由总额推算。",
@@ -873,7 +874,7 @@
       "locator": {
         "paragraph": 2
       },
-      "quote": "奖金根据业绩发放。",
+      "quote": "年薪20–30万元含奖金，固定月薪未明确。",
       "status": "unverified_source_interpretation"
     }
   ],
@@ -882,7 +883,7 @@
       "channel": "disclosure",
       "status": "ok",
       "stage": "search",
-      "at": "2026-10-08T13:32:38.627633+00:00",
+      "at": "2026-10-08T13:52:19.989198+00:00",
       "provider": "bing",
       "query": "\"晨光示例科技有限公司\" 年度报告 财务报告 filetype:pdf",
       "count": 1,
@@ -893,7 +894,7 @@
       "channel": "disclosure",
       "status": "ok",
       "stage": "acquire",
-      "at": "2026-10-08T13:32:38.651416+00:00",
+      "at": "2026-10-08T13:52:20.006872+00:00",
       "provider": "bing",
       "platform": "example.com",
       "access_mode": "html",
@@ -905,7 +906,7 @@
       "channel": "credit",
       "status": "ok",
       "stage": "search",
-      "at": "2026-10-08T13:32:38.651953+00:00",
+      "at": "2026-10-08T13:52:20.007917+00:00",
       "provider": "bing",
       "query": "\"晨光示例科技有限公司\" 统一社会信用代码 行政处罚",
       "count": 1,
@@ -916,7 +917,7 @@
       "channel": "credit",
       "status": "ok",
       "stage": "acquire",
-      "at": "2026-10-08T13:32:38.656704+00:00",
+      "at": "2026-10-08T13:52:20.011663+00:00",
       "provider": "bing",
       "platform": "example.com",
       "access_mode": "html",
@@ -928,7 +929,7 @@
       "channel": "recruitment_procurement",
       "status": "ok",
       "stage": "search",
-      "at": "2026-10-08T13:32:38.657745+00:00",
+      "at": "2026-10-08T13:52:20.012654+00:00",
       "provider": "bing",
       "query": "\"晨光示例科技有限公司\" 招聘 工资 工作时间",
       "count": 1,
@@ -939,7 +940,7 @@
       "channel": "recruitment_procurement",
       "status": "ok",
       "stage": "acquire",
-      "at": "2026-10-08T13:32:38.666271+00:00",
+      "at": "2026-10-08T13:52:20.018357+00:00",
       "provider": "bing",
       "platform": "example.com",
       "access_mode": "html",
@@ -951,7 +952,7 @@
       "channel": "recruitment_procurement",
       "status": "ok",
       "stage": "search",
-      "at": "2026-10-08T13:32:38.666271+00:00",
+      "at": "2026-10-08T13:52:20.018357+00:00",
       "provider": "bing",
       "query": "\"晨光示例科技有限公司\" 员工 食堂 采购 公告",
       "count": 1,
@@ -962,7 +963,7 @@
       "channel": "recruitment_procurement",
       "status": "ok",
       "stage": "acquire",
-      "at": "2026-10-08T13:32:38.674229+00:00",
+      "at": "2026-10-08T13:52:20.023096+00:00",
       "provider": "bing",
       "platform": "example.com",
       "access_mode": "html",
@@ -974,7 +975,7 @@
       "channel": "community",
       "status": "ok",
       "stage": "search",
-      "at": "2026-10-08T13:32:38.675620+00:00",
+      "at": "2026-10-08T13:52:20.024718+00:00",
       "provider": "bing",
       "query": "\"晨光示例\" 员工 工作 体验 site:zhihu.com",
       "count": 1,
@@ -985,7 +986,7 @@
       "channel": "community",
       "status": "login_required",
       "stage": "http",
-      "at": "2026-10-08T13:32:38.676915+00:00",
+      "at": "2026-10-08T13:52:20.024718+00:00",
       "provider": "bing",
       "platform": "zhihu",
       "url": "https://www.zhihu.com/question/fixture",
@@ -997,7 +998,7 @@
       "channel": "community",
       "status": "ok",
       "stage": "acquire",
-      "at": "2026-10-08T13:32:38.682505+00:00",
+      "at": "2026-10-08T13:52:20.026837+00:00",
       "provider": "bing",
       "platform": "zhihu",
       "access_mode": "index_snippet",
@@ -1009,7 +1010,7 @@
       "channel": "community",
       "status": "empty",
       "stage": "search",
-      "at": "2026-10-08T13:32:38.683844+00:00",
+      "at": "2026-10-08T13:52:20.026837+00:00",
       "provider": "bing",
       "query": "\"晨光示例\" 工作 体验 site:maimai.cn",
       "count": 0,
@@ -1020,7 +1021,7 @@
       "channel": "community",
       "status": "empty",
       "stage": "search",
-      "at": "2026-10-08T13:32:38.684863+00:00",
+      "at": "2026-10-08T13:52:20.027832+00:00",
       "provider": "360",
       "query": "\"晨光示例\" 工作 体验 site:maimai.cn",
       "count": 0,
@@ -1031,7 +1032,7 @@
       "channel": "recruitment_procurement",
       "status": "empty",
       "stage": "search",
-      "at": "2026-10-08T13:32:38.687275+00:00",
+      "at": "2026-10-08T13:52:20.028842+00:00",
       "provider": "bing",
       "query": "\"晨光示例科技有限公司\" 招聘 合同 用工主体 项目周期",
       "count": 0,
@@ -1042,7 +1043,7 @@
       "channel": "recruitment_procurement",
       "status": "empty",
       "stage": "search",
-      "at": "2026-10-08T13:32:38.688299+00:00",
+      "at": "2026-10-08T13:52:20.029485+00:00",
       "provider": "360",
       "query": "\"晨光示例科技有限公司\" 招聘 合同 用工主体 项目周期",
       "count": 0,
@@ -1163,36 +1164,13 @@
     "未取得可解析的公开财报；私企或未公开报表保持资料缺口。",
     "精神空间单独记录；旧 growth 字段仍表示晋升与成长。"
   ],
-  "elapsed_ms": 62,
+  "elapsed_ms": 46,
   "independent_sources": 5,
   "model": {
     "status": "not_used",
     "reason": "确定性采集与引用校验无需模型。"
   },
   "excerpts": [
-    {
-      "id": "excerpt-e64216f6c1dd34d3c0db9eb02df19bca",
-      "document_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
-      "company_id": 900001,
-      "title": "晨光示例科技有限公司杭州研发招聘",
-      "excerpt": "不加班。",
-      "url": "https://example.com/recruit",
-      "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.660220+00:00",
-      "channel": "recruitment_procurement",
-      "access_mode": "html",
-      "locator": {
-        "paragraph": 2
-      },
-      "dimensions": [
-        "benefits",
-        "hours",
-        "mental_space",
-        "pay"
-      ],
-      "content_hash": "698cf9864292921c67d814f6273ef4fdb9610cacc136f1e1214c0d27b8a39225",
-      "fixture": true
-    },
     {
       "id": "excerpt-eefb52451a6ca5129d9c268a066f61d7",
       "document_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
@@ -1201,7 +1179,7 @@
       "excerpt": "年薪20–30万元含奖金，固定月薪未明确。",
       "url": "https://example.com/recruit",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.660220+00:00",
+      "collected_at": "2026-10-08T13:52:20.014644+00:00",
       "channel": "recruitment_procurement",
       "access_mode": "html",
       "locator": {
@@ -1217,14 +1195,14 @@
       "fixture": true
     },
     {
-      "id": "excerpt-3ef6a011a91286bdd7b683cc52e3f16f",
+      "id": "excerpt-01dd2c00e381a43464fe30dc50ae2535",
       "document_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
       "company_id": 900001,
       "title": "晨光示例科技有限公司杭州研发招聘",
-      "excerpt": "员工可表达不同意见。",
+      "excerpt": "奖金根据业绩发放。",
       "url": "https://example.com/recruit",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.660220+00:00",
+      "collected_at": "2026-10-08T13:52:20.014644+00:00",
       "channel": "recruitment_procurement",
       "access_mode": "html",
       "locator": {
@@ -1236,7 +1214,30 @@
         "mental_space",
         "pay"
       ],
-      "content_hash": "9c10832e64e1da7b6e57e3624266a18ee3413928abe8da9491ce533c4714fa2c",
+      "content_hash": "ec7315f434e8fbab49727b88887eca49e9196f1e8053d1d6a008c3699037b68d",
+      "fixture": true
+    },
+    {
+      "id": "excerpt-e64216f6c1dd34d3c0db9eb02df19bca",
+      "document_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
+      "company_id": 900001,
+      "title": "晨光示例科技有限公司杭州研发招聘",
+      "excerpt": "不加班。",
+      "url": "https://example.com/recruit",
+      "published_at": null,
+      "collected_at": "2026-10-08T13:52:20.014644+00:00",
+      "channel": "recruitment_procurement",
+      "access_mode": "html",
+      "locator": {
+        "paragraph": 2
+      },
+      "dimensions": [
+        "benefits",
+        "hours",
+        "mental_space",
+        "pay"
+      ],
+      "content_hash": "698cf9864292921c67d814f6273ef4fdb9610cacc136f1e1214c0d27b8a39225",
       "fixture": true
     },
     {
@@ -1247,7 +1248,7 @@
       "excerpt": "提供五险一金。",
       "url": "https://example.com/recruit",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.660220+00:00",
+      "collected_at": "2026-10-08T13:52:20.014644+00:00",
       "channel": "recruitment_procurement",
       "access_mode": "html",
       "locator": {
@@ -1270,7 +1271,7 @@
       "excerpt": "晨光示例员工声称：2023年研发团队经常加班；",
       "url": "https://www.zhihu.com/question/fixture",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.676915+00:00",
+      "collected_at": "2026-10-08T13:52:20.024718+00:00",
       "channel": "community",
       "access_mode": "index_snippet",
       "locator": {
@@ -1283,14 +1284,14 @@
       "fixture": true
     },
     {
-      "id": "excerpt-01dd2c00e381a43464fe30dc50ae2535",
+      "id": "excerpt-3ef6a011a91286bdd7b683cc52e3f16f",
       "document_id": "evidence-2c1977b2f0f8604b1e97ad995f6a9c61",
       "company_id": 900001,
       "title": "晨光示例科技有限公司杭州研发招聘",
-      "excerpt": "奖金根据业绩发放。",
+      "excerpt": "员工可表达不同意见。",
       "url": "https://example.com/recruit",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.660220+00:00",
+      "collected_at": "2026-10-08T13:52:20.014644+00:00",
       "channel": "recruitment_procurement",
       "access_mode": "html",
       "locator": {
@@ -1302,31 +1303,7 @@
         "mental_space",
         "pay"
       ],
-      "content_hash": "ec7315f434e8fbab49727b88887eca49e9196f1e8053d1d6a008c3699037b68d",
-      "fixture": true
-    },
-    {
-      "id": "excerpt-d54be10aa441506b0ee7e3187c06484c",
-      "document_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
-      "company_id": 900001,
-      "title": "晨光示例科技有限公司2025年年度报告",
-      "excerpt": "负债合计 | 80 | 50",
-      "url": "https://example.com/disclosure",
-      "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.641588+00:00",
-      "channel": "disclosure",
-      "access_mode": "html",
-      "locator": {
-        "physical_page": null,
-        "printed_page": null,
-        "table": 1,
-        "row": 3,
-        "column": 3
-      },
-      "dimensions": [
-        "company"
-      ],
-      "content_hash": "dcbb641bdc9bdec9471a15070be0c59b7093ebc1e14fb75b6dea663061194e8e",
+      "content_hash": "9c10832e64e1da7b6e57e3624266a18ee3413928abe8da9491ce533c4714fa2c",
       "fixture": true
     },
     {
@@ -1337,7 +1314,7 @@
       "excerpt": "资产总计 | 200 | 100",
       "url": "https://example.com/disclosure",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.641588+00:00",
+      "collected_at": "2026-10-08T13:52:20.000201+00:00",
       "channel": "disclosure",
       "access_mode": "html",
       "locator": {
@@ -1354,6 +1331,54 @@
       "fixture": true
     },
     {
+      "id": "excerpt-d54be10aa441506b0ee7e3187c06484c",
+      "document_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
+      "company_id": 900001,
+      "title": "晨光示例科技有限公司2025年年度报告",
+      "excerpt": "负债合计 | 80 | 50",
+      "url": "https://example.com/disclosure",
+      "published_at": null,
+      "collected_at": "2026-10-08T13:52:20.000201+00:00",
+      "channel": "disclosure",
+      "access_mode": "html",
+      "locator": {
+        "physical_page": null,
+        "printed_page": null,
+        "table": 1,
+        "row": 3,
+        "column": 3
+      },
+      "dimensions": [
+        "company"
+      ],
+      "content_hash": "dcbb641bdc9bdec9471a15070be0c59b7093ebc1e14fb75b6dea663061194e8e",
+      "fixture": true
+    },
+    {
+      "id": "excerpt-759b2ce8e277d52f52c33c0c094d931b",
+      "document_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
+      "company_id": 900001,
+      "title": "晨光示例科技有限公司2025年年度报告",
+      "excerpt": "货币资金 | 20 | 30",
+      "url": "https://example.com/disclosure",
+      "published_at": null,
+      "collected_at": "2026-10-08T13:52:20.000201+00:00",
+      "channel": "disclosure",
+      "access_mode": "html",
+      "locator": {
+        "physical_page": null,
+        "printed_page": null,
+        "table": 1,
+        "row": 4,
+        "column": 2
+      },
+      "dimensions": [
+        "company"
+      ],
+      "content_hash": "1e0aaddb16d6e57915910af4df71422c0640c7fad1b3a3611a384a310b72398a",
+      "fixture": true
+    },
+    {
       "id": "excerpt-97b89040445c8bd945138a73bb3ff926",
       "document_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
       "company_id": 900001,
@@ -1361,7 +1386,7 @@
       "excerpt": "负债合计 | 80 | 50",
       "url": "https://example.com/disclosure",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.641588+00:00",
+      "collected_at": "2026-10-08T13:52:20.000201+00:00",
       "channel": "disclosure",
       "access_mode": "html",
       "locator": {
@@ -1378,6 +1403,30 @@
       "fixture": true
     },
     {
+      "id": "excerpt-16dee328dab56e0d2484a964eec7c47a",
+      "document_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
+      "company_id": 900001,
+      "title": "晨光示例科技有限公司2025年年度报告",
+      "excerpt": "货币资金 | 20 | 30",
+      "url": "https://example.com/disclosure",
+      "published_at": null,
+      "collected_at": "2026-10-08T13:52:20.000201+00:00",
+      "channel": "disclosure",
+      "access_mode": "html",
+      "locator": {
+        "physical_page": null,
+        "printed_page": null,
+        "table": 1,
+        "row": 4,
+        "column": 3
+      },
+      "dimensions": [
+        "company"
+      ],
+      "content_hash": "1e0aaddb16d6e57915910af4df71422c0640c7fad1b3a3611a384a310b72398a",
+      "fixture": true
+    },
+    {
       "id": "excerpt-0d6cad0b8198352f8c6965c8e25034b7",
       "document_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
       "company_id": 900001,
@@ -1385,7 +1434,7 @@
       "excerpt": "资产总计 | 200 | 100",
       "url": "https://example.com/disclosure",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.641588+00:00",
+      "collected_at": "2026-10-08T13:52:20.000201+00:00",
       "channel": "disclosure",
       "access_mode": "html",
       "locator": {
@@ -1402,54 +1451,6 @@
       "fixture": true
     },
     {
-      "id": "excerpt-16dee328dab56e0d2484a964eec7c47a",
-      "document_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
-      "company_id": 900001,
-      "title": "晨光示例科技有限公司2025年年度报告",
-      "excerpt": "货币资金 | 20 | 30",
-      "url": "https://example.com/disclosure",
-      "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.641588+00:00",
-      "channel": "disclosure",
-      "access_mode": "html",
-      "locator": {
-        "physical_page": null,
-        "printed_page": null,
-        "table": 1,
-        "row": 4,
-        "column": 3
-      },
-      "dimensions": [
-        "company"
-      ],
-      "content_hash": "1e0aaddb16d6e57915910af4df71422c0640c7fad1b3a3611a384a310b72398a",
-      "fixture": true
-    },
-    {
-      "id": "excerpt-759b2ce8e277d52f52c33c0c094d931b",
-      "document_id": "evidence-a77a8c42439a0ea6347a4b0c76537aac",
-      "company_id": 900001,
-      "title": "晨光示例科技有限公司2025年年度报告",
-      "excerpt": "货币资金 | 20 | 30",
-      "url": "https://example.com/disclosure",
-      "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.641588+00:00",
-      "channel": "disclosure",
-      "access_mode": "html",
-      "locator": {
-        "physical_page": null,
-        "printed_page": null,
-        "table": 1,
-        "row": 4,
-        "column": 2
-      },
-      "dimensions": [
-        "company"
-      ],
-      "content_hash": "1e0aaddb16d6e57915910af4df71422c0640c7fad1b3a3611a384a310b72398a",
-      "fixture": true
-    },
-    {
       "id": "excerpt-3fe379979101c2c6539a6812ee3b14cd",
       "document_id": "evidence-13ebce7d6a98189707992edaeb4bd7d9",
       "company_id": 900001,
@@ -1457,7 +1458,7 @@
       "excerpt": "晨光示例科技有限公司登记线索，注册资本100万元；现金未知。本条为离线合成测试数据。",
       "url": "https://example.com/credit",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.654012+00:00",
+      "collected_at": "2026-10-08T13:52:20.010603+00:00",
       "channel": "credit",
       "access_mode": "html",
       "locator": {
@@ -1475,7 +1476,7 @@
       "excerpt": "晨光示例科技有限公司食堂采购意向公告\n采购人：晨光示例科技有限公司\n预算金额：120万元\n服务对象：杭州园区员工。本次为采购计划，尚未签订合同。仅作合成案例。",
       "url": "https://example.com/procurement",
       "published_at": null,
-      "collected_at": "2026-10-08T13:32:38.668327+00:00",
+      "collected_at": "2026-10-08T13:52:20.021022+00:00",
       "channel": "recruitment_procurement",
       "access_mode": "html",
       "locator": {},
