@@ -34,6 +34,7 @@ TOPIC_LABELS={'company':'企业经营','growth':'晋升与成长','pay':'薪资�
 def substantive_claim(key,text):
     """A topic label, question, navigation menu or technology slogan is not a claim."""
     text=re.sub(r'\s+','',text)
+    if re.search(r'文章目录|(?:全文|内容|文章)目录|目录[1一][.、]',text): return False
     if re.search(r'为您提供.{0,160}(?:多维度|详细信息|信息查询)|怎么样[」?？]|(?:工资待遇|薪资待遇|加班情况).{0,6}(?:怎么样|如何)',text):
         return False
     if key=='company.risk_event':
@@ -42,13 +43,15 @@ def substantive_claim(key,text):
     if key=='company.audit':
         return bool(re.search(r'出具.{0,35}(?:意见|报告)|(?:标准无保留|保留|无法表示|否定)意见.{0,16}(?:报告|结论)|(?:存在|不存在|未发现).{0,25}重大不确定',text))
     if key=='pay.total':
-        return bool(re.search(r'(?:年薪|薪资|薪酬|工资|底薪).{0,20}(?:\d|未明确|未知|不透明|发放|发薪|拖欠|税前|税后|扣除|降低|增长)|\d.{0,15}(?:年薪|月薪|底薪)',text))
+        return bool(re.search(r'(?:年薪|薪资|薪酬|工资|底薪).{0,20}(?:\d[\d.,–—\-至~]*[kKwW元万千薪]|未明确|未知|不透明|发放|发薪|拖欠|税前|税后|扣除|降低|增长)|\d[\d.,–—\-至~]*[kKwW元万千].{0,15}(?:年薪|月薪|底薪)',text))
     if key=='pay.bonus':
         return bool(re.search(r'(?:没有|暂无|不提供|提供|无).{0,6}(?:年终奖|奖金)|(?:年终奖|奖金|绩效工资).{0,25}(?:\d|业绩|考核|发放|条件|包含|另计|未知|未明确)|含(?:年终奖|奖金)',text))
     if key=='hours.overtime':
         return bool(re.search(r'(?:不|无|经常|需要|要求|频繁|强制|自愿).{0,3}加班|加班.{0,20}(?:调休|补偿|工资|费|小时|严重|较多|频繁)|调休.{0,12}(?:安排|补偿|可用|不能|可以)',text))
     if key=='mental_space.autonomy' and not re.search(r'辱骂|个人边界|管理压力|申诉',text):
         return bool(re.search(r'员工|团队|工作|任务|主管|领导|经理',text))
+    if key=='culture.collaboration':
+        return bool(re.search(r'(?:团队氛围|团队协作|同事关系|沟通方式|管理支持).{0,20}(?:好|差|友善|紧张|融洽|困难|顺畅|直接|开放|尊重|支持|不|缺乏|较|一般)',text))
     return True
 
 

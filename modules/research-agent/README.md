@@ -1,5 +1,7 @@
 # Franklin + MiniMax 接入
 
+> 本分支新增可选 Agent v2：四类公开渠道、独立证据库、HTML/PDF 原文、可定位财务记录、检查点与五段报告解释。设置 `RESEARCH_AGENT_ENABLED=true`、`RESEARCH_AGENT_V2_ENABLED=true` 后启用，无需模型密钥；默认关闭以保留下述 v1 路线。安装和验收见 [v2 运行说明](../../docs/agent-v2/RUNBOOK.md) 与 [审查包](../../docs/agent-v2/REVIEW_PACKET.md)。v2 不是完整直连所有平台，实际能力见 [来源矩阵](../../docs/agent-v2/SOURCE_CAPABILITIES.md)。
+
 这是现有 B 调查的服务端补充，不改变 A 填写流程或 C 七板块结构。先从本地数据库寻找候选；用户勾选后，MiniMax 调用受限的 Franklin 工具补查关注主题，C 将可引用资料与冻结的 A 需求对照。模型生成的总结与推理不作为事实。
 
 ## 本地启用

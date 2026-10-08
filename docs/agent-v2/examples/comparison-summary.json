@@ -1,0 +1,50 @@
+{
+  "fixture": true,
+  "generated_at": "2026-10-08T14:04:29.330165+00:00",
+  "company": "晨光示例科技有限公司",
+  "job_scope": "same unconfirmed job; neither collector may assign job facts",
+  "topics": [
+    "growth",
+    "pay",
+    "hours",
+    "benefits",
+    "culture",
+    "position",
+    "company"
+  ],
+  "corpus": "test_v2_pipeline.py PAGES plus its anonymous community snippet",
+  "method": "Both actual collectors run twice against one synthetic corpus. V1 receives all available hits on each mocked topic search; V2 uses its deterministic channel discovery fixture and article fetches. This measures extraction/storage behavior, not search ranking or live latency.",
+  "v1": {
+    "returned_evidence_rows": 8,
+    "distinct_urls": 4,
+    "stored_rows_after_first": 8,
+    "stored_rows_after_repeat": 16,
+    "located_body_documents": 0,
+    "aligned_financial_facts": 0,
+    "facts": 10,
+    "source_attempts": 21,
+    "independent_sources": "not represented",
+    "two_runs_ms": 1342,
+    "model_calls": 0
+  },
+  "v2": {
+    "returned_documents": 5,
+    "stored_rows_after_first": 5,
+    "stored_rows_after_repeat": 5,
+    "located_body_documents": 4,
+    "aligned_financial_facts": 6,
+    "facts": 13,
+    "independent_sources": 5,
+    "validated_facts": 13,
+    "citation_errors": [],
+    "source_attempts": 15,
+    "status": "partial",
+    "two_runs_ms": 62,
+    "model_calls": 0
+  },
+  "limits": [
+    "All inputs are synthetic. Timing includes initialization and repeated runs, and is not a production speed comparison.",
+    "Neither path called a live model; no fee or accuracy percentage is estimated.",
+    "This is a collector comparison; existing tests separately validate old/new report contracts."
+  ]
+}

@@ -1,6 +1,6 @@
 # Recovery checkpoint
 
-Status: implementation in progress; no final completion claim.
+Status: implementation and local acceptance complete. Branch delivery and the exact remote SHA are recorded in the final chat and ignored delivery receipt; this file does not invent a self-referential final commit hash.
 
 2026-10-08: Read handoff and actual call chain; fetched remote main, created isolated agent-v2 worktree at 17349766b9aee5e615437dc2745d79dc5f77e270. LFS checkout/dependency installation underway. Original main left unchanged.
 
@@ -13,3 +13,5 @@ Validation so far: 18 Python adversarial/recovery tests and 18 combined TS v2/le
 Working local preview started on http://127.0.0.1:3010. Next: browser B-to-C validation, strengthen edge cases discovered by review, whole regression/build, source/acceptance docs, staged license/sensitive-file review, commits and normal remote push. Final delivery is not yet complete.
 
 2026-10-08 21:40 HKT checkpoint: browser selected the actual Dahua database job and generated a v2-enriched C report (8 acquired sources, including body and explicitly labelled snippets), with no JS errors or horizontal overflow at 1440/390px. PDF pages 9/140 have been visually inspected. Added failed-body retry, snippet-to-body upgrade, transitive provenance grouping, zero-network checkpoint recovery into the same report, explicit source role/city/experience metadata, risk-event stage fields, employee-count extraction and bounded financial display. 25 Python tests and 17 agent TS tests pass. Offline old/new collector comparison saved locally: repeated old rows 8→16; v2 documents 5→5, 6 aligned financial facts; no model calls. Final full regression/build, documentation, final staged review and remote SHA verification remain.
+
+2026-10-08 final local checkpoint: 337 TS + 30 Python tests passed, typecheck and production build passed. Production `npm start` on port 3010 was exercised through real B→C with synthetic preferences at 1440/390px; no JS errors/overflow. Visual inspection found and removed category/menu/table-of-contents false claims, technology-autonomy confusion, and clarified procurement by other buyers. Final rule version 5; real sample has 8 sources/84 stored claims+facts/49 financial or employee records, explicitly partial. Original source SHA unchanged; 31 license blobs verified byte-for-byte. Architecture, runbook, source matrix, two reproducible examples and acceptance/review packet are prepared. Original checkout remains clean. Remaining delivery action: normal push and remote SHA check; no production deployment or scheduled wakeup configured.

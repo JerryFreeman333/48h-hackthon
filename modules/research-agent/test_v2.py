@@ -111,6 +111,8 @@ class ExtractionTests(unittest.TestCase):
         self.assertEqual(source_claims(recruitment),[])
         technology=document('晨光示例科技有限公司自主研发技术，拥有自主知识产权及自主创新平台。','disclosure')
         self.assertEqual(source_claims(technology),[])
+        contents=document('晨光示例文章目录1.公司介绍2.薪资待遇3.加班情况4.工作环境5.团队氛围6.阅读全文。','community')
+        self.assertEqual(source_claims(contents),[])
 
     def test_registration_and_losses_do_not_become_job_stability(self):
         self.assertEqual(financial_facts(document('晨光示例科技有限公司注册资本100亿元，现金余额未公开。')),[])
