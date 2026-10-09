@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-09",
+  "source_commit": "17349766b9aee5e615437dc2745d79dc5f77e270",
+  "entries": [
+    {
+      "original_path": "docs/PRODUCT_PLAN_2026-10-03.md",
+      "archive_path": "Trash/main-history/docs/PRODUCT_PLAN_2026-10-03.md",
+      "original_sha256": "669cf64292da8f05e9230e6adbe6ba08f6ed25019de55ac24c5f2365770e7c04",
+      "archived_sha256": "2abe61f50f673d3429e41c318c852ca5d63d2f3d4a1a2e049d19c5c0f2e8dc5c",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+    },
+    {
+      "original_path": "docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md",
+      "archive_path": "Trash/main-history/docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md",
+      "original_sha256": "70054cb3322b4c67f77bca2088a649de9eab6f37c9c73941094d2ba9fdc4373e",
+      "archived_sha256": "cc3d1cbaa4407376de3835cddebd7a95cbf184ec6d6a3008f33830d762a3c574",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+    },
+    {
+      "original_path": "docs/PROJECT_ANALYSIS_2026-10-03.md",
+      "archive_path": "Trash/main-history/docs/PROJECT_ANALYSIS_2026-10-03.md",
+      "original_sha256": "41c64b0141b43fd5a9a853fb0d37e04e9dba9b3c05eed2499ccf5b69ebf60656",
+      "archived_sha256": "e076a0302f1d280114414cc40ac7a568b6eb8511413246bc59c22901e77a35cc",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+    },
+    {
+      "original_path": "docs/frontend-analysis-2026-10-03.md",
+      "archive_path": "Trash/main-history/docs/frontend-analysis-2026-10-03.md",
+      "original_sha256": "b147887f45aa070a9d3d45f5227d4d38daa193094e04d58eeab7d9c7299f8b93",
+      "archived_sha256": "e1772337189a06b3d6ef077dfc569d5701bb04e3687ca5dde1bae9da2e8ffb5e",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+    },
+    {
+      "original_path": "docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md",
+      "archive_path": "Trash/main-history/docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md",
+      "original_sha256": "e46f62a23b70e45cf328b65af10c0f30f0113083c03e0132c9945b08a60630e2",
+      "archived_sha256": "f006dc627639c8f8938d3af1f1893f2e312212cbef403281fbb7ad8f7f394923",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+    }
+  ]
+}
