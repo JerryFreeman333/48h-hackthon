@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-09",
+  "source_commit": "80851bda9e9d0d53aebb2376f6c601e81a004b1b",
+  "entries": [
+    {
+      "original_path": "docs/agent-v2/ACCEPTANCE.md",
+      "archive_path": "Trash/docs/agent-v2/ACCEPTANCE.md",
+      "original_sha256": "7c1c9b23d9a5924711385975bd9570afb16d73859c3f89e76ce475d165fa99e7",
+      "archived_sha256": "7c1c9b23d9a5924711385975bd9570afb16d73859c3f89e76ce475d165fa99e7",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/ARCHITECTURE.md",
+      "archive_path": "Trash/docs/agent-v2/ARCHITECTURE.md",
+      "original_sha256": "2081423391b1e458fc46f5c558ed27cee84803dd8cc9323de1cc0c04d32953b0",
+      "archived_sha256": "2081423391b1e458fc46f5c558ed27cee84803dd8cc9323de1cc0c04d32953b0",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/BASELINE.md",
+      "archive_path": "Trash/docs/agent-v2/BASELINE.md",
+      "original_sha256": "65a2185baab472c9ab9edbff03c8a4489e9bb2068c27fec3552dc3cc1a36ca48",
+      "archived_sha256": "65a2185baab472c9ab9edbff03c8a4489e9bb2068c27fec3552dc3cc1a36ca48",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/HANDOFF.md",
+      "archive_path": "Trash/docs/agent-v2/HANDOFF.md",
+      "original_sha256": "a1901d801ebb8da6b2497d24ddc3282c23d63aa54eacdce6de44c40a94d56d34",
+      "archived_sha256": "a1901d801ebb8da6b2497d24ddc3282c23d63aa54eacdce6de44c40a94d56d34",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/IMPLEMENTATION_PLAN.md",
+      "archive_path": "Trash/docs/agent-v2/IMPLEMENTATION_PLAN.md",
+      "original_sha256": "c10e03a3df571d7b0fe4c747c8e9d44eb1c16f0c7eee9a1337f99b43ddeaee16",
+      "archived_sha256": "c10e03a3df571d7b0fe4c747c8e9d44eb1c16f0c7eee9a1337f99b43ddeaee16",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/PROGRESS.md",
+      "archive_path": "Trash/docs/agent-v2/PROGRESS.md",
+      "original_sha256": "5985f6ca5e8536e7e5aedc4f743971ef6d44869eb331599f32a0db64cc1dc159",
+      "archived_sha256": "5985f6ca5e8536e7e5aedc4f743971ef6d44869eb331599f32a0db64cc1dc159",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/REUSE_MANIFEST.md",
+      "archive_path": "Trash/docs/agent-v2/REUSE_MANIFEST.md",
+      "original_sha256": "5434c581477247f05ff71ae4b5a569cd1c2625ae8be6a555a7af500127bd0781",
+      "archived_sha256": "5434c581477247f05ff71ae4b5a569cd1c2625ae8be6a555a7af500127bd0781",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/REVIEW_PACKET.md",
+      "archive_path": "Trash/docs/agent-v2/REVIEW_PACKET.md",
+      "original_sha256": "a7c2a3b8b048fce844a2f5f0388ebe161f1ede3e590a31edda9871840874491c",
+      "archived_sha256": "a7c2a3b8b048fce844a2f5f0388ebe161f1ede3e590a31edda9871840874491c",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/RUNBOOK.md",
+      "archive_path": "Trash/docs/agent-v2/RUNBOOK.md",
+      "original_sha256": "b6dc30a40fe1eac44bf280a058d2469aa289cb93abf8c1a01170951b4f441561",
+      "archived_sha256": "b6dc30a40fe1eac44bf280a058d2469aa289cb93abf8c1a01170951b4f441561",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/SOURCE_CAPABILITIES.md",
+      "archive_path": "Trash/docs/agent-v2/SOURCE_CAPABILITIES.md",
+      "original_sha256": "0aec5339787de694b37495f78815995a42192a0be4c00c780ab8b6d0a38d3a8e",
+      "archived_sha256": "0aec5339787de694b37495f78815995a42192a0be4c00c780ab8b6d0a38d3a8e",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/examples/comparison-summary.json",
+      "archive_path": "Trash/docs/agent-v2/examples/comparison-summary.json",
+      "original_sha256": "73880a919e80b2bb3bb780c4163a4a6213db3a0e0836972c480d1bfca240cab0",
+      "archived_sha256": "73880a919e80b2bb3bb780c4163a4a6213db3a0e0836972c480d1bfca240cab0",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/agent-v2/examples/public-disclosure.json",
+      "archive_path": "Trash/docs/agent-v2/examples/public-disclosure.json",
+      "original_sha256": "d394b5c8e13b85966a6a3f7e2da59ccb202e2cbaf53f9ab54cc5225c1449a380",
+      "archived_sha256": "d394b5c8e13b85966a6a3f7e2da59ccb202e2cbaf53f9ab54cc5225c1449a380",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    }
+  ]
+}

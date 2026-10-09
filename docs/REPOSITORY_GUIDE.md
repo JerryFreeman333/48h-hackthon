@@ -1,5 +1,7 @@
 # 仓库地图与提交范围
 
+本分支后续设计位于 [docs/agent-v3](agent-v3/README.md)；V2 历史设计/验收资料在 Trash/docs/agent-v2，运行代码仍在 modules/research-agent。归档不代表 V2 代码已删除或 V3 已实现。
+
 ## 代码职责
 
 | 位置 | 职责与入口 |

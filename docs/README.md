@@ -2,6 +2,8 @@
 
 ## 当前入口
 
+本分支的后续设计看 [Agent V3](agent-v3/README.md) 与 [V3 完整规格](agent-v3/V3.md)。这不是已实现状态；V2 资料在 [Trash](../Trash/README.md)。
+
 | 文档 | 用途 |
 | --- | --- |
 | [当前状态](CURRENT_STATE.md) | 已实现、限制及保留决定 |

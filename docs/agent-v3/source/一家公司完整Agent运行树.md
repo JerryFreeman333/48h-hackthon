@@ -1,0 +1,445 @@
+# 一家公司｜求职 X-Ray 内置调查 Agent 信息分类 → 平台采集 → 证据处理 → 分析 → 补查
+
+日期：2026-10-09。完整树与 XMind 内容一致；新来源尚未接入验证。
+
+- 一家公司｜求职 X-Ray 内置调查 Agent 信息分类 → 平台采集 → 证据处理 → 分析 → 补查
+  - 01 生成调查任务
+    - 首次建档：公司名 / 官网 / 城市 → 身份确认 → 基础问题目录
+    - 按需调查：A 的需求 + 候选 JD → 查库 → 缺失 / 过时 / 冲突问题
+    - 目标对象：品牌、法定主体、业务、团队、岗位分别记录
+    - 任务边界：不采集视频或音频；文字、文件、截图与群聊按获取方式处理
+    - 平台目录全面列入；每次只选能回答当前问题的来源，不全站扫库
+  - 02 B：按信息大类分配平台与采集任务
+    - 蓝｜企业身份与关联背景
+      - 先问：招聘品牌、法定企业和签约主体是不是同一个？
+      - 分配来源
+        - 国家企业信用信息公示系统 — https://www.gsxt.gov.cn/
+          - 找什么
+            - 名称 / 信用代码 / 登记状态
+            - 股东与变更 / 公示年报；可获得字段为准
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 身份陈述库 → 对应问题分析
+        - 天眼查 — https://www.tianyancha.com/
+          - 找什么
+            - 法定主体 / 关联关系 / 变更线索
+            - 所需字段优先考虑可用数据服务或报告
+          - 怎么拿
+            - 平台接口：官方或授权数据 API；平台适配器由本项目实现 — https://www.qixin.com/home
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 身份陈述库 → 对应问题分析
+        - 启信宝 — https://www.qixin.com/home
+          - 找什么
+            - 企业主体 / 股权 / 关联企业 / 变更
+            - 查验具体数据 API 与报告字段
+          - 怎么拿
+            - 平台接口：官方或授权数据 API；平台适配器由本项目实现 — https://www.qixin.com/home
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 身份陈述库 → 对应问题分析
+        - 企查查 — https://www.qcc.com/
+          - 找什么
+            - 主体 / 关联 / 公示与风险记录线索
+          - 怎么拿
+            - 平台接口：官方或授权数据 API；平台适配器由本项目实现 — https://www.qixin.com/home
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 身份陈述库 → 对应问题分析
+        - 爱企查 — https://aiqicha.baidu.com/
+          - 找什么
+            - 企业身份与公开背景线索
+          - 怎么拿
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 身份陈述库 → 对应问题分析
+        - 公司官网 / 用户提供合同或 offer
+          - 找什么
+            - 品牌 / 地址 / 招聘主体
+            - 签约主体；个人字段仅内部必要使用
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - PDF / DOCX / 表格：Docling；扫描件 / 截图：PaddleOCR — https://github.com/docling-project/docling
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 身份陈述库 → 对应问题分析
+      - 归类后的分析
+        - 建立品牌—法定主体—关联公司—签约主体关系
+        - 精确标识优先；模糊匹配只产生候选
+        - 未确认身份的材料隔离，不归入确定结论；集团与子公司分开
+    - 绿｜业务经营与财务线索
+      - 先问：业务是什么，近期发生什么变化，有哪些可核查经营线索？
+      - 分配来源
+        - 公司官网 / 官方公众号
+          - 找什么
+            - 产品 / 客户类型 / 业务介绍
+            - 融资或业务变化陈述；公众号只取可访问文字
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - PDF / DOCX / 表格：Docling；扫描件 / 截图：PaddleOCR — https://github.com/docling-project/docling
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 经营陈述库 → 对应问题分析
+        - 天眼查 / 启信宝 / 企查查 / 爱企查
+          - 找什么
+            - 工商年报 / 融资 / 股权与经营异常线索
+            - 原始数据期间、口径与出处
+          - 怎么拿
+            - 平台接口：官方或授权数据 API；平台适配器由本项目实现 — https://www.qixin.com/home
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 经营陈述库 → 对应问题分析
+        - 巨潮资讯 / 交易所披露（适用时） — https://www.cninfo.com.cn/
+          - 找什么
+            - 公开报告 / 业务变化 / 财务与员工数据
+            - 非上市小公司可能没有；不得拿集团数据代替
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - PDF / DOCX / 表格：Docling；扫描件 / 截图：PaddleOCR — https://github.com/docling-project/docling
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 经营陈述库 → 对应问题分析
+        - 36氪 / 虎嗅 / 财新 / 界面等报道
+          - 找什么
+            - 融资、客户、业务收缩等事件
+            - 原始报道 / 转载链 / 后续结果
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 经营陈述库 → 对应问题分析
+        - 招投标 / 政府采购 / 监管公示
+          - 找什么
+            - 可获取的中标、处罚与经营事项
+            - 区分中标与已实现收入
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - PDF / DOCX / 表格：Docling；扫描件 / 截图：PaddleOCR — https://github.com/docling-project/docling
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 经营陈述库 → 对应问题分析
+      - 归类后的分析
+        - 按披露主体、期间、单位整理，不混财务口径
+        - 注册资本 / 融资新闻不等于当前现金
+        - 经营变化 → 条件性岗位影响；岗位预算未知仍未知
+    - 橙｜岗位与招聘陈述
+      - 先问：岗位是否仍有效，职责、地点、收入和招聘主体是什么？
+      - 分配来源
+        - BOSS直聘 — https://www.zhipin.com/
+          - 找什么
+            - 完整 JD / 标题 / 地点 / 年限 / 技能
+            - 薪资结构 / 招聘主体 / 页面时间
+          - 怎么拿
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 岗位陈述库 → 对应问题分析
+        - 猎聘 — https://www.liepin.com/
+          - 找什么
+            - JD / 薪资月数 / 工作地点 / 经验要求
+          - 怎么拿
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 岗位陈述库 → 对应问题分析
+        - 智联招聘 / 前程无忧 — https://www.zhaopin.com/
+          - 找什么
+            - JD / 岗位条件 / 招聘主体 / 发布时间
+          - 怎么拿
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 岗位陈述库 → 对应问题分析
+        - 拉勾 / 脉脉招聘 — https://maimai.cn/
+          - 找什么
+            - 岗位内容 / 团队或业务介绍 / 招聘陈述
+          - 怎么拿
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 岗位陈述库 → 对应问题分析
+        - 实习僧 / 应届生求职网 / 牛客招聘 — https://www.nowcoder.com/
+          - 找什么
+            - 实习 / 校招 JD / 流程 / 内推线索
+            - 内推信息不等于岗位已核实
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 岗位陈述库 → 对应问题分析
+        - 公司招聘官网 / 校园就业网
+          - 找什么
+            - 官方 JD / 招聘批次 / 岗位地点 / 时间
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - PDF / DOCX / 表格：Docling；扫描件 / 截图：PaddleOCR — https://github.com/docling-project/docling
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 岗位陈述库 → 对应问题分析
+      - 归类后的分析
+        - 同岗位去重；不同部门和城市不合并
+        - 招聘状态：开放 / 关闭 / 未知；旧网页不能证明在招
+        - 重复招聘只生成核实问题，不自动认定流失严重
+    - 红｜薪酬兑现与劳动用工
+      - 先问：固定收入和用工条件是否明确，有没有相关事件？
+      - 分配来源
+        - JD / offer / 劳动合同 / 面试反馈
+          - 找什么
+            - 固定与浮动 / 奖金条件 / 支付周期
+            - 五险一金 / 试用期 / 用工主体
+          - 怎么拿
+            - PDF / DOCX / 表格：Docling；扫描件 / 截图：PaddleOCR — https://github.com/docling-project/docling
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 薪酬用工陈述库 → 对应问题分析
+        - 中国执行信息公开网 / 可获取裁判与监管材料 — https://zxgk.court.gov.cn/
+          - 找什么
+            - 相关主体 / 事项 / 时间 / 处理结果
+            - 没有拿到全文只记线索
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - PDF / DOCX / 表格：Docling；扫描件 / 截图：PaddleOCR — https://github.com/docling-project/docling
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 薪酬用工陈述库 → 对应问题分析
+        - 天眼查 / 启信宝 / 企查查
+          - 找什么
+            - 劳动与司法事项索引 / 原始出处
+            - 同一原始记录的多平台副本不是独立证据
+          - 怎么拿
+            - 平台接口：官方或授权数据 API；平台适配器由本项目实现 — https://www.qixin.com/home
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 薪酬用工陈述库 → 对应问题分析
+        - 脉脉 / 看准 / 牛客 — https://maimai.cn/
+          - 找什么
+            - 薪资分享 / 奖金兑现 / 社保与争议叙述
+            - 注明城市、岗位、期间与亲历自述
+          - 怎么拿
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 社区采集架构参考 MediaCrawler；非商业学习限制，非默认商业依赖 — https://github.com/NanmiCoder/MediaCrawler
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 薪酬用工陈述库 → 对应问题分析
+        - 小红书 / 知乎 / 微博 / 有权限群聊
+          - 找什么
+            - 具体支付经历 / 补偿与社保描述
+            - 原始凭据线索及后续处理
+          - 怎么拿
+            - 社区采集架构参考 MediaCrawler；非商业学习限制，非默认商业依赖 — https://github.com/NanmiCoder/MediaCrawler
+            - 本人登录客户端的 UI Automation：Python-UIAutomation；先验证兼容与可见范围 — https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
+            - QQ 官方机器人事件：BotGo；权限与消息范围需逐项确认 — https://github.com/tencent-connect/botgo
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 薪酬用工陈述库 → 对应问题分析
+      - 归类后的分析
+        - 招聘范围不等于固定收入
+        - 个别争议不等于全公司欠薪；未发现不等于不存在
+        - 用户薪资底线：满足 / 不满足 / 未知，不能总分抵消
+    - 紫｜工时、文化与成长体验
+      - 先问：目标团队日常怎样，成长机会与用户需求是否相符？
+      - 分配来源
+        - 脉脉 — https://maimai.cn/
+          - 找什么
+            - 公司点评 / 职场讨论 / 团队与离职经历
+            - 工时、管理、晋升、流动；不自动认定作者身份
+          - 怎么拿
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 体验成长陈述库 → 对应问题分析
+        - 看准 — https://www.kanzhun.com/
+          - 找什么
+            - 可获取的公司评价 / 面试经历 / 薪资讨论
+            - 当前字段与访问能力待验证
+          - 怎么拿
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 体验成长陈述库 → 对应问题分析
+        - 牛客 / 应届生求职社区 — https://www.nowcoder.com/
+          - 找什么
+            - 面经 / 流程 / 实习和校招经历
+            - 面试体验与入职体验区分
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 体验成长陈述库 → 对应问题分析
+        - 小红书 / 知乎 / 微博 / 豆瓣文字社区
+          - 找什么
+            - 亲历帖子 / 相关评论 / 管理与工作方式
+            - 保留原帖与回复上下文
+          - 怎么拿
+            - 社区采集架构参考 MediaCrawler；非商业学习限制，非默认商业依赖 — https://github.com/NanmiCoder/MediaCrawler
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 体验成长陈述库 → 对应问题分析
+        - 有权限微信 / QQ / 脉脉群聊
+          - 找什么
+            - 与目标企业相关的连续消息 / 文字附件
+            - 记录上下文与获取方式；屏蔽无关个人信息
+          - 怎么拿
+            - 本人登录客户端的 UI Automation：Python-UIAutomation；先验证兼容与可见范围 — https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
+            - QQ 官方机器人事件：BotGo；权限与消息范围需逐项确认 — https://github.com/tencent-connect/botgo
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 体验成长陈述库 → 对应问题分析
+        - 官方员工故事 / 招聘文化说明
+          - 找什么
+            - 成长机制 / 晋升或管理制度陈述
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 体验成长陈述库 → 对应问题分析
+      - 归类后的分析
+        - 按时间 / 城市 / 部门 / 岗位比较
+        - 拆分加班频率与加班补偿，不用整句正负判断
+        - 体验是来源陈述；转成用户应核实的具体问题
+    - 粉｜舆论事件与外部评价
+      - 先问：发生了什么事件，谁提出，是否有回应与结果？
+      - 分配来源
+        - 微博 / 小红书 / 知乎 / 脉脉
+          - 找什么
+            - 原始事件 / 具体指控 / 评论 / 回应
+            - 明确日期、主体、亲历与转载关系
+          - 怎么拿
+            - 社区采集架构参考 MediaCrawler；非商业学习限制，非默认商业依赖 — https://github.com/NanmiCoder/MediaCrawler
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 舆论陈述库 → 对应问题分析
+        - 媒体 / 官方回应 / 监管记录
+          - 找什么
+            - 原始报道 / 企业回应 / 正式处理结果
+            - 事件后续与澄清，不只取最初指控
+          - 怎么拿
+            - 静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+            - 动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+            - PDF / DOCX / 表格：Docling；扫描件 / 截图：PaddleOCR — https://github.com/docling-project/docling
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 舆论陈述库 → 对应问题分析
+        - 有权限群聊 / 用户提供邮件与文件
+          - 找什么
+            - 与事件相关的消息 / 文件 / 引用链接
+            - 群聊传闻仍是传闻，截图不自动证明真实
+          - 怎么拿
+            - 本人登录客户端的 UI Automation：Python-UIAutomation；先验证兼容与可见范围 — https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
+            - QQ 官方机器人事件：BotGo；权限与消息范围需逐项确认 — https://github.com/tencent-connect/botgo
+            - 用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+          - 接入状态：候选来源；未验证自动接入
+          - 材料去向：原文库 → 主体核验 / 去重 → 舆论陈述库 → 对应问题分析
+      - 归类后的分析
+        - 按事件而非帖数归类，转载不重复计票
+        - 可疑传播：模板 / 时序 / 同源，不直接断言水军
+        - 访问失败、关键词无结果不得作为企业风险
+  - 03 B：所有来源汇入统一处理链
+    - 原文保存
+      - URL / 内容 ID / 文件原件 / 发布与抓取时间 / 原文位置
+      - 私密材料独立访问控制；群聊脱敏后才进入分析
+    - 解析与清洗
+      - 网页正文：Scrapy / Playwright / Crawl4AI
+      - 文件与 OCR：Docling / PaddleOCR；保留页码、表格与原图
+      - 验证页、广告、乱码、无关内容隔离；OCR 数字待核对
+    - 主体和范围核验
+      - 精确身份规则优先；dedupe 辅助模糊候选
+      - 主体不清 → 待关联区；部门/城市/时间未知显式保留
+    - 去重与转载归源
+      - 平台 ID + 哈希：完全重复
+      - DataTrove MinHash：近似去重，中文短文本先验证
+      - 引用 / 时间 / 文本重合 → 来源链；保留原件，不重复算独立支持
+    - 可疑传播分组
+      - 模板相似 / 短时集中 / 同外链，只作可疑信号
+      - 账号字段不足就说明不足；正负情绪不作为真假标签
+      - 高影响材料人工复核；可疑组不直接永久删除
+    - 抽取具体陈述
+      - 主体 + 问题 + 值/单位 + 时间 + 团队/岗位 + 引用
+      - 结构化模型抽取 + 程序校验；不是抽取成功就算事实
+      - 没有加班费、经常加班 → 拆成两个命题
+    - 归类入库
+      - 原始材料库 → 来源/主体关系 → 具体陈述 → 问题覆盖 → 报告快照
+      - 主题颜色与来源性质分开：企业陈述 / 正式记录 / 报道 / 个人叙述
+      - 一条材料可以多主题；同一事件只建立来源关联，不复制成多个事实
+  - 04 C：比较 → 个性化翻译 → 报告
+    - 可比性检查
+      - 同一主体、问题、相关期间、部门、岗位与条件
+      - 同口径再比较；不同情境不强行判冲突
+    - 双向对照结果
+      - 相互支持 / 存在冲突 / 不可直接比较 / 单方陈述 / 材料不足
+      - 来源是否独立与证据是否支持分别检查，不简单多数表决
+    - 三层翻译
+      - 语言：材料是什么意思
+      - 情境：对该企业业务与目标岗位可能意味着什么
+      - 决策：与用户要求有什么关系，接下来核实什么
+    - 七个报告维度
+      - 成长与晋升
+      - 薪酬透明与兑现
+      - 工时与休息
+      - 五险一金
+      - 文化与工作方式
+      - 职位与用工稳定
+      - 企业经营状况
+    - 输出规则
+      - 事实 / 推断 / 未知分开；每项结论追溯原文
+      - 用户硬约束：满足 / 不满足 / 未知，不能总分抵消
+      - 公司整体材料不能直接证明目标岗位稳定
+      - 具体核实问题 + 可接受答案/材料 + 必须/可选优先级
+  - 05 缺口补查与停止
+    - C 检查：每一个问题是否回答，而非有帖子就算覆盖
+    - 可补查 → B 选择新来源 / 原始出处 / 后续结果 → 重新处理与分析
+    - 停止：预算耗尽 / 无有效新增 / 来源查完 / 信息非公开 / 必须面试确认
+    - 仍未知 → 正常输出未知、已查范围和下一步问题
+    - 访问异常：登录 / 限流 / 验证页 / 超时 / 解析失败 → 换来源或停止
+    - 不把反爬作为企业风险，不无限循环直到模型编出结论
+  - 06 档案更新与运行验证
+    - 用户新需求 → 复用证据，重新解释；资料过期/新事件 → 重新调查
+    - 用户面试反馈 / 新文件 → 核验后更新；保留旧报告版本
+    - 任务去重、预算、检查点、重启恢复由本项目实现
+    - Langfuse：追踪成本、版本、错误与效果；不自动验证真假
+    - 验收：同名 / 转载 / 旧闻 / 工资口径 / 访问受限 / 未知循环 / 引用错误
+  - 群聊自动采集研究：嵌入 B 的来源适配器
+    - 微信：本人登录的本地客户端 → 群白名单 → 可见消息增量读取
+      - 技术参考 Python-UIAutomation-for-Windows；需验证客户端版本 — https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
+      - wxauto 仅架构参考：当前仓库使用限制和新版授权需核实 — https://github.com/cluic/wxauto
+      - 不能承诺完整历史与附件均可读取；断档明确显示
+    - QQ：具备权限的机器人事件接收
+      - 官方 SDK BotGo；事件范围、管理员配置与历史读取分别验证 — https://github.com/tencent-connect/botgo
+      - 不能把机器人收到的消息等同于完整群历史
+    - 脉脉群组：可访问网页尝试 Playwright；接口和覆盖待验证
+    - 共同规则：只读，不自动发消息；记录群内上下文，内部脱敏
+    - 自动读取不可用 → 导出 / 文件 / 截图导入回退；不能伪装全量采集
+  - 采集技术与开源来源：各平台分支的工具索引
+    - T1｜静态网页：HTTP 请求、正文抽取；批量任务按需用 Scrapy — https://github.com/scrapy/scrapy
+    - T2｜动态网页：Playwright / Crawl4AI；只处理可访问的文字页面 — https://github.com/unclecode/crawl4ai
+    - T3｜平台接口：官方或授权数据 API；平台适配器由本项目实现 — https://www.qixin.com/home
+    - T4｜PDF / DOCX / 表格：Docling；扫描件 / 截图：PaddleOCR — https://github.com/docling-project/docling
+    - T5｜社区采集架构参考 MediaCrawler；非商业学习限制，非默认商业依赖 — https://github.com/NanmiCoder/MediaCrawler
+    - T6｜本人登录客户端的 UI Automation：Python-UIAutomation；先验证兼容与可见范围 — https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
+    - T7｜QQ 官方机器人事件：BotGo；权限与消息范围需逐项确认 — https://github.com/tencent-connect/botgo
+    - T8｜用户材料导入：本项目文件入口 + Docling / PaddleOCR；保留获取方式 — https://github.com/PaddlePaddle/PaddleOCR
+    - 去重：DataTrove — https://github.com/huggingface/datatrove
+    - 实体候选匹配：dedupe — https://github.com/dedupeio/dedupe
+    - 评估追踪：Langfuse — https://github.com/langfuse/langfuse
+    - 引用 ID 校验参考：DeepCandidate — https://github.com/CatalinBalut/deep-candidate-agent
+    - 调查问题参考：Career Application Advisor — https://github.com/watermud-hr/career-application-advisor
+    - 证据比较、问题覆盖与个性化判断：本项目设计，不宣称来自成熟通用工具
+  - 阅读说明与颜色图例
+    - 身份｜#2563EB
+    - 经营｜#059669
+    - 岗位｜#D97706
+    - 薪酬用工｜#DC2626
+    - 体验成长｜#7C3AED
+    - 舆论｜#DB2777
+    - 流程｜#475569
+    - 颜色标信息主题；不表示真伪、严重程度或接入成功
+    - 树从 01 到 06 顺序运行；关系线标材料流入与补查返回
+    - 平台在不同主题重复出现：代表不同查询任务，不是多个平行爬虫
+    - 平台候选目录不等于已接入清单；全部新组件尚未运行验证
+    - 按产品用途选代表性渠道，未声称调查了应用使用率或覆盖所有 App
+    - 来源核对：2026-10-09；本图为设计，未实际采集群聊或登录账户

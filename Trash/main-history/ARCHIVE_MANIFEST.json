@@ -5,37 +5,42 @@
     {
       "original_path": "docs/PRODUCT_PLAN_2026-10-03.md",
       "archive_path": "Trash/main-history/docs/PRODUCT_PLAN_2026-10-03.md",
-      "original_sha256": "669cf64292da8f05e9230e6adbe6ba08f6ed25019de55ac24c5f2365770e7c04",
-      "archived_sha256": "2abe61f50f673d3429e41c318c852ca5d63d2f3d4a1a2e049d19c5c0f2e8dc5c",
-      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+      "original_sha256": "6faba8c2deeeef062b8c64dc54fe39a19fdf049a7b38d591dbf787ba2f356732",
+      "archived_sha256": "f49f16a602f996703ec7b54b4ce2356363ed7e1ca8158377e0b7e0adecf8dc9f",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
     },
     {
       "original_path": "docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md",
       "archive_path": "Trash/main-history/docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md",
-      "original_sha256": "70054cb3322b4c67f77bca2088a649de9eab6f37c9c73941094d2ba9fdc4373e",
-      "archived_sha256": "cc3d1cbaa4407376de3835cddebd7a95cbf184ec6d6a3008f33830d762a3c574",
-      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+      "original_sha256": "6fbf4dd22dfafa4efd281090f7f771b626c3d08bae3704514d0e82f027cac3e3",
+      "archived_sha256": "667d0e5189cc278d4be2ab2d6e881b2e7bdce2f2ce3d287a96bb1aa1c7f01928",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
     },
     {
       "original_path": "docs/PROJECT_ANALYSIS_2026-10-03.md",
       "archive_path": "Trash/main-history/docs/PROJECT_ANALYSIS_2026-10-03.md",
-      "original_sha256": "41c64b0141b43fd5a9a853fb0d37e04e9dba9b3c05eed2499ccf5b69ebf60656",
-      "archived_sha256": "e076a0302f1d280114414cc40ac7a568b6eb8511413246bc59c22901e77a35cc",
-      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+      "original_sha256": "5734959516201a0555d4344367a514909f027169a9854b95b1d30d50330de96b",
+      "archived_sha256": "b704b1df507aea2ec2e4d3825a9e810a25bb87d54cf4d37a59c4f7b79409076a",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
     },
     {
       "original_path": "docs/frontend-analysis-2026-10-03.md",
       "archive_path": "Trash/main-history/docs/frontend-analysis-2026-10-03.md",
-      "original_sha256": "b147887f45aa070a9d3d45f5227d4d38daa193094e04d58eeab7d9c7299f8b93",
-      "archived_sha256": "e1772337189a06b3d6ef077dfc569d5701bb04e3687ca5dde1bae9da2e8ffb5e",
-      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+      "original_sha256": "9b33cd3a3d4a7bc8559a69550cc63d145ea27d0a35abb8d054b347230d239986",
+      "archived_sha256": "66b08dfc6c0f006355f08dbd800ddbc7d2e427fd15fd636a22c25c38bc96aacc",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
     },
     {
       "original_path": "docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md",
       "archive_path": "Trash/main-history/docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md",
-      "original_sha256": "e46f62a23b70e45cf328b65af10c0f30f0113083c03e0132c9945b08a60630e2",
-      "archived_sha256": "f006dc627639c8f8938d3af1f1893f2e312212cbef403281fbb7ad8f7f394923",
-      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。"
+      "original_sha256": "37a08b495b4a7de20008acfbca07bfc0ab3488ad9777f68970879e6b37cb12b2",
+      "archived_sha256": "8bfa480c16f3cdb4106ea1dfff9739443f1a5856abbd73da135a6aed69283cf9",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
     }
   ]
 }
