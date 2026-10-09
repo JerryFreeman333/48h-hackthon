@@ -26,7 +26,7 @@ export function createServer({dataDir=join(root,'../.data'),archiveDir=join(data
  if(['/demo/a/v1','/app.mjs','/survey-adapter.mjs','/v2-app.mjs','/battery-survey.mjs'].includes(url.pathname)||(url.pathname.startsWith('/api/a/')&&!url.pathname.startsWith('/api/a/v2/')&&!url.pathname.startsWith('/api/a/needs/'))){const e=new ServiceError(410,'旧答题入口已停用；原题、算法和历史资料保留存档。请使用中文求职需求入口。');e.code='english_entry_removed';throw e;}
  if(url.pathname.startsWith('/api/a/v2/')&&req.method!=='GET'){const e=new ServiceError(410,'旧兴趣与人格流程仅保留历史读取，不再接收答题、计分、删除或修改。');e.code='assessment_flow_retired';throw e;}
  if(req.method==='GET'&&!url.pathname.startsWith('/api/')){
- const files={'/':'ui/needs.html','/demo/a':'ui/needs.html','/demo/a/v2':'ui/needs.html','/profile':'ui/needs.html','/needs-app.mjs':'ui/needs-app.mjs','/style.css':'ui/style.css'};
+ const files={'/':'ui/needs.html','/demo/a':'ui/needs.html','/demo/a/v2':'ui/needs.html','/profile':'ui/needs.html','/needs-app.mjs':'ui/needs-app.mjs','/quick-unsure.mjs':'ui/quick-unsure.mjs','/style.css':'ui/style.css'};
  const f=files[url.pathname];if(!f)throw new ServiceError(404,'页面不存在');res.writeHead(200,{'Content-Type':f.endsWith('.css')?'text/css':/\.(mjs|js)$/.test(f)?'text/javascript':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"});res.end(readFileSync(join(root,f)));return;
  }
  if(req.headers.origin&&req.headers.origin!==`http://${req.headers.host}`)throw new ServiceError(403,'拒绝跨站请求');

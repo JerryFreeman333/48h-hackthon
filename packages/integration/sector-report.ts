@@ -115,7 +115,24 @@ export type SectorAnalysis=ReturnType<typeof buildSectorAnalysis>;
 /** Only new reports freeze this model. Legacy archives retain their recorded analysis. */
 export function analysisFromInputs(inputs:Record<string,any>,report:MatchReport):SectorAnalysis {
   const needs=inputs.needsResponse??respondToJobNeeds(inputs.aExport.JobNeedsSnapshot,inputs.bundle,{sourceDates:inputs.databaseSource?.sourceDates});
-  return buildSectorAnalysis(inputs.aExport.UserProfile,inputs.bundle,needs,report,{sourceDates:inputs.databaseSource?.sourceDates,selectionRecords:inputs.databaseSource?.selectionRecords,topics:inputs.aExport.JobNeedsSnapshot.topics});
+  const analysis=buildSectorAnalysis(inputs.aExport.UserProfile,inputs.bundle,needs,report,{sourceDates:inputs.databaseSource?.sourceDates,selectionRecords:inputs.databaseSource?.selectionRecords,topics:inputs.aExport.JobNeedsSnapshot.topics});
+  const v3=inputs.databaseSource?.agentV3;
+  if(v3)for(const c of analysis.candidates){
+    const job=inputs.bundle.jobs.find((j:any)=>j.jobId===c.jobId);
+    const qs=v3.questions.filter((q:any)=>q.companyId===job.companyId&&(q.jobId===null||q.jobId===c.jobId));
+    for(const sector of c.sectors){
+      const sq=qs.filter((q:any)=>q.topic===sector.id);if(!sq.length)continue;
+      const labels:Record<string,string>={answered:'已回答来源声明',partial:'部分回答',conflicting:'可比陈述有冲突',unknown:'未知',not_applicable:'明确不适用'};
+      sector.conclusion=sq.map((q:any)=>labels[q.answerState]+'：'+q.text+'；需求满足：'+(q.conclusion==='pass'?'满足':q.conclusion==='fail'?'不满足':'未知')+'。'+(q.missingFields.length?'缺少 '+q.missingFields.join('、')+'。':'')+'来源陈述尚未独立证实。').join(' ');
+      sector.status=sq.some((q:any)=>q.conclusion==='fail')?'difference':sq.some((q:any)=>q.answerState==='conflicting')?'conflict':sq.every((q:any)=>q.answerState==='answered')?'material':sector.materials.length?'lead':'missing';
+    }
+    const oldFailureQuestions=c.hardFailures.length?c.keyQuestions.slice(0,c.hardFailures.length):[];
+    c.keyQuestions=[...new Set([...oldFailureQuestions,...v3.keyQuestionIds.map((id:string)=>v3.questions.find((q:any)=>q.id===id)).filter((q:any)=>q.companyId===job.companyId&&(q.jobId===null||q.jobId===c.jobId)).map((q:any)=>q.externalQuestion)])].slice(0,3) as string[];
+    const hard=qs.filter((q:any)=>q.importance==='hard');
+    c.summary=c.hardFailures.length||hard.some((q:any)=>q.conclusion==='fail')?'该岗位有不可协商条件的差异，其他优点不能抵消。':hard.some((q:any)=>q.conclusion==='unknown')?'不可协商条件仍未知，现有资料不能确认满足。':'按保存的具体问题回答程度逐项对照；来源陈述尚未独立证实。';
+  }
+  if(v3){let remaining=3;for(const c of [...analysis.candidates].sort((a,b)=>Number(!!b.hardFailures.length)-Number(!!a.hardFailures.length))){c.keyQuestions=c.keyQuestions.slice(0,remaining);remaining-=c.keyQuestions.length;}}
+  return analysis;
 }
 const statusLabels={material:'有对应资料',lead:'有线索，适用性待确认',missing:'资料不足',conflict:'资料冲突',difference:'存在条件差异'};
 export function renderSectorBody(analysis:SectorAnalysis,links:{reportId:string;salaryNotes?:string;extras?:string}){

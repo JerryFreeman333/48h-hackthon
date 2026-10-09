@@ -8,6 +8,7 @@ import {agentConfiguration} from './config';
 import {callMiniMax,type ModelReply,type ModelMessage} from './minimax';
 import {runPythonTool,toolArguments,toolResultSchema,topicIds,type ToolResult} from './python-tool';
 import {enrichWithV2} from './v2-research';
+import {enrichWithV3,type V3Inputs} from './v3-research';
 
 export type AgentProgress={stage:string;message:string};
 type Target={recordId:number;companyId:string;name:string};
@@ -19,8 +20,9 @@ const tools=functions.map(name=>({type:'function',function:{name,description:nam
 function cacheWrite(path:string,value:unknown){const temp=path+'.tmp';writeFileSync(temp,JSON.stringify(value));renameSync(temp,path);}
 
 /** LLM chooses bounded tools. It cannot add facts, confirm identities or rewrite job salary. */
-export async function enrichWithAgent(bundle:CandidateBundle,source:Record<string,any>,input:Record<string,any>,onProgress:(p:AgentProgress)=>void=()=>{},deps:Dependencies={}){
+export async function enrichWithAgent(bundle:CandidateBundle,source:Record<string,any>,input:Record<string,any>,onProgress:(p:AgentProgress)=>void=()=>{},deps:Dependencies={},v3Options:V3Inputs={}){
  const config=deps.config??agentConfiguration();if(!config.enabled)return;
+ if(config.v3Enabled)return enrichWithV3(bundle,source,input,onProgress,v3Options);
  if(config.v2Enabled)return enrichWithV2(bundle,source,input,onProgress);
  const progress=(p:AgentProgress)=>{try{onProgress(p);}catch{/* Progress storage is optional; it must not discard acquired evidence. */}};
  const now=deps.now??Date.now,start=now(),model=deps.model??callMiniMax,tool=deps.tool??runPythonTool;

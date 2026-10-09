@@ -1,0 +1,23 @@
+// Local acceptance only; public HTTP/browser entrances, no internal state injection.
+import {createRequire} from 'node:module';
+import {readFileSync,mkdirSync,writeFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const require=createRequire(new URL('../.data/browser/package.json',import.meta.url)),{chromium}=require('playwright');
+const s=JSON.parse(readFileSync('.data/v3-acceptance/http-session.json','utf8')),base='http://127.0.0.1:3213';
+const browser=await chromium.launch({headless:true,executablePath:process.env.V3_BROWSER_EXECUTABLE??'C:/Program Files/Google/Chrome/Application/chrome.exe'});
+const context=await browser.newContext({viewport:{width:1360,height:920}});
+await context.addCookies([{name:'a_session',value:s.cookie.split('=')[1],url:base}]);
+const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto(base+'/research?sessionId='+s.sessionId+'&revision=1');await page.getByText('嵌入式软件工程师',{exact:true}).waitFor();
+await page.screenshot({path:'.data/v3-acceptance/b-desktop.png',fullPage:true});
+assert.ok(await page.getByRole('heading',{name:'补充材料（可选）'}).isVisible());
+await page.goto(base+s.reportUrl);await page.getByRole('heading',{name:'具体问题与需求判断'}).waitFor();
+await page.screenshot({path:'.data/v3-acceptance/c-desktop.png',fullPage:true});
+assert.equal(await page.locator('.next-questions li').count(),3);
+const source=page.getByText('回读已保存原文',{exact:true}).first();assert.ok(await source.count());
+await page.goto(base+'/history');await page.getByText('嵌入式软件工程师').first().waitFor();await page.screenshot({path:'.data/v3-acceptance/history.png',fullPage:true});
+await page.setViewportSize({width:390,height:844});await page.goto(base+s.reportUrl);await page.screenshot({path:'.data/v3-acceptance/c-mobile.png',fullPage:true});
+const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);
+assert.equal(overflow,false);assert.deepEqual(errors,[]);
+writeFileSync('.data/v3-acceptance/browser.json',JSON.stringify({result:'pass',pages:['B','C','history'],desktop:'1360x920',mobile:'390x844',overflow,errors},null,2));
+await browser.close();console.log('Browser B/C/history and mobile layout passed');

@@ -102,3 +102,10 @@ test('salary reference keeps its type through the frozen report and never claims
  assert.match(html,/薪资统计参考 · 公司层面资料；未选择具体招聘岗位/);
  assert.doesNotMatch(html,/当前在招状态仍待核实/);
 });
+
+test('V3 overlay cannot hide inherited hard failures or create more than three report-level external questions',async()=>{
+ const {saved}=await fixture(),inputs=structuredClone(saved.inputs),report=structuredClone(saved.report),job=inputs.bundle.jobs[0];
+ inputs.aExport.UserProfile.preferences.push({key:'city',value:['杭州'],strength:'hard',confirmed:true});report.results[0].constraints.push({key:'city',result:'fail',factIds:[]});
+ inputs.databaseSource={agentV3:{questions:[{id:'v3-q',companyId:job.companyId,jobId:job.jobId,topic:'pay',answerState:'unknown',text:'薪资',conclusion:'unknown',missingFields:['currency'],importance:'hard',externalQuestion:'请说明固定月薪'}],keyQuestionIds:['v3-q']}};
+ const c=analysisFromInputs(inputs,report).candidates[0];assert.match(c.summary,/不可协商.*不能抵消/);assert.ok(c.hardFailures.length);assert.ok(c.keyQuestions[0].includes('地点'));assert.ok(c.keyQuestions.length<=3);
+});

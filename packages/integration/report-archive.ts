@@ -4,6 +4,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, renameSync, readdir
 import { join } from "node:path";
 import { candidateBundleSchema, matchReportSchema, validateReportReferences, type MatchReport } from "../contracts";
 import type { StoredReportSnapshot } from "../../modules/c-report/application/ports";
+import {validateV3Snapshot} from '../../modules/research-agent/v3-contract';
 
 export type ArchivedReport = { archiveVersion: 1; ownerId: string; report: MatchReport; snapshot: StoredReportSnapshot; inputs: Record<string, any>; markdown: string; jsonExport: unknown };
 const digest = (text: string) => createHash("sha256").update(text).digest("hex");
@@ -16,6 +17,11 @@ export class ReportArchive {
   private key(owner: string, id: string) { return digest(owner) + ":" + id; }
   private validate(value: ArchivedReport, owner: string, id: string) {
     const report = matchReportSchema.parse(value.report), bundle = candidateBundleSchema.parse(value.inputs.bundle);
+    if(value.inputs.databaseSource?.agentV3){
+      const v3=validateV3Snapshot(value.inputs.databaseSource.agentV3,bundle);
+      if(v3.profileId!==report.profileId||v3.profileRevision!==report.profileRevision)throw Error('V3 归档需求版本不一致');
+      value.inputs.databaseSource.agentV3=v3;
+    }
     if (value.archiveVersion !== 1 || value.ownerId !== owner || report.reportId !== id || value.snapshot.ownerId !== owner || value.snapshot.projectId !== report.projectId || value.inputs.aExport.UserProfile.profileId !== report.profileId || value.inputs.aExport.UserProfile.revision !== report.profileRevision || JSON.stringify(value.snapshot.report) !== JSON.stringify(value.report) || JSON.stringify(value.snapshot.snapshot.report) !== JSON.stringify(value.report) || validateReportReferences(report,bundle).length) throw new Error("报告归档的身份或引用不一致");
   }
   save(value: ArchivedReport) {

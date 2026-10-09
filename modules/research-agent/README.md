@@ -30,3 +30,11 @@
 运行关键检查：`node --import tsx --test modules/research-agent/research.test.ts packages/integration/research-jobs.test.ts`；`.venv/Scripts/python.exe modules/research-agent/test_worker.py`；`npm run test:integration`；`npm run build`。
 
 MiniMax 官方接口说明：[OpenAI 兼容调用](https://platform.minimax.io/docs/api-reference/text-openai-api)。工具调用期间保留完整 assistant 消息供模型续接，归档不保存模型推理。
+
+## V3 首版
+
+V3 已接入真实 B→C，独立开关默认关闭，正文/文本PDF与用户导入在本机保存，问题级判断冻结进入报告。请先读 [V3 交接](../../docs/agent-v3/HANDOFF.md) 的逐项状态、实际验证与限制；上述旧版来源/缓存策略仍适用于关闭V3后的原路线，不能拿它们描述V3。
+
+开关：`RESEARCH_AGENT_ENABLED=true` 和 `RESEARCH_AGENT_V3_ENABLED=true`；安装既有 `requirements-v2-lock.txt` 即可运行。V3 规则不需要模型凭据。`RESEARCH_AGENT_V3_MODEL_ENABLED` 默认false，另开启时至多一次MiniMax语义复查、2048输出token，不上传用户导入/个人金额条件，结果不认证来源。
+
+正式检查：`npm test`、`npm run test:agent`、`npm run test:integration`、`npm run typecheck`、`npm run build`；Python在本轮的 `.venv/Scripts/python.exe -X utf8 -m unittest discover -s modules/research-agent -p test_v3*.py -v` 验证。`npm run test:v3:python` 使用PATH上的python，请确保它安装相同依赖。

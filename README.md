@@ -1,6 +1,6 @@
 # 求职 X-Ray
 
-> `agent-v3` 分支：新的 [V3 设计与实施规格](docs/agent-v3/V3.md) 以树状逻辑为依据，当前只交付设计和文档整理，业务功能仍为继承版本。旧规划与 V2 文档见 [Trash](Trash/README.md)。
+> V3 首版已接入实际 B→C：具体问题、正文/文本 PDF 与受控导入、归档回读、预算与未知出口。开关默认关闭。实现、真实验收与未完成项见 [V3 交接](docs/agent-v3/HANDOFF.md)，规格原文见 [V3.md](docs/agent-v3/V3.md)。旧规划与 V2 文档见 [Trash](Trash/README.md)。
 
 根据真实求职需求，筛选并调查公司与岗位，再解释资料与用户需求之间的关系。
 
@@ -38,7 +38,7 @@ npm run build
 npm start -- --hostname 127.0.0.1 --port 3000
 ```
 
-数据库应为 **142,249,984 字节**，不是几行 LFS 指针；SHA256 应与 [导入清单](.data/company-database/manifest.json) 一致。清单记录原导入信息，不代表新调查已核验。
+数据库应为 **214,609,920 字节**，不是几行 LFS 指针；SHA256 应与 [导入清单](.data/company-database/manifest.json) 一致。清单记录原导入信息，不代表新调查已核验。
 
 Agent 默认关闭。需要时在忽略的 .env.local 配置，安装独立 Python 依赖并重启服务；详见 Agent 说明。实际密钥不能写进 .env.example。
 

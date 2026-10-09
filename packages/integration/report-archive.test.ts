@@ -7,6 +7,16 @@ import { tmpdir } from "node:os";
 import { ReportArchive } from "./report-archive";
 import { createAHost } from "./a-host";
 import { createDemoFlow } from "./demo-flow";
+import {enrichWithV3} from '../../modules/research-agent/v3-research';
+test('V3 is explicitly saved/read; invalid answer scope and version binding cannot enter archive; legacy remains readable',async()=>{
+ const dir=mkdtempSync(join(tmpdir(),'v3-archive-')),a=createAHost(join(dir,'a')),owner='synthetic-owner',draft=createSelectedNeeds(a.service,owner,{mode:'manual'}),input=a.service.confirm(owner,draft.id,{expectedRevision:draft.revision,confirmed:true}).export;
+ const flow=createDemoFlow({dataDir:join(dir,'reports')}),result=await flow.runDatabase(owner,input,[95]);const original=new ReportArchive(join(dir,'reports')).read(owner,result.reportId)!;
+ assert.equal(original.inputs.databaseSource.agentV3,undefined);
+ const copy=structuredClone(original);await enrichWithV3(copy.inputs.bundle,copy.inputs.databaseSource,input,()=>{},{needOrigin:'synthetic_acceptance'},{maxRequests:0,checkpointDir:join(dir,'checkpoints')});
+ const memory=new ReportArchive();memory.save(copy);assert.equal(memory.read(owner,result.reportId)!.inputs.databaseSource.agentV3.schemaVersion,'agent-v3/1');
+ const invalid=structuredClone(copy);invalid.inputs.databaseSource.agentV3.questions[0].answerState='answered';assert.throws(()=>new ReportArchive().save(invalid),/complete applicable citation/);
+ invalid.inputs.databaseSource.agentV3.questions[0].answerState='unknown';invalid.inputs.databaseSource.agentV3.profileRevision++;assert.throws(()=>new ReportArchive().save(invalid),/需求版本/);
+});
 test("reports survive service restart with immutable needs, all exports and owner isolation",async()=>{
  const dir=mkdtempSync(join(tmpdir(),"xray-archive-")), a=createAHost(join(dir,"a")), owner="owner-a";
  const session=createSelectedNeeds(a.service,owner,{mode:"manual"});
