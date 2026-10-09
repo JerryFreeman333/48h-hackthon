@@ -51,7 +51,7 @@ demo-flow.ts 和 /flow/reports 的名称来自早期集成，现在也承载真�
 
 modules/research-agent/vendor/ 保存用户工具来源，实际产品只调用上层适配器。不要用原 lookup_company.py、CLI、全库分析或 selftest 启动产品；部分旧入口会写库、猜主体或升级核验，详见[Agent 说明](../modules/research-agent/README.md)。
 
-modules/a-profile/rubbish/ 和模块阶段文档保留旧实现及撤回记录，不导回真实入口，不自行删除。
+modules/a-profile/rubbish/ 保留旧实现、撤回记录及当前回归测试引用的样例，不导回真实入口。旧规划、诊断和早期演示文档集中到 [Trash 历史归档](../Trash/README.md)，当前文档及验收/撤回记录继续保留。归档不删除内容，不改变运行代码和测试。
 
 ## 协作步骤
 

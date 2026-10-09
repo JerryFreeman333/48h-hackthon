@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-09",
+  "source_commit": "17349766b9aee5e615437dc2745d79dc5f77e270",
+  "entries": [
+    {
+      "original_path": "docs/PRODUCT_PLAN_2026-10-03.md",
+      "archive_path": "Trash/main-history/docs/PRODUCT_PLAN_2026-10-03.md",
+      "original_sha256": "6faba8c2deeeef062b8c64dc54fe39a19fdf049a7b38d591dbf787ba2f356732",
+      "archived_sha256": "f49f16a602f996703ec7b54b4ce2356363ed7e1ca8158377e0b7e0adecf8dc9f",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md",
+      "archive_path": "Trash/main-history/docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md",
+      "original_sha256": "6fbf4dd22dfafa4efd281090f7f771b626c3d08bae3704514d0e82f027cac3e3",
+      "archived_sha256": "667d0e5189cc278d4be2ab2d6e881b2e7bdce2f2ce3d287a96bb1aa1c7f01928",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/PROJECT_ANALYSIS_2026-10-03.md",
+      "archive_path": "Trash/main-history/docs/PROJECT_ANALYSIS_2026-10-03.md",
+      "original_sha256": "5734959516201a0555d4344367a514909f027169a9854b95b1d30d50330de96b",
+      "archived_sha256": "b704b1df507aea2ec2e4d3825a9e810a25bb87d54cf4d37a59c4f7b79409076a",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/frontend-analysis-2026-10-03.md",
+      "archive_path": "Trash/main-history/docs/frontend-analysis-2026-10-03.md",
+      "original_sha256": "9b33cd3a3d4a7bc8559a69550cc63d145ea27d0a35abb8d054b347230d239986",
+      "archived_sha256": "66b08dfc6c0f006355f08dbd800ddbc7d2e427fd15fd636a22c25c38bc96aacc",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    },
+    {
+      "original_path": "docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md",
+      "archive_path": "Trash/main-history/docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md",
+      "original_sha256": "37a08b495b4a7de20008acfbca07bfc0ab3488ad9777f68970879e6b37cb12b2",
+      "archived_sha256": "8bfa480c16f3cdb4106ea1dfff9739443f1a5856abbd73da135a6aed69283cf9",
+      "reason": "历史设计/验收资料归档；正文保留，必要的相对 Markdown 链接随路径更新。",
+      "hash_basis": "Git blob bytes; relative Markdown link destinations may differ"
+    }
+  ]
+}

@@ -12,7 +12,7 @@
 
 ## 专题与阶段记录
 
-旧文件保持原位置和原文，已有链接继续有效。它们是对应阶段的资料，不是同一份实时产品说明；适用性先核对当前状态和续做记录。
+部分旧规划、诊断和演示资料已移入 [Trash 历史归档](../Trash/README.md)，表中链接已更新。阶段记录不是实时产品说明；适用性先核对当前状态和续做记录。历史叙述中的原路径用于追溯，现位置看归档清单。
 
 | 文档 | 如何使用 |
 | --- | --- |
@@ -20,15 +20,15 @@
 | [需求证据协议](NEEDS_EVIDENCE_PROTOCOL.md) | 需求、引用及范围设计参考 |
 | [ABC 业务验收](ABC_BUSINESS_ACCEPTANCE_2026-10-03.md) | 资料转换、引用及软硬条件修复阶段 |
 | [C 七板块](C_SECTOR_REPORT_2026-10-03.md) | 简明报告实施阶段，薪资名称后续改为薪资高低 |
-| [上传诊断](GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md) | 上传前诊断，不代表数据库仍未上传 |
+| [上传诊断](../Trash/main-history/docs/GITHUB_UPLOAD_DIAGNOSIS_2026-10-03.md) | 上传前诊断，不代表数据库仍未上传 |
 | [八项回退](ROLLBACK_ONLY_EIGHT_2026-10-03.md) | 撤回与保留修复记录 |
 | [黑箱检查](BLACKBOX_TEST_2026-10-03.md) | 当时问题与范围 |
 | [集成测试](INTEGRATION_TEST_RESULTS_2026-10-03.md) | 当时结果，不是最新累计数字 |
-| [产品计划](PRODUCT_PLAN_2026-10-03.md) | 早期规划，不是恢复撤回功能的任务单 |
+| [产品计划](../Trash/main-history/docs/PRODUCT_PLAN_2026-10-03.md) | 早期规划，不是恢复撤回功能的任务单 |
 | [阶段交接](PRODUCT_HANDOFF_2026-10-03.md) | 后续决定可能覆盖的阶段交付 |
-| [演示验收](PRODUCT_ACCEPTANCE_WALKTHROUGH.md) | 早期步骤，真实入口看根 README |
-| [项目分析](PROJECT_ANALYSIS_2026-10-03.md) | 当时仓库诊断 |
-| [前端分析](frontend-analysis-2026-10-03.md) | 旧界面审计，不是本轮美化结果 |
+| [演示验收](../Trash/main-history/docs/PRODUCT_ACCEPTANCE_WALKTHROUGH.md) | 早期步骤，真实入口看根 README |
+| [项目分析](../Trash/main-history/docs/PROJECT_ANALYSIS_2026-10-03.md) | 当时仓库诊断 |
+| [前端分析](../Trash/main-history/docs/frontend-analysis-2026-10-03.md) | 旧界面审计，不是本轮美化结果 |
 | [杭州阶段修复](FIXES_HANGZHOU_2026-10-03.md) | 不代表当前限定杭州或恢复扩展功能 |
 
 ## 模块资料
