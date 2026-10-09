@@ -8,7 +8,7 @@
 
 `C:\Users\Sophie\SynologyDrive\大学\学习\比赛+课题\杭州学军黑客松\进一步\repo-agent-v3-impl`
 
-分支：`implement/agent-v3-20261009`。提交见本分支 Git 历史与最终交付消息；没有推送、合并 main、部署或修改原始库。原 checkout 最终仍干净、HEAD 未改变，其数据库是原有 134-byte LFS 指针；隔离工作树展开真实库，214609920 bytes，SHA256 `81fb91c41495c7d0f53dc549d79e16eb63c995f003ca0fc1d8371da2e118a0f4`，与指针 oid 和 manifest 一致。最终复核未变化。实际只读查询为 471 公司/95 岗位。
+分支：`implement/agent-v3-20261009`。实现提交 `09fdf4a8cb18ac43e243d98748b466bb0fc70197`（44文件、1391新增/27删除），作者明确使用 Codex <codex@localhost>，未改全局 Git 身份；交接补充提交见 Git 历史与最终消息。没有推送、合并 main、部署或修改原始库。原 checkout 最终仍干净、HEAD 未改变，其数据库是原有 134-byte LFS 指针；隔离工作树展开真实库，214609920 bytes，SHA256 `81fb91c41495c7d0f53dc549d79e16eb63c995f003ca0fc1d8371da2e118a0f4`，与指针 oid 和 manifest 一致。最终复核未变化。实际只读查询为 471 公司/95 岗位。
 
 ## 2. V3 第 1—22 节对应
 
@@ -93,7 +93,7 @@ npm run dev -- --hostname 127.0.0.1 --port 3213
 
 本机证据在 `.data/v3-acceptance/{report.html,source.json,investigation.json,http-session.json,import-receipt.json,import-investigation.json,lifecycle.json,a-acceptance.json,browser.json}`；最终复测 reportId 以 http-session.json 的当前值为准。原件和完整解析在 `.data/research-agent/v3/task-*/q-*-r*/<SHA256>.{html.gz,pdf,txt,parsed.json}`；问题状态、每次取得/失败、引用位置、判定前后记录、时间和规则在 snapshot/receipt。截图同目录。HTTP源回读校验原件哈希、解析正文包含引用、报告所有权。
 
-验收浏览器cookie与用户已有浏览器隔离；可直接打开本机 report.html/source.json 查看样例。http-session.json 含本机测试会话 cookie，不打印、不提交、不公开。原始企业库、全部材料/测试日志/截图均未提交。
+验收浏览器cookie与用户已有浏览器隔离；可直接打开本机 report.html（官网闭环）、import-report.html（完整PDF闭环）或 source.json 查看样例。网页源回读需验收会话所有权，静态HTML仅供阅读；不要将cookie复制到其他人的浏览器。http-session.json 含本机测试会话 cookie，不打印、不提交、不公开。原始企业库、全部材料/测试日志/截图均未提交。
 
 ## 6. A 与回退
 
