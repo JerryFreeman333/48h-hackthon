@@ -6,15 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "tsx --test packages/contracts/contracts.test.ts packages/runtime/runtime.test.ts modules/research-agent/v3.test.ts",
+    "test": "tsx --test packages/contracts/contracts.test.ts packages/runtime/runtime.test.ts modules/research-agent/v3.test.ts modules/research-agent/xmind/*.test.ts",
     "test:b": "tsx --test modules/b-research/service.test.ts",
     "test:a": "npm --prefix modules/a-profile test",
     "test:integration": "tsx --test packages/integration/*.test.ts app/reports/reports.test.ts",
     "typecheck": "tsc --noEmit",
     "test:c": "tsx --test modules/c-report/tests/*.test.ts",
-    "test:agent": "tsx --test modules/research-agent/research.test.ts modules/research-agent/v2.test.ts modules/research-agent/v3.test.ts",
+    "test:agent": "tsx --test modules/research-agent/research.test.ts modules/research-agent/v2.test.ts modules/research-agent/v3.test.ts modules/research-agent/xmind/*.test.ts",
     "test:agent:python": "python -X utf8 -m unittest discover -s modules/research-agent -p test_v2*.py -v",
-    "test:v3": "tsx --test modules/research-agent/v3.test.ts",
+    "test:v3": "tsx --test modules/research-agent/v3.test.ts modules/research-agent/xmind/*.test.ts",
     "test:v3:python": "python -X utf8 -m unittest discover -s modules/research-agent -p test_v3*.py -v"
   },
   "dependencies": {

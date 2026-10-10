@@ -6,7 +6,7 @@ import {z} from 'zod';
 import type {CandidateBundle} from '../../packages/contracts';
 import type {V3Snapshot} from './v3-contract';
 const digest=(text:string|Buffer)=>createHash('sha256').update(text).digest('hex');
-export const sourceOptionsSchema=z.strictObject({purpose:z.enum(['exploration','selection']).default('selection'),needOrigin:z.enum(['user_confirmed','synthetic_acceptance']).default('user_confirmed'),sourceUrls:z.array(z.url().max(4096).refine(s=>{const u=new URL(s);return ['http:','https:'].includes(u.protocol)&&!u.username&&!u.password;})).max(4).default([]),importIds:z.array(z.string().regex(/^import-[a-f0-9]{64}$/)).max(3).default([])});
+export const sourceOptionsSchema=z.strictObject({discovery:z.enum(['bounded','supplied_only']).default('bounded'),purpose:z.enum(['exploration','selection']).default('selection'),needOrigin:z.enum(['user_confirmed','synthetic_acceptance']).default('user_confirmed'),sourceUrls:z.array(z.url().max(4096).refine(s=>{const u=new URL(s);return ['http:','https:'].includes(u.protocol)&&!u.username&&!u.password;})).max(4).default([]),importIds:z.array(z.string().regex(/^import-[a-f0-9]{64}$/)).max(3).default([])});
 export const importSchema=z.strictObject({kind:z.enum(['text','pdf']),title:z.string().trim().min(1).max(300),content:z.string().min(1).max(25_000_000),declaredSource:z.string().max(1000).nullable().default(null),syntheticFixture:z.boolean().default(false)});
 const folder=(owner:string)=>join(process.cwd(),'.data/research-agent/v3-imports',digest(owner));
 export function saveV3Import(owner:string,raw:unknown){
@@ -24,7 +24,7 @@ export function loadV3Options(owner:string,raw:unknown){
   const data=importSchema.parse(JSON.parse(readFileSync(file,'utf8')));
   return {kind:data.kind,content:data.content,title:data.title,declared_source:data.declaredSource,synthetic_fixture:data.syntheticFixture};
  });
- return {purpose:options.purpose,needOrigin:options.needOrigin,sourceUrls:options.sourceUrls,materials};
+ return {discovery:options.discovery,purpose:options.purpose,needOrigin:options.needOrigin,sourceUrls:options.sourceUrls,materials};
 }
 export function readSavedV3Source(s:V3Snapshot|undefined,bundle:CandidateBundle,evidenceId:string){
  const evidence=bundle.evidence.find(e=>e.evidenceId===evidenceId);

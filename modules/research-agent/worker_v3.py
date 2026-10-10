@@ -71,19 +71,19 @@ def handle(req):
             for page in parsed['pages']:
                 lines=page['text'].splitlines()
                 for i,line in enumerate(lines):
-                    if re.search(r'培训|主营|业务|工资|薪酬|双休|值班|社保|公积金|加班费|住宿|营业收入|净利润',line):
+                    if re.search(r'培训|晋升|职级|调薪|成长|主营|业务|工资|薪酬|奖金|双休|值班|社保|公积金|加班|住宿|营业收入|净利润|现金流|签约主体|合同|信用代码|招聘|沟通|协作|绩效|回应|指控|监管|试用期|群聊元数据',line):
                         text='\n'.join(lines[max(0,i-2):i+4])[:6000]
                         units.append({'text':text,'locator':{'physical_page':page['physical_page'],'paragraph':i+1}})
         else:
             for p in parsed.get('paragraphs',[]):
-                if re.search(r'培训|主营|业务|工资|薪酬|双休|值班|社保|公积金|加班费|住宿|营业收入|净利润',p['text']):
+                if re.search(r'培训|晋升|职级|调薪|成长|主营|业务|工资|薪酬|奖金|双休|值班|社保|公积金|加班|住宿|营业收入|净利润|现金流|签约主体|合同|信用代码|招聘|沟通|协作|绩效|回应|指控|监管|试用期|群聊元数据',p['text']):
                     units.append({'text':p['text'][:6000],'locator':{'paragraph':p['paragraph']}})
         # A large annual report must not spend the entire excerpt budget on its opening financial pages.
         # Reserve bounded slots for each inquiry class; the full parsed source stays on disk.
-        categories=[r'固定月薪|年薪|工资|薪酬',r'员工培训|培训体系|入职培训|带教|导师',r'每周|双休|单休|值班|轮班',r'社保|社会保险|住房公积金',r'主营业务|主要业务|解决方案提供商',r'营业收入|净利润']
+        categories=[r'固定月薪|年薪|工资|薪酬',r'员工培训|培训体系|入职培训|带教|导师',r'每周|双休|单休|值班|轮班',r'社保|社会保险|住房公积金',r'主营业务|主要业务|解决方案提供商',r'营业收入|净利润|现金流',r'签约主体|信用代码|法定代表人',r'晋升|职级|调薪|职业发展',r'沟通|协作|绩效|不同意见',r'合同|招聘|试用期',r'指控|回应|裁判|监管',r'加班|下班后|调休',r'群聊元数据']
         selected=[];locations=set()
         for pattern in categories:
-            for unit in [u for u in units if re.search(pattern,u['text'])][:5]:
+            for unit in [u for u in units if re.search(pattern,u['text'])][:2]:
                 unit_key=json.dumps(unit['locator'],sort_keys=True)
                 if unit_key not in locations:selected.append(unit);locations.add(unit_key)
         for unit in units:

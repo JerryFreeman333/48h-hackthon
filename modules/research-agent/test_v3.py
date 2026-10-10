@@ -38,6 +38,13 @@ class V3Tests(unittest.TestCase):
         self.assertEqual(raw.read_text(encoding='utf-8'),body)
         self.assertTrue(result['documents'][0]['units'][0]['locator']['paragraph']>0)
         again=worker_v3.handle(req);self.assertEqual(again,result);self.assertEqual(Fetcher.calls,0)
+    def test_specialist_need_and_explicit_group_metadata_survive_the_real_parser(self):
+        body='浙江大华技术股份有限公司\n2026年度晋升条件：评审后调整职级。\n[群聊元数据] 账号=甲 时间=2026-10-10T01:00:00Z 外链=https://example.org/post\n'
+        result=worker_v3.handle(self.request(imports=[{'kind':'text','content':body,'title':'合成规则样本'}]))
+        units=result['documents'][0]['units']
+        self.assertTrue(any('晋升条件' in u['text'] for u in units))
+        self.assertTrue(any('[群聊元数据]' in u['text'] for u in units))
+        self.assertEqual(Fetcher.calls,0)
     def test_unrelated_company_not_admitted(self):
         r=worker_v3.handle(self.request(imports=[{'kind':'text','content':'另一科技股份有限公司\n主营业务为软件。','title':'另一科技股份有限公司招聘'}]))
         self.assertEqual(r['documents'],[]);self.assertEqual(r['records'][0]['accessState'],'identity_mismatch')

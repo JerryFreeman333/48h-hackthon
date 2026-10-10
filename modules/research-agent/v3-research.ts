@@ -1,3 +1,5 @@
+import {routeSources,sources} from './xmind/sources';
+import {executeXmind} from './xmind/execution';
 import {mkdirSync,readFileSync,existsSync,writeFileSync,renameSync} from 'node:fs';
 import {join} from 'node:path';
 import type {CandidateBundle} from '../../packages/contracts';
@@ -8,15 +10,15 @@ import {runV3Tool,type V3ToolRequest} from './v3-tool';
 import {atomicWrite} from './atomic-file';
 import {reviewV3Semantics} from './v3-model';
 import type {AgentProgress} from './research';
-export type V3Inputs={purpose?:'exploration'|'selection';needOrigin?:'user_confirmed'|'synthetic_acceptance';sourceUrls?:string[];materials?:{kind:'text'|'pdf';content:string;title:string;declared_source?:string|null;synthetic_fixture?:boolean}[]};
+export type V3Inputs={discovery?:'bounded'|'supplied_only';purpose?:'exploration'|'selection';needOrigin?:'user_confirmed'|'synthetic_acceptance';sourceUrls?:string[];materials?:{kind:'text'|'pdf';content:string;title:string;declared_source?:string|null;synthetic_fixture?:boolean}[]};
 const terms:Record<string,string>={fixed_salary:'招聘 固定月薪 税前 奖金',rest:'招聘 工作周 休息 值班',training:'员工 培训 带教 参加条件',business:'主营业务 年度报告',social_insurance:'社保 公积金 缴纳条件'};
 export async function enrichWithV3(bundle:CandidateBundle,source:Record<string,any>,input:Record<string,any>,progress:(p:AgentProgress)=>void=()=>{},options:V3Inputs={},deps:{tool?:typeof runV3Tool;maxRequests?:number;deadlineMs?:number;checkpointDir?:string}={}){
- const start=Date.now(),taskId='task-'+stableV3(input.UserProfile.profileId,input.UserProfile.revision,bundle.jobs.map(j=>j.jobId),options);let priorElapsed=0;
+ const start=Date.now(),taskId='task-'+stableV3(input.UserProfile.profileId,input.UserProfile.revision,bundle.jobs.length?bundle.jobs.map(j=>j.jobId):bundle.companies.map(c=>c.companyId),options);let priorElapsed=0;
  const s:V3Snapshot={schemaVersion:'agent-v3/1',taskId,profileId:input.UserProfile.profileId,profileRevision:input.UserProfile.revision,createdAt:new Date().toISOString(),purpose:options.purpose??'selection',needOrigin:options.needOrigin??'user_confirmed',materialKind:options.materials?.some(m=>m.synthetic_fixture)?'mixed_sources':'real_sources',questions:createV3Questions(input,bundle),claims:[],sourceRelations:[],assessments:[],reviews:[],sourceAttempts:[],
-  budget:{maxRequests:deps.maxRequests??18,usedRequests:0,reservedRequests:0,deadlineMs:deps.deadlineMs??180000,elapsedMs:0,modelCalls:0,tokens:null,costMinor:null},stopReasons:[],semanticChecks:[],ruleVersions:{assessment:V3_RULE,extraction:'v3-rule-extraction/1',acquisition:'v3-acquisition/1'},model:{status:process.env.MINIMAX_API_KEY?'disabled':'not_configured',reason:'首版采用明确规则；未调用语义模型，规则无法判断的字段保留未知。'},propagation:{status:'disabled',reason:'首版材料无账号、精确时间与行为历史，不运行依赖这些字段的协同检测。'},keyQuestionIds:[],criticalUnknownCount:0};
+  budget:{maxRequests:deps.maxRequests??18,usedRequests:0,reservedRequests:0,deadlineMs:deps.deadlineMs??180000,elapsedMs:0,modelCalls:0,tokens:null,costMinor:null},stopReasons:[],semanticChecks:[],ruleVersions:{assessment:V3_RULE,extraction:'v3-rule-extraction/3',xmind:'xmind-execution/1',acquisition:'v3-acquisition/1'},model:{status:process.env.MINIMAX_API_KEY?'disabled':'not_configured',reason:'首版采用明确规则；未调用语义模型，规则无法判断的字段保留未知。'},propagation:{status:'disabled',reason:'首版材料无账号、精确时间与行为历史，不运行依赖这些字段的协同检测。'},keyQuestionIds:[],criticalUnknownCount:0};
  source.agentV3=s;
  const dir=deps.checkpointDir??join(process.cwd(),'.data/research-agent/v3-snapshots');mkdirSync(dir,{recursive:true});const file=join(dir,taskId+'.json');
- const checkpoint=()=>{s.budget.elapsedMs=priorElapsed+Date.now()-start;atomicWrite(file,JSON.stringify({snapshot:s,evidence:bundle.evidence.filter(e=>e.sourceType.startsWith('agent_v3')),sourceDates:source.sourceDates??[]}));};
+ const checkpoint=()=>{s.xmind=executeXmind(s,bundle);s.budget.elapsedMs=priorElapsed+Date.now()-start;atomicWrite(file,JSON.stringify({snapshot:s,evidence:bundle.evidence.filter(e=>e.sourceType.startsWith('agent_v3')),sourceDates:source.sourceDates??[]}));};
  if(existsSync(file)){
   try{const saved=JSON.parse(readFileSync(file,'utf8'));const restored=structuredClone(bundle);
    restored.evidence.push(...saved.evidence.filter((e:any)=>!restored.evidence.some(x=>x.evidenceId===e.evidenceId)));
@@ -78,11 +80,14 @@ export async function enrichWithV3(bundle:CandidateBundle,source:Record<string,a
  const ordered=[...s.questions].sort((a,b)=>['hard','priority','secondary','background'].indexOf(a.importance)-['hard','priority','secondary','background'].indexOf(b.importance));
  let supplied=false;
  for(let round=0;round<2;round++)for(const q of ordered){
+  if(supplied&&options.discovery==='supplied_only'){q.stopReason??='supplied_sources_exhausted';continue;}
   if(q.answerState==='answered'||q.answerState==='not_applicable'||q.attempts>round||q.stopReason)continue;
   if(s.budget.usedRequests+s.budget.reservedRequests>=s.budget.maxRequests||priorElapsed+Date.now()-start>=s.budget.deadlineMs){q.stopReason='task_budget_exhausted';continue;}
   const company=bundle.companies.find(c=>c.companyId===q.companyId)!;
   try{progress({stage:'collecting',message:'正在调查 '+(company.brandName??company.legalName)+'：'+q.text+'（问题补查 '+(round+1)+'/2）'});}catch{}
-  const request:V3ToolRequest={company_id:Number(q.companyId.split('-company-').at(-1)),question_id:q.id+'-r'+round,task_id:taskId,query:'"'+company.legalName+'" '+(terms[q.predicate]??q.text).slice(0,150),urls:supplied?[]:options.sourceUrls??[],imports:supplied?[]:options.materials??[],max_requests:Math.min(3,s.budget.maxRequests-s.budget.usedRequests-s.budget.reservedRequests),seconds:Math.min(30,Math.max(1,Math.floor((s.budget.deadlineMs-priorElapsed-(Date.now()-start))/1000)))};
+  const routed=routeSources(q.predicate,q.topic,q.missingFields).map(id=>sources.find(source=>source.id===id)!).filter(source=>source.status==='available'&&source.mode==='http'&&source.domains.length);
+  const domain=routed[round]?.domains[0],role=bundle.jobs.find(job=>job.jobId===q.jobId)?.title;
+  const request:V3ToolRequest={company_id:Number(q.companyId.split('-company-').at(-1)),question_id:q.id+'-r'+round,task_id:taskId,query:options.discovery==='supplied_only'?'':'"'+company.legalName+'" '+(role?'"'+role+'" ':'')+(domain?'site:'+domain+' ':'')+(terms[q.predicate]??q.text).slice(0,150),urls:supplied?[]:options.sourceUrls??[],imports:supplied?[]:options.materials??[],max_requests:Math.min(3,s.budget.maxRequests-s.budget.usedRequests-s.budget.reservedRequests),seconds:Math.min(30,Math.max(1,Math.floor((s.budget.deadlineMs-priorElapsed-(Date.now()-start))/1000)))};
   supplied=true;q.attempts++;q.pendingRequestBudget=request.max_requests;s.budget.reservedRequests+=request.max_requests;q.stopReason='request_outcome_unknown';checkpoint();
   try{const result=await tool(request,request.seconds*1000+5000);merge(result,q.id);if(result.done&&!result.documents.length)q.stopReason='no_effective_new_material';}
   catch{
@@ -97,7 +102,7 @@ export async function enrichWithV3(bundle:CandidateBundle,source:Record<string,a
  finishV3Questions(s);s.stopReasons.push(s.questions.every(q=>q.answerState==='answered'||q.answerState==='not_applicable')?'questions_answered':'completed_with_unknowns');
  s.budget.elapsedMs=priorElapsed+Date.now()-start;
  await reviewV3Semantics(s,bundle,checkpoint);
- source.agentV3=validateV3Snapshot(s,bundle);candidateBundleSchema.parse(bundle);if(validateBundleReferences(bundle).length)throw Error('V3 references invalid');
+ s.xmind=executeXmind(s,bundle);source.agentV3=validateV3Snapshot(s,bundle);candidateBundleSchema.parse(bundle);if(validateBundleReferences(bundle).length)throw Error('V3 references invalid');
  checkpoint();try{progress({stage:'analyzing',message:'正在冻结具体问题的回答程度、引用与未知，生成七板块报告'});}catch{}
 }
 
@@ -110,6 +115,6 @@ export function reassessV3(previous:V3Snapshot,input:Record<string,any>,bundle:C
  s.sourceAttempts=s.sourceAttempts.flatMap(a=>{const q=map(a.questionId);return q?[{...a,questionId:q.id}]:[];});
  for(const q of s.questions){const prior=[...old.values()].find(o=>o.companyId===q.companyId&&o.jobId===q.jobId&&o.predicate===q.predicate);q.attempts=prior?.attempts??0;q.pendingRequestBudget=prior?.pendingRequestBudget??0;q.stopReason='reused_frozen_sources';}
  if(s.questions.length)s.questions[0].pendingRequestBudget+=s.budget.reservedRequests-s.questions.reduce((n,q)=>n+q.pendingRequestBudget,0);
- extractV3Claims(bundle,s);for(const q of s.questions)assessV3Question(q,s.claims,s);finishV3Questions(s);s.ruleVersions.assessment=V3_RULE;s.ruleVersions.extraction='v3-rule-extraction/2';
- return validateV3Snapshot(s,bundle);
+ extractV3Claims(bundle,s);for(const q of s.questions)assessV3Question(q,s.claims,s);finishV3Questions(s);s.ruleVersions.assessment=V3_RULE;s.ruleVersions.extraction='v3-rule-extraction/3';s.ruleVersions.xmind='xmind-execution/1';
+ s.xmind=executeXmind(s,bundle);return validateV3Snapshot(s,bundle);
 }

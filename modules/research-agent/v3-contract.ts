@@ -1,7 +1,8 @@
 import {z} from 'zod';
 import type {CandidateBundle} from '../../packages/contracts';
+import {xmindSchema} from './xmind/schema';
 import {semanticCheckSchema} from './v3-model';
-export const V3_RULE='v3-rules/5';
+export const V3_RULE='v3-rules/7';
 const id=z.string().min(1).max(160);
 export const answerState=z.enum(['answered','partial','conflicting','unknown','not_applicable']);
 const locator=z.strictObject({paragraph:z.number().int().positive().optional(),physical_page:z.number().int().positive().optional(),table:z.number().int().positive().optional(),row:z.number().int().positive().optional(),column:z.number().int().positive().optional()});
@@ -32,7 +33,7 @@ const attemptSchema=z.strictObject({
  elapsedMs:z.number().nonnegative(),query:z.string().nullable()
 });
 export const v3SnapshotSchema=z.strictObject({
- schemaVersion:z.literal('agent-v3/1'),taskId:id,profileId:id,profileRevision:z.number().int().positive(),createdAt:z.string(),
+ xmind:xmindSchema.optional(),schemaVersion:z.literal('agent-v3/1'),taskId:id,profileId:id,profileRevision:z.number().int().positive(),createdAt:z.string(),
  purpose:z.enum(['exploration','selection']),needOrigin:z.enum(['user_confirmed','synthetic_acceptance']).default('user_confirmed'),materialKind:z.enum(['real_sources','synthetic_fixtures','mixed_sources']),questions:z.array(questionSchema).max(180),claims:z.array(claimSchema).max(800),
  sourceRelations:z.array(z.strictObject({from:id,to:id,kind:z.enum(['confirmed_repost','suspected_common_origin','independent_unknown']),reason:z.string()})),
  assessments:z.array(z.strictObject({questionId:id,previousState:answerState,newState:answerState,claimIds:z.array(id),requiredFieldsChecked:z.array(z.string()),missingFields:z.array(z.string()),reasonCode:z.enum(['no_claim','snippet_only','subject_unconfirmed','scope_unconfirmed','missing_required_fields','direct_answer','comparable_conflict','explicit_not_applicable']),assessorVersion:z.string(),at:z.string()})),
@@ -72,6 +73,18 @@ export function validateV3Snapshot(raw:unknown,bundle:CandidateBundle){
  for(const r of s.sourceRelations)if(!evidence.has(r.from)||!evidence.has(r.to))throw Error('V3 invalid lineage');
  for(const r of s.reviews)if(r.claimIds.some(c=>!claims.has(c))||r.questionIds.some(x=>!q.has(x)))throw Error('V3 invalid review');
  for(const c of s.semanticChecks){const item=q.get(c.questionId),e=evidence.get(c.evidenceId);if(!item||!e||e.companyId!==item.companyId||!e.excerpt.includes(c.quote)||e.scope!==c.scope||c.answerTarget!==item.answerTarget||c.scope==='job'&&e.jobId!==item.jobId)throw Error('V3 invalid semantic check');}
+ if(s.xmind){
+  const x=s.xmind;
+  if(x.revision!==s.profileRevision)throw Error('XMind 需求版本不一致');
+  for(const r of [...x.routes,...x.translations,...x.followups])if(!q.has(r.questionId))throw Error('XMind missing question');
+  for(const t of x.translations)if(t.evidenceIds.some(id=>!evidence.has(id)||evidence.get(id)!.companyId!==q.get(t.questionId)!.companyId))throw Error('XMind invalid translation citation');
+  for(const d of x.documents)if(d.evidenceIds.some(id=>!evidence.has(id)))throw Error('XMind invalid document');
+  for(const r of x.lineage)if(!evidence.has(r.from)||!evidence.has(r.to))throw Error('XMind invalid lineage');
+  const entities=new Set(x.entities.map(e=>e.id));
+  for(const r of x.relations)if(!entities.has(r.from)||!entities.has(r.to)||r.evidenceIds.some(id=>!evidence.has(id)))throw Error('XMind invalid relation');
+  for(const r of x.comparisons)if(!q.has(r.questionId)||[r.left,r.right].some(id=>!claims.has(id)||!q.get(r.questionId)!.supportingClaimIds.includes(id)))throw Error('XMind invalid comparison');
+  for(const r of x.reviews)if(r.claimIds.some(id=>!claims.has(id)))throw Error('XMind invalid review');
+ }
  if(s.keyQuestionIds.some(id=>!q.has(id)))throw Error('V3 invalid question selection');
  if(new Set(s.keyQuestionIds).size!==s.keyQuestionIds.length||s.keyQuestionIds.some(id=>q.get(id)!.nextAction!=='external_confirmation'))throw Error('V3 invalid external questions');
  if(s.budget.usedRequests+s.budget.reservedRequests>s.budget.maxRequests||s.questions.reduce((n,q)=>n+q.pendingRequestBudget,0)!==s.budget.reservedRequests||s.budget.modelCalls!==0&&s.model.status==='not_configured')throw Error('V3 invalid budget/model state');

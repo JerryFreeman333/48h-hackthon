@@ -1,0 +1,9 @@
+import {escapeHtml as e} from '../../c-report/ui/render-html';
+import type {XmindExecution} from './schema';
+import {sources} from './sources';
+const names:Record<string,string>={planner:'问题规划',router:'来源分配',identity:'主体与岗位关系',provenance:'原文与来源关系',extractor:'陈述抽取',propagation:'传播线索',verifier:'可比性与复核',interpreter:'三层解释',followup:'补查与退出',archive:'归档与更新'};
+const states:Record<string,string>={completed:'已运行',partial:'部分可判断',blocked:'材料不足',skipped:'缺少条件，未运行'};
+export function renderXmind(x:XmindExecution|undefined,reportId:string){
+ if(!x)return '';
+ return '<section class="card" id="xmind-execution"><h2>XMind 调查流程</h2><p>六阶段流程：问题规划 → 来源分配 → 证据处理 → 比较与解释 → 补查或停止 → 归档。当前专职模块使用规则执行，模型是否运行见调用记录。</p><details><summary>查看各模块实际运行状态</summary>'+x.runs.map(r=>'<p>'+e(names[r.role])+'：'+e(states[r.status])+'；'+e(r.reason)+'</p>').join('')+'</details><details><summary>来源分配与采集能力</summary>'+x.routes.map(r=>'<p>'+e(r.category)+'：'+r.sourceIds.map(id=>{const s=sources.find(s=>s.id===id);return e(s?.label??id)+'（'+(s?.status==='available'?'可通过现有正文/导入入口获取，未表示已获取':'适配器待接')+'）';}).join('、')+'</p>').join('')+'</details>'+x.translations.map(t=>'<details><summary>原句 → 适用情境 → 需求判断</summary><blockquote>'+e(t.language)+'</blockquote><p>'+e(t.context)+'</p><p>'+e(t.decision)+'</p>'+t.evidenceIds.slice(0,5).map(id=>'<a href="/api/integration/reports/'+e(reportId)+'/sources/'+e(id)+'">回读原文</a> ').join('')+'</details>').join('')+'<p>主体节点 '+x.entities.length+'；来源关系 '+x.lineage.length+'；陈述比较 '+x.comparisons.length+'；待人工复核 '+x.reviews.filter(r=>['pending','deferred'].includes(r.state)).length+'。</p><details><summary>人工复核记录</summary>'+x.reviews.map(r=>'<p>'+e(r.state)+'：'+e(r.decision??r.reason)+'</p>').join('')+'</details>'+(x.reviews.length?'<p><a href="/reviews/'+e(reportId)+'">记录人工复核</a></p>':'')+'<p>'+e(x.propagation.reason)+'</p></section>';
+}

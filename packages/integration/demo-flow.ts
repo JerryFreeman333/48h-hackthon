@@ -1,3 +1,4 @@
+import {recordXmindReview,reviewInput} from '../../modules/research-agent/xmind/review';
 import {parseSourceDeclaration,reportDataStatus,type SourceDeclaration} from './data-status';
 import {databaseBundle} from './local-database';
 import {enrichWithAgent,type AgentProgress} from '../../modules/research-agent/research';
@@ -116,6 +117,20 @@ export function createDemoFlow(options?: { dataDir?: string }) {
     investigation(owner:string,reportId:string){
       const saved=archive.read(owner,reportId);if(!saved)throw Object.assign(Error('本会话无该报告'),{status:404});
       return {reportId,agentV3:saved.inputs.databaseSource?.agentV3??null};
+    },
+    async addXmindReview(owner:string,reportId:string,raw:unknown){
+      const saved=archive.read(owner,reportId);if(!saved)throw Object.assign(Error('本会话无该报告'),{status:404});
+      if(!saved.inputs.databaseSource?.agentV3)throw Object.assign(Error('本报告没有 V3 复核任务'),{status:409});
+      if(saved.report.mode==='live')throw Object.assign(Error('本地复核不支持 live 报告'),{status:409});
+      const data=reviewInput.parse(raw),requestKey=JSON.stringify([reportId,data]);
+      for(const item of archive.list(owner)){const existing=archive.read(owner,item.reportId);if(existing?.inputs.researchRun?.reviewRequestKey===requestKey)return {reportId:item.reportId,reportUrl:item.reportUrl};}
+      const bundle=structuredClone(saved.inputs.bundle),input=saved.inputs.aExport,databaseSource=structuredClone(saved.inputs.databaseSource);
+      databaseSource.agentV3=recordXmindReview(databaseSource.agentV3,bundle,data);
+      const u=user(owner);u.projects.set(saved.report.projectId,{projectId:saved.report.projectId,ownerId:owner,mode:saved.report.mode});
+      const response=await handleCreateMatch(u.ctx,requestFor(u.token,'/api/c/matches',{profile:input.UserProfile,intentContext:input.SearchIntent,bundle,idempotencyKey:bundle.bundleId+':review:'+requestKey}));
+      const result=await response.json();if(!response.ok)throw Object.assign(Error(result.error?.message??'复核报告生成失败'),{status:response.status});
+      await freeze(owner,result.reportId,input,{kind:'xmind_review',previousReportId:reportId,reviewRequestKey:requestKey,databaseSource},bundle,u,saved);
+      return {reportId:result.reportId,reportUrl:'/flow/reports/'+result.reportId};
     },
     source(owner:string,reportId:string,evidenceId:string){
       const saved=archive.read(owner,reportId);if(!saved)throw Object.assign(Error('本会话无该报告'),{status:404});

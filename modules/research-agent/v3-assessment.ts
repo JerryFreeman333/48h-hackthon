@@ -1,9 +1,11 @@
+import {extraPredicates,specializedFields} from './xmind/catalog';
 import {createHash} from 'node:crypto';
 import type {CandidateBundle} from '../../packages/contracts';
 import {buildInvestigationPlan} from '../../packages/integration/job-needs';
 import {V3_RULE,type V3Snapshot,type V3Question,type V3Claim} from './v3-contract';
 export const stableV3=(...values:unknown[])=>createHash('sha256').update(JSON.stringify(values)).digest('hex').slice(0,28);
 const requirements:Record<string,string[]>={
+ ...Object.fromEntries(Object.entries(extraPredicates).map(([k,v])=>[k,v.required])),
  fixed_salary:['min','max','currency','period','basis','taxBasis','effectiveConditions','role'],
  rest:['frequency','mandatory','effectiveConditions','period','role'],
  training:['mechanism','eligibility','period'],
@@ -12,12 +14,13 @@ const requirements:Record<string,string[]>={
  finance:['value','unit','currency','reportingScope','period'],identity:['legalName','relation','period'],
 };
 export function createV3Questions(input:Record<string,any>,bundle:CandidateBundle):V3Question[]{
- const plan=buildInvestigationPlan(input.JobNeedsSnapshot);
+ const plan=input.JobNeedsSnapshot?buildInvestigationPlan(input.JobNeedsSnapshot):{items:[]};
  const result:V3Question[]=[];
  for(const job of bundle.jobs){
   if(!job.companyId)continue;
   const add=(topic:string,predicate:string,text:string,refs:string[],importance:V3Question['importance'],scope:V3Question['targetScope']='job',threshold:number|null=null)=>{
-   if(result.some(q=>q.companyId===job.companyId&&q.jobId===(scope==='company'?null:job.jobId)&&q.predicate===predicate))return;
+   const existing=result.find(q=>q.companyId===job.companyId&&q.jobId===(scope==='company'?null:job.jobId)&&q.predicate===predicate);
+   if(existing){existing.needRefs=[...new Set([...existing.needRefs,...refs])];return;}
    result.push({id:'q-'+stableV3(input.UserProfile.profileId,input.UserProfile.revision,scope==='company'?job.companyId:job.jobId,predicate),version:1,companyId:job.companyId!,jobId:scope==='company'?null:job.jobId,topic,predicate,text,needRefs:refs,targetScope:scope,answerTarget:'source_statement',
     requiredFields:requirements[predicate]??['mechanism','eligibility','period','role'],acceptableEvidence:['full_text','document','user_text','user_pdf'],importance,constraintType:importance==='hard'?'non_negotiable':importance==='priority'?'unspecified':importance==='secondary'?'preference':'unspecified',threshold,
     answerState:'unknown',applicability:'unconfirmed',conclusion:'unknown',supportingClaimIds:[],missingFields:requirements[predicate]??['mechanism','eligibility','period','role'],nextAction:'investigate',stopReason:null,attempts:0,maxAttempts:2,pendingRequestBudget:0,externalQuestion:null,notApplicableReason:null});
@@ -26,11 +29,20 @@ export function createV3Questions(input:Record<string,any>,bundle:CandidateBundl
   if(salary)add('pay','fixed_salary','招聘方声明的该岗位固定税前月薪及奖金分别是多少？',['preferences.min_fixed_monthly_salary'],salary.strength==='hard'?'hard':'secondary','job',salary.value);
   for(const item of plan.items){
    if(item.itemId==='clarify'){add(item.topicId,'preference_clarification',item.topicTitle+'：你最在意哪种具体安排？',['topics.'+item.topicId],item.priority==='priority'?'priority':'secondary');const q=result.at(-1)!;q.nextAction='preference_clarification';q.stopReason='user_meaning_not_confirmed';continue;}
-   const pred=item.topicId==='pay'&&item.itemId==='fixed'?'fixed_salary':item.topicId==='hours'&&['rest','schedule'].includes(item.itemId)?'rest':item.topicId==='growth'&&item.itemId==='learning'?'training':item.topicId==='company'&&item.itemId==='public_finance'?'finance':item.topicId==='company'?'business':item.topicId==='benefits'?'social_insurance':item.topicId+'.'+item.itemId;
+   const pred=item.topicId==='pay'&&item.itemId==='fixed'?'fixed_salary':item.topicId==='hours'&&item.itemId==='rest'?'rest':item.topicId==='growth'&&item.itemId==='learning'?'training':item.topicId==='company'&&item.itemId==='public_finance'?'finance':item.topicId==='company'&&item.itemId==='business'?'business':item.topicId==='benefits'&&item.itemId==='coverage'?'social_insurance':item.topicId+'.'+item.itemId;
    add(item.topicId,pred,item.label+'：对应主体、范围、时期和条件是什么？',['topics.'+item.topicId+'.'+item.itemId],item.priority==='priority'?'priority':'secondary',item.topicId==='company'?'company':'job');
   }
   // Background question describes source statements; it never adds a user preference.
+  add('identity','identity','招聘品牌、法定主体与签约主体的对应关系及期间是什么？',[],'background','company');
+  add('position','recruitment','该岗位招聘状态和对应招聘期间是什么？',[],'background');
+  add('opinion','opinion.event','是否有对应该主体、期间及处理阶段的公开事件陈述？',[],'background','company');
   add('company','business','该法人公开资料明确声明的主营业务及报告期是什么？',[],'background','company');
+ }
+ for(const company of bundle.companies.filter(c=>!bundle.jobs.some(j=>j.companyId===c.companyId))){
+  for(const [topic,predicate,text] of [['identity','identity','品牌、法定主体与签约主体关系是什么？'],['company','business','公开声明的主营业务与期间是什么？'],['company','finance','公开财务的指标、单位、币种、披露主体和期间是什么？'],['opinion','opinion.event','公开事件的主体、阶段、回应与期间是什么？']]){
+   const requiredFields=requirements[predicate]??['mechanism','eventStage','period'];
+   result.push({id:'q-'+stableV3(input.UserProfile.profileId,input.UserProfile.revision,company.companyId,predicate),version:1,companyId:company.companyId,jobId:null,topic,predicate,text,needRefs:[],targetScope:'company',answerTarget:'source_statement',requiredFields,acceptableEvidence:['full_text','document','user_text','user_pdf'],importance:'background',constraintType:'unspecified',threshold:null,answerState:'unknown',applicability:'unconfirmed',conclusion:'unknown',supportingClaimIds:[],missingFields:requiredFields,nextAction:'investigate',stopReason:null,attempts:0,maxAttempts:2,pendingRequestBudget:0,externalQuestion:null,notApplicableReason:null});
+  }
  }
  return result;
 }
@@ -41,6 +53,7 @@ const patterns:Record<string,RegExp>={
  business:/主营业务|主要业务|业务涵盖|主要从事|解决方案提供商/,
  social_insurance:/社保|社会保险|五险|公积金/,accommodation:/住宿/,overtime_pay:/加班费|加班补偿/,
  finance:/营业收入|净利润|现金流/,
+ ...Object.fromEntries(Object.entries(extraPredicates).map(([k,v])=>[k,v.pattern])),
 };
 /** Deterministic extraction never claims a semantic model ran. Whole source clauses retain negation and conditions. */
 export function extractV3Claims(bundle:CandidateBundle,s:V3Snapshot){
@@ -81,6 +94,7 @@ export function extractV3Claims(bundle:CandidateBundle,s:V3Snapshot){
      fields.mechanism=quote;
      if(/全体员工|在职员工|新员工|适用于|参加条件|无需申请/.test(quote))fields.eligibility=quote;
     }
+    specializedFields(predicate,quote,fields);
     const negative=predicate==='fixed_salary'?/不提供固定月薪|没有固定月薪|并非固定月薪|不是固定月薪|不属于固定月薪/.test(quote):predicate==='accommodation'?/不提供住宿|无住宿/.test(quote):predicate==='social_insurance'?/不(?:缴纳|提供)[^，,。；;但]{0,6}(?:社保|社会保险)|没有社保/.test(quote):predicate==='overtime_pay'?/没有加班费|无加班费/.test(quote):false;
     s.claims.push({id,companyId:e.companyId!,jobId:e.jobId,subject:attempt?.declaredSubject??company.legalName,subjectMatch:unrelated?'unrelated':exact?'exact':'unconfirmed',scope:e.scope,predicate,quote,evidenceId:e.evidenceId,locator:attempt?.locators[attempt.evidenceIds.indexOf(e.evidenceId)]??{paragraph:i+1},fields,period,city:e.jobId?bundle.jobs.find(j=>j.jobId===e.jobId)?.city??null:null,team:null,role,polarity:negative?'negative':'positive',conditions:quote.match(/(?:如果|仅限|须|需|取决于|视)[^。；;]+/g)??[],answerTarget:'source_statement',verification:'source_claim',reviewRequired:/欠薪|拖欠工资|监管处罚|岗位取消/.test(quote)});
    }
@@ -109,7 +123,7 @@ export function assessV3Question(q:V3Question,claims:V3Claim[],s:V3Snapshot){
   if(best)q.missingFields=q.requiredFields.filter(f=>best.fields[f]===null||best.fields[f]===undefined||best.fields[f]==='');
   if(complete.length){
    // Only equal contexts are comparable. Numbers are canonical, units explicitly normalized.
-   const comparable=(a:V3Claim,b:V3Claim)=>a.period===b.period&&a.city===b.city&&a.team===b.team&&a.role===b.role&&JSON.stringify(a.conditions)===JSON.stringify(b.conditions)&&a.fields.currency===b.fields.currency&&a.fields.reportingScope===b.fields.reportingScope;
+   const comparable=(a:V3Claim,b:V3Claim)=>a.period===b.period&&a.city===b.city&&a.team===b.team&&a.role===b.role&&JSON.stringify(a.conditions)===JSON.stringify(b.conditions)&&a.fields.currency===b.fields.currency&&a.fields.reportingScope===b.fields.reportingScope&&a.fields.metric===b.fields.metric;
    const value=(c:V3Claim)=>q.predicate==='fixed_salary'?JSON.stringify([c.fields.min,c.fields.max,c.fields.taxBasis]):q.predicate==='finance'?JSON.stringify([Number(c.fields.value)*(c.fields.unit==='万元'?10000:c.fields.unit==='亿元'?100000000:1),c.polarity]):JSON.stringify([c.fields.mechanism??c.fields.frequency,c.polarity]);
    const conflict=complete.some((a,i)=>complete.slice(i+1).some(b=>comparable(a,b)&&(q.predicate==='fixed_salary'||q.predicate==='finance'?value(a)!==value(b):a.polarity!==b.polarity&&a.fields.mechanism===b.fields.mechanism)));
    q.answerState=conflict?'conflicting':'answered';q.missingFields=[];reason=conflict?'comparable_conflict':'direct_answer';

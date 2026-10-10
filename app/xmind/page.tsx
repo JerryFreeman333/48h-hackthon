@@ -1,0 +1,13 @@
+'use client';
+import {useEffect,useState} from 'react';
+export default function XmindPage(){
+ const [query,setQuery]=useState('大华'),[candidates,setCandidates]=useState<any[]>([]),[history,setHistory]=useState<any[]>([]),[message,setMessage]=useState(''),[busy,setBusy]=useState(true),[text,setText]=useState(''),[report,setReport]=useState('');
+ const request=async(path:string,body?:unknown)=>{const r=await fetch(path,{method:body?'POST':'GET',headers:body?{'content-type':'application/json'}:{},...(body?{body:JSON.stringify(body)}:{})});const data=await r.json();if(!r.ok)throw Error(data.error?.message??data.message??'请求失败');return data;};
+ useEffect(()=>{request('/api/a/needs/bootstrap').then(()=>request('/api/integration/companies?history=1')).then(d=>setHistory(d.reports)).catch(e=>setMessage(String(e))).finally(()=>setBusy(false));},[]);
+ async function lookup(){setBusy(true);try{await request('/api/a/needs/bootstrap');setCandidates((await request('/api/integration/companies?q='+encodeURIComponent(query))).candidates);setMessage('请选择确切候选；名称匹配尚未确认签约主体。');}catch(e){setMessage(String(e));}finally{setBusy(false);}}
+ async function investigate(id:number){setBusy(true);setReport('');setMessage('正在按四类基础问题处理材料、比较和归档…');try{
+  const importIds=text.trim()?[(await request('/api/integration/materials',{kind:'text',title:'用户提供公司建档文字',content:text})).importId]:[];
+  const r=await request('/api/integration/companies',{companyId:id,v3:{purpose:'exploration',discovery:'supplied_only',importIds}});setReport(r.reportUrl);setHistory((await request('/api/integration/companies?history=1')).reports);setMessage('报告已保存。仅处理你提供的材料，缺失内容保留未知。');
+ }catch(e){setMessage(String(e));}finally{setBusy(false);}}
+ return <main style={{maxWidth:900,margin:'32px auto',padding:20,fontFamily:'system-ui'}}><h1>XMind 公司建档验证台</h1><p>公司探索对应 B 的首次建档及 C 的证据解释。按个人需求调查岗位，请使用<a href="/profile">原 A→B→C 入口</a>。</p><p>当前不自动登录或采集平台；文字、文本 PDF 和公共正文能力沿用现有入口。</p><label>公司名称 <input value={query} onChange={e=>setQuery(e.target.value)} /></label> <button disabled={busy} onClick={lookup}>查本地候选库</button><p><label>可选：粘贴已取得的公司材料（用户提供，未经核验）<textarea style={{display:'block',width:'100%',minHeight:150}} value={text} onChange={e=>setText(e.target.value)} /></label></p><p role="status">{message}</p>{report&&<p><a href={report}>打开已归档调查报告</a></p>}<ul>{candidates.map(c=><li key={c.recordId}>{c.name} · {c.legalName??'法人全称未记载'} <button disabled={busy} onClick={()=>investigate(c.recordId)}>调查这一候选</button></li>)}</ul><h2>我的公司建档历史</h2>{history.length?<ul>{history.map(r=><li key={r.reportId}><a href={r.reportUrl}>{r.name}</a> · {r.createdAt}</li>)}</ul>:<p>尚无公司建档报告。</p>}<p><a href="/api/integration/xmind">查看完整原树与当前能力目录</a></p></main>;
+}
