@@ -120,3 +120,4 @@
 - 采用及许可证：python-docx1.2.0/openpyxl3.1.5/RapidOCR-ONNX1.4.4/ONNX Runtime1.31，17项新间接依赖/47份许可与3模型哈希记录；大框架未搬入。A保留a-needs-quick-unsure/1兼容入口，本轮无新增A测评，旧开关可回退。
 - 仍未完成：专用平台爬虫/登录/API及自动群聊按用户前序指令后补；无真实模型凭据/中文金标准；无真实协同样本或独立人工公司认证；复杂Word/手写/表格网格/旧DOC-XLS-PPT；306叶节点逐项真实验收；独立目录冷安装/跨机器。下一步按缺字段接一个可公开访问的来源连接器，再在既定预算内验模型。
 - 最终逐节清单、失败记录、真实样例/证据位置、A回退见 XMIND_ARCHITECTURE_ACCEPTANCE.md；原图映射见 XMIND_ARCHITECTURE_COMPLETION.md；独立启动见 VERIFICATION_FOLDER.md。提交/远端核对结果随后追加，未合并main或部署。
+- 运行代码提交 `78ba90f17779e91e6cdccc5334f0d9af3ae146ea`（100文件）已推送 `origin/implement/xmind-structure-20261010`，git ls-remote核对一致。只上传代码/许可/公开文档，未上传原件、cookie、私密材料或凭据。第三方许可按原文保留，其既有末尾空格/空行不为通过格式检查而改写；其余代码/文档git diff --check通过。随后仅同步独立目录的公开文档/QA并追加交付记录，不改变已验收运行代码。

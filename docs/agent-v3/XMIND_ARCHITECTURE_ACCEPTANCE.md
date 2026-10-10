@@ -1,6 +1,6 @@
 # XMind 架构补齐：本轮验收与交接
 
-2026-10-10。实际开发目录 `repo-agent-v3-impl`，分支 `implement/xmind-structure-20261010`；起点 `3f45b4790c71d1085d7299841085e7ba40be40e5`。开发前重新核对 agent-v3 为 `a8f23097d141dd2415d1f6b2601b6b787e7c0c54`，原 checkout 干净。代码和公开交接推送本独立分支，提交以 Git 历史和 PROGRESS 最后记录为准；未合并 main、部署或修改原企业库。
+2026-10-10。实际开发目录 `repo-agent-v3-impl`，分支 `implement/xmind-structure-20261010`；起点 `3f45b4790c71d1085d7299841085e7ba40be40e5`。开发前重新核对 agent-v3 为 `a8f23097d141dd2415d1f6b2601b6b787e7c0c54`，原 checkout 干净。运行代码提交 [78ba90f](https://github.com/JerryFreeman333/48h-hackthon/commit/78ba90f17779e91e6cdccc5334f0d9af3ae146ea) 已推送并核对远端SHA一致；后续提交只追加公开交付记录。未合并 main、部署或修改原企业库。
 
 已交付可执行的 **B 调查＋C 判断解释＋共享证据/归档架构**。11个专职 Agent 有独立处理器、输入输出校验、依赖、白名单工具、反馈消息、轮次预算和持久调用结果；原 A→B→C 与公司探索入口均可运行。模型只共用一批结构化抽取/比较/解释，默认关闭；这不是11个独立大模型进程。原441节点/306叶/13关系完整保留，未把节点登记冒称每个叶节点已用真实材料验收。
 

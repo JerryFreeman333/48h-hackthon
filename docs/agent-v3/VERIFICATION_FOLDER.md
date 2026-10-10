@@ -2,7 +2,7 @@
 
 `scripts/export-xmind-verification.ps1` 把当前应用源码导出到仓库旁边的 `xray-xmind-verification`。复制 Git 跟踪的当前文件及本轮新增源码，包含真实 A→B→C 路由、XMind 执行代码和运行所需 `tree.json`；这不是单独展示页面或演示假数据。源工作区有未提交源码时也会进入快照，`verification-export.json` 记录实际逐文件哈希和源 HEAD。
 
-2026-10-10 已导出并验收最终运行源码：工作区兄弟目录 `xray-xmind-verification-20261010-102102-0ae94d`，本机地址 `http://127.0.0.1:3322`。它包含 599 个源码文件、冻结依赖清单、许可证、完整运行树和公开只读企业库。此前的 `xray-xmind-verification-20261010-095625-a9d097` 等目录保留；其 3321 服务已核对归属后停止，最终验证使用新的独立数据目录。
+2026-10-10 已导出并验收最终运行源码：工作区兄弟目录 `xray-xmind-verification-20261010-102102-0ae94d`，本机地址 `http://127.0.0.1:3322`。初次导出包含 599 项文件，公开文档与 QA 交付同步后为 601 项；包含冻结依赖清单、许可证、完整运行树和公开只读企业库。此前的 `xray-xmind-verification-20261010-095625-a9d097` 等目录保留；其 3321 服务已核对归属后停止，最终验证使用新的独立数据目录。
 
 从仓库根目录导出：
 
@@ -40,3 +40,5 @@ powershell -ExecutionPolicy Bypass -File .\launch.ps1 -ReuseLocalDependencies
 实施中发现并修复 Windows PowerShell 5.1 对中文脚本编码、参数默认路径、Synology 普通云文件属性和原生命令引号传递的兼容问题。脚本及生成的启动器使用 UTF-8 BOM；实际符号链接与 Junction 单独识别，不误拒普通云文件。保留早期失败目录和失败原因，不递归删除。早期 HTTP 验证断言曾误把混合来源预期成纯合成来源，已按实际来源性质纠正；它不代表调查业务故障。
 
 终版验收脚本首次把标准 fetch 的布尔 `ok` 写成函数调用，在 A 创建前失败；修复后全链通过，失败 receipt 保存在终版目录。手机公司页面截图增加了等待初始化完成后再截图，以免把短暂加载状态作为最终页面。当前终版服务执行 session 为 92858，Next 监听 PID 为 19588；这些是本次运行标识，重启会变化。
+
+代码提交 `78ba90f17779e91e6cdccc5334f0d9af3ae146ea` 已推送到 `implement/xmind-structure-20261010`，远端核对记录见 `XMIND_ARCHITECTURE_ACCEPTANCE.md` 与 `PROGRESS.md`。独立目录的运行代码与该代码提交逐文件核对一致；随后仅定向同步公开验收文档、进度文档和更新的 QA 脚本。交付清单 601 项与目录实际文件哈希、当前公开源码核对均为 0 差异。manifest 的 `verifiedSourceCommit` 记录该代码 SHA，保留初次创建的 `sourceCommit=3f45b4790c71d1085d7299841085e7ba40be40e5` 与 `sourceIncludesUncommittedFiles=true` 历史。没有复制私有 `.data`、重新构建或重启 3322 服务。
