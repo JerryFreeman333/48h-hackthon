@@ -1,0 +1,6 @@
+# V2 fetch/HTML/text-PDF dependencies are retained; all new parsing is local CPU.
+-r requirements-v2-lock.txt
+python-docx==1.2.0
+openpyxl==3.1.5
+# This pinned wheel includes local Chinese/English OCR models, no inference download.
+rapidocr-onnxruntime==1.4.4

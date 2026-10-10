@@ -39,10 +39,11 @@ class V3Tests(unittest.TestCase):
         self.assertTrue(result['documents'][0]['units'][0]['locator']['paragraph']>0)
         again=worker_v3.handle(req);self.assertEqual(again,result);self.assertEqual(Fetcher.calls,0)
     def test_specialist_need_and_explicit_group_metadata_survive_the_real_parser(self):
-        body='浙江大华技术股份有限公司\n2026年度晋升条件：评审后调整职级。\n[群聊元数据] 账号=甲 时间=2026-10-10T01:00:00Z 外链=https://example.org/post\n'
+        body='浙江大华技术股份有限公司\n2026年度晋升条件：评审后调整职级。\n税前固定月薪 18000 元。\n[群聊元数据] 账号=甲 时间=2026-10-10T01:00:00Z 外链=https://example.org/post\n'
         result=worker_v3.handle(self.request(imports=[{'kind':'text','content':body,'title':'合成规则样本'}]))
         units=result['documents'][0]['units']
         self.assertTrue(any('晋升条件' in u['text'] for u in units))
+        self.assertTrue(any('税前固定月薪 18000 元。' in u['text'] for u in units))
         self.assertTrue(any('[群聊元数据]' in u['text'] for u in units))
         self.assertEqual(Fetcher.calls,0)
     def test_unrelated_company_not_admitted(self):
@@ -58,7 +59,8 @@ class V3Tests(unittest.TestCase):
         with patch.object(worker_v3,'parse_pdf',side_effect=SourceError('parse_error','pdf','scan_or_no_text_ocr_unavailable')):
             import base64
             r=worker_v3.handle(self.request(imports=[{'kind':'pdf','content':base64.b64encode(b'%PDF-scan').decode(),'title':'scan'}]))
-            self.assertEqual(r['records'][0]['accessState'],'unsupported')
+            self.assertEqual(r['records'][0]['accessState'],'parse_error')
+            self.assertTrue(r['records'][0]['rawRef'].endswith('.pdf'))
     def test_search_empty_is_separate_record_not_company_risk(self):
         r=worker_v3.handle(self.request(query='大华招聘'))
         self.assertEqual([x['accessState'] for x in r['records']],['empty','empty'])
@@ -72,4 +74,15 @@ class V3Tests(unittest.TestCase):
     def test_recovery_only_never_opens_any_url(self):
         r=worker_v3.handle(self.request(recovery_only=True,urls=['https://example.com/']))
         self.assertEqual(Fetcher.calls,0);self.assertFalse(r['done'])
+
+    def test_native_text_survives_unprocessed_scan_pages_without_ocr_budget_expansion(self):
+        import base64
+        text='浙江大华技术股份有限公司\n2025年度主营业务：智慧物联解决方案。'
+        parsed={'title':'合成混合 PDF','text':text,'paragraphs':[],'pages':[{'physical_page':1,'text':text}]+[{'physical_page':i,'text':''} for i in range(2,14)],'warnings':[]}
+        with patch.object(worker_v3,'parse_pdf',return_value=parsed),patch.object(worker_v3,'parse_local_document',side_effect=AssertionError('do not expand OCR page budget')):
+            r=worker_v3.handle(self.request(imports=[{'kind':'pdf','content':base64.b64encode(b'%PDF-controlled-mixed').decode(),'title':'合成混合 PDF'}]))
+        self.assertEqual(len(r['documents']),1)
+        self.assertEqual(r['records'][0]['contentState'],'partial_text')
+        self.assertTrue(any('ocr_page_or_time_limit' in x for x in r['documents'][0]['warnings']))
+        self.assertEqual(Fetcher.calls,0)
 if __name__=='__main__':unittest.main()

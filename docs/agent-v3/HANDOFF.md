@@ -1,5 +1,7 @@
 # Agent V3 首版实施交接
 
+> 下文保留 09fdf4a 首版历史验收。2026-10-10 后续实现位于 `implement/xmind-structure-20261010`：当前规则 v3-rules/8，真实任务图、文件/OCR、语义候选、时效与更新能力及未完成项以 [架构补齐记录](XMIND_ARCHITECTURE_COMPLETION.md)、[本轮验收](XMIND_ARCHITECTURE_ACCEPTANCE.md) 为准；独立目录见 [验证文件夹](VERIFICATION_FOLDER.md)。不把旧首版限制或旧端口当作当前状态。
+
 完成日期：2026-10-10（开始于2026-10-09）；规则 `v3-rules/5`；sidecar `agent-v3/1`。这是已运行的首版 B→C 闭环，不是全平台或完整语义推理系统。规格原文、原始树和 XMind 保留不变。
 
 ## 1. 基线、分支与工作区

@@ -96,7 +96,7 @@ export function extractV3Claims(bundle:CandidateBundle,s:V3Snapshot){
     }
     specializedFields(predicate,quote,fields);
     const negative=predicate==='fixed_salary'?/不提供固定月薪|没有固定月薪|并非固定月薪|不是固定月薪|不属于固定月薪/.test(quote):predicate==='accommodation'?/不提供住宿|无住宿/.test(quote):predicate==='social_insurance'?/不(?:缴纳|提供)[^，,。；;但]{0,6}(?:社保|社会保险)|没有社保/.test(quote):predicate==='overtime_pay'?/没有加班费|无加班费/.test(quote):false;
-    s.claims.push({id,companyId:e.companyId!,jobId:e.jobId,subject:attempt?.declaredSubject??company.legalName,subjectMatch:unrelated?'unrelated':exact?'exact':'unconfirmed',scope:e.scope,predicate,quote,evidenceId:e.evidenceId,locator:attempt?.locators[attempt.evidenceIds.indexOf(e.evidenceId)]??{paragraph:i+1},fields,period,city:e.jobId?bundle.jobs.find(j=>j.jobId===e.jobId)?.city??null:null,team:null,role,polarity:negative?'negative':'positive',conditions:quote.match(/(?:如果|仅限|须|需|取决于|视)[^。；;]+/g)??[],answerTarget:'source_statement',verification:'source_claim',reviewRequired:/欠薪|拖欠工资|监管处罚|岗位取消/.test(quote)});
+    s.claims.push({id,companyId:e.companyId!,jobId:e.jobId,subject:attempt?.declaredSubject??company.legalName,subjectMatch:unrelated?'unrelated':exact?'exact':'unconfirmed',scope:e.scope,predicate,quote,evidenceId:e.evidenceId,locator:attempt?.locators[attempt.evidenceIds.indexOf(e.evidenceId)]??{paragraph:i+1},fields,period,city:e.jobId?bundle.jobs.find(j=>j.jobId===e.jobId)?.city??null:null,team:null,role,polarity:negative?'negative':'positive',conditions:quote.match(/(?:如果|仅限|须|需|取决于|视)[^。；;]+/g)??[],answerTarget:'source_statement',verification:'source_claim',reviewRequired:!!attempt?.reviewRequired||/欠薪|拖欠工资|监管处罚|岗位取消/.test(quote)});
    }
   }
  }
@@ -153,6 +153,7 @@ export function finishV3Questions(s:V3Snapshot){
  s.criticalUnknownCount=unknown.length;
  s.keyQuestionIds=s.questions.filter(q=>q.nextAction==='external_confirmation').sort((a,b)=>Number(b.importance==='hard')-Number(a.importance==='hard')).slice(0,3).map(q=>q.id);
  for(const c of s.claims.filter(c=>c.reviewRequired||s.questions.some(q=>q.importance==='hard'&&q.supportingClaimIds.includes(c.id)))){
+  if(s.reviews.some(r=>r.id==='review-'+stableV3(c.id)))continue;
   const stamp=new Date().toISOString();s.reviews.push({id:'review-'+stableV3(c.id),claimIds:[c.id],questionIds:s.questions.filter(q=>q.supportingClaimIds.includes(c.id)).map(q=>q.id),trigger:c.reviewRequired?'high_impact_event':'hard_constraint',impact:'requires_verification',state:'deferred',assignee:null,createdAt:stamp,updatedAt:stamp,checks:['quote','subject','scope','conditions'],decision:null,reason:'规则二次检查已完成；无常驻人工复核，来源陈述仍待核验。',ruleVersion:V3_RULE});
   for(const q of s.questions.filter(q=>q.supportingClaimIds.includes(c.id)))q.conclusion='unknown';
  }

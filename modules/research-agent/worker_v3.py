@@ -8,8 +8,9 @@ from v2.transport import PublicFetcher, SourceError, canonical_url
 from v2.parsers import parse_html, parse_pdf, content_hash
 from v2.channels import SearchAdapter
 from v2.identity import company_identity, match_document
+from v3_documents import parse_local_document, image_extension
 ROOT=Path(__file__).resolve().parents[2]
-VERSION='v3-acquisition/1'
+VERSION='v3-acquisition/2'
 def sha(value): return hashlib.sha256(value).hexdigest()
 def disk(path):
     # Keep logical relative references portable; only filesystem calls use Windows long paths.
@@ -52,32 +53,43 @@ def handle(req):
            'url':url,'rawRef':None,'rawHash':None,'locators':[],'evidenceIds':[],'capabilityVersion':VERSION,
            'failureReason':error.reason if error else None,'elapsedMs':int((time.monotonic()-started)*1000),'query':query}
         state['records'].append(r);save(statefile,state);return r
+    def original(body,mode):
+        digest=sha(body)
+        extension={'pdf':'.pdf','user_pdf':'.pdf','user_text':'.txt','user_docx':'.docx','user_xlsx':'.xlsx','user_csv':'.csv'}.get(mode)
+        if mode=='user_image':extension=image_extension(body)
+        name=digest+(extension or '.html.gz')
+        raw=folder/name
+        if not disk(raw).exists():disk(raw).write_bytes(gzip.compress(body) if name.endswith('.gz') else body)
+        return digest,str(raw.relative_to(ROOT)).replace('\\','/')
     def accepted(parsed,body,mode,key,url=None,source_class='public_web',snippet=False,declared_source=None):
         r=record(key,mode,source_class,url)
         r['declaredSource']=declared_source
-        digest=sha(body);name=digest+('.pdf' if mode in ('pdf','user_pdf') else '.txt' if mode=='user_text' else '.html.gz')
-        raw=folder/name
-        if not disk(raw).exists(): disk(raw).write_bytes(gzip.compress(body) if name.endswith('.gz') else body)
-        r['rawHash']=digest;r['rawRef']=str(raw.relative_to(ROOT)).replace('\\','/')
-        r['contentState']='index_snippet' if snippet else 'document' if mode in ('pdf','user_pdf') else 'full_text'
+        digest,rawref=original(body,mode)
+        r['rawHash']=digest;r['rawRef']=rawref
+        r['reviewRequired']=bool(parsed.get('review_required'))
+        r['contentState']='index_snippet' if snippet else 'partial_text' if parsed.get('partial') else 'document' if mode in ('pdf','user_pdf','user_docx','user_xlsx','user_csv','user_image') else 'full_text'
         r['publishedAt']=parsed.get('published_at')
+        textfile=folder/(digest+'.parsed.json')
+        save(textfile,parsed)
         match=match_document(identity,parsed['title'],parsed['text'],disclosure=mode in ('pdf','user_pdf'))
         if match in ('conflict','other_subject','unresolved','ambiguous'):
             r.update(accessState='identity_mismatch',analysisState='quarantined',failureReason=match);save(statefile,state);return
         r['declaredSubject']=identity['legal_name'] if match in ('legal_name_match','credit_code_match') else None
         r['analysisState']='accepted' if r['declaredSubject'] else 'quarantined'
         units=[]
-        if parsed.get('pages'):
+        if parsed.get('pages') and not parsed.get('review_required'):
             for page in parsed['pages']:
                 lines=page['text'].splitlines()
                 for i,line in enumerate(lines):
-                    if re.search(r'培训|晋升|职级|调薪|成长|主营|业务|工资|薪酬|奖金|双休|值班|社保|公积金|加班|住宿|营业收入|净利润|现金流|签约主体|合同|信用代码|招聘|沟通|协作|绩效|回应|指控|监管|试用期|群聊元数据',line):
+                    if re.search(r'培训|晋升|职级|调薪|成长|主营|业务|工资|薪酬|薪资|月薪|年薪|奖金|双休|值班|社保|公积金|加班|住宿|营业收入|净利润|现金流|签约主体|合同|信用代码|招聘|沟通|协作|绩效|回应|指控|监管|试用期|群聊元数据',line):
                         text='\n'.join(lines[max(0,i-2):i+4])[:6000]
                         units.append({'text':text,'locator':{'physical_page':page['physical_page'],'paragraph':i+1}})
         else:
             for p in parsed.get('paragraphs',[]):
-                if re.search(r'培训|晋升|职级|调薪|成长|主营|业务|工资|薪酬|奖金|双休|值班|社保|公积金|加班|住宿|营业收入|净利润|现金流|签约主体|合同|信用代码|招聘|沟通|协作|绩效|回应|指控|监管|试用期|群聊元数据',p['text']):
-                    units.append({'text':p['text'][:6000],'locator':{'paragraph':p['paragraph']}})
+                if re.search(r'培训|晋升|职级|调薪|成长|主营|业务|工资|薪酬|薪资|月薪|年薪|奖金|双休|值班|社保|公积金|加班|住宿|营业收入|净利润|现金流|签约主体|合同|信用代码|招聘|沟通|协作|绩效|回应|指控|监管|试用期|群聊元数据',p['text']):
+                    units.append({'text':p['text'][:6000],'locator':p.get('locator',{'paragraph':p['paragraph']})})
+            if not units and mode in ('user_docx','user_xlsx','user_csv','user_image','user_pdf'):
+                units=[{'text':p['text'][:6000],'locator':p.get('locator',{'paragraph':p['paragraph']})} for p in parsed.get('paragraphs',[])[:32]]
         # A large annual report must not spend the entire excerpt budget on its opening financial pages.
         # Reserve bounded slots for each inquiry class; the full parsed source stays on disk.
         categories=[r'固定月薪|年薪|工资|薪酬',r'员工培训|培训体系|入职培训|带教|导师',r'每周|双休|单休|值班|轮班',r'社保|社会保险|住房公积金',r'主营业务|主要业务|解决方案提供商',r'营业收入|净利润|现金流',r'签约主体|信用代码|法定代表人',r'晋升|职级|调薪|职业发展',r'沟通|协作|绩效|不同意见',r'合同|招聘|试用期',r'指控|回应|裁判|监管',r'加班|下班后|调休',r'群聊元数据']
@@ -91,11 +103,10 @@ def handle(req):
             if unit_key not in locations:selected.append(unit);locations.add(unit_key)
             if len(selected)>=32:break
         units=selected[:32]
-        textfile=folder/(digest+'.parsed.json')
-        save(textfile,parsed)
         doc={'id':'doc-'+sha((key+digest).encode())[:28],'url':url,'title':parsed['title'][:1000],'publishedAt':parsed.get('published_at'),'retrievedAt':r['retrievedAt'],
              'declaredSubject':r['declaredSubject'],'entityMatch':match,'rawRef':r['rawRef'],'rawHash':digest,'parsedRef':str(textfile.relative_to(ROOT)).replace('\\','/'),
-             'originUrl':parsed.get('origin_url'),'contentHash':content_hash(parsed['text']),'mode':mode,'units':units}
+             'originUrl':parsed.get('origin_url'),'contentHash':content_hash(parsed['text']),'mode':mode,'units':units,
+             'reviewRequired':bool(parsed.get('review_required')),'parserVersion':parsed.get('parser_version',VERSION),'warnings':parsed.get('warnings',[])}
         r['locators']=[u['locator'] for u in units]
         state['documents'].append(doc);save(statefile,state)
     seen={r.get('url') for r in state['records'] if r.get('url')}
@@ -125,21 +136,42 @@ def handle(req):
         except Exception:record(url,'http','public_web',url,error=SourceError('parse_error','parse','unexpected_parse_failure'))
         state['requests']=fetcher.requests;save(statefile,state)
     for i,item in enumerate(imports):
-        if set(item)-{'kind','content','title','declared_source','synthetic_fixture'} or item.get('kind') not in ('text','pdf'):raise ValueError('import')
-        mode='user_text' if item['kind']=='text' else 'user_pdf'
+        if not isinstance(item,dict) or set(item)-{'kind','content','title','declared_source','synthetic_fixture'} or item.get('kind') not in ('text','pdf','docx','xlsx','csv','image'):raise ValueError('import')
+        if not isinstance(item.get('content'),str) or len(item['content'])>24_000_000:raise ValueError('import content')
+        if not isinstance(item.get('title'),str) or len(item['title'])>1000:raise ValueError('import title')
+        mode='user_'+item['kind']
         body=item['content'].encode('utf-8') if item['kind']=='text' else base64.b64decode(item['content'],validate=True)
         if len(body)>18_000_000:raise ValueError('import size')
         key='import-'+sha(body)
         if any(r['sourceId']=='source-'+sha(key.encode())[:28] for r in state['records']):continue
         try:
-            if mode=='user_pdf':parsed=parse_pdf(body,seconds=25)
-            else:
+            digest,rawref=original(body,mode)
+            remaining=min(25,max(0,fetcher.remaining()))
+            if remaining<1:raise SourceError('budget_exhausted','import','local_parse_budget_exhausted')
+            if mode=='user_pdf':
+                try:parsed=parse_pdf(body,seconds=remaining)
+                except SourceError as error:
+                    if error.reason!='scan_or_no_text_ocr_unavailable':raise
+                    parsed=parse_local_document(body,'scan_pdf',item['title'],seconds=min(25,max(1,fetcher.remaining())))
+                if not parsed.get('review_required') and any(len(p['text'].strip())<30 for p in parsed.get('pages',[])):
+                    if len(parsed.get('pages',[]))<=12 and fetcher.remaining()>=1:
+                        try:parsed=parse_local_document(body,'scan_pdf',item['title'],seconds=min(25,fetcher.remaining()))
+                        except SourceError as error:
+                            parsed.setdefault('warnings',[]).append('pages_without_text_not_ocr_processed:'+error.reason)
+                            parsed['partial']=True
+                    else:
+                        parsed.setdefault('warnings',[]).append('pages_without_text_not_ocr_processed:ocr_page_or_time_limit')
+                        parsed['partial']=True
+            elif mode=='user_text':
                 text=body.decode('utf-8')
                 parsed={'title':item['title'],'text':text,'paragraphs':[{'paragraph':j+1,'text':v} for j,v in enumerate(text.splitlines()) if v.strip()],'published_at':None}
+            else:parsed=parse_local_document(body,item['kind'],item['title'],seconds=remaining)
             accepted(parsed,body,mode,key,source_class='synthetic_fixture' if item.get('synthetic_fixture') else 'user_import_unverified',declared_source=item.get('declared_source'))
         except SourceError as error:
-            if error.reason=='scan_or_no_text_ocr_unavailable':error=SourceError('unsupported','pdf',error.reason)
-            record(key,mode,'user_import_unverified',error=error)
+            r=record(key,mode,'synthetic_fixture' if item.get('synthetic_fixture') else 'user_import_unverified',error=error)
+            try:r['rawHash'],r['rawRef']=original(body,mode)
+            except SourceError:pass
+            save(statefile,state)
         except Exception:
             record(key+'-failure',mode,'user_import_unverified',error=SourceError('parse_error','import','unexpected_import_failure'))
     for url in urls:acquire({'url':url})

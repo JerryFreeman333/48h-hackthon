@@ -1,3 +1,9 @@
+import {z} from 'zod';
+import {loadV3Options,sourceOptionsSchema} from '../../modules/research-agent/v3-sources';
+import {enrichWithV3} from '../../modules/research-agent/v3-research';
+import {agentConfiguration} from '../../modules/research-agent/config';
+import {stableV3} from '../../modules/research-agent/v3-assessment';
+import {targetedRefreshQuestions} from '../../modules/research-agent/xmind/lifecycle';
 import {recordXmindReview,reviewInput} from '../../modules/research-agent/xmind/review';
 import {parseSourceDeclaration,reportDataStatus,type SourceDeclaration} from './data-status';
 import {databaseBundle} from './local-database';
@@ -44,6 +50,7 @@ function databaseFieldNotes(inputs:Record<string,any>):string{
 }
 
 export function createDemoFlow(options?: { dataDir?: string }) {
+  const supplements=new Map<string,Promise<any>>();
   const archive = new ReportArchive(options?.dataDir);
   const research = new ResearchService();
   const users = new Map<string, { ctx: ReturnType<typeof createCApiContext>; token: string; projects: Map<string, { projectId: string; ownerId: string; mode: "demo" | "manual" }> }>();
@@ -131,6 +138,30 @@ export function createDemoFlow(options?: { dataDir?: string }) {
       const result=await response.json();if(!response.ok)throw Object.assign(Error(result.error?.message??'复核报告生成失败'),{status:response.status});
       await freeze(owner,result.reportId,input,{kind:'xmind_review',previousReportId:reportId,reviewRequestKey:requestKey,databaseSource},bundle,u,saved);
       return {reportId:result.reportId,reportUrl:'/flow/reports/'+result.reportId};
+    },
+    async supplementXmind(owner:string,reportId:string,raw:unknown){
+      if(!agentConfiguration().enabled||!agentConfiguration().v3Enabled)throw Object.assign(Error('V3 调查尚未开启'),{status:409});
+      const saved=archive.read(owner,reportId);if(!saved)throw Object.assign(Error('本会话无该报告'),{status:404});
+      const reportMode=saved.report.mode;if(reportMode==='live')throw Object.assign(Error('本地补查暂不支持live报告'),{status:409});
+      const previous=saved.inputs.databaseSource?.agentV3;if(!previous)throw Object.assign(Error('本报告没有V3调查快照'),{status:409});
+      const body=z.strictObject({v3:sourceOptionsSchema,reason:z.enum(['new_material','expired_source']).default('new_material')}).parse(raw);
+      if(!body.v3.importIds.length&&!body.v3.sourceUrls.length&&body.reason!=='expired_source')throw Object.assign(Error('请提供新材料或明确进行时效补查'),{status:422});
+      const requestKey=stableV3(owner,reportId,body);
+      for(const item of archive.list(owner)){const existing=archive.read(owner,item.reportId);if(existing?.inputs.researchRun?.supplementRequestKey===requestKey)return {reportId:item.reportId,reportUrl:item.reportUrl};}
+      if(supplements.has(requestKey))return supplements.get(requestKey)!;
+      const task=(async()=>{
+        const bundle=structuredClone(saved.inputs.bundle),input=saved.inputs.aExport,databaseSource=structuredClone(saved.inputs.databaseSource),options=loadV3Options(owner,body.v3);
+        const focusQuestionIds=body.reason==='expired_source'?targetedRefreshQuestions(previous,bundle).map(q=>q.questionId):undefined;
+        if(focusQuestionIds&&!focusQuestionIds.length)throw Object.assign(Error('当前材料没有需要时效补查的具体问题；可主动补充新材料。'),{status:422});
+        bundle.bundleId='bundle-update-'+requestKey;bundle.retrievedAt=new Date().toISOString();
+        await enrichWithV3(bundle,databaseSource,input,()=>{},{...options,purpose:previous.purpose,needOrigin:previous.needOrigin},{seedSnapshot:previous,continuationId:requestKey,focusQuestionIds});
+        databaseSource.agentV3.xmind.updates.push({kind:body.reason,evidenceIds:bundle.evidence.filter((e:any)=>!saved.inputs.bundle.evidence.some((old:any)=>old.evidenceId===e.evidenceId)).map((e:any)=>e.evidenceId),reason:'用户主动补充材料或时效补查；旧报告冻结保留，来源陈述仍需核验。',at:new Date().toISOString()});
+        const u=user(owner);u.projects.set(saved.report.projectId,{projectId:saved.report.projectId,ownerId:owner,mode:reportMode});
+        const response=await handleCreateMatch(u.ctx,requestFor(u.token,'/api/c/matches',{profile:input.UserProfile,intentContext:input.SearchIntent,bundle,idempotencyKey:bundle.bundleId}));
+        const result=await response.json();if(!response.ok)throw Object.assign(Error(result.error?.message??'补查报告生成失败'),{status:response.status});
+        await freeze(owner,result.reportId,input,{kind:'xmind_material_update',previousReportId:reportId,supplementRequestKey:requestKey,databaseSource},bundle,u,saved);
+        return {reportId:result.reportId,reportUrl:'/flow/reports/'+result.reportId};
+      })();supplements.set(requestKey,task);try{return await task;}finally{supplements.delete(requestKey);}
     },
     source(owner:string,reportId:string,evidenceId:string){
       const saved=archive.read(owner,reportId);if(!saved)throw Object.assign(Error('本会话无该报告'),{status:404});

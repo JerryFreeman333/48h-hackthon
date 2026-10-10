@@ -1,11 +1,16 @@
+import {xmindLifecycleSchema,validateXmindLifecycle} from './xmind/lifecycle';
 import {z} from 'zod';
 import type {CandidateBundle} from '../../packages/contracts';
 import {xmindSchema} from './xmind/schema';
+import {collaborationSchema} from './xmind/collaboration-schema';
+import {xmindSemanticSchema} from './xmind/semantic-schema';
+import {validateXmindSemanticRecord} from './xmind/semantic';
+import {locatorSchema} from './xmind/document-schema';
 import {semanticCheckSchema} from './v3-model';
-export const V3_RULE='v3-rules/7';
+export const V3_RULE='v3-rules/8';
 const id=z.string().min(1).max(160);
 export const answerState=z.enum(['answered','partial','conflicting','unknown','not_applicable']);
-const locator=z.strictObject({paragraph:z.number().int().positive().optional(),physical_page:z.number().int().positive().optional(),table:z.number().int().positive().optional(),row:z.number().int().positive().optional(),column:z.number().int().positive().optional()});
+const locator=locatorSchema;
 const field=z.union([z.string(),z.number().finite(),z.boolean(),z.null()]);
 export const claimSchema=z.strictObject({
  id,companyId:id,jobId:id.nullable(),subject:z.string(),subjectMatch:z.enum(['exact','alias','unconfirmed','unrelated']),
@@ -25,15 +30,15 @@ export const questionSchema=z.strictObject({
  pendingRequestBudget:z.number().int().nonnegative().default(0),externalQuestion:z.string().nullable(),notApplicableReason:z.string().nullable()
 });
 const attemptSchema=z.strictObject({
- sourceId:id,questionId:id,sourceClass:z.string(),acquisitionMode:z.enum(['local_database','http','pdf','user_text','user_pdf','search']),
+ sourceId:id,questionId:id,sourceClass:z.string(),acquisitionMode:z.enum(['local_database','http','pdf','user_text','user_pdf','user_docx','user_xlsx','user_csv','user_image','search']),
  accessState:z.enum(['ok','empty','login_required','blocked','rate_limited','timeout','parse_error','not_configured','unsupported','unreachable','identity_mismatch','budget_exhausted']),
  contentState:z.enum(['full_text','index_snippet','partial_text','document','navigation_only','irrelevant','unusable']),
  analysisState:z.enum(['accepted','quarantined','rejected']),declaredSubject:z.string().nullable(),declaredSource:z.string().nullable().optional(),publishedAt:z.string().nullable(),retrievedAt:z.string(),
  url:z.string().nullable(),rawRef:z.string().nullable(),rawHash:z.string().nullable(),locators:z.array(locator),evidenceIds:z.array(id),capabilityVersion:z.string(),failureReason:z.string().nullable(),
- elapsedMs:z.number().nonnegative(),query:z.string().nullable()
+ reviewRequired:z.boolean().optional(),parserVersion:z.string().optional(),warnings:z.array(z.string()).optional(),elapsedMs:z.number().nonnegative(),query:z.string().nullable()
 });
 export const v3SnapshotSchema=z.strictObject({
- xmind:xmindSchema.optional(),schemaVersion:z.literal('agent-v3/1'),taskId:id,profileId:id,profileRevision:z.number().int().positive(),createdAt:z.string(),
+ xmindLifecycle:xmindLifecycleSchema.optional(),xmindCollaboration:collaborationSchema.optional(),xmindSemantic:xmindSemanticSchema.optional(),processedOperationIds:z.array(id).max(400).optional(),xmind:xmindSchema.optional(),schemaVersion:z.literal('agent-v3/1'),taskId:id,profileId:id,profileRevision:z.number().int().positive(),createdAt:z.string(),
  purpose:z.enum(['exploration','selection']),needOrigin:z.enum(['user_confirmed','synthetic_acceptance']).default('user_confirmed'),materialKind:z.enum(['real_sources','synthetic_fixtures','mixed_sources']),questions:z.array(questionSchema).max(180),claims:z.array(claimSchema).max(800),
  sourceRelations:z.array(z.strictObject({from:id,to:id,kind:z.enum(['confirmed_repost','suspected_common_origin','independent_unknown']),reason:z.string()})),
  assessments:z.array(z.strictObject({questionId:id,previousState:answerState,newState:answerState,claimIds:z.array(id),requiredFieldsChecked:z.array(z.string()),missingFields:z.array(z.string()),reasonCode:z.enum(['no_claim','snippet_only','subject_unconfirmed','scope_unconfirmed','missing_required_fields','direct_answer','comparable_conflict','explicit_not_applicable']),assessorVersion:z.string(),at:z.string()})),
@@ -85,6 +90,9 @@ export function validateV3Snapshot(raw:unknown,bundle:CandidateBundle){
   for(const r of x.comparisons)if(!q.has(r.questionId)||[r.left,r.right].some(id=>!claims.has(id)||!q.get(r.questionId)!.supportingClaimIds.includes(id)))throw Error('XMind invalid comparison');
   for(const r of x.reviews)if(r.claimIds.some(id=>!claims.has(id)))throw Error('XMind invalid review');
  }
+ if(s.xmindLifecycle)validateXmindLifecycle(s.xmindLifecycle,s,bundle);
+ if(s.xmindSemantic)validateXmindSemanticRecord(s.xmindSemantic,s,bundle);
+ if(s.xmindCollaboration){const x=s.xmindCollaboration;if(!x.runId.startsWith(s.taskId+':'))throw Error('XMind runtime task scope');const tasks=new Set(x.tasks.map(t=>t.id));if(tasks.size!==x.tasks.length||x.tasks.some(t=>[...t.dependsOn,...t.after].some(id=>!tasks.has(id)))||x.messages.some(m=>!tasks.has(m.fromTaskId)||!tasks.has(m.toTaskId))||x.tools.some(c=>!tasks.has(c.taskId)))throw Error('XMind runtime references');}
  if(s.keyQuestionIds.some(id=>!q.has(id)))throw Error('V3 invalid question selection');
  if(new Set(s.keyQuestionIds).size!==s.keyQuestionIds.length||s.keyQuestionIds.some(id=>q.get(id)!.nextAction!=='external_confirmation'))throw Error('V3 invalid external questions');
  if(s.budget.usedRequests+s.budget.reservedRequests>s.budget.maxRequests||s.questions.reduce((n,q)=>n+q.pendingRequestBudget,0)!==s.budget.reservedRequests||s.budget.modelCalls!==0&&s.model.status==='not_configured')throw Error('V3 invalid budget/model state');

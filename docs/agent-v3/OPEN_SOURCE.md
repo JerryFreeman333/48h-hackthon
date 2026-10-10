@@ -28,3 +28,19 @@
 来源重复只产生“疑似共同来源、独立性未知”信号，不认定水军、机器人或内容虚假。正式协同检测禁用，直到获得合规账号/时间字段与中文验证集。
 
 本轮未复制第三方框架源码。复用的是仓库自身 V2 公网 DNS 固定/重定向保护及原件/PDF解析；方法参考独立落实在 V3 文件。Playwright 可选验收安装版本见实施说明，运行 Agent 不需要浏览器。
+
+## 2026-10-10 架构补齐新增采用
+
+上表是首版调查时的决定，以下是当前实际运行依赖。识别到的具体短板是主动提供的办公文件和中文图片只有空接口；因此采用小范围本机解析器，保留原件与定位，不引入整套平台采集框架。
+
+| 项目/版本 | 决定与技术位置 | 维护、许可与成本/适配边界 |
+|---|---|---|
+| [python-docx 1.2.0](https://python-docx.readthedocs.io/en/latest/) | 采用，v3_documents.py DOCX段落/表格单元格 | 官方文档当前列1.2.0；MIT。纯本机，不需服务费用，不重建Word排版页码。 |
+| [openpyxl 3.1.5](https://openpyxl.readthedocs.io/en/stable/) | 采用，XLSX只读工作表/单元格、保留公式文本 | 安装锁固定3.1.5；官方文档版本页仍列3.1.3，不能把文档版本当安装版本。MIT/Expat；本机CPU，不执行公式/外链。项目先验ZIP/XML保护弥补库默认XML保护的限制。 |
+| [RapidOCR 1.4.4固定源码](https://github.com/RapidAI/RapidOCR/tree/86ae3f5079df3422c1829cd84baf19bc8a7a9453) | 采用ONNX中文CPU识别，PNG/JPEG/扫描PDF；bbox、物理页、置信度与复核标记 | Apache-2.0，wheel包含本地模型，运行时不下载；不接付费OCR、GPU或音视频。1.4.4是受控固定版，不宣称最新版本。 |
+| [PaddleOCR模型出处](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/LICENSE) | 间接采用PP-OCRv4中文模型经RapidOCR转换的ONNX文件；未采用PaddleOCR整套Python流水线 | Apache-2.0；3个实际模型哈希保留。合成中文样本识别通过不能推导中文平台准确率。 |
+| [ONNX Runtime](https://github.com/microsoft/onnxruntime) 1.31.0 | RapidOCR本机CPU推理依赖 | MIT及其第三方声明；与安装包版本一致，额外约16MB OCR模型，初始化和推理服从25秒默认子进程预算。 |
+
+直接/间接17项新依赖、47份安装包许可文件以及模型哈希见 [许可清单](../../modules/research-agent/v3/licenses/README.md) 和 dependency-manifest.json；全部Python版本冻结于 requirements-v3-lock.txt。第三方声明包括BSD、tqdm的MPL-2.0 AND MIT及OpenCV第三方组件，未将其笼统写成全MIT。
+
+Agent任务运行器、工具权限、持久调用凭据、问题反馈、中文三层解释和图节点是本项目实现。没有复制LangGraph、AutoGen等多Agent框架源码，也没有声称有11个独立模型实例；可选语义模型共用一次结构化批次，真实无凭据时不运行。爬虫项目决定沿前序延期要求保留，未知来源/传播信号仍不认证真假。

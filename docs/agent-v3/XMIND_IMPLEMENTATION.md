@@ -1,5 +1,7 @@
 # XMind 实现检查点（2026-10-10）
 
+> 此页是43d55be结构首版的历史验收记录。后续架构、模型和文件能力以 [架构补齐记录](XMIND_ARCHITECTURE_COMPLETION.md) 和 [本轮验收](XMIND_ARCHITECTURE_ACCEPTANCE.md) 为准；此前“办公文件/OCR未接入、没有新增依赖”不再描述当前分支。
+
 本轮授权：实现原树流程，之后补新爬虫；验证后上传远端独立分支。未授权合并 main 或生产部署。
 
 实际目录：repo-agent-v3-impl；分支 implement/xmind-structure-20261010。原 checkout 不动。
