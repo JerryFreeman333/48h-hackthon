@@ -10,6 +10,7 @@
     "test:b": "tsx --test modules/b-research/service.test.ts",
     "test:a": "npm --prefix modules/a-profile test",
     "test:a:browser": "npm --prefix modules/a-profile run test:browser",
+    "test:a:tradeoff:browser": "npm --prefix modules/a-profile run test:tradeoff:browser",
     "test:integration": "tsx --test packages/integration/*.test.ts app/reports/reports.test.ts",
     "typecheck": "tsc --noEmit",
     "test:c": "tsx --test modules/c-report/tests/*.test.ts",

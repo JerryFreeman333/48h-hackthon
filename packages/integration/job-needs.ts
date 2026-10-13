@@ -3,6 +3,9 @@ import { escapeForMarkdown } from "../../modules/c-report/application/markdown";
 import { z } from "zod";
 import { topics } from "../../modules/a-profile/src/needs/catalog.mjs";
 import { refinementVersion, refinementQuestions } from "../../modules/a-profile/src/needs/refinement-catalog.mjs";
+import { tradeoffDataSchema, deriveTradeoff, tradeoffTopicMapping, tradeoffVersion } from "../../modules/a-profile/src/needs/tradeoff.mjs";
+import { tradeoffTopicTitles } from "../../modules/a-profile/src/needs/tradeoff-catalog.mjs";
+import { isDeepStrictEqual } from "node:util";
 import type { CandidateBundle, MatchReport } from "../contracts";
 import { escapeHtml } from "../../modules/c-report/ui/render-html";
 
@@ -12,7 +15,7 @@ const refinementAnswerSchema=z.object({value:z.array(z.string().min(1).max(120))
 const refinementAnswersSchema=z.record(z.string().min(1).max(160),refinementAnswerSchema);
 const declaredNeedSchema=z.object({questionId:z.string().min(1).max(160),topicId:z.string().min(1).max(80),detailId:z.string().min(1).max(80),questionText:z.string().min(1).max(1000),answerIds:z.array(z.string().min(1).max(120)).min(1).max(30),answerTexts:z.array(z.string().min(1).max(1000)).min(1).max(30),strength:refinementStrength,userConfirmed:z.boolean()});
 const refinementSchema=z.object({schemaVersion:z.literal('a-needs-refinement/1'),questionnaireVersion:z.literal(refinementVersion),needs:z.array(declaredNeedSchema).max(100),unknownQuestionIds:z.array(z.string().min(1).max(160)).max(100),indifferentQuestionIds:z.array(z.string().min(1).max(160)).max(100).default([]),answers:refinementAnswersSchema.optional()});
-const snapshotSchema = z.object({ schemaVersion: z.literal("a-job-needs-1"), projectId: z.string(), profileId: z.string(), profileRevision: z.number().int().positive(), mode: z.enum(["demo", "manual", "live"]), confirmedAt: z.string().nullable(), topics: z.array(topicSchema).length(7),refinement:refinementSchema.optional(),selectionData:z.object({refinements:z.object({schemaVersion:z.literal('a-needs-refinement/1'),questionnaireVersion:z.literal(refinementVersion),answers:refinementAnswersSchema}).optional()}).optional() });
+const snapshotSchema = z.object({ schemaVersion: z.literal("a-job-needs-1"), questionnaireVersion:z.enum(['job-needs-20261002-1',tradeoffVersion]).optional(), projectId: z.string(), profileId: z.string(), profileRevision: z.number().int().positive(), mode: z.enum(["demo", "manual", "live"]), confirmedAt: z.string().nullable(), topics: z.array(topicSchema).length(7),refinement:refinementSchema.optional(),tradeoff:z.unknown().optional(),selectionData:z.object({refinements:z.object({schemaVersion:z.literal('a-needs-refinement/1'),questionnaireVersion:z.literal(refinementVersion),answers:refinementAnswersSchema}).optional(),tradeoff:z.unknown().optional()}).optional() });
 type Snapshot=z.infer<typeof snapshotSchema>;
 type DeclaredNeed=z.infer<typeof declaredNeedSchema>;
 type RefinementAnswer=z.infer<typeof refinementAnswerSchema>;
@@ -52,18 +55,40 @@ function validateRefinement(snapshot:Snapshot){
  if(!equalIds(active.map(q=>q.id),recordedIds))throw Error('细化需求与当前选中的主题明细或条件分支不一致');
  return refinement.needs;
 }
+function validateTradeoff(snapshot:Snapshot){
+ const value=snapshot.tradeoff;
+ if(value===undefined){if(snapshot.questionnaireVersion===tradeoffVersion||snapshot.selectionData?.tradeoff!==undefined)throw Error('情境取舍问卷缺少确认附表');return undefined;}
+ if(snapshot.refinement||snapshot.selectionData?.refinements)throw Error('两种答题流程不能混用');
+ if(!snapshot.confirmedAt||!Number.isFinite(Date.parse(snapshot.confirmedAt)))throw Error('情境取舍须来自有确认时间的用户快照');
+ if(!value||typeof value!=='object'||Array.isArray(value))throw Error('情境取舍附表格式错误');
+ const recorded=value as Record<string,unknown>;
+ const raw=tradeoffDataSchema.parse({schemaVersion:recorded.schemaVersion,questionnaireVersion:recorded.questionnaireVersion,answers:recorded.answers,inactiveAnswers:recorded.inactiveAnswers,review:recorded.review});
+ const canonical=deriveTradeoff(raw,{confirmedAt:snapshot.confirmedAt});
+ if(snapshot.questionnaireVersion!==canonical.questionnaireVersion)throw Error('情境取舍与主问卷版本不一致');
+ if(!isDeepStrictEqual(canonical,recorded))throw Error('情境取舍的排序、需求或确认与原始回答不一致');
+ if(snapshot.selectionData?.tradeoff!==undefined&&!isDeepStrictEqual(tradeoffDataSchema.parse(snapshot.selectionData.tradeoff),raw))throw Error('情境取舍的原始回答版本不一致');
+ const mapped=tradeoffTopicMapping(raw) as Record<string,unknown>;
+ for(const topic of snapshot.topics){
+  const priority=mapped[topic.topicId+'.priority']==='unsure'?'unknown':mapped[topic.topicId+'.priority'];
+  const policy=mapped[topic.topicId+'.policy']==='unsure'?'unknown':mapped[topic.topicId+'.policy'];
+  const details=(mapped[topic.topicId+'.details'] as string[]).filter(id=>id!=='unsure');
+  if(topic.priority!==priority||topic.unknownHandling!==policy||!isDeepStrictEqual(topic.verificationItemIds,details))throw Error('情境取舍与调查主题映射不一致');
+ }
+ return canonical;
+}
 export function buildInvestigationPlan(raw: unknown) {
   const snapshot = snapshotSchema.parse(raw);
   if (!snapshot.confirmedAt || snapshot.topics.some(t => !t.userConfirmed)) throw new Error("需求清单须来自已确认版本");
   if (new Set(snapshot.topics.map(t => t.topicId)).size !== 7) throw new Error("需求主题不可重复");
-  const declared=validateRefinement(snapshot);
+  const tradeoff=validateTradeoff(snapshot);
+  const declared:DeclaredNeed[]=[...validateRefinement(snapshot),...(tradeoff?.needs??[]).map(need=>declaredNeedSchema.parse(need))];
   const items = snapshot.topics.flatMap(t => {
     const def = topics.find((d: { id: string }) => d.id === t.topicId);
     if (!def || new Set(t.verificationItemIds).size !== t.verificationItemIds.length || t.verificationItemIds.some(id => !def.details.some((d: { id: string }) => d.id === id))) throw new Error("需求主题或明细不在当前目录");
     const ids = t.verificationItemIds.length ? t.verificationItemIds : t.priority === "priority" ? ["clarify"] : [];
     return ids.map(itemId => {const scope=t.topicId === "company" ? "company" as const : "job" as const,declaredNeeds=declared.filter(n=>n.topicId===t.topicId&&n.detailId===itemId).map(n=>({...n,scope}));return { topicId: t.topicId, topicTitle: def.title, itemId, label: itemId === "clarify" ? "明确该主题中最在意的具体信息" : def.details.find((d: { id: string }) => d.id === itemId)!.text, priority: t.priority, unknownHandling: t.unknownHandling, mustVerify: t.priority === "priority" && t.unknownHandling === "verify_first"||declaredNeeds.some(n=>n.strength==='must'), factKey: itemId === "clarify" ? null : "needs." + t.topicId + "." + itemId, scope,declaredNeeds };});
   });
-  return { schemaVersion: "product-needs-1" as const, projectId: snapshot.projectId, profileId: snapshot.profileId, profileRevision: snapshot.profileRevision, mode: snapshot.mode, items, unknownTopicIds: snapshot.topics.filter(t => t.priority === "unknown").map(t => t.topicId),...(snapshot.refinement?{refinement:{schemaVersion:snapshot.refinement.schemaVersion,questionnaireVersion:snapshot.refinement.questionnaireVersion,unknownQuestionIds:snapshot.refinement.unknownQuestionIds,indifferentQuestionIds:snapshot.refinement.indifferentQuestionIds}}:{}) };
+  return { schemaVersion: "product-needs-1" as const, projectId: snapshot.projectId, profileId: snapshot.profileId, profileRevision: snapshot.profileRevision, mode: snapshot.mode, items, unknownTopicIds: snapshot.topics.filter(t => t.priority === "unknown").map(t => t.topicId),...(snapshot.refinement?{refinement:{schemaVersion:snapshot.refinement.schemaVersion,questionnaireVersion:snapshot.refinement.questionnaireVersion,unknownQuestionIds:snapshot.refinement.unknownQuestionIds,indifferentQuestionIds:snapshot.refinement.indifferentQuestionIds}}:{}),...(tradeoff?{tradeoff}:{}) };
 }
 
 type Evidence = CandidateBundle["evidence"][number];
@@ -153,6 +178,35 @@ type ResponseItem=NeedsResponse['candidates'][number]['items'][number];
 function declaredHtml(item:ResponseItem){const e=escapeHtml;return (item.declaredNeeds??[]).map(n=>'<p><strong>你的具体期望：</strong>'+e(n.answerTexts.join('、'))+'<br><small>所答问题：'+e(n.questionText)+'；强度：'+strengthLabels[n.strength]+'；尚未对照判定是否满足。</small></p>').join('');}
 function declaredMarkdown(item:ResponseItem){const e=escapeForMarkdown;return (item.declaredNeeds??[]).map(n=>'  你的具体期望：'+e(n.answerTexts.join('、'))+'；强度：'+strengthLabels[n.strength]+'；尚未对照判定是否满足。\n  所答问题：'+e(n.questionText)).join('\n');}
 function refinementNote(response:NeedsResponse){const r=response.plan.refinement;return r?[r.unknownQuestionIds.length?'还有 '+r.unknownQuestionIds.length+' 个已选择的细化问题暂未确定，不据此猜测需求。':'',r.indifferentQuestionIds.length?'另有 '+r.indifferentQuestionIds.length+' 个细化问题明确暂不设偏好。':''].filter(Boolean).join(' '):'';}
+const tradeoffTitle=(id:string)=>(tradeoffTopicTitles as Record<string,string>)[id]??id;
+function exchangeDescription(exchange:{description:string;conditionText:string|null;status:string;userConfirmed:boolean}){
+ const status=exchange.status==='declined-exchange'?'这项交换未接受':exchange.status==='conditions-stated'?'需满足所述条件才继续考虑':exchange.status==='unknown'?'接受条件尚不明确':'愿意继续了解，接受条件尚未明确';
+ return exchange.description+'；'+status+(exchange.conditionText?'：'+exchange.conditionText:'')+'；'+(exchange.userConfirmed?'已在需求确认中保留':'尚未由本人确认')+'。';
+}
+function conditionalRankingDescription(relation:{higherTopicId:string;lowerTopicId:string;conditionText:string|null;originalScenarioCompatible:boolean|null;compatibilityExplanation?:string}){
+ const comparison=tradeoffTitle(relation.higherTopicId)+'与'+tradeoffTitle(relation.lowerTopicId)+'之间的取舍';
+ const compatible=relation.originalScenarioCompatible===false?'原题条件未达到你提出的接受条件，不能按原选项推断先后':relation.originalScenarioCompatible===true?'仅在上述条件下继续比较，不用于全局排序':'原题是否符合上述条件尚不明确，不用于全局排序';
+ return comparison+'：'+(relation.conditionText??'接受条件尚未明确')+'；'+compatible+'。'+(relation.compatibilityExplanation??'');
+}
+function tradeoffHtml(response:NeedsResponse){
+ const t=response.plan.tradeoff;if(!t)return '';
+ const e=escapeHtml,r=t.ranking;
+ const confirmed='<p><strong>你确认的当前重点：</strong>'+e(t.confirmedPriorityGroups.priority.map(tradeoffTitle).join('、')||'暂未明确')+'。<br>可以综合考虑：'+e(t.confirmedPriorityGroups.secondary.map(tradeoffTitle).join('、')||'暂未明确')+'。<br>仍待明确：'+e(t.confirmedPriorityGroups.unknown.map(tradeoffTitle).join('、')||'无')+'。</p>';
+ const order=r.relations.length?'<ol>'+r.tiers.map((tier:string[])=>'<li>'+e(tier.map(tradeoffTitle).join('、'))+'</li>').join('')+'</ol>':'<p>当前回答尚不能确定先后顺序。</p>';
+ const conflicts=r.conflicts.length?'<p><strong>保留 '+r.conflicts.length+' 组不同情境中的取舍冲突：</strong>'+e(r.conflicts.map((c:{topicIds:string[];explanation:string})=>c.topicIds.map(tradeoffTitle).join('、')+'：'+c.explanation).join(' '))+'</p>':'';
+ const unknown=r.unknownTopicIds.length?'<p>相对倾向尚不明确：'+e(r.unknownTopicIds.map(tradeoffTitle).join('、'))+'。</p>':'';
+ const conditional=(r.conditionalRelations??[]).length?'<details><summary>附条件的比较（'+r.conditionalRelations.length+' 条，不用于全局排序）</summary><ul>'+r.conditionalRelations.map(relation=>'<li>'+e(conditionalRankingDescription(relation))+'</li>').join('')+'</ul></details>':'';
+ const qualifications=(r.qualifications??[]).length?'<p>'+e(r.qualifications.map(q=>q.explanation).join(' '))+'</p>':'';
+ const exchanges=t.conditionalExchanges.length?'<details><summary>你可以考虑的交换及条件（'+t.conditionalExchanges.length+' 条）</summary><ul>'+t.conditionalExchanges.map(exchange=>'<li>'+e(exchangeDescription(exchange))+'</li>').join('')+'</ul></details>':'';
+ return '<div class="tradeoff-needs"><h3>你的情境取舍</h3>'+confirmed+'<p>以下是已回答情境中的相对倾向，未比较的关系不补成完整排名；同组可能尚不可区分或存在冲突。这不代表人格评分或不可协商底线，只有本人确认的必须满足条件会阻止继续判断。</p>'+order+conflicts+unknown+conditional+qualifications+exchanges+(t.unknownQuestionIds.length?'<p>还有 '+t.unknownQuestionIds.length+' 个情境或条件暂不明确，保留未知。</p>':'')+'<p>愿意继续了解某种交换，不代表岗位已满足条件，也不代表放弃已确认的底线。</p></div>';
+}
+function tradeoffMarkdown(response:NeedsResponse){
+ const t=response.plan.tradeoff;if(!t)return '';
+ const e=escapeForMarkdown,r=t.ranking;
+ const conditional=(r.conditionalRelations??[]).length?'\n\n附条件的比较（不用于全局排序）：\n\n'+r.conditionalRelations.map(relation=>'- '+e(conditionalRankingDescription(relation))).join('\n'):'';
+ const qualifications=(r.qualifications??[]).length?'\n\n'+r.qualifications.map(q=>e(q.explanation)).join('\n'):'';
+ return '### 你的情境取舍\n\n你确认的当前重点：'+e(t.confirmedPriorityGroups.priority.map(tradeoffTitle).join('、')||'暂未明确')+'。\n\n可以综合考虑：'+e(t.confirmedPriorityGroups.secondary.map(tradeoffTitle).join('、')||'暂未明确')+'。\n\n仍待明确：'+e(t.confirmedPriorityGroups.unknown.map(tradeoffTitle).join('、')||'无')+'。\n\n只呈现已回答情境的相对倾向；未比较的关系不补成完整排名，同组可能尚不可区分或存在冲突。不是人格评分或自动底线。\n\n'+(r.relations.length?r.tiers.map((tier:string[],index:number)=>(index+1)+'. '+e(tier.map(tradeoffTitle).join('、'))).join('\n'):'当前回答尚不能确定先后顺序。')+'\n\n'+r.conflicts.map((c:{topicIds:string[];explanation:string})=>'取舍冲突：'+e(c.topicIds.map(tradeoffTitle).join('、')+'；'+c.explanation)).join('\n')+(r.unknownTopicIds.length?'\n\n相对倾向尚不明确：'+e(r.unknownTopicIds.map(tradeoffTitle).join('、'))+'。':'')+conditional+qualifications+(t.conditionalExchanges.length?'\n\n取舍与条件：\n\n'+t.conditionalExchanges.map(exchange=>'- '+e(exchangeDescription(exchange))).join('\n'):'')+(t.unknownQuestionIds.length?'\n\n还有 '+t.unknownQuestionIds.length+' 个情境或条件暂不明确。':'')+'\n\n愿意继续了解某种交换，不代表岗位已满足条件，也不代表放弃已确认的底线。\n\n';
+}
 
 // Legacy immutable archives lack materials/explanation/gaps; keep their recorded result.
 function materialHtml(item: NeedsResponse["candidates"][number]["items"][number]) {
@@ -163,10 +217,10 @@ export function renderNeedsHtml(response: NeedsResponse, report?: MatchReport, b
   const e = escapeHtml;
   const note=refinementNote(response);
   const candidates=response.candidates.map(c => '<h3>' + e(bundle?.jobs.find(j => j.jobId === c.jobId)?.title ?? '岗位调查') + '</h3><p><strong>' + (report?.results.find(r => r.jobId === c.jobId)?.recommendation === 'deprioritize' ? '该岗位已存在硬条件冲突，优先处理下方冲突；若仍考虑，再核实这些关注事项。' : c.actionGate === 'verify_first' ? '你选择了先核实重点再作决定；以下未决事项仍需回答。' : '按你的未知处理选择，可以继续了解；仍需结合岗位与主体判断。') + '</strong></p><ul>' + c.items.map(i => '<li><strong>' + e(i.topicTitle + ' · ' + i.label) + '</strong>：' + statusLabels[i.status] + '；' + (i.requiresAction ? '决定前必问' : i.unknownHandling === 'continue_with_unknown' && i.status !== 'available' ? '你允许继续了解，但保留此未知' : i.status === 'available' ? '仍需与你的具体预期比较' : '建议补充了解') + declaredHtml(i) + (i.explanation ? '<p>' + e(i.explanation) + '</p>' : '') + materialHtml(i) + ((i.gaps ?? []).length ? '<p><strong>剩余缺口：</strong>' + e(i.gaps.join(' ')) + '</p>' : '') + '<p><strong>下一步：</strong>' + e(i.question) + '</p></li>').join('') + '</ul>').join('');
-  return '<section class="card" id="your-needs"><h2 style="margin-top:0">你关心的事项与下一步</h2><p>需求版本 ' + response.plan.profileRevision + '。逐项对照你的选择与已有资料；有材料不代表满足个人预期，公司资料也不代表这份岗位的承诺。</p>'+(note?'<p>'+e(note)+'</p>':'')+(response.plan.items.length?candidates:'<p>尚未填写具体关注事项，可先调查岗位，再补充个人需求。</p>')+'<p><a href="/profile">修改个人需求</a> · <a href="/research">调查其他公司与岗位</a></p></section>';
+  return '<section class="card" id="your-needs"><h2 style="margin-top:0">你关心的事项与下一步</h2><p>需求版本 ' + response.plan.profileRevision + '。逐项对照你的选择与已有资料；有材料不代表满足个人预期，公司资料也不代表这份岗位的承诺。</p>'+tradeoffHtml(response)+(note?'<p>'+e(note)+'</p>':'')+(response.plan.items.length?candidates:'<p>尚未填写具体关注事项，可先调查岗位，再补充个人需求。</p>')+'<p><a href="/profile">修改个人需求</a> · <a href="/research">调查其他公司与岗位</a></p></section>';
 }
 export function needsMarkdown(response: NeedsResponse, bundle?: CandidateBundle): string {
   const e = escapeForMarkdown;
   const note=refinementNote(response);
-  return "## 你的关注事项\n\n需求版本：" + response.plan.profileRevision + "；有资料不等于满足需求，公司资料不等于岗位承诺。\n\n"+(note?e(note)+'\n\n':'')+ response.candidates.map(c => "### " + e(bundle?.jobs.find(j => j.jobId === c.jobId)?.title ?? "岗位调查") + "\n\n" + (c.actionGate === "verify_first" ? "按你的选择，先核实未决重点再作决定。" : "按你的未知处理选择，可以继续了解，保留未决事项。") + "\n\n" + c.items.map(i => "- " + e(i.topicTitle + " / " + i.label) + "：" + statusLabels[i.status] + (i.requiresAction ? "（决定前必问）" : "") + "。" + e(i.explanation ?? "") + "\n" + declaredMarkdown(i)+'\n'+(i.materials ?? []).map(m => "  资料记载：" + e(String(m.value)) + (m.asOf ? "；记录日期：" + e(m.asOf) : "") + "\n" + m.sources.map(s => "  来源：" + e(s.title) + (s.url && /^https?:\/\//i.test(s.url) ? "（" + e(s.url) + "）" : "（未记录原文链接）") + "；" + e(s.scopeLabel) + "；" + verificationLabels[s.verification] + "；发布时间：" + e(s.publishedAt ?? "未记录") + "；采集时间：" + e(s.collectedAt ?? "未记录") + (s.dateNote ? "；" + e(s.dateNote) : "") + "。\n  摘录：" + e(s.excerpt)).join("\n")).join("\n") + ((i.gaps ?? []).length ? "\n  剩余缺口：" + e(i.gaps.join(" ")) : "") + "\n  下一步：" + e(i.question)).join("\n\n")).join("\n\n") + "\n\n";
+  return "## 你的关注事项\n\n需求版本：" + response.plan.profileRevision + "；有资料不等于满足需求，公司资料不等于岗位承诺。\n\n"+tradeoffMarkdown(response)+(note?e(note)+'\n\n':'')+ response.candidates.map(c => "### " + e(bundle?.jobs.find(j => j.jobId === c.jobId)?.title ?? "岗位调查") + "\n\n" + (c.actionGate === "verify_first" ? "按你的选择，先核实未决重点再作决定。" : "按你的未知处理选择，可以继续了解，保留未决事项。") + "\n\n" + c.items.map(i => "- " + e(i.topicTitle + " / " + i.label) + "：" + statusLabels[i.status] + (i.requiresAction ? "（决定前必问）" : "") + "。" + e(i.explanation ?? "") + "\n" + declaredMarkdown(i)+'\n'+(i.materials ?? []).map(m => "  资料记载：" + e(String(m.value)) + (m.asOf ? "；记录日期：" + e(m.asOf) : "") + "\n" + m.sources.map(s => "  来源：" + e(s.title) + (s.url && /^https?:\/\//i.test(s.url) ? "（" + e(s.url) + "）" : "（未记录原文链接）") + "；" + e(s.scopeLabel) + "；" + verificationLabels[s.verification] + "；发布时间：" + e(s.publishedAt ?? "未记录") + "；采集时间：" + e(s.collectedAt ?? "未记录") + (s.dateNote ? "；" + e(s.dateNote) : "") + "。\n  摘录：" + e(s.excerpt)).join("\n")).join("\n") + ((i.gaps ?? []).length ? "\n  剩余缺口：" + e(i.gaps.join(" ")) : "") + "\n  下一步：" + e(i.question)).join("\n\n")).join("\n\n") + "\n\n";
 }

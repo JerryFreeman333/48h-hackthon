@@ -77,4 +77,4 @@ export function getAHost() {
   return globalHost.__xrayAHost ??= createAHost(process.env.XRAY_A_DATA_DIR ?? join(process.cwd(), ".data", "integration-a"));
 }
 
-function needsView(out:any){return {UserProfile:{revision:out.UserProfile.revision,mode:out.UserProfile.mode,preferences:out.UserProfile.preferences},SearchIntent:{industryTags:out.SearchIntent.industryTags,roleTypes:out.SearchIntent.roleTypes},JobNeedsSnapshot:{topics:out.JobNeedsSnapshot.topics,...(out.JobNeedsSnapshot.refinement?{refinement:out.JobNeedsSnapshot.refinement}:{})}};}
+function needsView(out:any){return {UserProfile:{revision:out.UserProfile.revision,mode:out.UserProfile.mode,preferences:out.UserProfile.preferences},SearchIntent:{industryTags:out.SearchIntent.industryTags,roleTypes:out.SearchIntent.roleTypes},JobNeedsSnapshot:{topics:out.JobNeedsSnapshot.topics,...(out.JobNeedsSnapshot.refinement?{refinement:out.JobNeedsSnapshot.refinement}:{}),...(out.JobNeedsSnapshot.tradeoff?{tradeoff:out.JobNeedsSnapshot.tradeoff}:{})}};}

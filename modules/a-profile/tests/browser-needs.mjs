@@ -32,6 +32,7 @@ const errors=[],visited=new Set(),networkCalls=[];
 const environment={...process.env,
  XRAY_A_DATA_DIR:join(dir,'data'),XRAY_NEXT_DIST_DIR:'next',
  A_NEEDS_REFINEMENT_ENABLED:'true',A_NEEDS_QUICK_UNSURE_ENABLED:'true',
+ A_NEEDS_TRADEOFF_ENABLED:'false',
  RESEARCH_AGENT_ENABLED:'false',RESEARCH_AGENT_V3_ENABLED:'false',RESEARCH_AGENT_V2_ENABLED:'false',MINIMAX_API_KEY:'',NEXT_TELEMETRY_DISABLED:'1'};
 
 async function startServer(){

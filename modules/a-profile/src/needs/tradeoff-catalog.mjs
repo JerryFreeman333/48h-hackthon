@@ -1,0 +1,47 @@
+// Original product scenarios. They are not copied scale items or a validated personality test.
+export const tradeoffVersion='a-tradeoff-20261013-1';
+export const tradeoffTopicIds=['growth','pay','hours','benefits','culture','company','position'];
+export const tradeoffTopicTitles={growth:'晋升与成长',pay:'收入与兑现',hours:'工作时间与生活安排',benefits:'保障与福利',culture:'团队相处与工作方式',company:'企业经营持续性',position:'职位与用工稳定'};
+const neutral=[{id:'tie',text:'两种都可以，目前没有明显倾向'},{id:'depends',text:'要看具体条件，我想再说清楚'},{id:'unsure',text:'暂时不知道，先保留'}];
+const offer=(topicId,detailId,text)=>({topicId,detailId,text});
+const core=(id,text,left,right,leftOffer,rightOffer,leftExchange,rightExchange)=>({id,text,kind:'single',options:[{id:'left',text:left},{id:'right',text:right},...neutral],pair:{leftTopicId:leftOffer.topicId,rightTopicId:rightOffer.topicId},offers:{left:leftOffer,right:rightOffer},exchanges:{left:leftExchange,right:rightExchange}});
+export const tradeoffCoreQuestions=[
+ core('opportunity_01','有两份机会，其他条件相近。你更愿意先了解哪份？','固定税前收入高约20%；企业正在试新业务，未来业务方向可能调整。','固定税前收入低一些；主营业务成熟，近期方向较明确。',offer('pay','fixed','希望比较并优先考虑更高的固定税前收入'),offer('company','business','更希望主营业务与近期经营方向明确'),offer('company','continuity','在固定税前收入高约20%的情境下，可以继续了解处于业务调整期的企业'),offer('pay','fixed','在业务方向较明确的情境下，可以考虑相对低一些的固定税前收入')),
+ core('opportunity_02','接下来一段时间，你更倾向哪种安排？','能更快接触新任务并有反馈；每周可能有两天需要多投入一些时间。','每天结束工作的时间较固定；新任务和学习机会增加得慢一些。',offer('growth','learning','希望较快接触新任务，并获得实际反馈'),offer('hours','schedule','希望结束工作的时间相对固定'),offer('hours','overtime','为了较快学习与反馈，可以了解短期增加时间投入的安排'),offer('growth','path','在工作结束时间固定的情境下，可以接受新任务增加较慢')),
+ core('opportunity_03','两份机会的基本用工保障相同，你会优先看哪份？','比另一份固定税前收入低约10%；另外提供补充医疗和可核查的额外保障。','固定税前收入更高；提供相同的基本保障，没有上述额外福利。',offer('benefits','coverage','关注基本保障之外的补充医疗与额外保障'),offer('pay','fixed','比较固定税前收入的实际差距'),offer('pay','fixed','为了额外保障，可以考虑较低的固定税前收入'),offer('benefits','coverage','在基本用工保障相同的情境下，可以不优先要求额外福利')),
+ core('opportunity_04','如果日常任务相近，你更愿意采用哪种工作安排？','约定目标后可以自主决定做法；目前按阶段项目签约，后续续约需确认。','签约期限更长且岗位安排较明确；多数做法需要逐级确认。',offer('culture','communication','希望目标明确后有自主决定工作做法的空间'),offer('position','contract','希望签约期限与岗位持续安排较明确'),offer('position','hiring_reason','为了工作自主空间，可以继续了解阶段项目及续约条件'),offer('culture','communication','为了较明确的岗位持续安排，可以接受更多事前确认')),
+ core('opportunity_05','这两种机会，哪一种更值得你继续了解？','所在业务方向还在变化；有明确的带教安排和更多新任务。','主营业务较稳定、任务范围较熟悉；带教与职责扩展机会较少。',offer('growth','learning','希望有明确带教和拓展任务的机会'),offer('company','business','希望所在业务方向较稳定且容易了解'),offer('company','continuity','为了带教和新任务，可以继续了解方向仍在变化的业务'),offer('growth','path','为了业务方向较稳定，可以接受职责拓展机会较少')),
+ core('opportunity_06','在基本保障相同的前提下，你更愿意选择哪种安排？','休息时间规律，较容易提前安排个人生活；没有额外的补充福利。','额外补充医疗等福利较好；需要按计划轮换工作时段。',offer('hours','rest','希望休息时间规律，能提前安排个人生活'),offer('benefits','coverage','希望了解额外补充医疗等福利'),offer('benefits','coverage','为了规律休息，可以不优先要求额外福利'),offer('hours','schedule','为了额外福利，可以继续了解有计划的轮换时段')),
+ core('opportunity_07','如果两份机会的工作内容相近，你更倾向哪份？','固定税前收入更高；职位服务于一个期限已知的项目，结束后安排待确认。','固定税前收入较低；岗位不依附于单个项目，持续安排较明确。',offer('pay','fixed','希望比较更高的固定税前收入'),offer('position','hiring_reason','希望岗位持续安排较明确，不只依附于单个项目'),offer('position','contract','为了更高固定收入，可以继续了解期限已知的项目岗位'),offer('pay','fixed','为了岗位持续安排较明确，可以考虑较低的固定税前收入')),
+ core('opportunity_08','你更愿意先了解哪一种团队？','沟通支持较充分，遇到问题能及时讨论；短期内任务变化较少。','更快接触有挑战的新任务；遇到问题通常需要先独立摸索。',offer('culture','collaboration','希望遇到问题时能及时获得沟通和协作支持'),offer('growth','path','希望较快接触有挑战的新任务'),offer('growth','path','为了及时协作支持，可以接受短期任务变化较少'),offer('culture','collaboration','为了有挑战的新任务，可以继续了解先独立摸索的工作方式')),
+ core('opportunity_09','工作内容差不多时，你更愿意继续看哪份？','企业近期经营方向明确；工作时段会随业务需求调整，需要提前协商。','工作时段固定且边界明确；企业新业务的后续方向还需了解。',offer('company','business','希望企业近期经营方向较明确'),offer('hours','schedule','希望工作时段固定且边界明确'),offer('hours','schedule','为了近期经营方向明确，可以了解经过协商调整时段的安排'),offer('company','continuity','为了固定工作时段，可以继续了解新业务的后续方向')),
+ core('opportunity_10','基本用工保障相同时，你更愿意先看哪份？','补充福利较充分；合同按阶段签订，续约条件需要核实。','合同期限较长且岗位安排较明确；补充福利比较少。',offer('benefits','coverage','希望比较基本保障之外的补充福利'),offer('position','contract','希望合同期限和岗位持续安排较明确'),offer('position','contract','为了补充福利，可以进一步核实阶段合同的续约条件'),offer('benefits','coverage','为了合同和岗位安排明确，可以接受补充福利较少')),
+ core('opportunity_11','同样的工作内容，你更愿意在哪种安排下工作？','固定税前收入高约15%；工作做法和沟通需要较多审批。','固定税前收入低一些；可以直接讨论做法，有明确的反馈空间。',offer('pay','fixed','希望比较固定税前收入的实际差距'),offer('culture','communication','希望能直接讨论做法并获得明确反馈'),offer('culture','communication','为了较高固定收入，可以继续了解审批较多的工作方式'),offer('pay','fixed','为了直接沟通和反馈，可以考虑固定税前收入较低的机会')),
+ core('opportunity_12','两份机会基本保障相同，你更看重哪一种安排？','带教和任务实践机会更多；基本保障之外的额外福利较少。','额外福利更充分；短期主要做熟悉的任务，带教机会较少。',offer('growth','learning','希望有更多带教与任务实践机会'),offer('benefits','coverage','希望了解基本保障之外的额外福利'),offer('benefits','coverage','为了带教与实践，可以不优先要求额外福利'),offer('growth','learning','为了额外福利，可以接受短期带教机会较少')),
+ core('opportunity_13','如果岗位任务相近，你更愿意先了解哪份？','岗位职责和签约安排明确；所在企业的业务仍在调整。','企业主营业务成熟；这份岗位的职责或团队后续可能调整。',offer('position','role_change','希望岗位职责、团队及签约安排较明确'),offer('company','business','希望所在企业主营业务方向较明确'),offer('company','continuity','为了明确的岗位安排，可以继续了解处于业务调整中的企业'),offer('position','role_change','为了成熟的主营业务，可以继续了解岗位职责或团队调整范围')),
+ core('opportunity_14','你更愿意先了解哪种日常工作安排？','工作和休息边界清楚；团队讨论较正式，通常按既定流程沟通。','团队交流直接、协作顺畅；偶尔需在约定工作时段外协商响应。',offer('hours','after_hours','希望工作时段外的响应边界清楚'),offer('culture','collaboration','希望交流直接、协作顺畅'),offer('culture','communication','为了清楚的时间边界，可以接受较正式的沟通流程'),offer('hours','after_hours','为了直接交流和协作，可以继续了解偶尔跨时段响应的边界'))
+];
+const follow=(id,parent,answerIds,text,topicId,detailId,options)=>({id,text,kind:'single',when:{questionId:parent,answerIds},topicId,detailId,options:[...options.map(([id,text])=>({id,text})),{id:'unsure',text:'还不确定，不替我作决定'}]});
+export const tradeoffFollowupQuestions=[
+ follow('condition_01','opportunity_01',['left','depends'],'如果需要承担业务方向变化，哪条最接近你的考虑条件？','company','continuity',[
+  ['fixed_20','固定税前收入至少高20%，且业务调整范围说明清楚，再继续考虑'],['fixed_30','固定税前收入至少高30%，且业务调整范围说明清楚，再继续考虑'],['fixed_50','固定税前收入至少高50%，且业务调整范围说明清楚，再继续考虑'],['no_exchange','收入更高也不能替代我对业务方向明确的要求']]),
+ follow('condition_02','opportunity_02',['left','depends'],'多投入一些时间这件事，你会先看哪条条件？','hours','overtime',[
+  ['short_period','增加投入只限于事先约定的短期，之后恢复正常安排'],['notice_compensation','提前告知并明确补偿、休息恢复安排，才继续考虑'],['time_boundary','即使学习机会更多，也要先说明投入时长和个人时间边界'],['no_exchange','不希望通过额外占用个人时间换取学习机会']]),
+ follow('condition_03','opportunity_04',['left','depends'],'面对阶段项目，你会先确认什么再决定？','position','contract',[
+  ['six_months','合同覆盖至少六个月，并明确项目结束后的安排'],['one_year','合同覆盖至少一年，并明确续约规则'],['clear_exit','先明确项目期限、终止条件和结束后的安排，再决定是否接受'],['no_exchange','更自主的做法不能替代我对岗位持续安排的要求']]),
+ follow('condition_04','opportunity_06',['right','depends'],'轮换工作时段时，哪条会影响你的决定？','hours','schedule',[
+  ['advance_month','至少提前一个月知道工作与休息安排，再继续考虑'],['advance_week','至少提前一周知道工作与休息安排，再继续考虑'],['no_night','可以了解轮换，但不考虑需要夜间工作的安排'],['no_exchange','额外福利也不能替代我对规律工作休息安排的要求']]),
+ follow('condition_05','opportunity_08',['right','depends'],'接触新任务但要先独立摸索时，你最希望补充哪条条件？','growth','learning',[
+  ['named_support','明确可以求助的人和反馈时间，再继续考虑'],['time_resources','提供学习资源和合理的熟悉任务时间，再继续考虑'],['independent','在目标和责任范围清楚时，可以先独立摸索'],['no_exchange','更有挑战的任务不能替代我对及时支持的要求']]),
+ follow('condition_06','opportunity_09',['right','depends'],'新业务的后续还不明确时，你会怎样继续？','company','business',[
+  ['business_explanation','先了解当前业务、近期变化和岗位服务的具体业务，再决定'],['written_scope','先明确岗位范围及业务变化时的安排，再决定'],['continue_unknown','可以继续了解，但保留对业务持续性的未知'],['no_exchange','固定时段不能替代我对企业经营方向明确的要求']]),
+ follow('condition_07','opportunity_10',['left','depends'],'补充福利较好、合同分阶段签订时，你会先看哪条？','position','contract',[
+  ['written_renewal','先核实书面的合同期限和续约条件，再决定'],['known_end','项目结束时间和后续安排清楚时，可以继续考虑'],['extra_verified','额外福利的内容与兑现方式也要能核查，再决定'],['no_exchange','补充福利不能替代我对合同与岗位持续安排的要求']]),
+ follow('condition_08','opportunity_11',['left','depends'],'收入较高但审批较多时，你会先确认哪条条件？','culture','communication',[
+  ['decision_scope','先说明哪些事情能自主决定、哪些需要审批，再考虑'],['feedback_route','有能及时沟通问题和获得反馈的渠道，再考虑'],['respect_boundary','对不同意见及个人边界有明确处理方式，再考虑'],['no_exchange','收入较高也不能替代我对直接沟通与反馈空间的要求']])
+];
+// Explicit condition answers can concern a different topic from their follow-up's default.
+const conditionMapping={condition_05:{no_exchange:['culture','collaboration']},condition_06:{written_scope:['position','role_change']},condition_07:{extra_verified:['benefits','verification']},condition_08:{respect_boundary:['culture','respect']}};
+for(const q of tradeoffFollowupQuestions)for(const option of q.options){const mapped=conditionMapping[q.id]?.[option.id];if(mapped)option.need={topicId:mapped[0],detailId:mapped[1]};}
+export const tradeoffQuestions=[...tradeoffCoreQuestions,...tradeoffFollowupQuestions];
+export const tradeoffCatalog={version:tradeoffVersion,schemaVersion:'a-needs-tradeoff/1',measurement:'scenario-based-job-needs-elicitation-not-psychometric-assessment',intro:'通过几种工作情境梳理你的取舍。没有标准答案，可以选择要看条件或暂不确定。题中的两份机会除明确写出的差异外，其他条件视为相近；依法应有的基本用工保障不参与交换。最后的提议结论由你确认或修改。',questions:tradeoffQuestions,coreQuestionCount:14,maxFollowupCount:8,topicIds:tradeoffTopicIds,topicTitles:tradeoffTopicTitles,provenance:{itemOrigin:'product-authored',validationStatus:'not-validated',scoring:'no-personality-score-no-exact-utility',licenseStatus:'original-product-text-not-copied-scale',referenceRelation:'interaction-and-construct-inspiration-only-not-item-validation'},references:[{id:'careeronestop-work-values',url:'https://cloudfront.careeronestop.org/Toolkit/Careers/work-values-matcher-help.aspx',use:'借鉴相对比较可帮助梳理工作价值优先级；未复制题卡或计算其量表分数'},{id:'miq',url:'https://vpr.psych.umn.edu/miq',use:'参考工作需要与相对比较的概念；未复制受许可限制的题目或计分规则'},{id:'wdq',url:'https://www.morgeson.com/wdq.html',use:'参考任务、社会与情境维度可交叉出现；未复制量表题目或推断心理效度'}]};
