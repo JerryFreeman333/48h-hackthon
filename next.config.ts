@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   typedRoutes: false,
+  distDir: process.env.XRAY_NEXT_DIST_DIR ?? ".next",
   webpack(config) {
     // C also targets Node ESM, so its TS source uses emitted .js imports.
     // Resolve those imports to source files when bundled by Next.

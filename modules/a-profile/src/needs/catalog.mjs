@@ -1,4 +1,5 @@
 // Product-authored requirements, NOT items from a validated psychometric instrument.
+import {refinementVersion,refinementQuestions,refinementStrengths,refinementReferences} from './refinement-catalog.mjs';
 export const version='job-needs-20261002-1';
 export const evidenceRelation='topic-support-only-not-item-validation';
 export const sources=[
@@ -34,4 +35,4 @@ export const topics=[
   ['hiring_reason','新增岗位、替补岗位还是短期项目'],['contract','签约主体、用工形式与合同期限'],['role_change','职责、工作地点或团队可能如何变化'],['probation_rules','试用期考核及岗位变动的书面规则']])
 ];
 export const questions=topics.flatMap(t=>t.questions.map(q=>({...q,topicId:t.id,provenance:{author:'求职 X-Ray A 产品需求采集',version,originalInstrument:null,originalItemNumber:null,itemOrigin:'product-authored',sourceIds:t.sourceIds,evidenceRelation,validationStatus:'not-validated',scoring:'none',reverseScored:null,licenseStatus:'original-product-text-not-copied-scale'}})));
-export const catalog={version,measurement:'user-declared-job-needs-not-psychometric-assessment',questionCount:questions.length,topics,questions,sources,priorities,policies};
+export const catalog={version,measurement:'user-declared-job-needs-not-psychometric-assessment',questionCount:questions.length,topics,questions,sources,priorities,policies,refinement:{version:refinementVersion,questions:refinementQuestions,strengths:refinementStrengths,references:refinementReferences},totalQuestionCount:questions.length+refinementQuestions.length};

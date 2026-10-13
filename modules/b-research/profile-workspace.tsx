@@ -3,7 +3,7 @@ import {useEffect,useState,useRef} from 'react';
 import './workspace.css';
 import {readMaterialFile} from '../research-agent/xmind/file-import';
 type Candidate={recordId:number;companyName:string;title:string;city:string|null;sourceUrl:string|null;sourceType:string;excerpt:string;notes:string[];investigation?:{topic:string;label:string;status:string;explanation:string;gaps:string[];question:string;materials:{text:string;sources:{title:string;scope:string;url:string|null;publishedAt:string|null;collectedAt:string|null;dateNote:string|null;excerpt:string}[]}[]}[]};
-type Handoff={agent?:{enabled:boolean;configured:boolean;v3?:boolean};sessionId:string;revision:number;goals:string[];industries:string[];roles:string[];conditions:{label:string;text:string;strength:string}[];topics:{title:string;priority:string;details:string[];policy:string}[];database:{sourceName:string;sourceFingerprint:string;counts:{companies:number;company_jobs:number};candidateCount:number;referenceCount:number;candidates:Candidate[];references:Candidate[]}};
+type Handoff={agent?:{enabled:boolean;configured:boolean;v3?:boolean};sessionId:string;revision:number;goals:string[];industries:string[];roles:string[];conditions:{label:string;text:string;strength:string}[];topics:{title:string;priority:string;details:string[];policy:string;declaredNeeds?:{question:string;answer:string;strength:string}[];unknownCount?:number}[];database:{sourceName:string;sourceFingerprint:string;counts:{companies:number;company_jobs:number};candidateCount:number;referenceCount:number;candidates:Candidate[];references:Candidate[]}};
 async function read(url:string){const r=await fetch(url,{cache:'no-store'}),body=await r.json();if(!r.ok)throw Error(body.error?.message??'无法读取已保存的用户侧写');return body;}
 export function ProfileResearchWorkspace(){
  const [value,setValue]=useState<Handoff|null>(null),[error,setError]=useState(''),[loading,setLoading]=useState(true);
@@ -51,10 +51,10 @@ export function ProfileResearchWorkspace(){
  const jobSelected=selected.length-referenceSelected;
  const selectionText=[jobSelected?jobSelected+' 条岗位线索':'',referenceSelected?referenceSelected+' 条薪资统计参考':''].filter(Boolean).join('、');
  return <div className="shell b-workspace b-profile-workspace">
-  <header className="topbar"><a className="brand" href="/">求职 X-Ray</a><nav className="nav"><a href="/history">继续上次的判断</a></nav><span className="b-stage">B · 公司与岗位调查</span></header>
+  <header className="topbar"><a className="brand" href="/">求职 X-Ray</a><nav className="nav"><a href="/history">继续上次的判断</a></nav><span className="b-stage">B · 寻找职位</span></header>
   <main className="main">
-   <div className="eyebrow">已确认需求 → 调查候选 → 判断报告</div>
-   <div className="heading-row"><div><h1>公司与岗位调查</h1><p className="sub">从你的求职方向出发，选出值得继续了解的岗位。</p></div>{value&&<span className="tag">侧写版本 {value.revision}</span>}</div>
+   <div className="eyebrow">已确认需求 → 选择职位 → 调查岗位与企业</div>
+   <div className="heading-row"><div><h1>按你的需求找职位</h1><p className="sub">从你的求职方向出发，选出值得继续了解的岗位。</p></div>{value&&<span className="tag">侧写版本 {value.revision}</span>}</div>
    {loading&&<section className="panel b-message"><p role="status">正在接收你的用户侧写…</p></section>}
    {error&&!value&&<section className="panel b-message"><p className="b-error" role="alert">{error}</p><a className="button" href="/profile?home=1">返回 A →</a></section>}
    {value&&<div className="layout">
@@ -65,7 +65,7 @@ export function ProfileResearchWorkspace(){
      <a className="button" href={'/profile?sessionId='+encodeURIComponent(value.sessionId)+'&returnTo=/research'}>查看或修改用户侧写</a>
     </aside>
     <section className="results">
-     <section className="panel b-topics"><details><summary>你的七主题调查重点</summary><p className="sub">沿用 A 已确认版本，不需要重新填写。</p>{value.topics.map(t=><div className="b-topic" key={t.title}><h3>{t.title.replaceAll('薪酬透明','薪资高低')} <span className="b-detail-label">{t.priority}</span></h3><p>{t.details.join('；')}</p><p className="notice">{t.policy}</p></div>)}</details></section>
+     <section className="panel b-topics"><details><summary>你的七主题调查重点</summary><p className="sub">沿用 A 已确认版本，不需要重新填写。</p>{value.topics.map(t=><div className="b-topic" key={t.title}><h3>{t.title.replaceAll('薪酬透明','薪资与兑现')} <span className="b-detail-label">{t.priority}</span></h3><p>{t.details.join('；')}</p>{t.declaredNeeds?.map(n=><p key={n.question}><strong>你的具体需求：</strong>{n.answer} · {n.strength}</p>)}{!!t.unknownCount&&<p className="notice">还有 {t.unknownCount} 项安排暂不确定。</p>}<p className="notice">{t.policy}</p></div>)}</details></section>
      <section className="panel b-candidates">
       <div className="b-section-heading"><h2>候选公司与岗位</h2><span className="b-count">{value.database.candidateCount} 条岗位线索</span></div>
       <p className="sub">选择岗位线索或下方薪资统计参考，合计一至三条，结合你的需求生成判断报告。</p>
@@ -76,7 +76,7 @@ export function ProfileResearchWorkspace(){
        <p className="job-desc">{c.excerpt}</p>
        <p className="source-line">{c.sourceType}{c.sourceUrl&&<> · <a href={c.sourceUrl} target="_blank" rel="noreferrer">查看来源 →</a></>}</p>
        {c.notes.map(n=><p className="b-candidate-note" key={n}>{n}</p>)}
-       {c.investigation&&<details className="b-candidate-details"><summary>调查资料 · {c.investigation.filter(i=>i.status!=='unknown').length} 项有线索或材料 / {c.investigation.length} 项待比较</summary><p className="sub">逐项对应你的需求。公司评价和集团报道只提供核验方向，不能代替这份岗位的书面承诺。</p>{c.investigation.map(i=><div className="b-investigation-item" key={i.topic+i.label}><h4>{i.topic.replaceAll('薪酬透明','薪资高低')} · {i.label}</h4><p>{i.explanation}</p>{i.materials.map((m,index)=><div className="b-material-excerpt" key={index}><p className="job-desc">资料节选：{m.text}</p>{m.sources.map((s,n)=><p className="source-line" key={n}>{s.title} · {s.scope==='job'?'这份岗位':s.scope==='team'?'团队层面':s.scope==='business'?'业务层面':'公司或集团层面'} · 来源日期：{s.publishedAt??'未记载'} · 采集：{s.collectedAt??'未记载'}{s.dateNote&&<> · {s.dateNote}</>}{s.url&&<> · <a href={s.url} target="_blank" rel="noreferrer">查看来源</a></>}</p>)}</div>)}{i.gaps.map(g=><p className="notice" key={g}>{g}</p>)}<p className="b-next-step">下一步：{i.question}</p></div>)}</details>}
+       {c.investigation&&<details className="b-candidate-details"><summary>调查资料 · {c.investigation.filter(i=>i.status!=='unknown').length} 项有线索或材料 / {c.investigation.length} 项待比较</summary><p className="sub">逐项对应你的需求。公司评价和集团报道只提供核验方向，不能代替这份岗位的书面承诺。</p>{c.investigation.map(i=><div className="b-investigation-item" key={i.topic+i.label}><h4>{i.topic.replaceAll('薪酬透明','薪资与兑现')} · {i.label}</h4><p>{i.explanation}</p>{i.materials.map((m,index)=><div className="b-material-excerpt" key={index}><p className="job-desc">资料节选：{m.text}</p>{m.sources.map((s,n)=><p className="source-line" key={n}>{s.title} · {s.scope==='job'?'这份岗位':s.scope==='team'?'团队层面':s.scope==='business'?'业务层面':'公司或集团层面'} · 来源日期：{s.publishedAt??'未记载'} · 采集：{s.collectedAt??'未记载'}{s.dateNote&&<> · {s.dateNote}</>}{s.url&&<> · <a href={s.url} target="_blank" rel="noreferrer">查看来源</a></>}</p>)}</div>)}{i.gaps.map(g=><p className="notice" key={g}>{g}</p>)}<p className="b-next-step">下一步：{i.question}</p></div>)}</details>}
       </article>)}</div>
       <details className="b-database-note"><summary>资料来源与范围</summary><p className="source-line">本地爬虫数据库 · 已接入 {value.database.counts.companies} 家公司、{value.database.counts.company_jobs} 条岗位记录 · 未独立核验</p><p className="source-line">按 A 的城市、行业与岗位方向找到候选，七主题资料用于后续逐项对照。</p></details>
      </section>
@@ -86,7 +86,7 @@ export function ProfileResearchWorkspace(){
      </article>)}</div></details></section>}
      {value.agent?.enabled&&value.agent.v3&&<section className="panel b-material-import"><h2>补充材料（可选）</h2><p>沿用已选岗位和侧写；材料仅保存本机，来源声明与真实兑现分别判断。无需重复填写 JD。</p><label>公开正文或文本 PDF 链接（每行一个，最多四个）<textarea disabled={busy} value={sourceUrls} onChange={e=>setSourceUrls(e.target.value)} rows={3}/></label><label>主动提供的 JD 或其他文本<textarea disabled={busy} value={materialText} onChange={e=>setMaterialText(e.target.value)} rows={4}/></label><label>文件或截图（最多 18MB；识别结果保留原件与复核提示）<input type="file" accept=".pdf,.docx,.xlsx,.csv,.png,.jpg,.jpeg,.txt,.md" disabled={busy} onChange={e=>setMaterialFile(e.target.files?.[0]??null)}/></label></section>}
      {(value.database.candidates.length>0||value.database.references.length>0)&&<section className="panel b-analysis-actions" aria-label="分析所选资料">
-      <div className="b-action-heading"><div><strong>{busy?'调查与分析进行中':selected.length?'已选择 '+selectionText:'还未选择资料'}</strong><p className="sub" role="status" aria-live="polite">{busy?(progress||'正在安排补充调查，完成后自动进入 C。'):selected.length?'结合你的侧写，逐项分析所选资料。':'请勾选岗位线索或薪资统计参考，合计一至三条。'}</p></div><button className="button primary" disabled={busy||!selected.length} onClick={analyze}>{busy?'正在调查与分析…':'用我的侧写分析所选资料'}</button></div>
+      <div className="b-action-heading"><div><strong>{busy?'调查与分析进行中':selected.length?'已选择 '+selectionText:'还未选择资料'}</strong><p className="sub" role="status" aria-live="polite">{busy?(progress||'正在安排补充调查，完成后自动进入 C。'):selected.length?'结合你的侧写，逐项分析所选资料。':'请勾选岗位线索或薪资统计参考，合计一至三条。'}</p></div><button className="button primary" disabled={busy||!selected.length} onClick={analyze}>{busy?'正在调查与分析…':'调查所选职位与企业'}</button></div>
       {value.agent?.enabled&&<p className="notice">点击分析后，将补充调查所选公司的七主题资料。新资料作为待核验线索；调查失败或超时仍使用已有资料生成报告。</p>}{error&&<p className="b-error" role="alert">{error}</p>}
      </section>}
      {report&&<section className="panel b-message"><h2>C 分析已生成</h2>{report.warnings.map(w=><p key={w}>{w}</p>)}<a className="button primary" href={report.reportUrl}>查看分析报告 →</a></section>}

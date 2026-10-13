@@ -287,4 +287,4 @@ export function createDemoFlow(options?: { dataDir?: string }) {
   };
 }
 const globalFlow = globalThis as unknown as { __xrayDemoFlow?: ReturnType<typeof createDemoFlow> };
-export function getDemoFlow() { return globalFlow.__xrayDemoFlow ??= createDemoFlow({ dataDir: join(process.cwd(), ".data", "integration-reports") }); }
+export function getDemoFlow() { return globalFlow.__xrayDemoFlow ??= createDemoFlow({ dataDir: process.env.XRAY_REPORT_DATA_DIR ?? join(process.cwd(), ".data", "integration-reports") }); }

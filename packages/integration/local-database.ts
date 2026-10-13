@@ -20,10 +20,39 @@ const date=(x:unknown)=>text(x);
 // Original dates remain visible through sourceDates; repeat reads must not give
 // the same evidence ID different content and break same-company comparisons.
 const retrieved=(x:unknown)=>{const s=text(x);if(s&&/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$/.test(s)&&Number.isFinite(Date.parse(s)))return s;const imported=text(manifest().importedAt);if(!imported||!Number.isFinite(Date.parse(imported)))throw Error('数据库导入时间缺失，请核对导入清单');return imported;};
-const rolePatterns:Record<string,RegExp>={engineering:/工程师|开发|架构|运维|技术岗|技术类|Java|C\+\+|Linux/i,research:/算法|研究|科研|研发|AGI|LLM/i,product_design:/产品经理|产品岗|产品负责人|产品设计|产品开发|策划|设计/,product_operations:/运营|内容|剪辑|主播|营销/,sales_business:/销售|商务|客户经理|BD|大区经理|地区经理/i,customer_delivery:/交付|实施|支持|服务工程师|培训/,production_quality:/质量|测试|检测|生产|工艺|工业工程/,functions:/财务|人力|行政|组织发展|信息披露/,professional:/咨询|顾问|投行|法律/};
-const industryPatterns:Record<string,RegExp>={software_it:/互联网|电商|云|AI|人工智能|软件|网络|信息服务|金融科技|SaaS|IoT|视频剪辑|直播|游戏|物流科技/i,manufacturing:/制造|硬件|能源|汽车|机器人|电器|厨电|物联|医疗器械|脑机/,healthcare:/医疗|医药|医学|生物|医院|药/,education:/教育|培训|教学/,professional_services:/科研|咨询|专业服务|商务服务/,commerce:/消费|食品|饮料|商贸|零售|母婴|美妆|电商/,finance:/金融|银行|城商行|农商行|保险|证券|基金|信托|资产管理|资管/};
+// Directional title/domain clues only: neither official classification nor qualification checks.
+// Keep the historical patterns unchanged; new tags prefer explicit activity or role terms.
+const rolePatterns:Record<string,RegExp>={engineering:/工程师|开发|架构|运维|技术岗|技术类|Java|C\+\+|Linux/i,research:/算法|研究|科研|研发|AGI|LLM/i,product_design:/产品经理|产品岗|产品负责人|产品设计|产品开发|策划|设计/,product_operations:/运营|内容|剪辑|主播|营销/,sales_business:/销售|商务|客户经理|BD|大区经理|地区经理/i,customer_delivery:/交付|实施|支持|服务工程师|培训/,production_quality:/质量|测试|检测|生产|工艺|工业工程/,functions:/财务|人力|行政|组织发展|信息披露/,professional:/咨询|顾问|投行|法律/,
+ healthcare_care:/医生|医师|护士|护理|护工|照护|助产|康复(?:治疗|技师|医师|师)|医疗(?:技术|辅助)|检验技师|药师/,
+ teaching_training:/教师|教员|教学|教研|讲师|助教|培训师|课程指导/,
+ hospitality_service:/厨师|厨工|餐饮(?:服务|店员|店长)|餐厅(?:服务|主管|经理)|服务员|酒店(?:前台|客房|接待|运营|经理)|客房服务|宾馆(?:前台|客房)|礼宾|迎宾|接待员/,
+ logistics_transport:/物流(?:专员|调度|运营|经理|主管)|运输(?:调度|管理)|仓储|仓管|仓库(?:管理|操作)|配送员|快递员|货运|驾驶员|司机|供应链(?:专员|计划|执行|运营)|配货|分拣/,
+ construction_civil:/施工|土建|建筑(?:工程|设计|施工)|造价|测量员|测绘|监理|工程现场|钢筋工|木工|水电工|管道安装|装饰装修/,
+ agriculture_field:/农艺|种植|养殖|兽医|育种|林业(?:技术|生产|巡护)|渔业(?:技术|生产)|畜牧(?:技术|养殖)|农业(?:技术|生产|现场)|植保|农机(?:操作|驾驶)|农场/,
+ arts_sports:/演员|编导|导演|美术|舞蹈|乐器|音乐|艺术(?:创作|指导|策划)|体育(?:教练|指导|服务)|健身教练|运动教练|文艺|活动(?:执行|策划|现场)|演出/,
+ repair_maintenance:/维修|修理|设施维护|保洁|家政|美容师|美发师|洗衣|家电(?:维护|清洗)|物业(?:维修|保洁|服务)/,
+ environment_utilities:/环境(?:监测员|监测技术|监测工程|检测|治理|保护)|水务(?:运行|操作|技术)|污水(?:处理工|处理员|运行)|供水(?:运行|调度)|给排水(?:设计|工程)|燃气(?:运行|巡检|维护)|电力(?:运行|调度|巡检)|热力(?:运行|维护)|公共设施(?:运行|维护)|水利(?:运行|监测)|生态(?:保护|监测)/,
+ public_community:/社工|社会工作|社区(?:服务|工作|专员)|公共事务|公共管理|社会组织(?:项目|服务)|公益(?:项目|服务)|志愿(?:服务|协调)|民政(?:服务|事务)/
+};
+const industryPatterns:Record<string,RegExp>={software_it:/互联网|电商|云|AI|人工智能|软件|网络|信息服务|金融科技|SaaS|IoT|视频剪辑|直播|游戏|物流科技/i,manufacturing:/制造|硬件|能源|汽车|机器人|电器|厨电|物联|医疗器械|脑机/,healthcare:/医疗|医药|医学|生物|医院|药/,education:/教育|培训|教学/,professional_services:/科研|咨询|专业服务|商务服务/,commerce:/消费|食品|饮料|商贸|零售|母婴|美妆|电商/,finance:/金融|银行|城商行|农商行|保险|证券|基金|信托|资产管理|资管/,
+ agriculture:/农林牧渔|农业(?!银行)|种植|养殖|畜牧|林业|渔业|农场|农作物/,
+ mining_resources:/采矿|矿产开采|煤炭开采|金属矿|油气开采|矿业|采掘/,
+ energy_utilities:/电力供应|电力生产|发电|供电|热力供应|供热|燃气供应|供气|自来水|水务运营|水的生产|能源供应/,
+ construction:/建筑业|建筑施工|工程施工|土木工程|建筑安装|装饰装修|建设工程|房屋建筑/,
+ transport_logistics:/交通运输|运输业|道路运输|铁路运输|航空运输|航运|仓储|邮政|快递|物流(?:服务|运输|配送)|物流$/,
+ hospitality_food:/住宿|酒店(?:经营|服务)|酒店业|餐饮(?!设备)|旅馆|宾馆|民宿/,
+ real_estate:/房地产|地产开发|物业管理|房地产中介|不动产经营/,
+ environment_public_facilities:/水利管理|生态保护|环境治理|污水处理|市政设施|公共设施管理|园林绿化|城市保洁/,
+ resident_repair_services:/居民服务|生活服务|维修服务|修理服务|家政|洗染|理发|美容服务|殡葬/,
+ culture_sports_entertainment:/文化艺术|体育|娱乐|演出|文艺|博物馆|图书馆|健身服务|文化传媒/,
+ public_social_organizations:/公共管理|社会保障|社会组织|社会团体|民政|基层自治|政府机关/,
+ international_organizations:/国际组织|联合国(?:机构|组织)?|政府间组织/
+};
 export function matchesDatabaseIndustry(tags:string[],domain:string|null){
  return !domain||!tags.length||tags.some(id=>industryPatterns[id]?.test(domain));
+}
+export function matchesDatabaseRole(tags:string[],title:string|null){
+ return !title||!tags.length||tags.some(id=>rolePatterns[id]?.test(title));
 }
 function documentedSalary(row:Row){
  const raw=String(row.raw_jd),min=row.salary_min,max=row.salary_max;
@@ -50,7 +79,7 @@ function shortlist(input:Row){
    const domain=text(row.domain),title=row.title as string;
    if(!matchesDatabaseIndustry(intent.industryTags,domain)){excluded.industry++;continue;}
    if(!domain)notes.push('行业未明确，待核验');
-   if(intent.roleTypes.length&&!intent.roleTypes.some((id:string)=>rolePatterns[id]?.test(title))){excluded.role++;continue;}
+   if(!matchesDatabaseRole(intent.roleTypes,title)){excluded.role++;continue;}
    if(goals.includes('find_internship')&&!/实习/.test(title+' '+row.raw_jd)&&/社招|资深|高级|专家|负责人|总监|经理|[3-9]-[5-9]年/.test(title+' '+row.raw_jd)){excluded.opportunity++;continue;}
    if(goals.includes('find_internship')&&!/实习/.test(title+' '+row.raw_jd))notes.push('是否提供实习机会待确认');
    notes.push('行业标签与岗位标题提供方向线索，具体职责仍需核实');

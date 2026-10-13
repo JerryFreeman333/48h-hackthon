@@ -17,5 +17,5 @@
     "paths": { "@/*": ["./*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "modules/c-report/tools/eval"]
+  "exclude": ["node_modules", "modules/c-report/tools/eval", "docs/test-results", "test-results"]
 }
